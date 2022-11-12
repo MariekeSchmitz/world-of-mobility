@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.demo;
+package de.hsrm.mi.swt_project;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
