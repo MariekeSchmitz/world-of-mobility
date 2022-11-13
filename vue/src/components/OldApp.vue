@@ -1,13 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, reactive } from "vue";
-
-import * as THREE from 'three'
 import {
   AmbientLight,
   Box,
   Camera,
-  PhongMaterial,
-  Texture,
   ToonMaterial,
   type MeshPublicInterface,
   PointLight,
@@ -16,7 +12,6 @@ import {
   Plane,
   Scene,
 } from "troisjs";
-
 
 const rendererC = ref();
 const meshC = ref();
@@ -48,13 +43,6 @@ onMounted(() => {
     mesh!.rotation.x += 0.01;
   });
 });
-
-let tiles: Object[][] = [[{color:"red"},{color:"yellow"},{color:"purple"},{color:"black"},{color:"white"}],[{color:"magenta"},{color:"brown"},{color:"blue"},{color:"yellow"},{color:"red"}]]
-console.log(tiles.length)
-console.log(tiles[0].length)
-const offsetx = -2
-const offsety = -2
-const texture = new THREE.TextureLoader().load( "cade.jpg" );
 </script>
 
 <template>
@@ -65,36 +53,59 @@ const texture = new THREE.TextureLoader().load( "cade.jpg" );
     resize="window"
   >
     <Camera
-      :position="{ x: 0, y: 0, z: 10 }"
-      :lookAt="{ x: 0, y: 0, z: 0 }"
+      :position="{ x: 0, y: -15, z: 3 }"
+      :lookAt="{ x: 0, y: 10, z: 0 }"
       ref="camera"
     />
-    <Scene background="#97FFFF" ref="scene">
-
-      <axesHelper></axesHelper>
+    <Scene background="#97FFFF">
       <!-- Licht -->
       <PointLight :position="{ x: 0, y: 0, z: 10 }" />
       <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
 
-      
+      <!-- Erste Box -->
+      <Box
+        ref="box"
+        :position="{ x: positionTemp.x, y: positionTemp.y, z: positionTemp.z }"
+      >
+        <ToonMaterial />
+      </Box>
+      <!-- Zweite Box -->
+      <Box
+        :position="{ x: 1, y: 1, z: 0 }"
+        ref="meshC"
+        :rotation="{ y: Math.PI / 4, z: Math.PI / 4 }"
+      >
+        <ToonMaterial />
+      </Box>
 
       <!-- "Fahrbahn" -->
-      
-      <Plane :width="5" :height="5" :rotation="{ x: 0 }" :position="{ x: 0, y: 0, z: 0 }" ref="initplane">
-        <ToonMaterial color="green" :props="{ side:THREE.DoubleSide}"/>
+      <Plane
+        :width="0.2"
+        :height="2"
+        :rotation="{ x: 0 }"
+        :position="{ y: -3, z: -2.99 }"
+      >
+        <ToonMaterial color="#FFFFFF" />
       </Plane>
-      <template v-for="n in tiles[0].length">
-        <template v-for="m in tiles.length" :set="farbe = tiles[n][m].color">
-          <Plane :width="1" :height="1" :rotation="{ x: 0 }" :position="{ x: n - 1 + offsetx, y: m-1+offsety, z: 0.01 }" ref="initplane">
-          <!--<ToonMaterial color="{{farbe}}" :props="{ side:THREE.DoubleSide}"/>-->
-        <PhongMaterial>
-          <Texture src="./textures/cade.jpg"></Texture>
-        </PhongMaterial>
-        </Plane>
-          
-        </template>
-      </template>
-      
+      <Plane
+        :width="0.2"
+        :height="2"
+        :rotation="{ x: 0 }"
+        :position="{ z: -2.99 }"
+      >
+        <ToonMaterial color="#FFFFFF" />
+      </Plane>
+      <Plane
+        :width="0.2"
+        :height="2"
+        :rotation="{ x: 0 }"
+        :position="{ y: 3, z: -2.99 }"
+      >
+        <ToonMaterial color="#FFFFFF" />
+      </Plane>
+      <Plane :width="8" :height="8" :rotation="{ x: 0 }" :position="{ z: -3 }">
+        <ToonMaterial color="#000000" />
+      </Plane>
     </Scene>
   </Renderer>
 </template>
