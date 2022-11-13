@@ -18,6 +18,7 @@ public enum Orientation {
             return NORTH_WEST;
         }
     },
+
     NORTH_EAST {
         @Override
         public Orientation next() {
@@ -29,6 +30,7 @@ public enum Orientation {
             return NORTH;
         }
     },
+
     EAST {
         @Override
         public Orientation next() {
@@ -40,6 +42,7 @@ public enum Orientation {
             return NORTH_EAST;
         }
     },
+
     SOUTH_EAST {
         @Override
         public Orientation next() {
@@ -51,6 +54,7 @@ public enum Orientation {
             return EAST;
         }
     },
+
     SOUTH {
         @Override
         public Orientation next() {
@@ -62,6 +66,7 @@ public enum Orientation {
             return SOUTH_EAST;
         }
     },
+
     SOUTH_WEST {
         @Override
         public Orientation next() {
@@ -70,9 +75,10 @@ public enum Orientation {
 
         @Override
         public Orientation prev() {
-            return EAST;
+            return SOUTH;
         }
     },
+
     WEST {
         @Override
         public Orientation next() {
@@ -84,6 +90,7 @@ public enum Orientation {
             return SOUTH_WEST;
         }
     },
+    
     NORTH_WEST {
         @Override
         public Orientation next() {
