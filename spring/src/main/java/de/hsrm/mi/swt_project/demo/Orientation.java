@@ -10,18 +10,18 @@ public enum Orientation {
     NORTH {
         @Override
         public Orientation next() {
-            return EAST;
+            return NORTH_EAST;
         }
 
         @Override
         public Orientation prev() {
-            return WEST;
+            return NORTH_WEST;
         }
     },
-    EAST {
+    NORTH_EAST {
         @Override
         public Orientation next() {
-            return SOUTH;
+            return EAST;
         }
 
         @Override
@@ -29,7 +29,40 @@ public enum Orientation {
             return NORTH;
         }
     },
+    EAST {
+        @Override
+        public Orientation next() {
+            return SOUTH_EAST;
+        }
+
+        @Override
+        public Orientation prev() {
+            return NORTH_EAST;
+        }
+    },
+    SOUTH_EAST {
+        @Override
+        public Orientation next() {
+            return SOUTH;
+        }
+    
+        @Override 
+        public Orientation prev() {
+            return EAST;
+        }
+    },
     SOUTH {
+        @Override
+        public Orientation next() {
+            return SOUTH_WEST;
+        }
+
+        @Override
+        public Orientation prev() {
+            return SOUTH_EAST;
+        }
+    },
+    SOUTH_WEST {
         @Override
         public Orientation next() {
             return WEST;
@@ -43,26 +76,37 @@ public enum Orientation {
     WEST {
         @Override
         public Orientation next() {
+            return NORTH_WEST;
+        }
+
+        @Override
+        public Orientation prev() {
+            return SOUTH_WEST;
+        }
+    },
+    NORTH_WEST {
+        @Override
+        public Orientation next() {
             return NORTH;
         }
 
         @Override
         public Orientation prev() {
-            return SOUTH;
+            return WEST;
         }
     };
     
     /**
-     * Gets next orientation given that N-E-S-W are cyclic.
+     * Gets next orientation given that N-NE-E-SE-S-SW-W-NW are cyclic.
      * 
-     * @return Next orientation in N-E-S-W cycle.
+     * @return Next orientation in N-NE-E-SE-S-SW-W-NW cycle.
      */
     public abstract Orientation next();
 
     /**
-     * Gets previous orientation given that N-E-S-W are cyclic.
+     * Gets previous orientation given that N-NE-E-SE-S-SW-W-NW are cyclic.
      * 
-     * @return Previous orientation in N-E-S-W cycle.
+     * @return Previous orientation in N-NE-E-SE-S-SW-W-NW cycle.
      */
     public abstract Orientation prev();
 
