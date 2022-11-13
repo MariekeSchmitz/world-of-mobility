@@ -11,7 +11,7 @@ public interface Scriptable {
      * Load script that customizes behaviour and safe it to object
      * @author Marieke Schmitz
      */
-    public void loadScript();
+    public void loadScript(String script);
 
      /**
      * Execute script of the object to use it as behaviour 
