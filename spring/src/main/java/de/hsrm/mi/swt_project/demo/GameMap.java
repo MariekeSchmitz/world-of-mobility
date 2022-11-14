@@ -21,7 +21,7 @@ public class GameMap {
      * @author Tom Gouthier
      */
     public void addNpc(MoveableObject moveable){
-
+        this.npcs.add(moveable);
     }
 
     
@@ -32,7 +32,7 @@ public class GameMap {
      * @author Tom Gouthier
      */
     public void addTile(Tile tile, int xPos, int yPos){
-
+        this.tiles[yPos][xPos] = tile;
     }
 
     /** expands the map if needed
@@ -42,5 +42,36 @@ public class GameMap {
 
     }
 
+
+    public Tile[][] getTiles() {
+        return tiles;
+    }
+
+
+    public void setTiles(Tile[][] tiles) {
+        this.tiles = tiles;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public List<MoveableObject> getNpcs() {
+        return npcs;
+    }
+
+
+    public void setNpcs(List<MoveableObject> npcs) {
+        this.npcs = npcs;
+    }
+
+    
     
 }

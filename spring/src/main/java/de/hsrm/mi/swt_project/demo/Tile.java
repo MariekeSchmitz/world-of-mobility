@@ -18,7 +18,7 @@ public abstract class Tile implements Turnable{
      * @author Tom Gouthier
      */
     public void addPlaceable(Placeable placeable) {
-
+        this.placedObjects.add(placeable);
     }
 
 
@@ -26,6 +26,36 @@ public abstract class Tile implements Turnable{
     @Override
     public void turn(Direction direction) {
 
+        if (direction == Direction.LEFT) {
+            this.orientation = orientation.prev();
+        } else {
+            this.orientation = orientation.next();
+        }
+       
+    }
+
+
+
+    public Orientation getOrientation() {
+        return orientation;
+    }
+
+
+
+    public void setOrientation(Orientation orientation) {
+        this.orientation = orientation;
+    }
+
+
+
+    public List<Placeable> getPlacedObjects() {
+        return placedObjects;
+    }
+
+
+
+    public void setPlacedObjects(List<Placeable> placedObjects) {
+        this.placedObjects = placedObjects;
     }
 
 
