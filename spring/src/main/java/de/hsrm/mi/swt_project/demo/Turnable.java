@@ -13,5 +13,5 @@ public interface Turnable {
     @author Tom Gouthier
     @param direction direction to turn to
     */
-    void turn (DIRECTION direction);
+    void turn (Direction direction);
 }
