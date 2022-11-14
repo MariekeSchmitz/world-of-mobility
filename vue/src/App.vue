@@ -7,54 +7,46 @@ import {
   Box,
   Camera,
   PhongMaterial,
+  StandardMaterial,
   Texture,
+  useTextures,
+  BasicMaterial,
+  LambertMaterial,
   ToonMaterial,
   type MeshPublicInterface,
   PointLight,
   Renderer,
+  
   type RendererPublicInterface,
   Plane,
   Scene,
 } from "troisjs";
-
-
 const rendererC = ref();
-const meshC = ref();
-const box = ref();
 
-const positionTemp = reactive({
-  x: 0,
-  y: 0,
-  z: -2.5,
-});
+interface colored{
+  name:string,
+  posX: number,
+  posY: number,
+  color: string
+}
 
-document.addEventListener("keyup", (e) => {
-  if (e.code === "KeyW") {
-    positionTemp.y += 1;
-  } else if (e.code === "KeyS") {
-    positionTemp.y -= 1;
-  } else if (e.code === "KeyD") {
-    positionTemp.x += 1;
-  } else if (e.code === "KeyA") {
-    console.log(box.value);
-    positionTemp.x -= 1;
-  }
-});
+//List of Tiles
+let tiles: colored[] = [{name:"Street", posX:0, posY:0, color:"red"},{name:"street", posX:1, posY:0,color:"yellow"},{name:"street", posX:2, posY:0,color:"purple"},{name:"street", posX:3, posY:0,color:"black"},{name:"street", posX:4, posY:0,color:"white"},{name:"street", posX:0, posY:1,color:"magenta"},{name:"street", posX:1, posY:1,color:"brown"},{name:"street", posX:2, posY:1,color:"blue"},{name:"street", posX:3, posY:1,color:"yellow"},{name:"street", posX:4, posY:1,color:"red"}]
+
+//Offset so Tiles start on Bottom Right for 0,0
+const offsetx = -2
+const offsety = -2
+  
+function planeOver(event){
+  event.component.mesh.material.color.set(event.over ? 0xdddddd : "white");
+}
+function planeClick(event) {
+  alert("Meow")
+}
 
 onMounted(() => {
   const renderer = rendererC.value as RendererPublicInterface;
-  const mesh = (meshC.value as MeshPublicInterface).mesh;
-  renderer.onBeforeRender(() => {
-    mesh!.rotation.x += 0.01;
-  });
 });
-
-let tiles: Object[][] = [[{color:"red"},{color:"yellow"},{color:"purple"},{color:"black"},{color:"white"}],[{color:"magenta"},{color:"brown"},{color:"blue"},{color:"yellow"},{color:"red"}]]
-console.log(tiles.length)
-console.log(tiles[0].length)
-const offsetx = -2
-const offsety = -2
-const texture = new THREE.TextureLoader().load( "cade.jpg" );
 </script>
 
 <template>
@@ -70,29 +62,21 @@ const texture = new THREE.TextureLoader().load( "cade.jpg" );
       ref="camera"
     />
     <Scene background="#97FFFF" ref="scene">
-
-      <axesHelper></axesHelper>
-      <!-- Licht -->
       <PointLight :position="{ x: 0, y: 0, z: 10 }" />
       <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
 
+    
       
-
-      <!-- "Fahrbahn" -->
-      
-      <Plane :width="5" :height="5" :rotation="{ x: 0 }" :position="{ x: 0, y: 0, z: 0 }" ref="initplane">
+      <Plane :width="5" :height="5" :rotation="{ x: 0 }" :position="{ x: 0, y: 0, z: 0 }" ref="tile{{n}},{{m}}">
         <ToonMaterial color="green" :props="{ side:THREE.DoubleSide}"/>
       </Plane>
-      <template v-for="n in tiles[0].length">
-        <template v-for="m in tiles.length" :set="farbe = tiles[n][m].color">
-          <Plane :width="1" :height="1" :rotation="{ x: 0 }" :position="{ x: n - 1 + offsetx, y: m-1+offsety, z: 0.01 }" ref="initplane">
-          <!--<ToonMaterial color="{{farbe}}" :props="{ side:THREE.DoubleSide}"/>-->
-        <PhongMaterial>
-          <Texture src="./textures/cade.jpg"></Texture>
-        </PhongMaterial>
-        </Plane>
-          
-        </template>
+
+      <template v-for="tile in tiles" >
+      <Plane @pointer-over="planeOver"  @click="planeClick" :width="1" :height="1" :rotation="{ x: 0 }" :position="{ x: tile.posX  + offsetx, y: tile.posY+offsety, z: 0.01 }">
+            <BasicMaterial>
+            <Texture src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1200px-Cat03.jpg"></Texture>
+            </BasicMaterial>
+            </Plane>
       </template>
       
     </Scene>
