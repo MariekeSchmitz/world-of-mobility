@@ -50,6 +50,47 @@ onMounted(() => {
 </script>
 
 <template>
+<div class="mapTitle">
+  <p>Farmerama Map</p>
+</div>
+
+
+<div class="leftMenu">
+  <button>&lt;</button>
+  <button>settings</button>
+  <button>grid</button>
+  <div class="doubleButton">
+    <button>-</button>
+    <button>+</button>
+  </div>
+  <div class="doubleButton">
+    <button>&lt;</button>
+    <button>&gt;</button>
+  </div>
+</div>
+
+<div class="bottomMenu">
+  <div class="typeSelector">
+    <button>Infrastruktur, Landschaft</button>
+    <button>NPCs</button>
+  </div>
+  <div class="itemSelector">
+    <button>Tiles</button>
+    <button>Baum</button>
+    <button>Tankstelle</button>
+  </div>
+  <div class="items"></div>
+  <button>v</button>
+</div>
+
+
+<div class="minimap">
+<button>-</button>
+<button>+</button>
+<button>v</button>
+<p>Minimap, separate camera view from further away, +- Buttons control minimap camera</p>
+</div>
+
   <Renderer
     ref="rendererC"
     antialias
@@ -72,7 +113,7 @@ onMounted(() => {
       </Plane>
 
       <template v-for="tile in tiles" >
-      <Plane @pointer-over="planeOver"  @click="planeClick" :width="1" :height="1" :rotation="{ x: 0 }" :position="{ x: tile.posX  + offsetx, y: tile.posY+offsety, z: 0.01 }">
+      <Plane @pointer-over="planeOver"  @click="planeClick" :width="0.99" :height="0.99" :rotation="{ x: 0 }" :position="{ x: tile.posX  + offsetx, y: tile.posY+offsety, z: 0.01 }">
             <BasicMaterial>
             <Texture src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1200px-Cat03.jpg"></Texture>
             </BasicMaterial>
@@ -83,4 +124,70 @@ onMounted(() => {
   </Renderer>
 </template>
 
-<style></style>
+<style>
+.mapTitle{
+  background-color: grey;
+  position: fixed;
+  left:50%;
+  height: auto;
+  transform: translate(-50%,0);
+} 
+html{
+  overflow: hidden;
+}
+.mapTitle > p{
+  font-size: 24pt;
+}
+.leftMenu{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(5,1fr);
+  position: fixed;
+  bottom: 20%;
+  left: 10px;
+  height: 60%;
+  width: 100px;
+  background-color: gray;
+}
+.leftMenu > button{
+  margin: 10px;
+}
+.doubleButton{
+display: grid;
+grid-template-columns: 1fr 1fr;
+margin-bottom: 20px;
+margin-top: 20px;
+}
+.bottomMenu{
+  display: grid;
+  grid-template-columns: 20% 10% 68% 2%;
+  position: fixed;
+  width: 50%;
+  height: 10%;
+  background-color: grey;
+  bottom: 10px;
+  left:10%;
+ 
+}
+
+.minimap{
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  height: 20%;
+  aspect-ratio: 1/1;
+  background-color: wheat;
+}
+
+.typeSelector{
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+.itemSelector{
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+.items{
+
+}
+</style>
