@@ -46,61 +46,73 @@ onMounted(() => {
 </script>
 
 <template>
-  <Renderer
-    ref="rendererC"
-    antialias
-    :orbit-ctrl="{ enableDamping: true }"
-    resize="window"
-  >
-    <Camera
-      :position="{ x: 0, y: -15, z: 3 }"
-      :lookAt="{ x: 0, y: 10, z: 0 }"
-      ref="camera"
-    />
+  <Renderer ref="rendererC" antialias :orbit-ctrl="{ enableDamping: true }" resize="window">
+    <Camera :position="{ x: 0, y: -15, z: 3 }" :lookAt="{ x: 0, y: 10, z: 0 }" ref="camera" />
     <Scene background="#97FFFF">
       <!-- Licht -->
       <PointLight :position="{ x: 0, y: 0, z: 10 }" />
       <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
 
       <!-- Erste Box -->
-      <Box
-        ref="box"
-        :position="{ x: positionTemp.x, y: positionTemp.y, z: positionTemp.z }"
-      >
+      <Box ref="box" :position="{ x: positionTemp.x, y: positionTemp.y, z: positionTemp.z }">
         <ToonMaterial />
       </Box>
       <!-- Zweite Box -->
-      <Box
-        :position="{ x: 1, y: 1, z: 0 }"
-        ref="meshC"
-        :rotation="{ y: Math.PI / 4, z: Math.PI / 4 }"
-      >
+      <Box :position="{ x: 1, y: 1, z: 0 }" ref="meshC" :rotation="{ y: Math.PI / 4, z: Math.PI / 4 }">
         <ToonMaterial />
       </Box>
 
+      <Group>
+        <Box ref="body" :scale="{ x: 2, y: 3, z: 1 }" :size="1"
+          :position="{ x: positionTemp.x + 2, y: positionTemp.y, z: positionTemp.z + 0.15 }">
+          <BasicMaterial />
+          <ToonMaterial color="#cc0000" />
+        </Box>
+        <Box ref="reifenLinksVorne" :size="0.5"
+          :position="{ x: positionTemp.x + 3, y: positionTemp.y + 1, z: positionTemp.z - 0.25 }">
+          <BasicMaterial />
+          <ToonMaterial color="#123456" />
+        </Box>
+        <Box ref="reifenLinksHinten" :size="0.5"
+          :position="{ x: positionTemp.x + 3, y: positionTemp.y - 1, z: positionTemp.z - 0.25 }">
+          <BasicMaterial />
+          <ToonMaterial color="#123456" />
+        </Box>
+        <Box ref="reifenRechtsVorne" :size="0.5"
+          :position="{ x: positionTemp.x + 1, y: positionTemp.y + 1, z: positionTemp.z - 0.25 }">
+          <BasicMaterial />
+          <ToonMaterial color="#123456" />
+        </Box>
+        <Box ref="reifenRechtsHinten" :size="0.5"
+          :position="{ x: positionTemp.x + 1, y: positionTemp.y - 1, z: positionTemp.z - 0.25 }">
+          <BasicMaterial />
+          <ToonMaterial color="#123456" />
+        </Box>
+        <Box ref="dach" :scale="{ x: 2, y: 2, z: 0.75 }" :size="1"
+          :position="{ x: positionTemp.x + 2, y: positionTemp.y - 0.15, z: positionTemp.z + 0.9 }">
+          <BasicMaterial />
+          <ToonMaterial color="#cc0000" />
+        </Box>
+        <Box ref="lampeRechtsVorne" :size="0.5"
+          :position="{ x: positionTemp.x + 1.5, y: positionTemp.y + 1.28, z: positionTemp.z }">
+          <BasicMaterial />
+          <ToonMaterial color="#F1C232" />
+        </Box>
+        <Box ref="lampeLinksVorne" :size="0.5"
+          :position="{ x: positionTemp.x + 2.5, y: positionTemp.y + 1.28, z: positionTemp.z }">
+          <BasicMaterial />
+          <ToonMaterial color="#F1C232" />
+        </Box>
+      </Group>
+
       <!-- "Fahrbahn" -->
-      <Plane
-        :width="0.2"
-        :height="2"
-        :rotation="{ x: 0 }"
-        :position="{ y: -3, z: -2.99 }"
-      >
+      <Plane :width="0.2" :height="2" :rotation="{ x: 0 }" :position="{ y: -3, z: -2.99 }">
         <ToonMaterial color="#FFFFFF" />
       </Plane>
-      <Plane
-        :width="0.2"
-        :height="2"
-        :rotation="{ x: 0 }"
-        :position="{ z: -2.99 }"
-      >
+      <Plane :width="0.2" :height="2" :rotation="{ x: 0 }" :position="{ z: -2.99 }">
         <ToonMaterial color="#FFFFFF" />
       </Plane>
-      <Plane
-        :width="0.2"
-        :height="2"
-        :rotation="{ x: 0 }"
-        :position="{ y: 3, z: -2.99 }"
-      >
+      <Plane :width="0.2" :height="2" :rotation="{ x: 0 }" :position="{ y: 3, z: -2.99 }">
         <ToonMaterial color="#FFFFFF" />
       </Plane>
       <Plane :width="8" :height="8" :rotation="{ x: 0 }" :position="{ z: -3 }">
@@ -110,4 +122,6 @@ onMounted(() => {
   </Renderer>
 </template>
 
-<style></style>
+<style>
+
+</style>
