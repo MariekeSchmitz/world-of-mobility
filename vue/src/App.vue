@@ -11,11 +11,15 @@ import {
   type RendererPublicInterface,
   Plane,
   Scene,
+  Texture,
 } from "troisjs";
+import Car_1 from "@/components/Car_1.vue";
 
 const rendererC = ref();
 const meshC = ref();
 const box = ref();
+
+const positionTile = { x: 0, y: 8, Z: 0 };
 
 const positionTemp = reactive({
   x: 0,
@@ -58,33 +62,30 @@ onMounted(() => {
       ref="camera"
     />
     <Scene background="#97FFFF">
-      <!-- Licht -->
+      <!-- Light -->
       <PointLight :position="{ x: 0, y: 0, z: 10 }" />
       <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
 
-      <!-- Erste Box -->
+      <!-- First Box -->
       <Box
         ref="box"
         :position="{ x: positionTemp.x, y: positionTemp.y, z: positionTemp.z }"
       >
         <ToonMaterial />
       </Box>
-      <!-- Zweite Box -->
+      <!-- Second Box -->
       <Box
         :position="{ x: 1, y: 1, z: 0 }"
         ref="meshC"
         :rotation="{ y: Math.PI / 4, z: Math.PI / 4 }"
       >
-        <ToonMaterial />
+        <ToonMaterial>
+          <Texture src="src\textures\Obsidian.jpg" />
+        </ToonMaterial>
       </Box>
 
-      <!-- "Fahrbahn" -->
-      <Plane
-        :width="0.2"
-        :height="2"
-        :rotation="{ x: 0 }"
-        :position="{ y: -3, z: -2.99 }"
-      >
+      <!-- "roadpart 1" -->
+      <Plane :width="0.2" :height="2" :position="{ y: -3, z: -2.99 }">
         <ToonMaterial color="#FFFFFF" />
       </Plane>
       <Plane
@@ -106,6 +107,57 @@ onMounted(() => {
       <Plane :width="8" :height="8" :rotation="{ x: 0 }" :position="{ z: -3 }">
         <ToonMaterial color="#000000" />
       </Plane>
+
+      <!-- "roadpart 2" -->
+
+      <Plane
+        :width="0.2"
+        :height="2"
+        :position="{
+          x: 0 + positionTile.x,
+          y: -3 + positionTile.y,
+          z: -2.99 + positionTile.Z,
+        }"
+      >
+        <ToonMaterial color="#FFFFFF" />
+      </Plane>
+      <Plane
+        :width="0.2"
+        :height="2"
+        :rotation="{ x: 0 }"
+        :position="{
+          x: 0 + positionTile.x,
+          y: 0 + positionTile.y,
+          z: -2.99 + positionTile.Z,
+        }"
+      >
+        <ToonMaterial color="#FFFFFF" />
+      </Plane>
+      <Plane
+        :width="0.2"
+        :height="2"
+        :rotation="{ x: 0 }"
+        :position="{
+          x: 0 + positionTile.x,
+          y: 3 + positionTile.y,
+          z: -2.99 + positionTile.Z,
+        }"
+      >
+        <ToonMaterial color="#FFFFFF" />
+      </Plane>
+      <Plane
+        :width="8"
+        :height="8"
+        :rotation="{ x: 0 }"
+        :position="{
+          x: 0 + positionTile.x,
+          y: 0 + positionTile.y,
+          z: -3 + positionTile.Z,
+        }"
+      >
+        <ToonMaterial color="#000000" />
+      </Plane>
+      <Car_1></Car_1>
     </Scene>
   </Renderer>
 </template>
