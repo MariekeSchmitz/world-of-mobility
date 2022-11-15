@@ -270,6 +270,44 @@ onMounted(() => {
     <BasicMaterial />
     <ToonMaterial color="#FF0000" />
   </Box>
+
+  <Box ref="humanHals" :scale="{ x: 0.4, y: 0.25, z: 0.25 }" :size="1"
+    :position="{ x: positionTemp.x - 3.25, y: positionTemp.y , z: positionTemp.z+ 1}">
+    <BasicMaterial />
+    <ToonMaterial color="#e0ac69" />
+  </Box>
+
+  <Box ref="humanHead" :scale="{ x: 0.6, y: 0.35, z: 0.5 }" :size="1"
+    :position="{ x: positionTemp.x - 3.25, y: positionTemp.y , z: positionTemp.z+ 1.35}">
+    <BasicMaterial />
+    <ToonMaterial color="#e0ac69" />
+  </Box>
+
+  <Box ref="humanEyeRight" :scale="{ x: 0.1, y: 0.01, z: 0.05 }" :size="1"
+    :position="{ x: positionTemp.x - 3.1, y: positionTemp.y - 0.198, z: positionTemp.z+ 1.40}">
+    <BasicMaterial />
+    <ToonMaterial color="#000000" />
+  </Box>
+
+  <Box ref="humanEyeRight" :scale="{ x: 0.05, y: 0.01, z: 0.1 }" :size="1"
+    :position="{ x: positionTemp.x - 3.1, y: positionTemp.y - 0.198, z: positionTemp.z+ 1.40}">
+    <BasicMaterial />
+    <ToonMaterial color="#000000" />
+  </Box>
+
+  <Box ref="humanEyeLeft" :scale="{ x: 0.05, y: 0.01, z: 0.1 }" :size="1"
+    :position="{ x: positionTemp.x - 3.4, y: positionTemp.y - 0.198, z: positionTemp.z+ 1.40}">
+    <BasicMaterial />
+    <ToonMaterial color="#000000" />
+  </Box>
+
+  <Box ref="humanEyeLeft" :scale="{ x: 0.1, y: 0.01, z: 0.05 }" :size="1"
+    :position="{ x: positionTemp.x - 3.4, y: positionTemp.y - 0.198, z: positionTemp.z+ 1.40}">
+    <BasicMaterial />
+    <ToonMaterial color="#000000" />
+  </Box>
+
+  
  
 
 
