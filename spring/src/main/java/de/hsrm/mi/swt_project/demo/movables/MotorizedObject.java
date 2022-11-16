@@ -37,6 +37,21 @@ public class MotorizedObject extends MoveableObject {
     }
 
     @Override
+    public MotorizedObject copy() {
+        MotorizedObject copy = new MotorizedObject();
+
+        copy.xPos = this.xPos;
+        copy.yPos = this.yPos;
+        copy.maxVelocity = this.maxVelocity;
+        copy.currentVelocity = this.currentVelocity;
+        copy.capacity = this.capacity;
+        copy.script = this.script;
+        copy.orientation = this.orientation;
+
+        return copy;
+    }
+
+    @Override
     public void move() {
 
         float movement = this.currentVelocity * this.maxVelocity;

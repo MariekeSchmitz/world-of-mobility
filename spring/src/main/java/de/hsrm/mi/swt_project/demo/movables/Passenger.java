@@ -39,6 +39,22 @@ public class Passenger extends MoveableObject {
     }
 
     @Override
+    public Passenger copy() {
+  
+        Passenger copy = new Passenger();
+
+        copy.xPos = this.xPos;
+        copy.yPos = this.yPos;
+        copy.maxVelocity = this.maxVelocity;
+        copy.currentVelocity = this.currentVelocity;
+        copy.capacity = this.capacity;
+        copy.script = this.script;
+        copy.orientation = this.orientation;
+
+        return copy;
+    }
+
+    @Override
     public void move() {
 
         float straightMovement = this.currentVelocity * this.maxVelocity;

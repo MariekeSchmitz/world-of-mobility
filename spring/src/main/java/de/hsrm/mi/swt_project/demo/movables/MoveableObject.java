@@ -137,9 +137,17 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
         }
     }
 
+    /**
+     * Creates a copy of the instance.
+     * 
+     * @return Copy of the object.
+     */
+    public abstract MoveableObject copy();
+
     @Override
     public abstract void move();
 
     @Override
     public abstract void turn(Direction direction);
+
 }
