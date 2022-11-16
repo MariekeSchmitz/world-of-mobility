@@ -5,10 +5,8 @@ import {
   Box,
   Camera,
   ToonMaterial,
-  type MeshPublicInterface,
   PointLight,
   Renderer,
-  type RendererPublicInterface,
   Plane,
   Scene,
 } from "troisjs";
@@ -16,8 +14,6 @@ import {
 import Car from "./components/Car.vue";
 
 const rendererC = ref();
-const meshC = ref();
-const box = ref();
 
 const positionTemp = reactive({
   x: 0,
@@ -25,31 +21,33 @@ const positionTemp = reactive({
   z: -2.5,
 });
 
+const rotation = reactive({
+  x: 0,
+  y: 0,
+  z: 0
+})
+
 document.addEventListener("keyup", (e) => {
   if (e.code === "KeyW") {
     positionTemp.y += 1;
+    console.log(`y: ${positionTemp.y}`)
   } else if (e.code === "KeyS") {
     positionTemp.y -= 1;
   } else if (e.code === "KeyD") {
-    positionTemp.x += 1;
+    rotation.y += 1;
+    console.log(`x: ${positionTemp.x}`)
   } else if (e.code === "KeyA") {
-    console.log(box.value);
-    positionTemp.x -= 1;
+    rotation.y -= 1;
+    console.log(`x: ${positionTemp.x}`)
   }
 });
 
-onMounted(() => {
-  const renderer = rendererC.value as RendererPublicInterface;
-  const mesh = (meshC.value as MeshPublicInterface).mesh;
-  renderer.onBeforeRender(() => {
-    mesh!.rotation.x += 0.01;
-  });
-});
+
 </script>
 
 <template>
   <Renderer ref="rendererC" antialias resize="window">
-    <Camera :position="{ x: 0 + positionTemp.x, y: -15 +positionTemp.y , z: 3}" :lookAt="{ x: positionTemp.x, y: positionTemp.y, z: positionTemp.z }" :aspect="1" ref="camera" />
+    <Camera :position="{ x:  0, y: positionTemp.y -12 , z: 0}" :lookAt="{ x: 0 , y: positionTemp.y, z: 0}"  ref="camera" />
     <Scene background="#97FFFF">
       <!-- Licht -->
       <PointLight :position="{ x: 0, y: 0, z: 10 }" />
