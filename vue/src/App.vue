@@ -23,15 +23,104 @@ import {
 } from "troisjs";
 const rendererC = ref();
 
-interface colored{
-  name:string,
-  posX: number,
-  posY: number,
-  color: string
+interface Tile{
+  typ:string,
+  orientation:string,
+  placedObjects: []
 }
 
+
 //List of Tiles
-let tiles: colored[] = [{name:"Street", posX:0, posY:0, color:"red"},{name:"street", posX:1, posY:0,color:"yellow"},{name:"street", posX:2, posY:0,color:"purple"},{name:"street", posX:3, posY:0,color:"black"},{name:"street", posX:4, posY:0,color:"white"},{name:"street", posX:0, posY:1,color:"magenta"},{name:"street", posX:1, posY:1,color:"brown"},{name:"street", posX:2, posY:1,color:"blue"},{name:"street", posX:3, posY:1,color:"yellow"},{name:"street", posX:4, posY:1,color:"red"}]
+let tiles: Tile[][] = [
+            [
+            {
+                typ: "",
+                orientation: "",
+                placedObjects:[]
+            },
+            {
+                typ: "",
+                orientation: "",
+                placedObjects:[]
+            },
+            {
+                typ: "",
+                orientation: "",
+                placedObjects:[]
+            },
+            {
+                typ: "",
+                orientation: "",
+                placedObjects:[]
+            }
+          ],
+          [
+            {
+                typ: "",
+                orientation: "",
+                placedObjects:[]
+            },
+            {
+                typ: "",
+                orientation: "",
+                placedObjects:[]
+            },
+            {
+                typ: "",
+                orientation: "",
+                placedObjects:[]
+            },
+            {
+                typ: "",
+                orientation: "",
+                placedObjects:[]
+            }
+          ],
+          [
+            {
+                typ: "",
+                orientation: "",
+                placedObjects:[]
+            },
+            {
+                typ: "",
+                orientation: "",
+                placedObjects:[]
+            },
+            {
+                typ: "",
+                orientation: "",
+                placedObjects:[]
+            },
+            {
+                typ: "",
+                orientation: "",
+                placedObjects:[]
+            }
+          ],
+          [
+            {
+                typ: "",
+                orientation: "",
+                placedObjects:[]
+            },
+            {
+                typ: "",
+                orientation: "",
+                placedObjects:[]
+            },
+            {
+                typ: "",
+                orientation: "",
+                placedObjects:[]
+            },
+            {
+                typ: "",
+                orientation: "",
+                placedObjects:[]
+            }
+          ]
+          ]
 
 //Offset so Tiles start on Bottom Right for 0,0
 const offsetx = -2
@@ -132,12 +221,14 @@ onMounted(() => {
         <ToonMaterial color="green" :props="{ side:THREE.DoubleSide}"/>
       </Plane>
 
-      <template v-for="tile in tiles" >
-      <Plane @pointer-over="planeOver"  @click="planeClick" :width="0.99" :height="0.99" :rotation="{ x: 0 }" :position="{ x: tile.posX  + offsetx, y: tile.posY+offsety, z: 0.01 }">
+      <template v-for="row in tiles[0].length" >
+       <template v-for="column in tiles" >
+          <Plane @pointer-over="planeOver"  @click="planeClick" :width="0.99" :height="0.99" :rotation="{ x: 0 }" :position="{ x: tile.posX  + offsetx, y: tile.posY+offsety, z: 0.01 }">
             <BasicMaterial>
             <Texture src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1200px-Cat03.jpg"></Texture>
             </BasicMaterial>
-            </Plane>
+          </Plane>
+       </template>
       </template>
       
     </Scene>
