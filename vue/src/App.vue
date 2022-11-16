@@ -195,7 +195,6 @@ enum Orientation {
   "SOUTH" = 2* -1.5708,
   "WEST" = 3* -1.5708
 }
- 
 
 </script>
 
@@ -266,10 +265,11 @@ enum Orientation {
   <Renderer
     ref="rendererC"
     antialias
-    :orbit-ctrl="{ enableDamping: true }"
+    :orbit-ctrl="{ enableDamping: true, enableRotate:false }"
     resize="window"
   >
     <Camera
+      :props="{orbitcontrols: false}"
       :position="{ x: 0, y: 0, z: 10 }"
       :lookAt="{ x: 0, y: 0, z: 0 }"
       ref="camera"
