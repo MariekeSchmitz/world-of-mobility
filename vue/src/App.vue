@@ -34,35 +34,13 @@ interface Tile{
 let tiles: Tile[][] = [
             [
             {
-                typ: "",
-                orientation: "",
+                typ: "SIDEWAY",
+                orientation: "NORTH",
                 placedObjects:[]
             },
             {
-                typ: "",
-                orientation: "",
-                placedObjects:[]
-            },
-            {
-                typ: "",
-                orientation: "",
-                placedObjects:[]
-            },
-            {
-                typ: "",
-                orientation: "",
-                placedObjects:[]
-            }
-          ],
-          [
-            {
-                typ: "",
-                orientation: "",
-                placedObjects:[]
-            },
-            {
-                typ: "",
-                orientation: "",
+                typ: "STREET_T_CROSS",
+                orientation: "SOUTH",
                 placedObjects:[]
             },
             {
@@ -78,18 +56,18 @@ let tiles: Tile[][] = [
           ],
           [
             {
-                typ: "",
-                orientation: "",
+              typ: "STREET_STRAIGHT",
+                orientation: "EAST",
                 placedObjects:[]
             },
             {
-                typ: "",
-                orientation: "",
+                typ: "STREET_CURVE",
+                orientation: "SOUTH",
                 placedObjects:[]
             },
             {
-                typ: "",
-                orientation: "",
+                typ: "STREET_CURVE",
+                orientation: "EAST",
                 placedObjects:[]
             },
             {
@@ -100,8 +78,30 @@ let tiles: Tile[][] = [
           ],
           [
             {
+              typ: "STREET_STRAIGHT",
+                orientation: "WEST",
+                placedObjects:[]
+            },
+            {
+                typ: "STREET_CURVE",
+                orientation: "WEST",
+                placedObjects:[]
+            },
+            {
+                typ: "STREET_CURVE",
+                orientation: "NORTH",
+                placedObjects:[]
+            },
+            {
                 typ: "",
                 orientation: "",
+                placedObjects:[]
+            }
+          ],
+          [
+            {
+              typ: "STREET_STRAIGHT",
+                orientation: "NORTH",
                 placedObjects:[]
             },
             {
@@ -123,23 +123,80 @@ let tiles: Tile[][] = [
           ]
 
 //Offset so Tiles start on Bottom Right for 0,0
-const offsetx = -2
-const offsety = -2
+const mapWidth = tiles[0].length
+const mapHeight = tiles.length
   
+const offsetx = -(mapWidth + 1) / 2
+const offsety = -(mapHeight + 1) /2
+
+const loadManager = new THREE.LoadingManager();
+const loader = new THREE.TextureLoader(loadManager);
+
+let prevTexture:String = "";
+let overwritten = false
 function planeOver(event){
-  event.component.mesh.material.color.set(event.over ? 0xdddddd : "white");
+  event.component.mesh.material.color.set(event.over ? "#dddddd":"#ffffff");
+  /** 
+ if (event.component.mesh.material.map.image === undefined){
+  event.component.mesh.material.map = event.over ? loader.load('src/textures/STREET_STRAIGHT.jpg') : loader.load("")
+ } 
+  */
 }
+enum TileNames {
+  STREET_STRAIGHT = "STREET_STRAIGHT",
+  STREET_CURVE = "STREET_CURVE",
+  STREET_T_CROSS = "STREET_T_CROSS",
+  STREET_CROSS = "STREET_CROSS",
+  SIDEWAY = "SIDEWAY"
+ }
+
+
+let placeType:string; 
+function selectTile(tileType:string){
+  placeType = tileType;
+}
+
 function planeClick(event) {
-  alert("Meow")
+ let toSend:Object = {
+  "type": "SIDEWAY",
+  "orientation": "NORTH",
+  "prevXPos": null,
+  "prevYPos": null,
+  "newXPos": 0,
+  "newYPos": 0,
+  "placedObjects":0
+ } 
+ let toPlace:Tile = {
+              typ: placeType,
+                orientation: "NORTH",
+                placedObjects:[]
+            }
+  let posX = event.component.o3d.position.x - offsetx -1;
+  let posY = event.component.o3d.position.y - offsety -1;
+  //event.component.o3d.rotation.set(0);
+  console.log("POSX="+posX+ " PosY="+posY)
+  event.component.mesh.material.map = loader.load('src/textures/'+placeType+'.jpg')
+  tiles[posX][posY] = toPlace;
 }
 
 function hideElement(event) {
   alert("hide")
 }
+const tileColor = ref("red")
 
 onMounted(() => {
   const renderer = rendererC.value as RendererPublicInterface;
 });
+
+
+enum Orientation {
+  "NORTH" = 0,
+  "EAST" = -1.5708,
+  "SOUTH" = 2* -1.5708,
+  "WEST" = 3* -1.5708
+}
+ 
+
 </script>
 
 <template>
@@ -186,7 +243,13 @@ onMounted(() => {
     <button>Baum</button>
     <button>Tankstelle</button>
   </div>
-  <div class="items"></div>
+  <div class="items">
+  <button @click="selectTile('STREET_STRAIGHT')">STREET_STRAIGHT</button>
+  <button @click="selectTile('STREET_CURVE')">STREET_CURVE</button>
+  <button @click="selectTile('STREET_T_CROSS')">STREET_T_CROSS</button>
+  <button @click="selectTile('STREET_CROSS')">STREET_CROSS</button>
+  <button @click="selectTile('SIDEWAY')">SIDEWAY</button>
+  </div>
   <button @click="hideElement">v</button>
 </div>
 
@@ -217,15 +280,15 @@ onMounted(() => {
 
     
       
-      <Plane :width="5" :height="5" :rotation="{ x: 0 }" :position="{ x: 0, y: 0, z: 0 }" ref="tile{{n}},{{m}}">
+      <Plane :width="4" :height="4" :rotation="{ x: 0 }" :position="{ x: 0, y: 0, z: 0 }" ref="tile{{n}},{{m}}">
         <ToonMaterial color="green" :props="{ side:THREE.DoubleSide}"/>
       </Plane>
 
-      <template v-for="row in tiles[0].length" >
-       <template v-for="column in tiles" >
-          <Plane @pointer-over="planeOver"  @click="planeClick" :width="0.99" :height="0.99" :rotation="{ x: 0 }" :position="{ x: tile.posX  + offsetx, y: tile.posY+offsety, z: 0.01 }">
-            <BasicMaterial>
-            <Texture src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1200px-Cat03.jpg"></Texture>
+      <template v-for="row in mapWidth" >
+       <template v-for="column in mapHeight" >
+          
+          <Plane @pointer-over="planeOver" @click="planeClick" :width="0.99" :height="0.99" :rotation="{ z: tiles[row-1][column-1].orientation==''?0:Orientation[tiles[row-1][column-1].orientation]}" :position="{ x: row  + offsetx, y: column + offsety, z: 0.01 }">
+            <BasicMaterial :props="{map: loader.load('src/textures/'+tiles[row-1][column-1].typ+'.jpg')}">
             </BasicMaterial>
           </Plane>
        </template>
