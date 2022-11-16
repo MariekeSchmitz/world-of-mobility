@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.demo.editor;
+package de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties;
 
 /**
  * @author Tom Gouthier

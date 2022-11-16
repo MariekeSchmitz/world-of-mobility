@@ -2,7 +2,7 @@ package de.hsrm.mi.swt_project.demo.instancehandling;
 
 import java.util.List;
 
-import de.hsrm.mi.swt_project.demo.Tile;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
 /**

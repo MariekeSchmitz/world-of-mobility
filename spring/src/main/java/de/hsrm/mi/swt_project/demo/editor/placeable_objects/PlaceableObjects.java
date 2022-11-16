@@ -1,6 +1,6 @@
-package de.hsrm.mi.swt_project.demo.editor;
+package de.hsrm.mi.swt_project.demo.editor.placeable_objects;
 
-import ch.qos.logback.core.subst.Token.Type;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 
 public class PlaceableObjects implements Placeable{
 

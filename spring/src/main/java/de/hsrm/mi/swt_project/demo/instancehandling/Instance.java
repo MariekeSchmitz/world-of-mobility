@@ -1,6 +1,6 @@
 package de.hsrm.mi.swt_project.demo.instancehandling;
 
-import de.hsrm.mi.swt_project.demo.updates.Updateable;
+import de.hsrm.mi.swt_project.demo.controls.Updateable;
 
 /**
  * This abstract class represents a single instance of the game.

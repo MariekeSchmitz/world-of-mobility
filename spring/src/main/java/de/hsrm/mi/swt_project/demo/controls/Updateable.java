@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.demo.updates;
+package de.hsrm.mi.swt_project.demo.controls;
 /**
  * Classes that implement this interface represent instances with objects who can change their state (e.g. position) and hence can cause updates. 
  * @author Marieke Schmitz

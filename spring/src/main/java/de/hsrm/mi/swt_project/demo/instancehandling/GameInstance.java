@@ -2,9 +2,9 @@ package de.hsrm.mi.swt_project.demo.instancehandling;
 
 import java.util.HashMap;
 
+import de.hsrm.mi.swt_project.demo.controls.Direction;
+import de.hsrm.mi.swt_project.demo.controls.GameControl;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
-import de.hsrm.mi.swt_project.demo.updates.Direction;
-import de.hsrm.mi.swt_project.demo.updates.GameControl;
 
 /**
  * This class represents a single game instance of the game.

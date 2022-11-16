@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.demo.updates;
+package de.hsrm.mi.swt_project.demo.controls;
 
 /**
  * This enum represents edits on moveable objects that can be received by the client side.

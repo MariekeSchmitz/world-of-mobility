@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.demo.updates;
+package de.hsrm.mi.swt_project.demo.controls;
 
 /**
  * Classes that implement this interface can turn in a certain Direction

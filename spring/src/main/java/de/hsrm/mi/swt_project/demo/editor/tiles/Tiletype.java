@@ -1,10 +1,10 @@
 
-package de.hsrm.mi.swt_project.demo.editor;
+package de.hsrm.mi.swt_project.demo.editor.tiles;
 
 import java.util.Arrays;
 import java.util.List;
 
-import de.hsrm.mi.swt_project.demo.common.Orientation;
+import de.hsrm.mi.swt_project.demo.controls.Orientation;
 
 public enum Tiletype {
 

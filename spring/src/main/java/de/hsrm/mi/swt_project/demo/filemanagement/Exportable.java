@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.demo.common;
+package de.hsrm.mi.swt_project.demo.filemanagement;
 
 /**
  * Classes that implement this interface represent objects that can be exported. 

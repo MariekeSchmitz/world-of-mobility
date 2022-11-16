@@ -1,7 +1,7 @@
 package de.hsrm.mi.swt_project.demo.movables;
 
-import de.hsrm.mi.swt_project.demo.common.Orientation;
-import de.hsrm.mi.swt_project.demo.updates.Direction;
+import de.hsrm.mi.swt_project.demo.controls.Direction;
+import de.hsrm.mi.swt_project.demo.controls.Orientation;
 
 public class MotorizedObject extends MoveableObject {
 

@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.demo.updates;
+package de.hsrm.mi.swt_project.demo.controls;
 
 /**
  * Classes that implement this interface represent objects whose behaviour can be customized by a script. 

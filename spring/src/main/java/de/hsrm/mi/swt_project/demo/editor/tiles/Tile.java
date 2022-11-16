@@ -1,11 +1,11 @@
-package de.hsrm.mi.swt_project.demo.editor;
+package de.hsrm.mi.swt_project.demo.editor.tiles;
 
 import java.util.List;
 
-import de.hsrm.mi.swt_project.demo.common.Orientation;
-import de.hsrm.mi.swt_project.demo.editor.Placeable;
-import de.hsrm.mi.swt_project.demo.updates.Direction;
-import de.hsrm.mi.swt_project.demo.updates.Turnable;
+import de.hsrm.mi.swt_project.demo.controls.Direction;
+import de.hsrm.mi.swt_project.demo.controls.Orientation;
+import de.hsrm.mi.swt_project.demo.controls.Turnable;
+import de.hsrm.mi.swt_project.demo.editor.placeable_objects.Placeable;
 
 
  /** 

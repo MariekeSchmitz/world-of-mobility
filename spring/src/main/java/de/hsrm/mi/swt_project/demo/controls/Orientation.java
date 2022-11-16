@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.demo.common;
+package de.hsrm.mi.swt_project.demo.controls;
 
 /**
  * This enum represents orientations something can look at.

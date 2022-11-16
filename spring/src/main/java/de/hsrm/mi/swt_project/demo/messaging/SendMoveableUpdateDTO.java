@@ -1,8 +1,6 @@
 package de.hsrm.mi.swt_project.demo.messaging;
 
-import java.util.HashMap;
-
-import de.hsrm.mi.swt_project.demo.common.Orientation;
+import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
 /**

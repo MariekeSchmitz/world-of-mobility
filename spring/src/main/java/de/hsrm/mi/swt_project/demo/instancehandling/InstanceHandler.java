@@ -3,7 +3,7 @@ package de.hsrm.mi.swt_project.demo.instancehandling;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hsrm.mi.swt_project.demo.updates.Updateable;
+import de.hsrm.mi.swt_project.demo.controls.Updateable;
 
 /**
  * This class maintains all instances of the game.
