@@ -11,7 +11,7 @@ public abstract class Tile implements Turnable{
     
     protected Orientation orientation;
     protected List <Placeable> placedObjects;
-    // protected TileType type;
+    protected Tiletype type;
     
     /** adds a placeable Object on itself
      * @param placeable
