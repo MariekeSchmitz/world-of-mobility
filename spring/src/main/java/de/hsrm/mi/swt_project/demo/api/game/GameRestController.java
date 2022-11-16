@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.api.game;
+package de.hsrm.mi.swt_project.demo.api.game;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.hsrm.mi.swt_project.api.editor.EditorRestController;
+import de.hsrm.mi.swt_project.demo.api.editor.EditorRestController;
 
 @RestController
 @RequestMapping("/api/game")

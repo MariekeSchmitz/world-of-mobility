@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.api.editor;
+package de.hsrm.mi.swt_project.demo.api.editor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
