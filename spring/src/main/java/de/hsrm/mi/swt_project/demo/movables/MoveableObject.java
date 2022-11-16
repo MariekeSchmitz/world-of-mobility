@@ -5,8 +5,6 @@ import de.hsrm.mi.swt_project.demo.Moveable;
 import de.hsrm.mi.swt_project.demo.Orientation;
 import de.hsrm.mi.swt_project.demo.Scriptable;
 import de.hsrm.mi.swt_project.demo.Turnable;
-import de.hsrm.mi.swt_project.demo.User;
-
 /**
  * This class represents objects that can change their position
  * and therefore move around the map.
@@ -14,8 +12,6 @@ import de.hsrm.mi.swt_project.demo.User;
  * @author Sascha Scheid
  */
 public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
-
-    protected User user;
     
     protected static final float MIN_VELOCITY = 0.0f;
     protected static final float MAX_VELOCITY = 1.0f;
@@ -137,9 +133,17 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
         }
     }
 
+    /**
+     * Creates a copy of the instance.
+     * 
+     * @return Copy of the object.
+     */
+    public abstract MoveableObject copy();
+
     @Override
     public abstract void move();
 
     @Override
     public abstract void turn(Direction direction);
+
 }
