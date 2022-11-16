@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.demo;
+package de.hsrm.mi.swt_project.demo.editor;
 
 /**
  * This enum represents editor controls that can be received by the client side.

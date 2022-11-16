@@ -1,5 +1,6 @@
 package de.hsrm.mi.swt_project.demo;
 
+import de.hsrm.mi.swt_project.demo.editor.DriveableByTrain;
 
 /**
  * @author Tom Gouthier

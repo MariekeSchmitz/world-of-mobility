@@ -1,6 +1,6 @@
 package de.hsrm.mi.swt_project.demo;
 
-import java.util.List;
+import de.hsrm.mi.swt_project.demo.editor.DriveableByBike;
 
 /**
  * @author Tom Gouthier

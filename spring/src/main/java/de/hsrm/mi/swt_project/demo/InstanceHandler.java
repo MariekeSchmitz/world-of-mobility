@@ -3,6 +3,8 @@ package de.hsrm.mi.swt_project.demo;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hsrm.mi.swt_project.demo.instancehandling.EditorInstance;
+
 /**
  * This class maintains all instances of the game.
  * 
