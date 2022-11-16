@@ -9,5 +9,5 @@ public enum Controls {
     LEFT,
     RIGHT,
     SPEED_UP,
-    BREAK;
+    SPEED_DOWN;
 }
