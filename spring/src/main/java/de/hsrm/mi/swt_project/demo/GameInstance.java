@@ -24,7 +24,7 @@ public class GameInstance extends Instance {
         super(map, id);
         this.moveableObjects = new HashMap<String, MoveableObject>();
         for (MoveableObject npc : map.getNpcs()) {
-            moveableObjects.put(("NPC" + map.getNpcs().indexOf(npc)), npc.co);
+            moveableObjects.put(("NPC" + map.getNpcs().indexOf(npc)), npc.copy());
         }
         this.name = name;
     }
@@ -50,6 +50,7 @@ public class GameInstance extends Instance {
                 moveableObjects.get(user).setCurrentVelocity(moveableObjects.get(user).getCurrentVelocity() - 0.1F);
                 break;
         };
+        // TODO check if move is legal
     }
 
     /**
