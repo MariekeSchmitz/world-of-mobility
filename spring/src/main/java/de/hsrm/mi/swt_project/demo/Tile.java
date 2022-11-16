@@ -3,7 +3,8 @@ package de.hsrm.mi.swt_project.demo;
 import java.util.List;
 
 
- /** Classes that inherit this class are Tiles. A tile represents a single part of a Map.
+ /** 
+  * Classes that inherit this class are Tiles. A tile represents a single part of a Map.
      *
      * @author Tom Gouthier
      */
