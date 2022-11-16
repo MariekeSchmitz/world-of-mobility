@@ -35,7 +35,7 @@ public class GameInstance extends Instance {
      * @param user the user that is associated with the moveable object
      * @param control the control type that is used to move the moveable object
      */
-    public void moveMovable(String user, Controls control) {
+    public void moveMovable(String user, GameControl control) {
         switch (control) {
             case LEFT:
                 moveableObjects.get(user).turn(Direction.LEFT);
