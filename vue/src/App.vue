@@ -18,7 +18,8 @@ const rendererC = ref();
 const meshC = ref();
 const box = ref();
 
-const { receiveMessages } = useServerMessage()
+const { receiveMessages, updateTestMessage} = useServerMessage()
+
 onMounted(() => {
   receiveMessages()
 })
@@ -52,6 +53,7 @@ onMounted(() => {
 </script>
 
 <template>
+  <button @click="updateTestMessage()">TEST</button>
   <Renderer
     ref="rendererC"
     antialias
