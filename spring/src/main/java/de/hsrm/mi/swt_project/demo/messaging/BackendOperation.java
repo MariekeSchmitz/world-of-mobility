@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.messaging;
+package de.hsrm.mi.swt_project.demo.messaging;
 
 /**
  * enum for backend operations 

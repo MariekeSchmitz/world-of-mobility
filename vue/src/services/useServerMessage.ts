@@ -1,5 +1,4 @@
 import { Client } from "@stomp/stompjs"
-import { Console } from "console"
 //import { IBackendInfoMessage } from "@/services/IBackendInfoMessage"
 
 
