@@ -12,10 +12,16 @@ import {
   Plane,
   Scene,
 } from "troisjs";
+import { useServerMessage } from "./services/useServerMessage";
 
 const rendererC = ref();
 const meshC = ref();
 const box = ref();
+
+const { receiveMessages } = useServerMessage()
+onMounted(() => {
+  receiveMessages()
+})
 
 const positionTemp = reactive({
   x: 0,
