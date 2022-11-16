@@ -49,12 +49,39 @@ public class GameMap {
      *
      */
     private void expandMap(){
-
+        
     }
+
+
+    public Tile[][] getTiles() {
+        return tiles;
+    }
+
+
+    public void setTiles(Tile[][] tiles) {
+        this.tiles = tiles;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 
     public List<MoveableObject> getNpcs() {
         return npcs;
     }
 
+
+    public void setNpcs(List<MoveableObject> npcs) {
+        this.npcs = npcs;
+    }
+
+    
     
 }
