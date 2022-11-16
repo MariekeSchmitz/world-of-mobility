@@ -40,6 +40,8 @@ document.addEventListener("keyup", (e) => {
   }
 });
 
+const color = "wddwdwd"
+
 onMounted(() => {
   const renderer = rendererC.value as RendererPublicInterface;
   const mesh = (meshC.value as MeshPublicInterface).mesh;

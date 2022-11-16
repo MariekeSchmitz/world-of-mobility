@@ -15,8 +15,12 @@
 <script setup lang="ts">
 //--------imports-----------
 
-import { Plane } from "troisjs";
 import { defineProps } from "vue";
+import {
+  ToonMaterial,
+  Plane,
+  Texture,
+} from "troisjs";
 
 //--------props-------------
 
