@@ -1,7 +1,7 @@
 package de.hsrm.mi.swt_project.demo.movables;
 
-import de.hsrm.mi.swt_project.demo.Direction;
-import de.hsrm.mi.swt_project.demo.Orientation;
+import de.hsrm.mi.swt_project.demo.controls.Direction;
+import de.hsrm.mi.swt_project.demo.controls.Orientation;
 
 public class Passenger extends MoveableObject {
 

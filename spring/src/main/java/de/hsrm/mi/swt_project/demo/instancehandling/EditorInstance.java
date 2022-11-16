@@ -3,9 +3,7 @@ package de.hsrm.mi.swt_project.demo.instancehandling;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hsrm.mi.swt_project.demo.GameMap;
-import de.hsrm.mi.swt_project.demo.Instance;
-import de.hsrm.mi.swt_project.demo.Tile;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 
 /**
  * This class represents a single editor instance of the game.

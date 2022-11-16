@@ -1,10 +1,11 @@
 package de.hsrm.mi.swt_project.demo.movables;
 
-import de.hsrm.mi.swt_project.demo.Direction;
-import de.hsrm.mi.swt_project.demo.Moveable;
-import de.hsrm.mi.swt_project.demo.Orientation;
-import de.hsrm.mi.swt_project.demo.Scriptable;
-import de.hsrm.mi.swt_project.demo.Turnable;
+import de.hsrm.mi.swt_project.demo.controls.Direction;
+import de.hsrm.mi.swt_project.demo.controls.Moveable;
+import de.hsrm.mi.swt_project.demo.controls.Orientation;
+import de.hsrm.mi.swt_project.demo.controls.Scriptable;
+import de.hsrm.mi.swt_project.demo.controls.Turnable;
+
 /**
  * This class represents objects that can change their position
  * and therefore move around the map.

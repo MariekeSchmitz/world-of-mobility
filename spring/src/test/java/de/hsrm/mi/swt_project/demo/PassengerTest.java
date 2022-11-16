@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import de.hsrm.mi.swt_project.demo.controls.Direction;
+import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.movables.Passenger;
 
 @SpringBootTest
