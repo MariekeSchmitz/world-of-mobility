@@ -21,15 +21,16 @@ public abstract class Tile implements Turnable{
         this.placedObjects.add(placeable);
     }
 
-
-    
+    /**
+     * Turns tile by 90° to left or right
+     */
     @Override
     public void turn(Direction direction) {
 
         if (direction == Direction.LEFT) {
-            this.orientation = orientation.prev();
+            this.orientation = orientation.prev().prev();
         } else {
-            this.orientation = orientation.next();
+            this.orientation = orientation.next().next();
         }
        
     }
@@ -57,6 +58,8 @@ public abstract class Tile implements Turnable{
     public void setPlacedObjects(List<Placeable> placedObjects) {
         this.placedObjects = placedObjects;
     }
+
+    
 
 
 }
