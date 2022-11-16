@@ -35,6 +35,16 @@ public class GameMap {
         this.tiles[yPos][xPos] = tile;
     }
 
+
+    /**
+     * 
+     * @param xPos
+     * @param yPos
+     */
+    public void removeTile(int xPos, int yPos) {
+        this.tiles[yPos][xPos] = null; 
+    }
+
     /** expands the map if needed
      *
      */
