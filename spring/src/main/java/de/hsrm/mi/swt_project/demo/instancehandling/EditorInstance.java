@@ -6,7 +6,6 @@ import java.util.List;
 import de.hsrm.mi.swt_project.demo.GameMap;
 import de.hsrm.mi.swt_project.demo.Instance;
 import de.hsrm.mi.swt_project.demo.Tile;
-import de.hsrm.mi.swt_project.demo.editor.EditorControls;
 
 /**
  * This class represents a single editor instance of the game.
@@ -35,7 +34,7 @@ public class EditorInstance extends Instance {
      * @param control the control option to use
      * @param tiletype the tile type associated with the control option
      */
-    public void editMap(float xPos, float yPos, EditorControls control, Tile tiletype) {
+    public void editMap(float xPos, float yPos, Tile tiletype) {
         // TODO implement function
     }
 
