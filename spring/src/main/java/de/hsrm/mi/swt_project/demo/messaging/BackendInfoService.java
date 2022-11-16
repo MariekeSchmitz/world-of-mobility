@@ -21,5 +21,5 @@ public interface BackendInfoService {
      * @param operation = the operation for the sending infomation
      * @param FEHLTNOCHDTO = Obeject has to be converted
      */
-    //public void convertMap(String topicname, BackendOperation operation, String FEHLTNOCHDTO);
+    public void convertMap(String topicname, BackendOperation operation, String FEHLTNOCHDTO);
 }

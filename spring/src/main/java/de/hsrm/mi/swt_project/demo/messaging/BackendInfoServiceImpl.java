@@ -25,15 +25,15 @@ public class BackendInfoServiceImpl implements BackendInfoService{
             messaging.convertAndSend(destName, new BackendInfoMessage(topicName, operation, jsonString));
     }
 
-    // @Override
-    // public void convertMap(String topicname, BackendOperation operation, String FEHLTNOCHDTO) {
-    //     // TODO Auto-generated method stub
+    @Override
+    public void convertMap(String topicname, BackendOperation operation, String FEHLTNOCHDTO) {
+        // TODO Auto-generated method stub
 
 
-    //     String jsonString = "";
-    //     sendInfo(topicname, operation, jsonString);
+        String jsonString = "";
+        sendInfo(topicname, operation, jsonString);
         
-    // }
+    }
 
     
 }
