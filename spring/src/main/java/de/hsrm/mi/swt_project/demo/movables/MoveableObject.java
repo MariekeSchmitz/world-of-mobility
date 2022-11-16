@@ -5,6 +5,7 @@ import de.hsrm.mi.swt_project.demo.Moveable;
 import de.hsrm.mi.swt_project.demo.Orientation;
 import de.hsrm.mi.swt_project.demo.Scriptable;
 import de.hsrm.mi.swt_project.demo.Turnable;
+import de.hsrm.mi.swt_project.demo.User;
 
 /**
  * This class represents objects that can change their position
@@ -14,6 +15,8 @@ import de.hsrm.mi.swt_project.demo.Turnable;
  */
 public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
 
+    protected User user;
+    
     protected static final float MIN_VELOCITY = 0.0f;
     protected static final float MAX_VELOCITY = 1.0f;
 
