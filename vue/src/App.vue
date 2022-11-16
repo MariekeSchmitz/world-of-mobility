@@ -44,6 +44,10 @@ function planeClick(event) {
   alert("Meow")
 }
 
+function hideElement(event) {
+  alert("hide")
+}
+
 onMounted(() => {
   const renderer = rendererC.value as RendererPublicInterface;
 });
@@ -53,20 +57,34 @@ onMounted(() => {
 <div class="mapTitle">
   <p>Farmerama Map</p>
 </div>
+  
+  <div id="exitButton">
+    <button class="roundButton">X</button>
+  </div>
 
 
 <div class="leftMenu">
-  <button>&lt;</button>
-  <button>settings</button>
-  <button>grid</button>
-  <div class="doubleButton">
-    <button>-</button>
-    <button>+</button>
+  <div class="upperLeftMenu">
+    <button class="roundButton" @click="hideElement">&lt;</button>
+    <button class="roundButton">settings</button>
+    <button class="roundButton">help</button>
   </div>
-  <div class="doubleButton">
-    <button>&lt;</button>
-    <button>&gt;</button>
+  <div class="bottomLeftMenu">
+    <button id="gridButton">grid</button>
+    <div class="firstDoubleButton">
+      <button>-</button>
+      <button>+</button>
+    </div>
+    <div class="secondDoubleButton">
+      <button class="singleSecondDoubleButton">&lt;</button>
+      <button class="singleSecondDoubleButton">&gt;</button>
+    </div>
   </div>
+</div>
+
+<div class="buttonMenuRight">
+  <button>Starte Spiel</button>
+  <button>Welt testen</button>
 </div>
 
 <div class="bottomMenu">
@@ -80,15 +98,17 @@ onMounted(() => {
     <button>Tankstelle</button>
   </div>
   <div class="items"></div>
-  <button>v</button>
+  <button @click="hideElement">v</button>
 </div>
 
 
 <div class="minimap">
-<button>-</button>
-<button>+</button>
-<button>v</button>
-<p>Minimap, separate camera view from further away, +- Buttons control minimap camera</p>
+  <div class="minimapButtons">
+    <button>-</button>
+    <button>+</button>
+    <button @click="hideElement">v</button>
+  </div>
+  <p>Minimap, separate camera view from further away, +- Buttons control minimap camera</p>
 </div>
 
   <Renderer
@@ -125,46 +145,127 @@ onMounted(() => {
 </template>
 
 <style>
-.mapTitle{
-  background-color: grey;
-  position: fixed;
-  left:50%;
-  height: auto;
-  transform: translate(-50%,0);
-} 
+
 html{
   overflow: hidden;
 }
+
+button{
+  background-color: rgba(161, 161, 161);
+  border: none;
+}
+
+button:hover{
+  cursor: pointer;
+  background-color: rgba(139, 139, 139, 0.7);
+  border: none;
+}
+
+.mapTitle{
+  background-color: rgb(221, 221, 221);
+  position: fixed;
+  left:50%;
+  top: -20px;
+  height: auto;
+  transform: translate(-50%,0);
+  padding: 0px 20px;
+} 
+
+#exitButton{
+  position: fixed;
+  left:10px;
+  top: 20px;
+  width: 60px;
+}
+
 .mapTitle > p{
   font-size: 24pt;
 }
 .leftMenu{
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: repeat(5,1fr);
+  grid-template-rows: repeat(3,1fr);
   position: fixed;
   bottom: 20%;
-  left: 10px;
+  left: 0px;
   height: 60%;
+  width: 60px;
+  background-color: rgb(221, 221, 221);
+  row-gap: 24%;
+}
+
+.upperLeftMenu{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(3,1fr);
+  row-gap: 12%;
+  margin: 20%;
+}
+
+.bottomLeftMenu{
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(3,1fr);
+  row-gap: 0%;
+  margin: 20% 4%;
+}
+
+#gridButton{
+  width: 80%;
+  margin: 10%;
+  aspect-ratio: 1/1;
+  background-color: rgb(221, 221, 221);
+}
+
+.roundButton{
+  width: 60%;
+  aspect-ratio: 1/1;
+  border: none;
+  border-radius: 100%;
+}
+
+.firstDoubleButton{
+  background-color: white;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 15px;
+}
+
+.secondDoubleButton{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 10px;
+}
+
+.singleSecondDoubleButton{
+  height: 180%;
+  background-color: rgb(221, 221, 221);
+  border: none;
+}
+
+.buttonMenuRight{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(2,1fr);
+  position: fixed;
+  bottom: 60%;
+  right: -10px;
   width: 100px;
-  background-color: gray;
+  height: 20%;
+  row-gap: 10%;
+  
 }
-.leftMenu > button{
+.buttonMenuRight > button{
   margin: 10px;
+  padding: 20px;
 }
-.doubleButton{
-display: grid;
-grid-template-columns: 1fr 1fr;
-margin-bottom: 20px;
-margin-top: 20px;
-}
+
 .bottomMenu{
   display: grid;
   grid-template-columns: 20% 10% 68% 2%;
   position: fixed;
   width: 50%;
   height: 10%;
-  background-color: grey;
+  background-color: rgb(221, 221, 221);
   bottom: 10px;
   left:10%;
  
@@ -190,4 +291,11 @@ margin-top: 20px;
 .items{
 
 }
+
+.minimapButtons{
+  position: fixed;
+  bottom: 22%;
+  right: 10px;
+}
+
 </style>
