@@ -13,6 +13,8 @@ import {
   Scene,
 } from "troisjs";
 
+import Car from "./components/Car.vue";
+
 const rendererC = ref();
 const meshC = ref();
 const box = ref();
@@ -46,56 +48,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <Renderer ref="rendererC" antialias :orbit-ctrl="{ enableDamping: true }" resize="window">
-    <Camera :position="{ x: 0, y: -15, z: 3 }" :lookAt="{ x: 0, y: 10, z: 0 }" ref="camera" />
+  <Renderer ref="rendererC" antialias resize="window">
+    <Camera :position="{ x: 0 + positionTemp.x, y: -15 +positionTemp.y , z: 3}" :lookAt="{ x: positionTemp.x, y: positionTemp.y, z: positionTemp.z }" :aspect="1" ref="camera" />
     <Scene background="#97FFFF">
       <!-- Licht -->
       <PointLight :position="{ x: 0, y: 0, z: 10 }" />
-      <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
+      <AmbientLight :intensity="1" color="#ff6000"></AmbientLight>
 
-      <Group>
-        <Box ref="body" :scale="{ x: 2, y: 3, z: 1 }" :size="1"
-          :position="{ x: positionTemp.x + 2, y: positionTemp.y, z: positionTemp.z + 0.15 }">
-          <BasicMaterial />
-          <ToonMaterial color="#cc0000" />
-        </Box>
-        <Box ref="tireLeftFront" :size="0.5"
-          :position="{ x: positionTemp.x + 3, y: positionTemp.y + 1, z: positionTemp.z - 0.25 }">
-          <BasicMaterial />
-          <ToonMaterial color="#123456" />
-        </Box>
-        <Box ref="tireLeftBack" :size="0.5"
-          :position="{ x: positionTemp.x + 3, y: positionTemp.y - 1, z: positionTemp.z - 0.25 }">
-          <BasicMaterial />
-          <ToonMaterial color="#123456" />
-        </Box>
-        <Box ref="tireRightFront" :size="0.5"
-          :position="{ x: positionTemp.x + 1, y: positionTemp.y + 1, z: positionTemp.z - 0.25 }">
-          <BasicMaterial />
-          <ToonMaterial color="#123456" />
-        </Box>
-        <Box ref="tireRightBack" :size="0.5"
-          :position="{ x: positionTemp.x + 1, y: positionTemp.y - 1, z: positionTemp.z - 0.25 }">
-          <BasicMaterial />
-          <ToonMaterial color="#123456" />
-        </Box>
-        <Box ref="top" :scale="{ x: 2, y: 2, z: 0.75 }" :size="1"
-          :position="{ x: positionTemp.x + 2, y: positionTemp.y - 0.15, z: positionTemp.z + 0.9 }">
-          <BasicMaterial />
-          <ToonMaterial color="#cc0000" />
-        </Box>
-        <Box ref="lightRightFront" :size="0.5"
-          :position="{ x: positionTemp.x + 1.5, y: positionTemp.y + 1.28, z: positionTemp.z }">
-          <BasicMaterial />
-          <ToonMaterial color="#F1C232" />
-        </Box>
-        <Box ref="lightLeftFront" :size="0.5"
-          :position="{ x: positionTemp.x + 2.5, y: positionTemp.y + 1.28, z: positionTemp.z }">
-          <BasicMaterial />
-          <ToonMaterial color="#F1C232" />
-        </Box>
-      </Group>
-
+      <Car :x="positionTemp.x" :y="positionTemp.y" :z="positionTemp.z"></Car>
    
       <!-- "Fahrbahn" -->
       <Plane :width="0.2" :height="2" :rotation="{ x: 0 }" :position="{ y: -3, z: -2.99 }">
