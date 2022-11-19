@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import GamingMap from '@/components/GamingMap.vue'
-import App from '@/TestApp.vue'
+import App from '@/TestCompVickyKevin.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

@@ -71,15 +71,6 @@ onMounted(() => {
       <Tree :x="dropValue.x" :y="dropValue.y" :z="dropValue.z"></Tree>
       <Cow :x="positionTemp.x" :y="positionTemp.y" :z="positionTemp.z"></Cow>
 
-
-
-
-   
-
-    
-  
-
-
       <!-- "Fahrbahn" -->
       <Plane :width="0.2" :height="2" :rotation="{ x: 0 }" :position="{ y: -3, z: -2.99 }">
         <ToonMaterial color="#FFFFFF" />
