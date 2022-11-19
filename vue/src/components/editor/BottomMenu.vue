@@ -1,28 +1,36 @@
 <script setup lang="ts">
+    import { TileName } from "../../services/editor/TileNameEnum";
+
 
 </script>
 
 <template>
+
   <div class="bottomMenu">
+
     <div class="typeSelector">
       <button>Infrastruktur, Landschaft</button>
       <button>NPCs</button>
     </div>
+
     <div class="itemSelector">
       <button>Tiles</button>
       <button>Baum</button>
       <button>Tankstelle</button>
     </div>
-    <div class="items">
 
-        <button @click="$emit('selectTile', 'STREET_STRAIGHT')">STREET_STRAIGHT</button>
-        <button @click="$emit('selectTile','STREET_CURVE')">STREET_CURVE</button>
-        <button @click="$emit('selectTile','STREET_T_CROSS')">STREET_T_CROSS</button>
-        <button @click="$emit('selectTile','STREET_CROSS')">STREET_CROSS</button>
-        <button @click="$emit('selectTile','SIDEWAY')">SIDEWAY</button>
+    <div class="items">
+        <button @click="$emit('selectTile', TileName.STREET_STRAIGHT)">STREET_STRAIGHT</button>
+        <button @click="$emit('selectTile', TileName.STREET_CURVE)">STREET_CURVE</button>
+        <button @click="$emit('selectTile', TileName.STREET_T_CROSS)">STREET_T_CROSS</button>
+        <button @click="$emit('selectTile', TileName.STREET_CROSS)">STREET_CROSS</button>
+        <button @click="$emit('selectTile', TileName.SIDEWAY)">SIDEWAY</button>
     </div>
+
     <button @click="hideElement">v</button>
+
    </div>
+
 </template>
 
 <style>
