@@ -13,6 +13,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "mathjs": "^11.4.0",
     "pinia": "^2.0.21",
     "three": "^0.134.0",
     "troisjs": "^0.3.4",

@@ -16,11 +16,7 @@
 //--------imports-----------
 
 import { defineProps } from "vue";
-import {
-  ToonMaterial,
-  Plane,
-  Texture,
-} from "troisjs";
+import { ToonMaterial, Plane, Texture } from "troisjs";
 
 //--------props-------------
 
