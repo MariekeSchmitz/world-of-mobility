@@ -20,7 +20,7 @@
     import MiniMap from "../../components/editor/MiniMap.vue";
     import type { Tile } from "../../services/editor/TileInterface";
     import { Orientation } from "../../services/editor/OrientationEnum";
-import type { ExportTile } from "@/services/editor/ExportTileInterface";
+    import type { ExportTile } from "@/services/editor/ExportTileInterface";
 
 
     /**
@@ -139,7 +139,7 @@ import type { ExportTile } from "@/services/editor/ExportTileInterface";
       event.component.mesh.material.color.set(event.over ? "#dddddd":"#ffffff");
       /** 
      if (event.component.mesh.material.map.image === undefined){
-      event.component.mesh.material.map = event.over ? loader.load('src/textures/STREET_STRAIGHT.jpg') : loader.load("")
+      event.component.mesh.material.map = event.over ? loader.load('src/textures/editor/STREET_STRAIGHT.jpg') : loader.load("")
     } 
       */
     }
@@ -159,7 +159,7 @@ import type { ExportTile } from "@/services/editor/ExportTileInterface";
 
 
     function planeClick(event) {
-      
+
       //Object to be Sent via REST (to be implemented)
       let toSendObj: ExportTile = {
         type: "SIDEWAY",
@@ -194,7 +194,7 @@ import type { ExportTile } from "@/services/editor/ExportTileInterface";
         //reset rotation to 0  
         event.component.o3d.setRotationFromEuler(new THREE.Euler());
         console.log("POSX="+posX+ " PosY="+posY)
-        event.component.mesh.material.map = loader.load('src/textures/'+place.placeType+'.jpg')
+        event.component.mesh.material.map = loader.load('src/textures/editor/'+place.placeType+'.jpg')
         tiles[posX][posY] = toPlace;
       }
     }
@@ -218,12 +218,12 @@ import type { ExportTile } from "@/services/editor/ExportTileInterface";
   </div>
     
     <div id="exitButton">
-      <button class="roundButton">X</button>
+      <button class="roundButton"><img src="src/buttons/editor/close.png"/></button>
     </div>
 
   <div class="buttonMenuRight">
-    <button>Starte Spiel</button>
-    <button>Welt testen</button>
+    <button><img src="src/buttons/editor/plus.png"/><br>Starte Spiel</button>
+    <button><img src="src/buttons/editor/plus.png"/><br>Welt testen</button>
   </div>
 
   <LeftMenu/>
@@ -259,7 +259,7 @@ import type { ExportTile } from "@/services/editor/ExportTileInterface";
           <template v-for="column in mapHeight" >
                   
               <Plane @pointer-over="planeOver" @click="planeClick" :width="0.99" :height="0.99" :rotation="{ z: tiles[row-1][column-1].orientation==''?0:Orientation[tiles[row-1][column-1].orientation]}" :position="{ x: row  + offsetx, y: column + offsety, z: 0.01 }">
-                <BasicMaterial :props="{map: tiles[row-1][column-1].typ==''?loader.load('src/textures/Default.jpg'):loader.load('src/textures/'+tiles[row-1][column-1].typ+'.jpg')}">
+                <BasicMaterial :props="{map: tiles[row-1][column-1].typ==''?loader.load('src/textures/editor/Default.jpg'):loader.load('src/textures/editor/'+tiles[row-1][column-1].typ+'.jpg')}">
 
                 </BasicMaterial>
               </Plane>
@@ -281,6 +281,11 @@ import type { ExportTile } from "@/services/editor/ExportTileInterface";
   button{
     background-color: rgba(161, 161, 161);
     border: none;
+  }
+
+  button > img{
+    width: 15px;
+    height: 15px;
   }
 
   button:hover{
@@ -332,6 +337,5 @@ import type { ExportTile } from "@/services/editor/ExportTileInterface";
     margin: 10px;
     padding: 20px;
   }
-
 
 </style>

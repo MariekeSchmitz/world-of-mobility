@@ -1,31 +1,44 @@
 <script setup lang="ts">
 
+    function toggle(){
+      if(document.getElementById('leftMenu').style.display == "none"){
+        document.getElementById('leftMenu').style.display = "grid";
+        document.getElementById('showSideBar').style.display = "none";
+        
+      }else{
+        document.getElementById('leftMenu').style.display = "none";
+        document.getElementById('showSideBar').style.display = "block";
+      }
+    }
 </script>
 
 <template>
-  <div class="leftMenu">
+  <div id="leftMenu">
     <div class="upperLeftMenu">
-      <button class="roundButton" @click="hideElement">&lt;</button>
-      <button class="roundButton">settings</button>
-      <button class="roundButton">help</button>
+      <button class="roundButton" @click="toggle"><img src="src/buttons/editor/arrow-left.png"/></button>
+      <button class="roundButton"><img src="src/buttons/editor/einstellungen.png"/></button>
+      <button class="roundButton"><img src="src/buttons/editor/frage.png"/></button>
     </div>
     <div class="bottomLeftMenu">
-      <button id="gridButton">grid</button>
+      <button id="gridButton"><img src="src/buttons/editor/grid.png"/></button>
       <div class="firstDoubleButton">
-        <button>-</button>
-        <button>+</button>
+        <button><img src="src/buttons/editor/minus.png"/></button>
+        <button><img src="src/buttons/editor/plus.png"/></button>
       </div>
       <div class="secondDoubleButton">
-        <button class="singleSecondDoubleButton">&lt;</button>
-        <button class="singleSecondDoubleButton">&gt;</button>
+        <button class="singleSecondDoubleButton"><img src="src/buttons/editor/arrow-left.png"/></button>
+        <button class="singleSecondDoubleButton"><img src="src/buttons/editor/arrow-right.png"/></button>
       </div>
     </div>
   </div>
+
+  <button id="showSideBar" @click="toggle"><img src="src/buttons/editor/arrow-right.png"/></button>
+
 </template>
 
 <style>
 
-  .leftMenu{
+  #leftMenu{
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(3,1fr);
@@ -77,6 +90,13 @@
     height: 180%;
     background-color: rgb(221, 221, 221);
     border: none;
+  }
+
+  #showSideBar{
+      display: none;
+      position: fixed;
+      bottom: 75%;
+      left: 0px;
   }
 
 </style>
