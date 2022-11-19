@@ -1,6 +1,7 @@
 
 package de.hsrm.mi.swt_project.demo.editor.tiles;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public enum Tiletype {
     RAIL_CURVE(Orientation.SOUTH, Orientation.WEST),
     SIDEWAY();
 
-    List<Orientation> allowedOrientations;
+    List<Orientation> allowedOrientations = new ArrayList<>();
 
     private Tiletype(Orientation... o){
         allowedOrientations.addAll(Arrays.asList(o));
