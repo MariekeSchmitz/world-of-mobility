@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
-import App from './App.vue'
+import App from './TestApp.vue'
 import router from './router'
 import GamingMap from '@/components/GamingMap.vue'
 
