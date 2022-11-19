@@ -26,14 +26,27 @@ public class BackendInfoServiceImpl implements BackendInfoService{
     }
 
     @Override
-    public void convertMap(String topicname, BackendOperation operation, String FEHLTNOCHDTO) {
-        // TODO Auto-generated method stub
-
-
-        String jsonString = "";
-        sendInfo(topicname, operation, jsonString);
-        
+    public void sendInfo(String topicName, BackendOperation operation, SendMoveableUpdateDTO Object) {
+        logger.info("Send Info: Topicname = {}, Operation = {}", topicName, operation);
+        String destName = "/topic/" + topicName;
+        messaging.convertAndSend(destName, Object);    
     }
+
+    @Override
+    public void sendInfo(String topicName, BackendOperation operation, SendMapDTO Object) {
+        logger.info("Send Info: Topicname = {}, Operation = {}", topicName, operation);
+        String destName = "/topic/" + topicName;
+        messaging.convertAndSend(destName, Object);    
+    }
+
+    @Override
+    public void sendInfo(String topicName, BackendOperation operation, SendGameUpdateDTO Object) {
+        logger.info("Send Info: Topicname = {}, Operation = {}", topicName, operation);
+        String destName = "/topic/" + topicName;
+        messaging.convertAndSend(destName, Object);       
+    }
+
+
 
     
 }

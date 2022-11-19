@@ -1,6 +1,4 @@
 export interface ITestInfoMessage {
-    prevXPos : number, 
-    prevYpos : number, 
-    newXPos : number, 
-    newYPos : number
+    id: number,
+    txt: string
 }

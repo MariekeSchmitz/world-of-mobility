@@ -1,5 +1,14 @@
 import { Client } from "@stomp/stompjs"
+import { reactive } from "vue"
 import type { ITestInfoMessage } from "./ITestInfoMessage"
+
+interface IMsgState {
+    msgLst: ITestInfoMessage[]
+}
+
+const msgState = reactive<IMsgState> ({
+    msgLst: []
+})
 
 function receiveMessages(){
     const wsurl = `ws://${window.location.host}/stompbroker`
@@ -14,7 +23,8 @@ function receiveMessages(){
         stompClient.subscribe(DEST, (message) => {
             console.log(`Stompbroker received message: \n ${message.body}`)
             const backendInfoMsg: ITestInfoMessage = JSON.parse(message.body);
-            console.log(`Stompbroker received message: \n ${backendInfoMsg.newXPos}`)
+            console.log(`Stompbroker received message: \n ${backendInfoMsg}`);
+            msgState.msgLst.push(backendInfoMsg);
         })
     }
 
@@ -26,10 +36,20 @@ function receiveMessages(){
 
 }
 
-async function updateTestMessage(): Promise<void> {
+async function updateTestMessage(message: string): Promise<void> {
     const url = '/api/ServerMessage' 
     try {
-        const reponse = await fetch(url)
+        const data: ITestInfoMessage = {
+            id: 1,
+            txt: message
+        }
+
+        const reponse = await fetch(url, {method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data) 
+        })
 
         if (!reponse.ok) {
             console.log("couldnt fetch!")
@@ -45,6 +65,7 @@ async function updateTestMessage(): Promise<void> {
 export function useServerMessage(){
     return {
         receiveMessages,
-        updateTestMessage
+        updateTestMessage,
+        msgState
     }
 }

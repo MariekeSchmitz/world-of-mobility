@@ -12,17 +12,11 @@ import {
   Plane,
   Scene,
 } from "troisjs";
-import { useServerMessage } from "./services/useServerMessage";
+import ServerChat from "./components/ServerChat.vue"
 
 const rendererC = ref();
 const meshC = ref();
 const box = ref();
-
-const { receiveMessages, updateTestMessage} = useServerMessage()
-
-onMounted(() => {
-  receiveMessages()
-})
 
 const positionTemp = reactive({
   x: 0,
@@ -53,7 +47,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <button @click="updateTestMessage()">TEST</button>
+  <ServerChat></ServerChat>
   <Renderer
     ref="rendererC"
     antialias
