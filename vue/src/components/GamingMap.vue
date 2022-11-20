@@ -1,52 +1,36 @@
 <template>
-  <Renderer
-    ref="rendererC"
-    antialias
-    :orbit-ctrl="{ enableDamping: true }"
-    resize="window"
-  >
-    <Camera
-      :position="{ x: 0, y: -15, z: 3 }"
-      :lookAt="{ x: 0, y: 10, z: 0 }"
-      ref="camera"
-    />
-    <Scene background="#97FFFF">
-      <!-- Light -->
-      <PointLight :position="{ x: 0, y: 0, z: 10 }" />
-      <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
-
-      <!-- Algorythm to build the map -->
-      <div v-for="(subTile, index) in obj.tiles" :key="`row-${index}`">
-        <div v-for="tile in subTile" :key="tile.type">
-          <MapTile
-            :width="squareSize"
-            :heigth="squareSize"
-            :posX="tempWidth"
-            :posY="tempHeigth"
-            :posZ="0"
-            :rotationX="0"
-            :rotationY="0"
-            :rotationZ="computeRotationZ(tile.orientation)"
-            :type="tile.type"
-          >
-          </MapTile>
-          {{ (tempWidth += squareSize) }}
-        </div>
-        {{ (tempWidth = 0) }}
-        {{ (tempHeigth -= squareSize) }}
-      </div>
-    </Scene>
-  </Renderer>
+  <!-- Algorythm to build the map -->
+  <div v-for="(subTile, index) in obj.tiles" :key="`row-${index}`">
+    <div v-for="tile in subTile" :key="tile.type">
+      <MapTile
+        :width="squareSize"
+        :heigth="squareSize"
+        :posX="tempWidth"
+        :posY="tempHeigth"
+        :posZ="0"
+        :rotationX="0"
+        :rotationY="0"
+        :rotationZ="computeRotationZ(tile.orientation)"
+        :type="tile.type"
+      >
+      </MapTile>
+      {{ (tempWidth += squareSize) }}
+    </div>
+    {{ (tempWidth = 0) }}
+    {{ (tempHeigth -= squareSize) }}
+  </div>
 </template>
 
 <script setup lang="ts">
 import MapTile from "./MapTile.vue";
-import { AmbientLight, Camera, PointLight, Renderer, Scene } from "troisjs";
 
 let squareSize = 10;
 let tempWidth = 0;
 let tempHeigth = 0;
-
+/**
+ * translates the given orientation to a number
+ * @param orientation the orientation of the object to rotate
+ */
 function computeRotationZ(orientation: string): number {
   const quarterTurn = Math.PI / 2;
   switch (orientation) {

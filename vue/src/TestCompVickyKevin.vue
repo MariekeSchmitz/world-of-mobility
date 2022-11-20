@@ -8,7 +8,7 @@ import {
   Scene,
   ToonMaterial,
 } from "troisjs";
-import TestMap from "@/components/TestMap.vue";
+import GamingMap from "@/components/GamingMap.vue";
 import CarCam from "@/components/CarCam.vue";
 
 const renderer = ref();
@@ -57,7 +57,7 @@ document.addEventListener("keyup", (e) => {
       <!-- Light -->
       <PointLight :position="{ x: 0, y: 0, z: 10 }" />
       <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
-      <TestMap></TestMap>
+      <GamingMap/>
       <Box
         ref="car"
         :position="{ x: positionTemp.x, y: positionTemp.y, z: positionTemp.z }"

@@ -13,6 +13,7 @@
 import { Camera } from "troisjs";
 import { matrix, cos, sin, multiply, type Matrix } from "mathjs";
 import { computed, onMounted, ref } from "vue";
+import * as THREE from "three";
 
 const props = withDefaults(
   defineProps<{
@@ -24,7 +25,6 @@ const props = withDefaults(
   { distanceGround: 10, distanceHeigth: 5 }
 );
 const camera = ref();
-
 
 /**
  * default position of the cam - behind the car
@@ -42,7 +42,6 @@ const eyePositionStart = computed(() => {
  * actual position of the cam - uses the rotation of the car and a rotation matrix.
  */
 const eyePosition = computed(() => {
-  console.log(camera.value?.up);
   return rotate_z(props.carPosition, eyePositionStart.value, props.carRotation);
 });
 
@@ -76,11 +75,16 @@ function rotate_z(
     y: newPositionMatrix.get([1]) + carPosition.y,
     z: newPositionMatrix.get([2]) + carPosition.z,
   };
+  console.log(props.carPosition);
   console.log(newPosition);
-  
   return newPosition;
 }
 onMounted(() => {
-  console.log(camera.value.up);
+  if (camera.value) {
+    const cameraObject = camera.value.camera;
+    console.log("Camera up value" + cameraObject.up);
+    cameraObject.up = new THREE.Vector3(0, 0, 1);
+}
+
 });
 </script>
