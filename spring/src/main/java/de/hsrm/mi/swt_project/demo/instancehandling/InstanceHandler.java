@@ -10,7 +10,7 @@ import de.hsrm.mi.swt_project.demo.controls.Updateable;
  * 
  * @author Alexandra Müller
  */
-public class InstanceHandler implements Updateable {
+ public class InstanceHandler implements Updateable {
     protected List<Instance> instances;
     // TODO think of another solution because long can reach limit
     protected long idCounter = 1;
@@ -58,5 +58,49 @@ public class InstanceHandler implements Updateable {
         for (Instance instance : instances) {
             instance.update();
         }
+    }
+
+    /**
+     * Returns the instance with the given id.
+     * 
+     * @param id the id of the instance
+     * @return the instance with the given id
+     */
+    public List<Instance> getInstances() {
+        return instances;
+    }
+
+    /**
+     * Returns the game instance with the given id.
+     * 
+     * @param id the id of the instance
+     * @return the instance with the given id
+     */
+    public GameInstance getGameInstanceById(long id) {
+        for (Instance instance : instances) {
+            if (instance.getId() == id) {
+                if(instance instanceof GameInstance) {
+                    return (GameInstance) instance;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns the instance with the given id.
+     * 
+     * @param id the id of the instance
+     * @return the instance with the given id
+     */
+    public EditorInstance getEditorInstanceById(long id) {
+        for (Instance instance : instances) {
+            if (instance.getId() == id) {
+                if(instance instanceof EditorInstance) {
+                    return (EditorInstance) instance;
+                }
+            }
+        }
+        return null;
     }
 }

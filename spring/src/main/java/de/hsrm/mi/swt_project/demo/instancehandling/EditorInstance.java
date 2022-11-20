@@ -3,7 +3,7 @@ package de.hsrm.mi.swt_project.demo.instancehandling;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 
 /**
  * This class represents a single editor instance of the game.
@@ -32,7 +32,7 @@ public class EditorInstance extends Instance {
      * @param control the control option to use
      * @param tiletype the tile type associated with the control option
      */
-    public void editMap(float xPos, float yPos, Tile tiletype) {
+    public void editMap(float xPos, float yPos, Tiletype tiletype) {
         // TODO implement function
     }
 
@@ -60,5 +60,12 @@ public class EditorInstance extends Instance {
     @Override
     public void update() {
         // TODO Auto-generated method stub
+    }
+
+    /**
+     * Saves the map to a file.
+     */
+    public void saveMap() {
+        // TODO implement function
     }
 }

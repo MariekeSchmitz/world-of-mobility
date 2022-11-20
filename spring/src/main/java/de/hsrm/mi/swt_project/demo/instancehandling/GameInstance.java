@@ -86,9 +86,20 @@ public class GameInstance extends Instance {
     }
 
     /**
+     * Getter for the name of the instance.
+     * 
      * @return the name
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Getter for the moveable objects.
+     * 
+     * @return the moveableObjects
+     */
+    public HashMap<String, MoveableObject> getMoveableObjects() {
+        return moveableObjects;
     }
 }
