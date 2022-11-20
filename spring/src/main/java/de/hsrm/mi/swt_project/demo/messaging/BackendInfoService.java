@@ -40,4 +40,11 @@ public interface BackendInfoService {
     public void sendInfo(String topicName, BackendOperation operation, SendMoveableUpdateDTO Object);
 
 
+    /**
+     * 
+     * @param topicName = the name where the client subscription 
+     * @param operation = the operation for the sending infomation
+     * @param GetMapUpdateDTO = Object GetMapUpdateDTO has to be converted into a JSON-String
+     */
+    public void sendInfo(String topicName, BackendOperation operation, GetMapUpdateDTO Object);
 }

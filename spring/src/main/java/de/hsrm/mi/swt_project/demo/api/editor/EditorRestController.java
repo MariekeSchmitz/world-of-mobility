@@ -36,9 +36,24 @@ public class EditorRestController {
      * @param getMapUpdateDTO
      * @author Felix Ruf, Finn Schindel
      */
-    @PostMapping(value = "/GetMapUpdate", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/MapUpdate", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void post_MapUpdate(@RequestBody GetMapUpdateDTO getMapUpdateDTO) {
-        logger.info("Send Info: GetMapUpdateDTO = {}", getMapUpdateDTO.toString());
+        logger.info("Post Request for Map Update: Received GetMapUpdateDTO = {}", getMapUpdateDTO.toString());
+    }
+    
+    @PostMapping(value = "/GetMap", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void post_GetMap(@RequestBody GetMapDTO getMapDTO) {
+        logger.info("Post Reqwust for Map: Received GetMapDTO = {}", getMapDTO.toString());
+    }
+
+    /**
+     * Post for Map Save
+     * @param saveMapDTO
+     * @author Felix Ruf
+     */
+    @PostMapping(value = "/SaveMap", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void post_MapSave(@RequestBody SaveMapDTO saveMapDTO) {
+        logger.info("Post Request for Map Save: Received SaveMapDTO = {}", saveMapDTO.toString());
     }
 
     /**

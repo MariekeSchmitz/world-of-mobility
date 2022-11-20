@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Client } from "@stomp/stompjs"
 import { reactive } from "vue"
 import type { ITestInfoMessage } from "./ITestInfoMessage"

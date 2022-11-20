@@ -46,7 +46,12 @@ public class BackendInfoServiceImpl implements BackendInfoService{
         messaging.convertAndSend(destName, Object);       
     }
 
-
+    @Override
+    public void sendInfo(String topicName, BackendOperation operation, GetMapUpdateDTO Object) {
+        logger.info("Send Info: Topicname = {}, Operation = {}", topicName, operation);
+        String destName = "/topic/" + topicName;
+        messaging.convertAndSend(destName, Object);  
+    }
 
     
 }

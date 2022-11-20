@@ -12,7 +12,7 @@ public record GetMapUpdateDTO (
     Tiletype type,
     Orientation orientation, 
     int prevXPos, 
-    int prevYpos, 
+    int prevYPos, 
     int newXPos, 
     int newYPos, 
     Placeable [] placedObjects){}

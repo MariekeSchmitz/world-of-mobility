@@ -1,0 +1,83 @@
+/* eslint-disable prettier/prettier */
+import { Client } from "@stomp/stompjs";
+import { reactive, readonly } from "vue";
+
+export function useMapUpdate(mapName: string): any {
+
+    interface IMapUpdate {
+        tiletype: string,
+        orientation: string,
+        prevXPos: number,
+        prevYPos: number,
+        newXPos: number,
+        newYPos: number,
+        placedObjects: Array<any>
+    }
+
+    interface IMapState {
+        mapName: string,
+        mapUpdateListe: IMapUpdate[]
+    }
+
+    const mapState = reactive<IMapState> ({
+        mapName: mapName,
+        mapUpdateListe: []
+    });
+    
+    function receiveMapUpdates() {
+        const wsurl = `ws://${window.location.host}/stompbroker`;
+        const DEST = "/topic/MapUpdate";
+    
+        const stompClient = new Client({ brokerURL: wsurl });
+        stompClient.onWebSocketError = event => console.log(`ERROR: WebSocket-Error in MapUpdate: ${event}`);
+        stompClient.onStompError = event => console.log(`ERROR: Stomp-Error in MapUpdate: ${event}`);
+    
+        stompClient.onConnect = frame => {
+            console.log("Connected Stompbroker to MapUpdate");
+            stompClient.subscribe(DEST, (message) => {
+                console.log(`Stompbroker received message: \n${message.body}`);
+                const mapUpdate: IMapUpdate = JSON.parse(message.body);
+                mapState.mapUpdateListe.push(mapUpdate);
+            });
+        }
+    
+        stompClient.onDisconnect = () => {
+            console.log("Disconnected Stompbroker from MapUpdate");
+        }
+    
+        stompClient.activate();
+    }
+
+    async function sendMapUpdates(mapUpdateObj: IMapUpdate) {
+        try {
+            const controller = new AbortController();
+            const URL = '/api/MapUpdate';
+
+            const id = setTimeout(() => controller.abort(), 8000);
+
+            const data: IMapUpdate = mapUpdateObj;
+
+            const response = await fetch(URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                signal: controller.signal,
+                body: JSON.stringify(data)
+            });
+
+            clearTimeout(id);
+
+            console.log(response.text());
+
+        } catch(reason) {
+            console.log(`ERROR: POST MapUpdate failed: ${reason}`);
+        }
+    }
+
+    return {
+        mapUpdates: readonly(mapState),
+        sendMapUpdates,
+        receiveMapUpdates
+    }
+}
