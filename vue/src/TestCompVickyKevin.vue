@@ -20,7 +20,7 @@ const positionTemp = reactive({
 });
 
 const rotationCarTemp = reactive({
-  degree: 180,
+  degree: 0,
 });
 
 document.addEventListener("keyup", (e) => {
