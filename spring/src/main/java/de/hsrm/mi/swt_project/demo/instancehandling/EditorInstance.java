@@ -3,6 +3,7 @@ package de.hsrm.mi.swt_project.demo.instancehandling;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 
 /**
@@ -32,8 +33,30 @@ public class EditorInstance extends Instance {
      * @param control the control option to use
      * @param tiletype the tile type associated with the control option
      */
-    public void editMap(float xPos, float yPos, Tiletype tiletype) {
-        // TODO implement function
+    public void editMap(int xPos, int yPos, String control, Tiletype tiletype) {
+        // TODO clear up with team to reinstate the EditorControl enum
+        switch(control) {
+            case "PLACE":
+                if(map.getTiles()[xPos][yPos] == null) {
+                    map.addTile(tiletype.createTile(), xPos, yPos);                  
+                }
+                break;
+            case "REMOVE":
+                if(map.getTiles()[xPos][yPos] != null) {
+                    map.removeTile(xPos, yPos);
+                }
+                break;
+            case "TURN_LEFT":
+                if(map.getTiles()[xPos][yPos] != null) {
+                    map.getTiles()[xPos][yPos].turn(Direction.LEFT);
+                }
+                break;
+            case "TURN_RIGHT":
+                if(map.getTiles()[xPos][yPos] != null) {
+                    map.getTiles()[xPos][yPos].turn(Direction.RIGHT);
+                }
+                break;
+        }
     }
 
     /**
@@ -65,7 +88,7 @@ public class EditorInstance extends Instance {
     /**
      * Saves the map to a file.
      */
-    public void saveMap() {
-        // TODO implement function
+    public void saveMap(String name) {
+        // TODO implement function that serializes the map and saves it to a JSON file
     }
 }

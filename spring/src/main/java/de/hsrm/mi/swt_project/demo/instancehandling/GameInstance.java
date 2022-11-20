@@ -82,7 +82,6 @@ public class GameInstance extends Instance {
         for(MoveableObject movableObject : moveableObjects.values()) {
             movableObject.move();
         }
-        // TODO push updates to clients
     }
 
     /**
