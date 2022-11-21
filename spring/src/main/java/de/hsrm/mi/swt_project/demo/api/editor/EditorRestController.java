@@ -14,15 +14,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.hsrm.mi.swt_project.demo.instancehandling.EditorInstance;
+import de.hsrm.mi.swt_project.demo.instancehandling.GameMap;
+import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
 import de.hsrm.mi.swt_project.demo.messaging.GetMapUpdateDTO;
+import de.hsrm.mi.swt_project.demo.messaging.SendMapDTO;
 import de.hsrm.mi.swt_project.demo.messaging.ServerMessageDTO;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/editor")
 public class EditorRestController {
 
     @Autowired
     private SimpMessagingTemplate messaging;
+
+    @Autowired
+    private InstanceHandler instanceHandler;
     
     Logger logger = LoggerFactory.getLogger(EditorRestController.class);
 
@@ -39,21 +46,31 @@ public class EditorRestController {
     @PostMapping(value = "/MapUpdate", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void post_MapUpdate(@RequestBody GetMapUpdateDTO getMapUpdateDTO) {
         logger.info("Post Request for Map Update: Received GetMapUpdateDTO = {}", getMapUpdateDTO.toString());
+
+        EditorInstance editorInstance = instanceHandler.getEditorInstanceById(0);
+
+        // TODO add controlEnum 
+        editorInstance.editMap(getMapUpdateDTO.newXPos(), getMapUpdateDTO.newYPos(), null, getMapUpdateDTO.type());
     }
     
     @PostMapping(value = "/GetMap", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void post_GetMap(@RequestBody GetMapDTO getMapDTO) {
-        logger.info("Post Reqwust for Map: Received GetMapDTO = {}", getMapDTO.toString());
+    public SendMapDTO post_GetMap(@RequestBody GetMapDTO getMapDTO) {
+        logger.info("Post Request for Map: Received GetMapDTO = {}", getMapDTO.toString());
+
+        EditorInstance editorInstance = instanceHandler.getEditorInstanceById(getMapDTO.mapId());
+        return SendMapDTO.from(editorInstance.getMap());
     }
 
     /**
      * Post for Map Save
      * @param saveMapDTO
-     * @author Felix Ruf
+     * @author Felix Ruf, Finn Schindel
      */
     @PostMapping(value = "/SaveMap", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void post_MapSave(@RequestBody SaveMapDTO saveMapDTO) {
-        logger.info("Post Request for Map Save: Received SaveMapDTO = {}", saveMapDTO.toString());
+    public void post_MapSave(@RequestBody GetMapDTO getMapDTO) {
+        logger.info("Post Request for Map Save: Received SaveMapDTO = {}", getMapDTO.toString());
+        EditorInstance editorInstance = instanceHandler.getEditorInstanceById(getMapDTO.mapId());
+        editorInstance.saveMap(getMapDTO.mapName());
     }
 
     /**

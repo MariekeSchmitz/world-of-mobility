@@ -51,7 +51,7 @@ export function useMapUpdate(mapName: string): any {
     async function sendMapUpdates(mapUpdateObj: IMapUpdate) {
         try {
             const controller = new AbortController();
-            const URL = '/api/MapUpdate';
+            const URL = '/api/editor/MapUpdate';
 
             const id = setTimeout(() => controller.abort(), 8000);
 
