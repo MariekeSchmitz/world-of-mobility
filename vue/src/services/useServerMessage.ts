@@ -1,10 +1,10 @@
 /* eslint-disable prettier/prettier */
 import { Client } from "@stomp/stompjs"
 import { reactive } from "vue"
-import type { ITestInfoMessage } from "./ITestInfoMessage"
+import type { IServerMessage } from "./IServerMessage"
 
 interface IMsgState {
-    msgLst: ITestInfoMessage[]
+    msgLst: IServerMessage[]
 }
 
 const msgState = reactive<IMsgState> ({
@@ -23,7 +23,7 @@ function receiveMessages(){
         console.log("Connected Stombrocker to ServerMessage");
         stompClient.subscribe(DEST, (message) => {
             console.log(`Stompbroker received message: \n ${message.body}`)
-            const backendInfoMsg: ITestInfoMessage = JSON.parse(message.body);
+            const backendInfoMsg: IServerMessage = JSON.parse(message.body);
             console.log(`Stompbroker received message: \n ${backendInfoMsg}`);
             msgState.msgLst.push(backendInfoMsg);
         })
@@ -40,7 +40,7 @@ function receiveMessages(){
 async function updateTestMessage(message: string): Promise<void> {
     const url = '/api/ServerMessage' 
     try {
-        const data: ITestInfoMessage = {
+        const data: IServerMessage = {
             id: 1,
             txt: message
         }
