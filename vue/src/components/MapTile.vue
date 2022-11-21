@@ -96,7 +96,7 @@ import STREET_CROSS from "./Tiles/STREET_CROSS.vue";
 import STREET_T_CROSS from "./Tiles/STREET_T_CROSS.vue";
 import RAIL_CURVE from "./Tiles/RAIL_CURVE.vue";
 import RAIL_STRAIGHT from "./Tiles/RAIL_STRAIGHT.vue";
-import {tileType} from "./TileTypes"
+import {tileType} from "@/components/TileTypes"
 import { defineProps, withDefaults } from "vue";
 
 //--------props-------------
