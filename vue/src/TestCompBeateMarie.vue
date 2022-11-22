@@ -49,14 +49,8 @@ document.addEventListener("keyup", (e) => {
   }
 });
 
-onMounted(() => {
-  const renderer = rendererC.value as RendererPublicInterface;
-  const mesh = (meshC.value as MeshPublicInterface).mesh;
-  renderer.onBeforeRender(() => {
-    mesh!.rotation.x += 0.01;
-  });
-});
 </script>
+
 
 <template>
   <Renderer ref="rendererC" antialias :orbit-ctrl="{ enableDamping: true }" resize="window">
