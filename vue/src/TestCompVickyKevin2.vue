@@ -37,7 +37,7 @@ onMounted(() => {
 
   orbitControls.screenSpacePanning = false;
   //orbitControls.minPolarAngle = Math.PI/2;
-  //orbitControls.maxPolarAngle = Math.PI/2;
+  orbitControls.maxPolarAngle = Math.PI/2;
   //orbitControls.maxAzimuthAngle = 0;
   //orbitControls.minAzimuthAngle = 0;
   document.addEventListener("keyup", (e) => {
