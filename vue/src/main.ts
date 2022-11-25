@@ -1,13 +1,11 @@
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp } from "vue";
+import { createPinia } from "pinia";
+import router from "./router";
+import Game from "@/components/Game.vue";
 
-import App from './TestCompVickyKevin2.vue'
-import router from './router'
-import GamingMap from '@/components/GamingMap.vue'
+const app = createApp(Game);
 
-const app = createApp(App)
+app.use(createPinia());
+app.use(router);
 
-app.use(createPinia())
-app.use(router)
-
-app.mount('#app')
+app.mount("#app");

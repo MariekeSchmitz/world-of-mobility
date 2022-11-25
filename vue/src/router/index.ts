@@ -1,21 +1,15 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import GamingMap from '@/components/GamingMap.vue'
-import App from '@/TestCompVickyKevin.vue'
+import { createRouter, createWebHistory } from "vue-router";
+import Game from "@/components/Game.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: GamingMap
+      path: "/game",
+      name: "GameView",
+      component: Game,
     },
-    {
-      path: '/app',
-      name: 'App',
-      component: App
-    }
-  ]
-})
+  ],
+});
 
-export default router
+export default router;
