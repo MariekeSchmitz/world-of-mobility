@@ -5,5 +5,3 @@ import { ref, onMounted, reactive } from "vue";
 <template>
   <RouterView />
 </template>
-
-<style></style>
