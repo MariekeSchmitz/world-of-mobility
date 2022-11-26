@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
+import de.hsrm.mi.swt_project.demo.controls.EditorControl;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 
 /**
@@ -33,25 +34,24 @@ public class EditorInstance extends Instance {
      * @param control the control option to use
      * @param tiletype the tile type associated with the control option
      */
-    public void editMap(int xPos, int yPos, String control, Tiletype tiletype) {
-        // TODO clear up with team to reinstate the EditorControl enum
+    public void editMap(int xPos, int yPos, EditorControl control, Tiletype tiletype) {
         switch(control) {
-            case "PLACE":
+            case PLACE:
                 if(map.getTiles()[xPos][yPos] == null) {
                     map.addTile(tiletype.createTile(), xPos, yPos);                  
                 }
                 break;
-            case "REMOVE":
+            case REMOVE:
                 if(map.getTiles()[xPos][yPos] != null) {
                     map.removeTile(xPos, yPos);
                 }
                 break;
-            case "TURN_LEFT":
+            case TURN_LEFT:
                 if(map.getTiles()[xPos][yPos] != null) {
                     map.getTiles()[xPos][yPos].turn(Direction.LEFT);
                 }
                 break;
-            case "TURN_RIGHT":
+            case TURN_RIGHT:
                 if(map.getTiles()[xPos][yPos] != null) {
                     map.getTiles()[xPos][yPos].turn(Direction.RIGHT);
                 }
