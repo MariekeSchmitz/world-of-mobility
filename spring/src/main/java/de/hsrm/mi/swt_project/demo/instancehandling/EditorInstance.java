@@ -1,11 +1,20 @@
 package de.hsrm.mi.swt_project.demo.instancehandling;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.EditorControl;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
+import de.hsrm.mi.swt_project.demo.movables.Passenger;
 
 /**
  * This class represents a single editor instance of the game.
@@ -13,6 +22,7 @@ import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
  * @author Alexandra Müller
  */
 public class EditorInstance extends Instance {
+
     private List<String> users;
     
     /**
@@ -37,22 +47,22 @@ public class EditorInstance extends Instance {
     public void editMap(int xPos, int yPos, EditorControl control, Tiletype tiletype) {
         switch(control) {
             case PLACE:
-                if(map.getTiles()[xPos][yPos] == null) {
+                if(map.getTiles()[yPos][xPos] == null) {
                     map.addTile(tiletype.createTile(), xPos, yPos);                  
                 }
                 break;
             case REMOVE:
-                if(map.getTiles()[xPos][yPos] != null) {
+                if(map.getTiles()[yPos][xPos] != null) {
                     map.removeTile(xPos, yPos);
                 }
                 break;
             case TURN_LEFT:
-                if(map.getTiles()[xPos][yPos] != null) {
+                if(map.getTiles()[yPos][xPos] != null) {
                     map.getTiles()[xPos][yPos].turn(Direction.LEFT);
                 }
                 break;
             case TURN_RIGHT:
-                if(map.getTiles()[xPos][yPos] != null) {
+                if(map.getTiles()[yPos][xPos] != null) {
                     map.getTiles()[xPos][yPos].turn(Direction.RIGHT);
                 }
                 break;
@@ -89,6 +99,32 @@ public class EditorInstance extends Instance {
      * Saves the map to a file.
      */
     public void saveMap(String name) {
-        // TODO implement function that serializes the map and saves it to a JSON file
+
+        if(this.map.getName() == null || this.map.getName().isEmpty()) {
+            this.map.setName(name);
+        }
+
+        JSONObject mapToSave = new JSONObject();
+        mapToSave.put("Tiles", this.map.getTiles());
+        mapToSave.put("Npcs", this.map.getNpcs());
+
+        File savePath = new File(mapSavePath, map.getName() + ".json"); 
+    
+        mapSavePath.mkdirs();
+
+        if (!savePath.exists()) {
+            try {
+                savePath.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(savePath))) {
+            mapToSave.write(bw);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
     }
 }
