@@ -4,7 +4,7 @@ import Avatar from "@/components/User/Avatar.vue";
 import { useLogin } from "@/services/login/useLogin";
 import { ref } from "vue";
 
-const { loginData, setAvatar, login } = useLogin();
+const { loginData, login, logout } = useLogin();
 
 const name = ref(loginData.username);
 const choosingAvatar = ref(false);
@@ -34,10 +34,12 @@ const toggleAvatarSelection = () => {
       <button @click="toggleAvatarSelection">change avatar</button>
       <!-- input for username -->
       <input type="text" v-model="name" />
+      <p v-if="loginData.error !== ''">{{ loginData.error }}</p>
     </div>
 
     <button @click="login(name)">Spielen</button>
     <button @click="login(name)">Baumodus</button>
+    <button @click="logout()">Logout</button>
 
     <!-- Avatar Selection Mode -->
     <Avatar_Selection v-if="choosingAvatar"></Avatar_Selection>

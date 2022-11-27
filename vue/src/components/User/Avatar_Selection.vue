@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Chooseable_Avatar from "@/components/User/Chooseable_Avatar.vue";
-import { useLogin } from "@/services/login/useLogin";
 
 const avatarPictures: string[] = [
   "src/assets/avatar/Gockel.png",
