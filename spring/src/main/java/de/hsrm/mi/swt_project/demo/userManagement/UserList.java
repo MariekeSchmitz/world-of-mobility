@@ -2,6 +2,11 @@ package de.hsrm.mi.swt_project.demo.userManagement;
 
 import java.util.LinkedList;
 
+/**
+ * List of all Users, up to date at all times. Used to check, if user is unique
+ * 
+ * @author Tom Gouthier
+ */
 public class UserList {
 
     private LinkedList<String> userList;

@@ -3,6 +3,7 @@ import type { ILoginResponse } from "./ILoginResponse";
 import type { ILoginState } from "./ILoginState";
 import type { ISendLogin } from "./ISendLogin";
 
+// global State for user
 const loginState: ILoginState = reactive({
   username: "",
   avatar: "src/assets/avatar/Schwein.png",
@@ -22,7 +23,7 @@ async function login(username: string) {
     loginState.error = `Already signed in as ${loginState.username}`;
     return;
   }
-  // sends username too short dont make the request at all
+  // if username too short dont make the request at all
   if (username.length >= 3) {
     const login: ISendLogin = {
       name: username,
@@ -81,6 +82,7 @@ async function logout() {
       console.log(`${loginState.username} logged out`);
       loginState.username = "";
       loginState.loggedIn = false;
+      loginState.error = "";
     }
   } catch (error) {
     console.log(error);

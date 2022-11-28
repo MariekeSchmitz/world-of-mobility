@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useLogin } from "@/services/login/useLogin";
 
+//similar to Avatar component - except it sets the user avatar state to itself when clicked
 const props = withDefaults(
   defineProps<{
     avatarPicture: string;

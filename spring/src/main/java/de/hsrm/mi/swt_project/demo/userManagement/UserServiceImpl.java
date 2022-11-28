@@ -3,6 +3,11 @@ package de.hsrm.mi.swt_project.demo.userManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Implementation of a UserService. Handles all actions on the List of users
+ * 
+ * @author Tom Gouthier
+ */
 @Service
 public class UserServiceImpl implements UserService {
 

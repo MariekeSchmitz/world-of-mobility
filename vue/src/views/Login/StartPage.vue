@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// Start Page with toggleable Avatar Selection, Username choice and login/logout functionality
 import Avatar_Selection from "@/components/User/Avatar_Selection.vue";
 import Avatar from "@/components/User/Avatar.vue";
 import { useLogin } from "@/services/login/useLogin";
@@ -13,13 +14,6 @@ const toggleAvatarSelection = () => {
   choosingAvatar.value = !choosingAvatar.value;
 };
 </script>
-
-<!-- 1. uselogin + interface bauen (name, avatar, error, loggedIn) erstmal ohne backend
-2. uselogin einbauen in startpage
-3. avatar component (verschiedene versionen? s,m,l) und avatarliste component bauen (hier auch klicken für auswahl dieses avatars) 
-4. wenn avatar geändert werden soll, dann zeig avatarliste an, sonst nicht
-5. bei spielen/baumodus buttons wird name gesetzt (über uselogin)
-6. mal schauen -->
 
 <template>
   <div class="wrapper">
