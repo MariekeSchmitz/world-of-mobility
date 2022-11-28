@@ -9,11 +9,11 @@ public interface UserService {
 
     /**
      * Adds user to the list of users
-     * Throws Exception when User is not unique
+     * Throws Exception when User is not unique or too short
      * 
      * @author Tom Gouthier
      */
-    String addUser(String username) throws UserNotUniqueException;
+    String addUser(String username) throws UserNotUniqueException, UsernameTooShortException;
 
     /**
      * removes User from the list of users

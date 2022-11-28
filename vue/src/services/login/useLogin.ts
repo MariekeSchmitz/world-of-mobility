@@ -60,7 +60,7 @@ async function login(username: string) {
       console.log(reason);
     }
   } else {
-    loginState.error = "Name too Short";
+    loginState.error = "Name too Short. Has to be 3 or above letters long.";
   }
 
   console.log(loginState);

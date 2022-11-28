@@ -43,6 +43,8 @@ public class UserRestController {
             return SendUserDTO.from(user.name(), "");
         } catch (UserNotUniqueException e) {
             return SendUserDTO.from(user.name(), e.getMessage());
+        } catch (UsernameTooShortException e) {
+            return SendUserDTO.from(user.name(), e.getMessage());
         }
     }
 

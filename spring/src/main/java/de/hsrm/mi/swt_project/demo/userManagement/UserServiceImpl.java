@@ -19,14 +19,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String addUser(String username) throws UserNotUniqueException {
+    public String addUser(String username) throws UserNotUniqueException, UsernameTooShortException {
 
-        if (!userList.getUserList().contains(username)) {
+        if (username.length() < 3) {
+            throw new UsernameTooShortException("Username not long enough. Has to be 3 or above letters.");
+        } else if (userList.getUserList().contains(username)) {
+            throw new UserNotUniqueException("User is not unique");
+        } else {
             userList.getUserList().add(username);
             return username;
-        } else {
-            throw new UserNotUniqueException("User is not unique");
         }
+
     }
 
     @Override
