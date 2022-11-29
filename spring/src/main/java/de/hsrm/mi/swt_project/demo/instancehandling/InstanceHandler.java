@@ -3,17 +3,26 @@ package de.hsrm.mi.swt_project.demo.instancehandling;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import de.hsrm.mi.swt_project.demo.controls.Updateable;
 
 /**
  * This class maintains all instances of the game.
  * 
  * @author Alexandra Müller
+ * @author Sascha Scheid
  */
  public class InstanceHandler implements Updateable {
+
+    @Autowired
+    protected UpdateloopService loopservice;
+
     protected List<Instance> instances;
+
     // TODO think of another solution because long can reach limit
     protected long idCounter = 1;
+
 
     /**
      * Creates a new instance handler.
@@ -52,11 +61,14 @@ import de.hsrm.mi.swt_project.demo.controls.Updateable;
     }
 
     /**
-     * Updates all instances.
+     * This method triggers all instances to update
+     * their state. After an update of the state, 
+     * the new state of an instance will be published.
      */
     public void update() {
         for (Instance instance : instances) {
             instance.update();
+            loopservice.publishInstanceState(instance);
         }
     }
 
