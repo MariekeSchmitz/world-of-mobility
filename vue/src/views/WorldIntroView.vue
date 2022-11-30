@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import GameListItems from '@/components/selectview/GameListItems.vue';
+import GameListItem from '@/components/selectview/GameListItem.vue';
 </script>
-
-
 
 <template>
     <div>
@@ -20,18 +18,16 @@ import GameListItems from '@/components/selectview/GameListItems.vue';
 
         <div id="selection">
             <h1>Welt editieren</h1>
-            <div>
-                <input type="radio">
-                <label for="">Wird gerade editiert</label>
-            </div>
+            <fieldset>
+                <input type="radio" id="editmode" name="selectmode" value="Wird gerade editiert">
+                <label for="editmode">Wird gerade editiert</label>
+                <input type="radio" id="allmode" name="selectmode" checked value="Alle">
+                <label for="allmode">Alle</label>
+            </fieldset>
+
 
             <div>
-                <input type="radio">
-                <label for="">Alle</label>
-            </div>
-
-            <div>
-                <GameListItems></GameListItems>
+                <GameListItem :worldname="'Worldname'"  :people="0"></GameListItem>
             </div>
         </div>
     </div>
