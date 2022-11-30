@@ -86,4 +86,14 @@ public class EditorRestController {
         String output = s + ": " + newServerMsgDTO.txt();
         messaging.convertAndSend("/topic/ServerMessage", new ServerMessageDTO(newServerMsgDTO.usrId(), output));
     }
+
+
+    @PostMapping
+    public void post_NewWorld(@RequestBody GetNewWorldDTO newWorldDTO){
+        String name = newWorldDTO.name();
+        
+
+    }
+
+
 }
