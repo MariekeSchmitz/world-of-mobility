@@ -30,7 +30,7 @@ export function useMap(): any {
     async function getMap(mapName: string, mapId: number) {
         try {
             const controller = new AbortController();
-            const URL = '/api/editor/GetMap';
+            const URL = '/api/editor/getmap';
             
             const data = {mapName, mapId};
     
@@ -61,7 +61,7 @@ export function useMap(): any {
     async function saveMap(mapName: string, mapId: number) {
         try {
             const controller = new AbortController();
-            const URL = '/api/editor/SaveMap';
+            const URL = '/api/editor/savemap';
             
             const data = {mapName, mapId};
     

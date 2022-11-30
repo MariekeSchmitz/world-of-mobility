@@ -26,7 +26,7 @@ export function useMapUpdate(mapName: string): any {
     
     function receiveMapUpdates() {
         const wsurl = `ws://${window.location.host}/stompbroker`;
-        const DEST = "/topic/MapUpdate";
+        const DEST = "/topic/mapupdate";
     
         const stompClient = new Client({ brokerURL: wsurl });
         stompClient.onWebSocketError = event => console.log(`ERROR: WebSocket-Error in MapUpdate: ${event}`);
@@ -51,7 +51,7 @@ export function useMapUpdate(mapName: string): any {
     async function sendMapUpdates(mapUpdateObj: IMapUpdate) {
         try {
             const controller = new AbortController();
-            const URL = '/api/editor/MapUpdate';
+            const URL = '/api/editor/mapupdate';
 
             const id = setTimeout(() => controller.abort(), 8000);
 
