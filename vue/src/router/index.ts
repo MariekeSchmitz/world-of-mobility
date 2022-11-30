@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Game from "@/components/Game.vue";
 import WorldSelect from "@/views/WorldSelect.vue";
-import WorldSelection from "@/components/worldSelection/WorldSelection.vue";
 import GameSelect from "@/views/GameSelect.vue";
 
 const router = createRouter({
@@ -13,14 +12,14 @@ const router = createRouter({
       component: Game,
     },
     {
-      path: "/worldselect",
+      path: "/worldintro",
       name: "worldSelect",
-      component: WorldSelect,
+      component: WorldIntroView,
     },
     {
-      path: "/gameselect",
+      path: "/gameintro",
       name: "GameSelect",
-      component: GameSelect,
+      component: GameIntroView,
     },
     {
       path: "/worldSelection",
