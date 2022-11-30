@@ -7,13 +7,8 @@
     import {
       AmbientLight,
       Camera,
-      BasicMaterial,
-      ToonMaterial,
       PointLight,
       Renderer,
-      
-      type RendererPublicInterface,
-      Plane,
       Scene,
     } from "troisjs";
 
@@ -23,7 +18,8 @@
     import type { Tile } from "../../services/editor/TileInterface";
     import { Orientation } from "../../services/editor/OrientationEnum";
     import type { ExportTile } from "@/services/editor/ExportTileInterface";
-    import * as useMapUpdate from "@/services/useMapUpdate"
+    import {useMapUpdate} from "@/services/useMapUpdate"
+    import {useMap} from "@/services/useMap"
 
 
     /**
@@ -32,8 +28,13 @@
     const rendererC = ref();
     const camera = ref();
     const scene = ref();
+    const {sendMapUpdates, receiveMapUpdates, mapState} = useMapUpdate("test");
+    const {getMap} = useMap();
+    //receiveMapUpdates();
     
-
+    //loaded Map (once Backend works)
+    //const loadedMap = getMap("Default");
+    
     //List of Tiles
     let tiles: Tile[][] = [
                 [
@@ -125,7 +126,7 @@
                 }
               ]
               ]
-
+    
     //Tile Map width and height
     const mapWidth = tiles[0].length
     const mapHeight = tiles.length
@@ -139,6 +140,80 @@
 
     let prevTexture:String = "";
     let overwritten = false
+
+    
+    let row = 0;
+    let column = 0;
+    
+
+
+    /**
+     * create Editable Map in Editor from Map object
+     * @param tiles 2D Array containing Tiles
+     */
+
+    function createMap(tiles:Tile[][]){
+      for(row = 0;row < tiles.length;row++){
+        for(column =0 ;column < tiles[0].length; column++){
+          console.log(row,column)
+
+          const TileGeometry = new THREE.PlaneGeometry( 0.99, 0.99 );
+          let material = new THREE.MeshBasicMaterial();
+          //material.props= "{map: tiles[row-1][column-1].typ==''?loader.load('src/textures/editor/Default.jpg'):loader.load('src/textures/editor/'+tiles[row-1][column-1].typ+'.jpg')}"
+          
+          let texturePath = tiles[row][column].typ == '' ? 'src/textures/editor/Default.jpg' : 'src/textures/editor/'+tiles[row][column].typ+'.jpg'
+          console.log(texturePath);
+          material.map = loader.load(texturePath)
+          const TileMesh = new THREE.Mesh( TileGeometry, material );
+          TileMesh.position.x = row + offsetx +1;
+          TileMesh.position.y = column + offsety +1;
+          TileMesh.position.z = 0.01;
+          TileMesh.rotation.z = tiles[row][column].orientation == '' ? 0 : Orientation[tiles[row][column].orientation]
+          scene.value.add(TileMesh);
+          
+          
+       }
+      }
+
+    }
+
+    /**
+     * receives New Tile to be updated, and updates it in the stored Map Array and Frontend.
+     * NOT YET FUNCTIONAL, Contingent on Stompbroker and EditorInstance to send Updates
+     * 
+     * @param update received updated Tile
+     */
+    function updateMap(update:ExportTile){
+      let newTile = tiles[update.newXPos][update.newYPos]
+      newTile.typ = update.type
+      newTile.orientation = update.orientation
+      newTile.placedObjects = update.placedObjects
+
+      let frontendTile = new THREE.Mesh(new THREE.BufferGeometry, new THREE.Material());
+
+      for (let i =0; i < scene.value.scene.children.length; i++){
+        if (scene.value.scene.children[i].position.x == update.newXPos - offsetx  && scene.value.scene.children[i].position.y == update.newYPos - offsety){
+          frontendTile = scene.value.scene.children[i]
+          break
+        }
+        
+      }
+
+        let texturePath = tiles[row][column].typ == '' ? 'src/textures/editor/Default.jpg' : 'src/textures/editor/'+tiles[row][column].typ+'.jpg'
+        frontendTile.material.map = loader.load(texturePath)
+        frontendTile.rotation.z = tiles[row][column].orientation == '' ? 0 : Orientation[tiles[row][column].orientation]
+      
+
+      if (update.prevXPos != null){
+        let oldTile = tiles[update.prevXPos][update.prevXPos];
+        oldTile.orientation = "NORTH";
+        oldTile.typ = "";
+        oldTile.placedObjects = [];
+      }
+    }
+    
+
+
 
     //defines Tile to be placed on click and whether click triggers a Tile place
         
@@ -160,35 +235,30 @@
     function planeClick(tileObject:THREE.Mesh) {
       removeContextMenu();
       //Object to be Sent via REST (to be implemented)
-      let toSendObj: ExportTile = {
-        type: "SIDEWAY",
-        orientation: "NORTH",
-        prevXPos: 0,
-        prevYPos: 0,
-        newXPos: 0,
-        newYPos: 0,
-        placedObjects: []
-      } 
       
-      let toSend:Object = {
-        "type": "SIDEWAY",
-        "orientation": "NORTH",
-        "prevXPos": null,
-        "prevYPos": null,
-        "newXPos": 0,
-        "newYPos": 0,
-        "placedObjects":0
-      } 
- 
+      
+      
       if (place.placeMode){
-        let toPlace:Tile = {
-                  typ: place.placeType,
-                  orientation: "NORTH",
-                  placedObjects:[]
-              }
-
         let posX = tileObject.position.x - offsetx -1;
         let posY = tileObject.position.y - offsety -1;
+
+        let toSendObj: ExportTile = {
+        type: place.placeType,
+        orientation: "NORTH",
+        prevXPos: -1,
+        prevYPos: -1,
+        newXPos: posX,
+        newYPos: posY,
+        placedObjects: []
+      } 
+
+        let toPlace:Tile = {
+          typ: place.placeType,
+          orientation: "NORTH",
+          placedObjects:[]
+        }
+        //sendMapUpdates(toSendObj);
+        
           
         //reset rotation to 0  
         tileObject.setRotationFromEuler(new THREE.Euler());
@@ -299,6 +369,13 @@
       rendererC.value.canvas.addEventListener("click", onDocumentLeftMouseDown)
       rendererC.value.canvas.addEventListener("mousemove", onMouseOver)
       rendererC.value.canvas.addEventListener("contextmenu", onDocumentRightMouseDown)
+      createMap(tiles);
+      
+      let changeTileFrontend = null;
+      console.log(scene.value.scene.children.length)
+      
+      
+
     });
 
 
@@ -318,7 +395,7 @@
     }
 
     
-    let intersected:THREE.Mesh
+    let intersected:THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>
     /**
      * checks if mouse intersects any objects via raycaster.
      * If yes, Mesh gets highlighted and previous mesh saved, in order to restore old texture/color after leaving hover range.
@@ -442,7 +519,7 @@
         <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
 
             
-            
+         <!--   
         <Plane :width="tiles.length" :height="tiles[0].length" :rotation="{ x: 0 }" :position="{ x: 0, y: 0, z: 0 }" ref="tile{{n}},{{m}}">
           <ToonMaterial color="green" :props="{ side:THREE.DoubleSide}"/>
         </Plane>
@@ -454,7 +531,7 @@
                 <BasicMaterial :props="{map: tiles[row-1][column-1].typ==''?loader.load('src/textures/editor/Default.jpg'):loader.load('src/textures/editor/'+tiles[row-1][column-1].typ+'.jpg')}" />
               </Plane>
           </template>
-        </template>
+        </template>-->
           
       </Scene>
 
