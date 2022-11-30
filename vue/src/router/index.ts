@@ -1,6 +1,6 @@
 import GamingMap from "@/components/GamingMap.vue";
 import App from "@/TestCompVickyKevin.vue";
-import StartPage from "@/views/login/StartPage.vue";
+import StartPage from "@/views/Login/StartPage.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
