@@ -2,6 +2,9 @@
     "maps":[
         {"name":"Map1", "img": ""},
         {"name":"Map2", "img": ""},
-        {"name":"Map3", "img": ""}
+        {"name":"Map3", "img": ""},
+        {"name":"Map4", "img": ""},
+        {"name":"Map5", "img": ""},
+        {"name":"Map6", "img": ""}
     ]
 }

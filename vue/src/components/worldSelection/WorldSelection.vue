@@ -1,6 +1,8 @@
 <script setup lang="ts">
 
 import { ref } from "vue";
+import GameListItem from "@/components/selectview/GameListItem.vue";
+
 import { useMapOverview } from "@/services/useMapOverview";
 
 const { mapsOverview } = useMapOverview()
@@ -10,23 +12,28 @@ const { mapsOverview } = useMapOverview()
 <template>
     <div class="wrapper">
         <h1>Welt für neues Spiel wählen</h1>
-        <ul>
-            <div class ="square" v-for="map in (mapsOverview.maps)">
-            
+        <div class="flex-box">
+            <div v-for="map in (mapsOverview.maps)">
+                <GameListItem :worldname="(map.name)"></GameListItem>
             </div>
-        </ul>
-
+        </div>
     </div>
 
 </template>
 
 <style scoped>
 
-.square {
-    width: 12.5rem;
-    height: 15rem;
-    background-color: red;
+
+.flex-box {
+	display:flex; 
+	justify-content: space-around;
 }
+.flex-box > div {
+	display: flex;
+	flex-direction: row;
+	align-items:center;
+}
+
 .wrapper {
   display: grid;
   place-items: center;
