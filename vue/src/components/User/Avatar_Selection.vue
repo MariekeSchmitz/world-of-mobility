@@ -1,9 +1,17 @@
 <script setup lang="ts">
 import Chooseable_Avatar from "@/components/User/Chooseable_Avatar.vue";
 
-// Component for Avatar Selection. Includes one Chooseable Avatar per available Avatar Choice
+/**
+ * Component for Avatar Selection. Includes one Chooseable Avatar per available Avatar Choice
+ * @author Tom Gouthier
+ * @author Marie Bohnert
+ */
 
-// all available Avatars
+/**
+ * all available Avatars
+ * @author Marie Bohnert
+ * @author Tom Gouthier
+ */
 const avatarPictures: string[] = [
   "src/assets/avatar/Gockel.png",
   "src/assets/avatar/Huhn.png",

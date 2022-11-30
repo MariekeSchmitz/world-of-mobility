@@ -1,6 +1,6 @@
 import Game from "@/components/Game.vue";
 import GameSelect from "@/views/GameSelect.vue";
-import StartPage from "@/views/Login/StartPage.vue";
+import StartPage from "@/views/StartPage.vue";
 import WorldSelect from "@/views/WorldSelect.vue";
 import { createRouter, createWebHistory } from "vue-router";
 

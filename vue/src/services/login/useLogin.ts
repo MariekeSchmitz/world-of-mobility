@@ -3,7 +3,11 @@ import type { ILoginResponse } from "./ILoginResponse";
 import type { ILoginState } from "./ILoginState";
 import type { ISendLogin } from "./ISendLogin";
 
-// global State for user
+/**
+ * global State for user
+ * @author Tom Gouthier
+ * @author Marie Bohnert
+ */
 const loginState: ILoginState = reactive({
   username: "",
   avatar: "src/assets/avatar/Schwein.png",
@@ -11,13 +15,23 @@ const loginState: ILoginState = reactive({
   loggedIn: false,
 });
 
-// sets Avatar to certain image url
+/**
+ * @author Tom Gouthier,
+ * @author Marie Bohnert
+ * sets Avatar to certain image url
+ */
+
 const setAvatar = (avatar: string) => {
   loginState.avatar = avatar;
   console.log(avatar);
 };
 
-// sends login request to server
+/**
+ * @author Tom Gouthier
+ * @author Marie Bohnert
+ * sends login request to server
+ */
+
 async function login(username: string) {
   if (loginState.loggedIn) {
     loginState.error = `Already signed in as ${loginState.username}`;
@@ -66,7 +80,11 @@ async function login(username: string) {
   console.log(loginState);
 }
 
-// logout and reset State
+/**
+ * @author Tom Gouthier
+ * @author Marie Bohnert
+ * logout and reset State
+ */
 async function logout() {
   if (!loginState.loggedIn) {
     return;

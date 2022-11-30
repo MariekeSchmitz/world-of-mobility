@@ -1,7 +1,11 @@
 <script setup lang="ts">
 // component that represents a single Avatar - available in different sizes
 
-// Avatar takes in a picture url as well as a size - s, m or l
+/**
+ * Avatar takes in a picture url as well as a size - s, m or l
+ * @author Marie Bohnert
+ * @author Tom Gouthier
+ * */
 const props = withDefaults(
   defineProps<{
     avatarPicture: string;
