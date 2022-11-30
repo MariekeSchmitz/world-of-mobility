@@ -12,7 +12,8 @@ import {
   Texture,
 } from "troisjs";
 import Map from "@/components/Map.vue";
-import { Vector3 } from "three";
+import Car from "@/components/objects/Car.vue";
+import { MathUtils, Vector3 } from "three";
 import { useGame } from "@/services/useGame";
 
 const renderer = ref();
@@ -23,7 +24,7 @@ const car = ref();
 const instanceID = 1;
 const user = "NPC0";
 
-const { sendCommand, receiveGameUpdate } = useGame();
+const { sendCommand, receiveGameUpdate, mapUpdates } = useGame();
 
 //TODO: could be an interface
 const gameControl = "";
@@ -38,6 +39,11 @@ const cameraPosition = computed(() => {
   const vecTempObj = positionTemp.clone();
   const vecTempCar = cameraOffset.clone();
   return vecTempObj.add(vecTempCar);
+});
+
+const allMoveables = computed(() => {
+      console.log(mapUpdates.moveableUpdates);
+      return mapUpdates.moveableUpdates;
 });
 
 onMounted(() => {
@@ -73,53 +79,34 @@ onMounted(() => {
   receiveGameUpdate(instanceID);
 });
 
-/** CODE OF BEATE && MARIE ( GLOWANNA )
-const forwardVec = new Vector3(0, 1, 0);
-
-const positionTemp = reactive(new Vector3(0, 0, -2.5));
-
-//direction value is a value between 0 and 7
-//0 -> north
-//1 -> northWest
-//... -> leftTurn : direction + 2 % 8 (expl. from north to west)
-//counter-clockwise (->like radians)
-const direction = ref(0);
-
-document.addEventListener("keyup", (e) => {
-  if (e.code === "KeyW") {
-    const rotatedForwardVec = rotate(forwardVec, rotation.value);
-    positionTemp.add(rotatedForwardVec);
-  } else if (e.code === "KeyS") {
-    const rotatedForwardVec = rotate(forwardVec, rotation.value);
-    positionTemp.sub(rotatedForwardVec);
-  } else if (e.code === "KeyD") {
-    direction.value = (direction.value - 2) % 8;
-  } else if (e.code === "KeyA") {
-    direction.value = (direction.value + 2) % 8;
-  }
-});
-
-//same Code as in Car Component
-function rotate(offsetVec: Vector3, angle: number) {
-  const axis = new Vector3(0, 1, 0);
-  const w = offsetVec.clone();
-  const res = w.applyAxisAngle(axis, angle);
-  return res;
-}
-
 const pi = MathUtils.degToRad(180);
 
-const rotation = computed(() => {
-  return (direction.value * pi) / 4;
-}); //rotation in radians
+function rotation(value: number) {
+  return (value * pi) / 4;
 }
-<Template>
- <Car :pos="positionTemp" :rotation="rotation"></Car>
 
-      <!-- <Box :position="positionTemp" :size="0.5"> </Box> -->
-<Template/>
-
-*/
+function orientation2angle(orientation: string) {
+  switch(orientation) {
+    case "NORTH":
+      return rotation(0)
+    case "NORTH_EAST":
+      return rotation(1);
+    case "EAST":
+      return rotation(2);
+    case "SOUTH_EAST":
+      return rotation(3);
+    case "SOUTH":
+      return rotation(4);
+    case "SOUTH_WEST":
+      return rotation(5);
+    case "WEST":
+      return rotation(6);
+    case "NORTH_WEST":
+      return rotation(7);
+    default:
+      return rotation(0);
+  }
+}
 </script>
 
 <template>
@@ -136,6 +123,11 @@ const rotation = computed(() => {
         ><ToonMaterial>
           <Texture src="src\textures\Obsidian.jpg" /> </ToonMaterial
       ></Box>
+      <div v-for="moveable in allMoveables">
+        <Car v-if="moveable.classname === 'Passenger'" :pos="new Vector3( moveable.xPos, 1, moveable.yPos )" :rotation="orientation2angle(moveable.orientation)">
+
+        </Car>
+      </div>
     </Scene>
   </Renderer>
 </template>

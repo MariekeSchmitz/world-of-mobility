@@ -21,15 +21,15 @@ export function useGame(): any {
     }
 
     interface IGameUpdate {
-        movables: Array<IMoveable>
+        moveableUpdates: Array<IMoveable>
     }
 
     interface IGameState {
         gameUpdateListe: IGameUpdate[]
     }
 
-    const gameState = reactive<IGameState> ({
-        gameUpdateListe: []
+    const gameState = reactive<IGameUpdate> ({
+        moveableUpdates: []
     });
 
     async function sendCommand(clientid: number, user: string, command: string) {
@@ -76,9 +76,8 @@ export function useGame(): any {
         stompClient.onConnect = (frame: any) => {
             console.log("Connected Stompbroker to GameUpdate");
             stompClient.subscribe(DEST, (message: { body: string; }) => {
-                console.log(`Stompbroker received message: \n${message.body}`);
                 const gameUpdate: IGameUpdate = JSON.parse(message.body);
-                gameState.gameUpdateListe.push(gameUpdate);
+                gameState.moveableUpdates = gameUpdate.moveableUpdates;
             });
         }
     
