@@ -37,7 +37,7 @@ export function useGame(): any {
             const controller = new AbortController();
             const URL = '/api/game/'+clientid+'/game-command';
             
-            const data = {user, command};
+            const data = {user: user, control: command};
     
             const id = setTimeout(() => controller.abort(), 8000);
     
@@ -47,7 +47,7 @@ export function useGame(): any {
                     'Content-Type': 'application/json'
                 },
                 signal: controller.signal,
-                body: JSON.stringify(data)
+                body: JSON.stringify(data as IGameControl)
             });
             
             clearTimeout(id);

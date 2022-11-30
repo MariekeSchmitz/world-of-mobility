@@ -21,7 +21,7 @@ const car = ref();
 
 //TODO: dynamisch anpassen
 const instanceID = 1;
-const user = "Test";
+const user = "NPC0";
 
 const { sendCommand, receiveGameUpdate } = useGame();
 
@@ -53,13 +53,13 @@ onMounted(() => {
   //orbitControls.maxAzimuthAngle = 0;
   //orbitControls.minAzimuthAngle = 0;
   document.addEventListener("keyup", (e) => {
-    if (e.code === "ArrowUp") {
+    if (e.code === "KeyW") {
       sendCommand(instanceID, user, "SPEED_UP");
-    } else if (e.code === "ArrowDown") {
+    } else if (e.code === "KeyS") {
       sendCommand(instanceID, user, "SPEED_DOWN");
-    } else if (e.code === "ArrowRight") {
+    } else if (e.code === "KeyA") {
       sendCommand(instanceID, user, "RIGHT");
-    } else if (e.code === "ArrowLeft") {
+    } else if (e.code === "KeyD") {
       sendCommand(instanceID, user, "LEFT");
     } else if (e.code === "KeyO") {
       const degree = Math.PI / 4;
