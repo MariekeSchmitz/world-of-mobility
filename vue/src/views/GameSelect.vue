@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import GameListItems from '@/components/selectview/GameListItems.vue';
+
 </script>
-
-
 
 <template>
     <div>
@@ -13,7 +11,7 @@ import GameListItems from '@/components/selectview/GameListItems.vue';
             <button>
                 <img src="../buttons/editor/plus.png" alt=""> Welt erstellen
             </button>
-            <img id="logo" src="" alt="Logo Fehlt">
+            <img src="" alt="Logo Fehlt">
         </div>
 
         <hr>
@@ -29,17 +27,13 @@ import GameListItems from '@/components/selectview/GameListItems.vue';
                 <input type="radio">
                 <label for="">Alle</label>
             </div>
-
-            <div>
-                <GameListItems></GameListItems>
-            </div>
         </div>
     </div>
 </template>
 
 <style>
 
-#logo {
+img {
     width: 5rem;
     height: 5rem;
 }
