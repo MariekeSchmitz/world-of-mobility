@@ -1,20 +1,25 @@
-import GamingMap from "@/components/GamingMap.vue";
-import App from "@/TestCompVickyKevin.vue";
-import StartPage from "@/views/Login/StartPage.vue";
+import Game from "@/components/Game.vue";
+import GameSelect from "@/views/GameSelect.vue";
+import WorldSelect from "@/views/WorldSelect.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/",
-      name: "home",
-      component: StartPage,
+      path: "/game",
+      name: "GameView",
+      component: Game,
     },
     {
-      path: "/app",
-      name: "App",
-      component: App,
+      path: "/worldselect",
+      name: "worldSelect",
+      component: WorldSelect,
+    },
+    {
+      path: "/gameselect",
+      name: "GameSelect",
+      component: GameSelect,
     },
   ],
 });

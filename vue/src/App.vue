@@ -1,7 +1,40 @@
 <script setup lang="ts">
-import { ref, onMounted, reactive } from "vue";
+import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
-  <RouterView />
+  <nav>
+    <RouterLink to="/game">Game</RouterLink>
+    <RouterLink to="/worldselect">WorldSelect</RouterLink>
+    <RouterLink to="/gameselect">GameSelect</RouterLink>
+  </nav>
+  <RouterView></RouterView>
 </template>
+
+<style>
+nav {
+  width: 100%;
+  font-size: 20px;
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+nav a.router-link-exact-active {
+  color: var(--color-text);
+}
+
+nav a.router-link-exact-active:hover {
+  background-color: transparent;
+}
+
+nav a {
+  display: inline-block;
+  padding: 0 1rem;
+  border-left: 1px solid var(--color-border);
+}
+
+nav a:first-of-type {
+  border: 0;
+}
+</style>
