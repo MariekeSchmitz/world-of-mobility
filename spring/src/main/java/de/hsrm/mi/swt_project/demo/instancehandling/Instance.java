@@ -1,5 +1,7 @@
 package de.hsrm.mi.swt_project.demo.instancehandling;
 
+import java.io.File;
+
 import de.hsrm.mi.swt_project.demo.controls.Updateable;
 
 /**
@@ -8,6 +10,9 @@ import de.hsrm.mi.swt_project.demo.controls.Updateable;
  * @author Alexandra Müller
  */
 public abstract class Instance implements Updateable {
+
+    protected static final File mapSavePath = new File("maps");
+
     protected GameMap map;
     protected long id;
 
