@@ -65,17 +65,17 @@ export function useGame(): any {
         
     }
 
-    async function receiveGameUpdate() {
+    async function receiveGameUpdate(instanceid:number) {
         const wsurl = `ws://${window.location.host}/stompbroker`;
-        const DEST = "/topic/GameUpdate";
+        const DEST = `/topic/game/${instanceid}`;
     
         const stompClient = new Client({ brokerURL: wsurl });
-        stompClient.onWebSocketError = event => console.log(`ERROR: WebSocket-Error in GameUpdate: ${event}`);
-        stompClient.onStompError = event => console.log(`ERROR: Stomp-Error in GameUpdate: ${event}`);
+        stompClient.onWebSocketError = (event: any) => console.log(`ERROR: WebSocket-Error in GameUpdate: ${event}`);
+        stompClient.onStompError = (event: any) => console.log(`ERROR: Stomp-Error in GameUpdate: ${event}`);
     
-        stompClient.onConnect = frame => {
+        stompClient.onConnect = (frame: any) => {
             console.log("Connected Stompbroker to GameUpdate");
-            stompClient.subscribe(DEST, (message) => {
+            stompClient.subscribe(DEST, (message: { body: string; }) => {
                 console.log(`Stompbroker received message: \n${message.body}`);
                 const gameUpdate: IGameUpdate = JSON.parse(message.body);
                 gameState.gameUpdateListe.push(gameUpdate);

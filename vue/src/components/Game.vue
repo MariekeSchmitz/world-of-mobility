@@ -13,10 +13,22 @@ import {
 } from "troisjs";
 import Map from "@/components/Map.vue";
 import { Vector3 } from "three";
+import { useGame } from "@/services/useGame";
 
 const renderer = ref();
 const camera = ref();
 const car = ref();
+
+//TODO: dynamisch anpassen
+const instanceID = 1;
+const user = "Test";
+
+const { sendCommand, receiveGameUpdate } = useGame();
+
+//TODO: could be an interface
+const gameControl = "";
+
+const restPath = `/${instanceID}/game-command`;
 
 const cameraOffset = reactive(new Vector3(0, 8, -15));
 
@@ -41,14 +53,14 @@ onMounted(() => {
   //orbitControls.maxAzimuthAngle = 0;
   //orbitControls.minAzimuthAngle = 0;
   document.addEventListener("keyup", (e) => {
-    if (e.code === "KeyW") {
-      positionTemp.add(new Vector3(0, 0, 1));
-    } else if (e.code === "KeyS") {
-      positionTemp.add(new Vector3(0, 0, -1));
-    } else if (e.code === "KeyD") {
-      positionTemp.add(new Vector3(-1, 0, 0));
-    } else if (e.code === "KeyA") {
-      positionTemp.add(new Vector3(1, 0, 0));
+    if (e.code === "ArrowUp") {
+      sendCommand(instanceID, user, "SPEED_UP");
+    } else if (e.code === "ArrowDown") {
+      sendCommand(instanceID, user, "SPEED_DOWN");
+    } else if (e.code === "ArrowRight") {
+      sendCommand(instanceID, user, "RIGHT");
+    } else if (e.code === "ArrowLeft") {
+      sendCommand(instanceID, user, "LEFT");
     } else if (e.code === "KeyO") {
       const degree = Math.PI / 4;
       cameraOffset.applyAxisAngle(new Vector3(0, 1, 0), degree);
@@ -57,6 +69,8 @@ onMounted(() => {
       orbitControls.update();
     }
   });
+
+  receiveGameUpdate(instanceID);
 });
 
 /** CODE OF BEATE && MARIE ( GLOWANNA )
