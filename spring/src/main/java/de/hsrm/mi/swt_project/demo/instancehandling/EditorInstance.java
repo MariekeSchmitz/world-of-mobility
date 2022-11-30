@@ -8,13 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.EditorControl;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
-import de.hsrm.mi.swt_project.demo.movables.Passenger;
 
 /**
  * This class represents a single editor instance of the game.
@@ -97,6 +94,8 @@ public class EditorInstance extends Instance {
 
     /**
      * Saves the map to a file.
+     * 
+     * @param name the name of the map
      */
     public void saveMap(String name) {
 

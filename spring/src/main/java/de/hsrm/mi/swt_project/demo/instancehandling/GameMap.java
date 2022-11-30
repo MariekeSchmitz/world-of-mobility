@@ -1,7 +1,6 @@
 package de.hsrm.mi.swt_project.demo.instancehandling;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
@@ -16,8 +15,11 @@ public class GameMap {
 
     private Tile[][] tiles = new Tile[2][2];
     private String name;
-    private List <MoveableObject> npcs = new ArrayList<>();
-    
+    private List<MoveableObject> npcs = new ArrayList<>();
+
+    public GameMap() {
+    }
+
     /** adds a moveable Object to the map. e.g. a scripted car
      * @param moveable
      * @author Tom Gouthier
@@ -25,7 +27,6 @@ public class GameMap {
     public void addNpc(MoveableObject moveable){
         this.npcs.add(moveable);
     }
-
     
     /** adds a Tile to the map at a certain position
      * @param tile
@@ -36,7 +37,6 @@ public class GameMap {
     public void addTile(Tile tile, int xPos, int yPos){
         this.tiles[yPos][xPos] = tile;
     }
-
 
     /**
      * 
@@ -51,7 +51,7 @@ public class GameMap {
      *
      */
     private void expandMap(){
-
+        //TODO implement
     }
 
 
@@ -83,7 +83,6 @@ public class GameMap {
     public void setNpcs(List<MoveableObject> npcs) {
         this.npcs = npcs;
     }
-
 
     @Override
     public String toString() {
