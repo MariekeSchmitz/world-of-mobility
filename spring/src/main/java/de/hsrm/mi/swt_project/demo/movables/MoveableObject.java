@@ -30,6 +30,8 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
     protected float currentVelocity = 0;
     protected String script = null;
 
+    protected MoveableType type;
+
 
     /**
      * Gets orientation of the movable object.
