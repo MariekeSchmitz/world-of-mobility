@@ -4,6 +4,7 @@ import { RouterLink, RouterView } from "vue-router";
 
 <template>
   <nav>
+    <RouterLink to="/login">Login</RouterLink>
     <RouterLink to="/game">Game</RouterLink>
     <RouterLink to="/worldselect">WorldSelect</RouterLink>
     <RouterLink to="/gameselect">GameSelect</RouterLink>
