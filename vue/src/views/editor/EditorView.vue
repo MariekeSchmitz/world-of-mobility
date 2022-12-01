@@ -20,6 +20,7 @@
     import type { ExportTile } from "@/services/editor/ExportTileInterface";
     import {useMapUpdate} from "@/services/useMapUpdate"
     import {useMap} from "@/services/useMap"
+import { computed } from "@vue/reactivity";
 
 
     /**
@@ -29,123 +30,106 @@
     const camera = ref();
     const scene = ref();
     const {sendMapUpdates, receiveMapUpdates, mapState} = useMapUpdate("test");
-    const {getMap} = useMap();
+    const {getMap, saveMap} = useMap();
     //receiveMapUpdates();
     
-    //loaded Map (once Backend works)
-    //const loadedMap = getMap("Default");
+    
     
     //List of Tiles
-    let tiles: Tile[][] = [
+    let tiles: Object[][] = [
                 [
                 {
-                    typ: "SIDEWAY",
+                    type: "SIDEWAY",
                     orientation: "NORTH",
                     placedObjects:[]
                 },
                 {
-                    typ: "STREET_T_CROSS",
+                    type: "STREET_T_CROSS",
                     orientation: "SOUTH",
                     placedObjects:[]
                 },
                 {
-                    typ: "",
-                    orientation: "",
-                    placedObjects:[]
+                
                 },
                 {
-                    typ: "",
-                    orientation: "",
-                    placedObjects:[]
+                    
                 }
               ],
               [
                 {
-                  typ: "STREET_STRAIGHT",
+                  type: "STREET_STRAIGHT",
                     orientation: "EAST",
                     placedObjects:[]
                 },
                 {
-                    typ: "STREET_CURVE",
+                    type: "STREET_CURVE",
                     orientation: "SOUTH",
                     placedObjects:[]
                 },
                 {
-                    typ: "STREET_CURVE",
+                    type: "STREET_CURVE",
                     orientation: "EAST",
                     placedObjects:[]
                 },
                 {
-                    typ: "",
-                    orientation: "",
-                    placedObjects:[]
+                   
                 }
               ],
               [
                 {
-                  typ: "STREET_STRAIGHT",
+                  type: "STREET_STRAIGHT",
                     orientation: "WEST",
                     placedObjects:[]
                 },
                 {
-                    typ: "STREET_CURVE",
+                    type: "STREET_CURVE",
                     orientation: "WEST",
                     placedObjects:[]
                 },
                 {
-                    typ: "STREET_CURVE",
+                    type: "STREET_CURVE",
                     orientation: "NORTH",
                     placedObjects:[]
                 },
                 {
-                    typ: "",
-                    orientation: "",
-                    placedObjects:[]
+                    
                 }
               ],
               [
                 {
-                  typ: "STREET_STRAIGHT",
+                  type: "STREET_STRAIGHT",
                     orientation: "NORTH",
                     placedObjects:[]
                 },
                 {
-                    typ: "",
-                    orientation: "",
-                    placedObjects:[]
+                    
                 },
                 {
-                    typ: "",
-                    orientation: "",
-                    placedObjects:[]
+                    
                 },
                 {
-                    typ: "",
-                    orientation: "",
-                    placedObjects:[]
+                    
                 }
               ]
               ]
-    
+
     //Tile Map width and height
-    const mapWidth = tiles[0].length
-    const mapHeight = tiles.length
-              
+    const mapWidth = ref(tiles[0].length)
+    const mapHeight = ref(tiles.length)
+                
     //Offset so Tiles start on Bottom Right for 0,0
-    const offsetx = -(mapWidth + 1) / 2
-    const offsety = -(mapHeight + 1) /2
+    const offsetx = computed(() => (-(mapWidth.value + 1) / 2));
+     
+    const offsety = computed(() => (-(mapHeight.value + 1) / 2));
+    console.log(offsetx.value, offsety.value)
+    
+    
 
-    const loadManager = new THREE.LoadingManager();
-    const loader = new THREE.TextureLoader(loadManager);
-
+    //loaded Map (once Backend works)
+    const loadedMap = getMap("", 1);
+    
     let prevTexture:String = "";
     let overwritten = false
-
-    
-    let row = 0;
-    let column = 0;
-    
-
 
     /**
      * create Editable Map in Editor from Map object
@@ -153,22 +137,33 @@
      */
 
     function createMap(tiles:Tile[][]){
-      for(row = 0;row < tiles.length;row++){
-        for(column =0 ;column < tiles[0].length; column++){
+      console.log("mapwidth: ",mapWidth.value)
+
+      const loadManager = new THREE.LoadingManager();
+      const loader = new THREE.TextureLoader(loadManager);
+
+
+      for(let row = 0;row < tiles.length;row++){
+        for(let column =0 ;column < tiles[0].length; column++){
           console.log(row,column)
 
           const TileGeometry = new THREE.PlaneGeometry( 0.99, 0.99 );
           let material = new THREE.MeshBasicMaterial();
-          //material.props= "{map: tiles[row-1][column-1].typ==''?loader.load('src/textures/editor/Default.jpg'):loader.load('src/textures/editor/'+tiles[row-1][column-1].typ+'.jpg')}"
           
-          let texturePath = tiles[row][column].typ == '' ? 'src/textures/editor/Default.jpg' : 'src/textures/editor/'+tiles[row][column].typ+'.jpg'
+          let texturePath = 'src/textures/editor/Default.jpg'
+          if (tiles[row][column] != null){
+            texturePath = 'src/textures/editor/'+tiles[row][column].type+'.jpg'
+          }
           console.log(texturePath);
           material.map = loader.load(texturePath)
           const TileMesh = new THREE.Mesh( TileGeometry, material );
-          TileMesh.position.x = row + offsetx +1;
-          TileMesh.position.y = column + offsety +1;
+          TileMesh.position.x = row + offsetx.value +1;
+          TileMesh.position.y = column + offsety.value +1;
           TileMesh.position.z = 0.01;
-          TileMesh.rotation.z = tiles[row][column].orientation == '' ? 0 : Orientation[tiles[row][column].orientation]
+          TileMesh.rotation.z = 0;
+          if (tiles[row][column] != null){
+            TileMesh.rotation.z = Orientation[tiles[row][column].orientation]
+          }
           scene.value.add(TileMesh);
           
           
@@ -185,21 +180,21 @@
      */
     function updateMap(update:ExportTile){
       let newTile = tiles[update.newXPos][update.newYPos]
-      newTile.typ = update.type
+      newTile.type = update.type
       newTile.orientation = update.orientation
       newTile.placedObjects = update.placedObjects
 
       let frontendTile = new THREE.Mesh(new THREE.BufferGeometry, new THREE.Material());
 
       for (let i =0; i < scene.value.scene.children.length; i++){
-        if (scene.value.scene.children[i].position.x == update.newXPos - offsetx  && scene.value.scene.children[i].position.y == update.newYPos - offsety){
+        if (scene.value.scene.children[i].position.x == update.newXPos - offsetx.value  && scene.value.scene.children[i].position.y == update.newYPos - offsety.value){
           frontendTile = scene.value.scene.children[i]
           break
         }
         
       }
 
-        let texturePath = tiles[row][column].typ == '' ? 'src/textures/editor/Default.jpg' : 'src/textures/editor/'+tiles[row][column].typ+'.jpg'
+        let texturePath = tiles[row][column].type == '' ? 'src/textures/editor/Default.jpg' : 'src/textures/editor/'+tiles[row][column].type+'.jpg'
         frontendTile.material.map = loader.load(texturePath)
         frontendTile.rotation.z = tiles[row][column].orientation == '' ? 0 : Orientation[tiles[row][column].orientation]
       
@@ -207,7 +202,7 @@
       if (update.prevXPos != null){
         let oldTile = tiles[update.prevXPos][update.prevXPos];
         oldTile.orientation = "NORTH";
-        oldTile.typ = "";
+        oldTile.type = "";
         oldTile.placedObjects = [];
       }
     }
@@ -234,13 +229,10 @@
 
     function planeClick(tileObject:THREE.Mesh) {
       removeContextMenu();
-      //Object to be Sent via REST (to be implemented)
-      
-      
       
       if (place.placeMode){
-        let posX = tileObject.position.x - offsetx -1;
-        let posY = tileObject.position.y - offsety -1;
+        let posX = tileObject.position.x - offsetx.value -1;
+        let posY = tileObject.position.y - offsety.value -1;
 
         let toSendObj: ExportTile = {
         type: place.placeType,
@@ -252,18 +244,18 @@
         placedObjects: []
       } 
 
-        let toPlace:Tile = {
-          typ: place.placeType,
-          orientation: "NORTH",
-          placedObjects:[]
-        }
-        //sendMapUpdates(toSendObj);
-        
+      sendMapUpdates(toSendObj);
+      /** 
+      let toPlace:Tile = {
+        typ: place.placeType,
+        orientation: "NORTH",
+        placedObjects:[]
+      }
           
         //reset rotation to 0  
         tileObject.setRotationFromEuler(new THREE.Euler());
         tileObject.material.map = loader.load('src/textures/editor/'+place.placeType+'.jpg')
-        tiles[posX][posY] = toPlace;
+        tiles[posX][posY] = toPlace;*/
       }
 
     }
@@ -366,10 +358,19 @@
     }
 
     onMounted(() => {
+      /*
+      const orbitControls = rendererC.value.three.cameraCtrl;
+      const cameraControls = camera.value.camera;
+      orbitControls.target = (new THREE.Vector3(2,2,0));
+      cameraControls.position.set(new THREE.Vector3(2,2,10));
+      orbitControls.update();*/
+
       rendererC.value.canvas.addEventListener("click", onDocumentLeftMouseDown)
       rendererC.value.canvas.addEventListener("mousemove", onMouseOver)
       rendererC.value.canvas.addEventListener("contextmenu", onDocumentRightMouseDown)
-      createMap(tiles);
+      loadedMap.then((result) => setLoadedMap(result.tiles))
+      console.log(tiles)
+
       
       let changeTileFrontend = null;
       console.log(scene.value.scene.children.length)
@@ -377,6 +378,20 @@
       
 
     });
+
+    function setLoadedMap(receivedTiles){
+      tiles = receivedTiles;
+      console.log ("tiles = ", tiles)
+      mapWidth.value = tiles[0].length
+      mapHeight.value = tiles.length
+      console.log(mapWidth.value, mapHeight.value, "a")
+      createMap(tiles);
+
+    }
+
+    
+
+    
 
 
     var raycaster = new THREE.Raycaster();
@@ -483,7 +498,7 @@
 
 <template>
   <div class="mapTitle">
-    <p>Farmerama Map</p>
+    <p>Farmerama Map</p> <button @click="saveMap('testMap2',1)"></button>
   </div>
     
     <div id="exitButton">
