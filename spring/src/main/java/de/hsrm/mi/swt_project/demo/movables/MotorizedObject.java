@@ -112,29 +112,23 @@ public class MotorizedObject extends MoveableObject {
 
             // valid orientations
 
-            case NORTH: // Fall through
-            case EAST:  // Fall through
-            case SOUTH: // Fall through
-            case WEST:  // Fall through
-
-                // in case of valid axis-aligned orientation
-                // nothing has to be adjusted
+            // in case of valid axis-aligned orientation
+            // nothing has to be adjusted
+            case NORTH, EAST, SOUTH, WEST: 
                 return orientation;
+
 
             // invalid orientations
 
-            case NORTH_EAST:    // Fall through
-            case SOUTH_EAST:    // Fall through
-            case SOUTH_WEST:    // Fall through
-            case NORTH_WEST:    // Fall through
+            // in case of invalid diagonal orientation
+            // adjust to next valid orientation
 
-                // in case of invalid diagonal orientation
-                // adjust to next valid orientation
+            case NORTH_EAST, SOUTH_EAST, SOUTH_WEST, NORTH_WEST: 
                 return orientation.next();
-            
-            default:
 
-                // NORTH is always the default orientation
+                
+            // NORTH is always the default orientation
+            default:
                 return Orientation.NORTH;
         }
     }
