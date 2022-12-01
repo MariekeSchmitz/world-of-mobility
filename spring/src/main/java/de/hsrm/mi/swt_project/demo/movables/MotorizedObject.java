@@ -138,5 +138,42 @@ public class MotorizedObject extends MoveableObject {
                 return Orientation.NORTH;
         }
     }
-    
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof MotorizedObject)) {
+            return false;
+        }
+
+        MotorizedObject mo = (MotorizedObject) o;
+        return this.xPos == mo.xPos
+            && this.yPos == mo.yPos
+            && this.maxVelocity == mo.maxVelocity
+            && this.currentVelocity == mo.currentVelocity
+            && this.capacity == mo.capacity
+            && this.orientation.equals(mo.orientation)
+            && this.script.equals(mo.script);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Float.hashCode(this.xPos);
+        result = 31 * result + Float.hashCode(this.yPos);
+        result = 31 * result + Float.hashCode(this.maxVelocity);
+        result = 31 * result + Float.hashCode(this.currentVelocity);
+        result = 31 * result + Float.hashCode(this.capacity);
+        result = 31 * result + this.orientation.hashCode();
+        result = 31 * result + this.script.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("MotorizedObject[xPos=%.2f,yPos=%.2f,curV=%.2f,maxV=%.2f,cap=%.2f,orientation=%s]", this.xPos, this.yPos, this.currentVelocity, this.maxVelocity, this.capacity, this.orientation);
+    }
+
 }
