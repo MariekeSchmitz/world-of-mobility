@@ -28,7 +28,7 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
 
     protected float capacity = 1;
     protected float currentVelocity = 0;
-    protected String script = null;
+    protected String script = "";
 
 
     /**
