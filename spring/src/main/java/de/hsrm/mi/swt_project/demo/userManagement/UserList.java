@@ -1,6 +1,7 @@
 package de.hsrm.mi.swt_project.demo.userManagement;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * List of all Users, up to date at all times. Used to check, if user is unique
@@ -9,17 +10,17 @@ import java.util.LinkedList;
  */
 public class UserList {
 
-    private LinkedList<String> userList;
+    private List<String> userList;
 
     public UserList() {
         userList = new LinkedList<>();
     }
 
-    public LinkedList<String> getUserList() {
+    public List<String> getUserList() {
         return userList;
     }
 
-    public void setUserList(LinkedList<String> userList) {
+    public void setUserList(List<String> userList) {
         this.userList = userList;
     }
 
