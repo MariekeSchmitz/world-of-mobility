@@ -9,32 +9,32 @@ const props = withDefaults(
     pos: Vector3;
     rotation: number; //in radians
   }>(),
-  { pos: new Vector3(0, 0, -2.5), rotation: 0 }
+  { pos: new Vector3(0, -2.5, 0), rotation: 0 }
 );
 
 function rotate(offsetVec: Vector3, angle: number) {
-  const axis = new Vector3(0, 0, 1);
+  const axis = new Vector3(0, 1, 0);
   const w = offsetVec.clone();
   const res = w.applyAxisAngle(axis, angle);
   return res;
 }
 
 const offsets = {
-  offsetBody: new Vector3(2, 0, 0.15),
-  offsetTop: new Vector3(2, -0.15, 0.9),
-  // offsetTireLeftFront: new Vector3(3, 1, -0.25),
-  // offsetTireLeftBack: new Vector3(3, -1, -0.25),
-  // offsetTireRigthFront: new Vector3(1, 1, -0.25),
-  // offsetTireRightBack: new Vector3(1, -1, -0.25),
-  // offsetLightRightFront: new Vector3(1.5, 1.28, 0),
-  // offsetLightLeftFront: new Vector3(2.5, 1.28, 0),
+  offsetBody: new Vector3(2, 0.15, 0),
+  offsetTop: new Vector3(2, 0.9, -0.15),
+  // offsetTireLeftFront: new Vector3(3, -0.25, 1),
+  // offsetTireLeftBack: new Vector3(3, -0.25, -1),
+  // offsetTireRigthFront: new Vector3(1, -0.25, 1),
+  // offsetTireRightBack: new Vector3(1, -0.25, -1),
+  // offsetLightRightFront: new Vector3(1.5, 0, 1.28),
+  // offsetLightLeftFront: new Vector3(2.5, 0, 1.28),
 };
 
 const tires = [
-  { offset: new Vector3(3, 1, -0.25), name: "tireLeftFront" },
-  { offset: new Vector3(3, -1, -0.25), name: "tireLeftBack" },
-  { offset: new Vector3(1, 1, -0.25), name: "tireRightFront" },
-  { offset: new Vector3(1, -1, -0.25), name: "tireRightBack" },
+  { offset: new Vector3(3, -0.25, 1), name: "tireLeftFront" },
+  { offset: new Vector3(3, -0.25, -1), name: "tireLeftBack" },
+  { offset: new Vector3(1, -0.25, 1), name: "tireRightFront" },
+  { offset: new Vector3(1, -0.25, -1), name: "tireRightBack" },
 ];
 
 const rotatedTires = computed(() => {
@@ -52,8 +52,8 @@ const rotatedTires = computed(() => {
 });
 
 const lights = [
-  { offset: new Vector3(1.5, 1.28, 0), name: "lightRightFront" },
-  { offset: new Vector3(2.5, 1.28, 0), name: "lightLeftFront" },
+  { offset: new Vector3(1.5, 0, 1.28), name: "lightRightFront" },
+  { offset: new Vector3(2.5, 0, 1.28), name: "lightLeftFront" },
 ];
 
 const rotatedLights = computed(() => {
@@ -96,19 +96,19 @@ const topPosRotated = computed(() => {
   <!-- Main Torso of the car -->
   <Box
     ref="body"
-    :scale="new Vector3(2, 3, 1)"
+    :scale="new Vector3(2, 1, 3)"
     :size="1"
     :position="bodyPosRotated"
-    :rotation="new Vector3(0, 0, props.rotation)"
+    :rotation="new Vector3(0, props.rotation, 0)"
   >
     <ToonMaterial color="#cc0000" />
   </Box>
   <Box
     ref="top"
-    :scale="new Vector3(2, 2, 0.75)"
+    :scale="new Vector3(2, 0.75, 2)"
     :size="1"
     :position="topPosRotated"
-    :rotation="new Vector3(0, 0, props.rotation)"
+    :rotation="new Vector3(0, props.rotation, 0)"
   >
     <ToonMaterial color="#cc0000" />
   </Box>
@@ -119,7 +119,7 @@ const topPosRotated = computed(() => {
       ref="{{tire.name}}"
       :size="0.5"
       :position="tire.position"
-      :rotation="new Vector3(0, 0, props.rotation)"
+      :rotation="new Vector3(0, props.rotation, 0)"
     >
       <ToonMaterial color="#123456" />
     </Box>
@@ -131,7 +131,7 @@ const topPosRotated = computed(() => {
       ref="{{light.name}}"
       :size="0.5"
       :position="light.position"
-      :rotation="new Vector3(0, 0, props.rotation)"
+      :rotation="new Vector3(0, props.rotation, 0)"
     >
       <ToonMaterial color="#F1C232" />
     </Box>

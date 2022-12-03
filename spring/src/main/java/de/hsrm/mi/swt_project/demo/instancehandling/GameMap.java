@@ -1,5 +1,6 @@
 package de.hsrm.mi.swt_project.demo.instancehandling;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
@@ -14,7 +15,7 @@ public class GameMap {
 
     private Tile[][] tiles;
     private String name;
-    private List <MoveableObject> npcs;
+    private List <MoveableObject> npcs = new ArrayList<>();
 
     
     /** adds a moveable Object to the map. e.g. a scripted car
