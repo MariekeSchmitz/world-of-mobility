@@ -42,10 +42,13 @@ const cameraPosition = computed(() => {
 });
 
 const allMoveables = computed(() => {
-      console.log(mapUpdates.moveableUpdates);
+      //console.log(mapUpdates.moveableUpdates);
       return mapUpdates.moveableUpdates;
 });
-
+/**
+ * In this method we set the KeyListner for the Gameview
+ * and setup the cam to work as intended.
+ */
 onMounted(() => {
   const orbitControls = renderer.value.three.cameraCtrl;
   const cameraControls = camera.value.camera;
@@ -81,10 +84,18 @@ onMounted(() => {
 
 const pi = MathUtils.degToRad(180);
 
+/**
+ * returns the radiant value of a passed amount of steps - value.
+ * @param value each step represents 1/8 of an 360* turn.
+ */
 function rotation(value: number) {
   return (value * pi) / 4;
 }
-
+/**
+ * returns the rotation value as radiant based of our orientation.
+ * calls the rotation method for that.
+ * @param orientation the orientation of an object as string.
+ */
 function orientation2angle(orientation: string) {
   switch(orientation) {
     case "NORTH":
@@ -123,10 +134,12 @@ function orientation2angle(orientation: string) {
         ><ToonMaterial>
           <Texture src="src\textures\Obsidian.jpg" /> </ToonMaterial
       ></Box>
-      <div v-for="moveable in allMoveables">
-        <Car v-if="moveable.classname === 'Passenger'" :pos="new Vector3( moveable.xPos, 1, moveable.yPos )" :rotation="orientation2angle(moveable.orientation)">
-
-        </Car>
+      <div v-for="(moveable, index) in allMoveables" :key="index">
+        <Car
+          v-if="moveable.classname === 'Passenger'"
+          :pos="new Vector3(moveable.xPos, 1, moveable.yPos)"
+          :rotation="orientation2angle(moveable.orientation)"
+        ></Car>
       </div>
     </Scene>
   </Renderer>
