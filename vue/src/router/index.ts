@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Game from "@/components/Game.vue";
 import WorldSelect from "@/views/WorldSelect.vue";
 import GameSelect from "@/views/GameSelect.vue";
+import JoinGame from "@/components/joinGame/JoinGame.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,6 +21,11 @@ const router = createRouter({
       path: "/gameselect",
       name: "GameSelect",
       component: GameSelect,
+    },
+    {
+      path: "/joingame",
+      name: "JoinGame",
+      component: JoinGame,
     },
   ],
 });
