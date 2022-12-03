@@ -1,7 +1,7 @@
 import { reactive } from "vue";
 
 export interface Tile {
-    typ:string,
+    type:string,
     orientation:string,
     placedObjects: []
 }

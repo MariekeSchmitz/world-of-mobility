@@ -1,11 +1,22 @@
 package de.hsrm.mi.swt_project.demo.instancehandling;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.controls.Updateable;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
+import de.hsrm.mi.swt_project.demo.movables.MoveableType;
+import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
 /**
  * This class maintains all instances of the game.
@@ -34,21 +45,67 @@ import de.hsrm.mi.swt_project.demo.controls.Updateable;
     /**
      * Adds a new game instance to the handler.
      * 
-     * @param map the map to use for the instance
+     * @param mapName the map to use for the instance
+     * @param sessionName the name of the session
      */
-    public void createGameInstance(GameMap map, String name) {
-        instances.add(new GameInstance(map, name, idCounter));
-        idCounter++;
+    public void createGameInstance(String mapName, String sessionName) {
+        try {
+            JSONObject mapFile = new JSONObject(Files.readString(Path.of("./maps/" + mapName + ".json")));
+            instances.add(new GameInstance(loadMap(mapFile), sessionName, idCounter++));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
     }
 
     /**
      * Adds a new editor instance to the handler.
      * 
-     * @param map the map to use for the instance
+     * @param mapName the map to use for the instance
      */
-    public void createEditorInstance(GameMap map) {
-        instances.add(new EditorInstance(map, idCounter));
-        idCounter++;
+    public void createEditorInstance(String mapName) {
+        try {
+            JSONObject mapFile = new JSONObject(Files.readString(Path.of("./maps/" + mapName + ".json")));
+            instances.add(new EditorInstance(loadMap(mapFile), idCounter++));
+        } catch (IOException e) {
+            instances.add(new EditorInstance(new GameMap(), idCounter++));
+        }
+    }
+
+    /**
+     * Loads a map from a JSON file.
+     * 
+     * @param mapFile the JSON file to load the map from
+     * @return the loaded map
+     */
+    private GameMap loadMap(JSONObject mapFile) {
+        JSONArray tiles = mapFile.getJSONArray("Tiles");
+        JSONArray npcs = mapFile.getJSONArray("Npcs");
+
+        GameMap map = new GameMap();
+        
+        tiles.forEach(tile -> {
+            JSONObject tileObject = (JSONObject) tile;
+            Tiletype tileType = tileObject.getEnum(Tiletype.class, "type");
+            int xPos = tileObject.getInt("xPos");
+            int yPos = tileObject.getInt("yPos");
+            Orientation orientation = tileObject.getEnum(Orientation.class, "orientation");
+            Tile newTile = tileType.createTile();
+            newTile.setOrientation(orientation);
+            map.addTile(newTile, xPos, yPos);
+        });
+
+        npcs.forEach(npc -> {
+            JSONObject npcObject = (JSONObject) npc;
+            MoveableType npcType = npcObject.getEnum(MoveableType.class, "type");
+            int xPos = npcObject.getInt("xPos");
+            int yPos = npcObject.getInt("yPos");
+            int maxVelocity = npcObject.getInt("maxVelocity");
+            MoveableObject newNpc = npcType.createMovable(xPos, yPos, maxVelocity);
+            map.addNpc(newNpc);
+        });
+
+        return map;
     }
 
     /**
