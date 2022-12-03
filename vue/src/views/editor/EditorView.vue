@@ -237,11 +237,9 @@ import { computed } from "@vue/reactivity";
         let toSendObj: ExportTile = {
         type: place.placeType,
         orientation: "NORTH",
-        prevXPos: -1,
-        prevYPos: -1,
-        newXPos: posX,
-        newYPos: posY,
-        placedObjects: []
+        xPos: posX,
+        yPos: posY,
+        control: "PLACE",
       } 
 
       sendMapUpdates(toSendObj);
@@ -533,54 +531,6 @@ onMounted(() => {
     />
 
     <Scene background="#97FFFF" ref="scene">
-<<<<<<< HEAD
-      <PointLight :position="{ x: 0, y: 0, z: 10 }" />
-      <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
-
-      <Plane
-        :width="tiles.length"
-        :height="tiles[0].length"
-        :rotation="{ x: 0 }"
-        :position="{ x: 0, y: 0, z: 0 }"
-        ref="tile{{n}},{{m}}"
-      >
-        <ToonMaterial color="green" :props="{ side: THREE.DoubleSide }" />
-      </Plane>
-
-      <template v-for="row in mapWidth">
-        <template v-for="column in mapHeight">
-          <Plane
-            @pointer-over="planeOver"
-            @click="planeClick"
-            :width="0.99"
-            :height="0.99"
-            :rotation="{
-              z:
-                tiles[row - 1][column - 1].orientation == ''
-                  ? 0
-                  : Orientation[tiles[row - 1][column - 1].orientation],
-            }"
-            :position="{ x: row + offsetx, y: column + offsety, z: 0.01 }"
-          >
-            <BasicMaterial
-              :props="{
-                map:
-                  tiles[row - 1][column - 1].typ == ''
-                    ? loader.load('src/textures/editor/Default.jpg')
-                    : loader.load(
-                        'src/textures/editor/' +
-                          tiles[row - 1][column - 1].typ +
-                          '.jpg'
-                      ),
-              }"
-            >
-            </BasicMaterial>
-          </Plane>
-        </template>
-      </template>
-    </Scene>
-  </Renderer>
-=======
         <PointLight :position="{ x: 0, y: 0, z: 10 }" />
         <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
 
@@ -603,7 +553,6 @@ onMounted(() => {
 
     </Renderer>
 
->>>>>>> BLI_40_#80_TileEditing
 </template>
 
 <style>

@@ -16,6 +16,7 @@ import de.hsrm.mi.swt_project.demo.controls.Updateable;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;
+import de.hsrm.mi.swt_project.demo.movables.Passenger;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
 /**
@@ -40,6 +41,20 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
      */
     public InstanceHandler() {
         instances = new ArrayList<Instance>();
+
+        Passenger p1 = new Passenger(0,0, 1);
+        Passenger p2 = new Passenger(5, 5 , 1);
+
+        GameMap map = new GameMap();
+
+        map.addNpc(p1);
+        map.addNpc(p2);
+
+        Instance instance1 = new EditorInstance(map, 1);
+        Instance instance2 = new GameInstance(map, "test", 1);
+
+        this.instances.add(instance1);
+        this.instances.add(instance2);
     }
 
     /**
