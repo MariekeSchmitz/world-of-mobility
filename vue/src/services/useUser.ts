@@ -11,12 +11,12 @@ export function useUser(): any {
         users: []
     });
 
-    async function getUserList(instanceName: string) {
+    async function getUserList(instanceID: number) {
         try {
             //code preperation for REST-Call
             /*
             const controller = new AbortController();
-            const URL = 'useUserTest.json';
+            const URL = '/api/game/'+instanceID+'/players';
     
             const id = setTimeout(() => controller.abort(), 8000);
     
@@ -30,6 +30,7 @@ export function useUser(): any {
             clearTimeout(id);
     
             console.log(response.text());
+            usersListState.users = jsonData.users
             */
             const jsonData : IUserList = json
             userListState.users = jsonData.users

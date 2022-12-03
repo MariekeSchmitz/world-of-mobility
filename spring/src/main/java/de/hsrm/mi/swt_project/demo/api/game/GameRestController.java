@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
+import de.hsrm.mi.swt_project.demo.messaging.GameUserListDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetGameCommandDTO;
 import de.hsrm.mi.swt_project.demo.messaging.SendGameUpdateDTO;
 
@@ -35,5 +36,10 @@ public class GameRestController{
         logger.info("GET Request for '/api/game/" + id + "/game-update'");
 
         return SendGameUpdateDTO.from(instanceHandler.getGameInstanceById(id).getMoveableObjects());
+    }
+
+    @GetMapping(value="/{id}/players", produces = MediaType.APPLICATION_JSON_VALUE)
+    public GameUserListDTO getGamePlayers(@PathVariable long id) {
+        return GameUserListDTO.from(instanceHandler.getGameInstanceById(id).getMoveableObjects());
     }
 }

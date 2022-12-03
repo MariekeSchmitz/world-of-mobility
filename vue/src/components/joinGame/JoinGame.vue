@@ -7,7 +7,7 @@ const { userList,getUserList } = useUser()
 
 const props = 
   defineProps<{
-    instancename: String;
+    instanceID: number;
   }>();
 
 function joinGame(){
@@ -15,7 +15,7 @@ function joinGame(){
 }
 
 onMounted(()=> {
-    getUserList(props.instancename)
+    getUserList(props.instanceID)
 })
 </script>
 
