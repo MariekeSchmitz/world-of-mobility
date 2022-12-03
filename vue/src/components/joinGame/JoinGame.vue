@@ -5,13 +5,17 @@ import User from "@/components/joinGame/User.vue";
 import { onMounted } from "vue";
 const { userList,getUserList } = useUser()
 
+const props = 
+  defineProps<{
+    instancename: String;
+  }>();
 
 function joinGame(){
     console.log("join game")
 }
 
 onMounted(()=> {
-    getUserList("instanceName")
+    getUserList(props.instancename)
 })
 </script>
 
