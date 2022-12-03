@@ -9,14 +9,13 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 /**
  * Represents a 2d field of tiles and its npcs
  * 
-@author Tom Gouthier
+ * @author Tom Gouthier
  */
 public class GameMap {
 
-    private Tile[][] tiles;
+    private Tile[][] tiles = new Tile[2][2];
     private String name;
     private List <MoveableObject> npcs = new ArrayList<>();
-
     
     /** adds a moveable Object to the map. e.g. a scripted car
      * @param moveable
@@ -82,6 +81,23 @@ public class GameMap {
 
     public void setNpcs(List<MoveableObject> npcs) {
         this.npcs = npcs;
+    }
+
+
+    @Override
+    public String toString() {
+        String tileNames = "";
+        for(Tile[] tArr : tiles) {
+            for(Tile t : tArr) {
+                if(t != null) {
+                    tileNames += t.toString() + "; ";
+                } else {
+                    tileNames += "Null; ";
+                }
+            }
+        }
+        
+        return "GameMap [tiles=" + tileNames + ", name=" + name + ", npcs=" + npcs + "]";
     }
 
     
