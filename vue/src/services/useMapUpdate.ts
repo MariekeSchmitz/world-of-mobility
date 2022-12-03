@@ -15,18 +15,37 @@ export function useMapUpdate(mapName: string): any {
     }
 
     interface IMapState {
-        mapName: string,
-        mapUpdateListe: IMapUpdate[]
+        map: IMapDTO
+    }
+
+    interface ITile {
+        type: string,
+        orientation: string,
+        placedObjects: []
+    }
+
+    interface INpc {
+        user: string,
+        xPos: number, 
+        yPos: number,
+        classname: string
+    }
+
+    interface IMapDTO {
+        tiles: Array<Array<ITile>>,
+        NPCS: Array<any>
     }
 
     const mapState = reactive<IMapState> ({
-        mapName: mapName,
-        mapUpdateListe: []
+        map: {
+            tiles: [[]],
+            NPCS: []
+        }
     });
     
-    function receiveMapUpdates() {
+    function receiveMapUpdates(editorId: number) {
         const wsurl = `ws://${window.location.host}/stompbroker`;
-        const DEST = "/topic/mapupdate";
+        const DEST = `/topic/editor/${editorId}`;
     
         const stompClient = new Client({ brokerURL: wsurl });
         stompClient.onWebSocketError = event => console.log(`ERROR: WebSocket-Error in MapUpdate: ${event}`);
@@ -36,8 +55,8 @@ export function useMapUpdate(mapName: string): any {
             console.log("Connected Stompbroker to MapUpdate");
             stompClient.subscribe(DEST, (message) => {
                 console.log(`Stompbroker received message: \n${message.body}`);
-                const mapUpdate: IMapUpdate = JSON.parse(message.body);
-                mapState.mapUpdateListe.push(mapUpdate);
+                const mapUpdate: IMapDTO = JSON.parse(message.body);
+                mapState.map = mapUpdate;
             });
         }
     
