@@ -2,21 +2,22 @@ package de.hsrm.mi.swt_project.demo.api.editor;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.hsrm.mi.swt_project.demo.instancehandling.EditorInstance;
-import de.hsrm.mi.swt_project.demo.instancehandling.GameMap;
+import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
+import de.hsrm.mi.swt_project.demo.messaging.GetListInstanceDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetMapUpdateDTO;
 import de.hsrm.mi.swt_project.demo.messaging.SendMapDTO;
 import de.hsrm.mi.swt_project.demo.messaging.ServerMessageDTO;
@@ -72,6 +73,18 @@ public class EditorRestController {
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(getMapDTO.mapId());
         editorInstance.saveMap(getMapDTO.mapName());
     }
+
+    /**
+     * Post for Getting EditorInstanceList
+     * @param getListInstanceDTO
+     * @author Finn Schindel, Astrid Klemmer
+     */
+    @PostMapping(value = "/editorlist")
+    public GetListInstanceDTO post_EditorList() {
+        logger.info("Post Request for List form all EditorList");
+        List<Instance> editorlist = instanceHandler.getEditorInstances();
+        return new GetListInstanceDTO(editorlist);
+    }  
 
     /**
      * Post for Global Server Messages

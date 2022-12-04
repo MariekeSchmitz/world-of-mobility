@@ -91,4 +91,8 @@ public class EditorInstance extends Instance {
     public void saveMap(String name) {
         // TODO implement function that serializes the map and saves it to a JSON file
     }
+
+    public List<String> getUsers() {
+        return users;
+    }
 }

@@ -1,5 +1,7 @@
 package de.hsrm.mi.swt_project.demo.api.game;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
 import de.hsrm.mi.swt_project.demo.messaging.GetGameCommandDTO;
+import de.hsrm.mi.swt_project.demo.messaging.GetListInstanceDTO;
 import de.hsrm.mi.swt_project.demo.messaging.SendGameUpdateDTO;
 
 @RestController
@@ -36,4 +40,16 @@ public class GameRestController{
 
         return SendGameUpdateDTO.from(instanceHandler.getGameInstanceById(id).getMoveableObjects());
     }
+
+    /**
+     * Post for Getting GameInstanceList
+     * @param getListInstanceDTO
+     * @author Finn Schindel, Astrid Klemmer
+     */
+    @PostMapping(value = "/gamelist")
+    public GetListInstanceDTO post_GameList() {
+        logger.info("Post Request for List form all GameList");
+        List<Instance> gamelist = instanceHandler.getGameInstances();
+        return new GetListInstanceDTO(gamelist);
+    } 
 }

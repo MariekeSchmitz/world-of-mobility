@@ -71,6 +71,38 @@ import de.hsrm.mi.swt_project.demo.controls.Updateable;
     }
 
     /**
+     * Returns a list from all gameinstances
+     * 
+     * @return a list form all gameinstances
+     * @author Finn Schindel, Astrid Klemmer
+     */
+    public List<Instance> getGameInstances(){
+        List<Instance> gList = new ArrayList<>();
+        for (Instance instance : instances) {
+            if (instance instanceof GameInstance) {
+                gList.add(instance);
+            }
+        }
+        return gList;
+    }
+
+    /**
+     * Returns a list from all editorinstances
+     * 
+     * @return a list form all editorinstances
+     * @author Finn Schindel, Astrid Klemmer
+     */
+    public List<Instance> getEditorInstances(){
+        List<Instance> eList = new ArrayList<>();
+        for (Instance instance : instances) {
+            if (instance instanceof EditorInstance) {
+                eList.add(instance);
+            }
+        }
+        return eList;
+    }
+
+    /**
      * Returns the game instance with the given id.
      * 
      * @param id the id of the instance

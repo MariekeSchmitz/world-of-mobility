@@ -1,5 +1,19 @@
 <script setup lang="ts">
 import GameListItem from '@/components/selectview/GameListItem.vue';
+import { useGameList } from "@/services/useGameList"
+import { computed } from '@vue/reactivity';
+import { onMounted } from 'vue';
+
+const { gameState, getGameList } = useGameList();
+
+const instancelist = []
+onMounted(() => {
+    getGameList()
+});
+
+
+
+
 </script>
 
 <template>
@@ -24,11 +38,13 @@ import GameListItem from '@/components/selectview/GameListItem.vue';
                 <input type="radio" id="allmode" name="selectmode" checked value="Alle">
                 <label for="allmode">Alle</label>
             </fieldset>
-
-
             <div>
                 <GameListItem :worldname="'Worldname'"  :people="0"></GameListItem>
             </div>
+            <div v-for="ele in gameState.gameInstanceList">
+                <p>{{gameState.gameInstanceList}}</p>
+            </div>
+
         </div>
     </div>
 </template>
