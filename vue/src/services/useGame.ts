@@ -73,7 +73,7 @@ export function useGame(): any {
             const controller = new AbortController();
             const URL = '/api/game/create-game';
             
-            const data = {mapeName: "map", sessionName: sessionName};
+            const data = {mapName: mapName, sessionName: sessionName};
     
             const id = setTimeout(() => controller.abort(), 8000);
     
@@ -93,10 +93,10 @@ export function useGame(): any {
                 return false;
             }
             return true;
-
-        } catch(reason) {
             console.log(`ERROR: Sending Command failed: ${reason}`);
             return false;
+
+        } catch(reason) {
         }
         
     }

@@ -101,26 +101,33 @@ public class GameRestController{
     public GetAllMapsOverviewDTO getMaps() {
         logger.info("GET Request for '/api/game/get-all-maps'");
 
-        LinkedList<GetMapOverviewDataDTO> test = new LinkedList<>();
-        test.add(new GetMapOverviewDataDTO("Map1"));
-        test.add(new GetMapOverviewDataDTO("Map2"));
-        test.add(new GetMapOverviewDataDTO("Map3"));
+        LinkedList<GetMapOverviewDataDTO> maps = new LinkedList<>();
+        maps.add(new GetMapOverviewDataDTO("Map1"));
+        maps.add(new GetMapOverviewDataDTO("Map2"));
+        maps.add(new GetMapOverviewDataDTO("Map3"));
 
-        return new GetAllMapsOverviewDTO(test);
+        // TO DO : unterhalb reinkommentieren + händisches adden (obendrüber) in maps-Liste rausschmeissen (aktuell noch keine richtigen Maps zum testen vorhanden)
+        // for (String mapName : instanceHandler.getMaps()) {
+        //     maps.add(new GetMapOverviewDataDTO("mapName"));
+        // }
 
-        // return instanceHandler.getMaps();
+        return new GetAllMapsOverviewDTO(maps);
+
     }
 
+
+    /**
+     * Validates sessionName
+     * 
+     * @param gameConfig a DTO that contains mapName and sessionName
+     * @return if validation was successful
+     */
     @PostMapping(value="/game-config", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ValidationDTO getGameConfig(@RequestBody GetGameConfigDTO gameConfig) {
 
-        logger.info("GET Request for '/api/game/game-config'");
+        logger.info("GET Request for '/api/game/game-config' with body: " + gameConfig.mapName() + " and " + gameConfig.sessionName());
 
         Boolean validationSuccess = instanceHandler.checkSessionNameAvailable(gameConfig.sessionName());
-
-        logger.info("SessionName:" + gameConfig.sessionName());
-        logger.info("MapName:" + gameConfig.mapName());
-
 
         return new ValidationDTO(validationSuccess);
         // return new ValidationDTO(false);

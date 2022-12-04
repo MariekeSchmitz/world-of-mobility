@@ -30,9 +30,10 @@ const router = createRouter({
       component: WorldSelection,
     },
     {
-      path: "/gameConfig",
+      path: "/gameConfig/:mapName",
       name: "GameConfig",
       component: GameConfig,
+      props: true
     },
     {
       path: "/editor",

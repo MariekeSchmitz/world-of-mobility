@@ -13,13 +13,13 @@ const valSuccess : IGameConfigValidation = reactive ( {
     validationSuccess : false
 })
 
-async function sendConfig(gamename: string) {
+async function sendConfig(mapName: string, gameName: string) {
 
     try {
         const controller = new AbortController();
         const URL = '/api/game/game-config';
         
-        const data = {mapName: "test", sessionName: gamename};
+        const data = {mapName: mapName, sessionName: gameName};
 
         const id = setTimeout(() => controller.abort(), 8000);
 
