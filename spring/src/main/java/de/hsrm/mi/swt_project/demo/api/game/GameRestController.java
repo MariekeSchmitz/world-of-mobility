@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
+import de.hsrm.mi.swt_project.demo.messaging.GameUserListDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetGameCommandDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetListInstanceDTO;
 import de.hsrm.mi.swt_project.demo.messaging.SendGameUpdateDTO;
@@ -52,4 +53,8 @@ public class GameRestController{
         List<Instance> gamelist = instanceHandler.getGameInstances();
         return new GetListInstanceDTO(gamelist);
     } 
+    @GetMapping(value="/{id}/players", produces = MediaType.APPLICATION_JSON_VALUE)
+    public GameUserListDTO getGamePlayers(@PathVariable long id) {
+        return GameUserListDTO.from(instanceHandler.getGameInstanceById(id).getMoveableObjects());
+    }
 }
