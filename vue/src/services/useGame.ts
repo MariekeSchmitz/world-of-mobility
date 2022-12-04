@@ -77,7 +77,7 @@ export function useGame(): any {
             const controller = new AbortController();
             const URL = '/api/game/create-game';
             
-            const data = {mapName: "map", sessionName: sessionName};
+            const data = {mapName: mapName, sessionName: sessionName};
     
             const id = setTimeout(() => controller.abort(), 8000);
     
@@ -94,17 +94,46 @@ export function useGame(): any {
             clearTimeout(id);
             console.log(jsonData)
             instanceIdState.id = jsonData
-            if(!response.ok) {
-                return false;
-            }
-            return true;
-
         } catch(reason) {
             console.log(`ERROR: Sending Command failed: ${reason}`);
             return false;
         }
         
     }
+
+    async function joinGame(instanceId: number, user: string, type: string) {
+        try {
+            const controller = new AbortController();
+            const URL = '/api/game/' + instanceId + '/join-game';
+            
+            const data = {user: user, type: type};
+    
+            const id = setTimeout(() => controller.abort(), 8000);
+    
+            const response = await fetch(URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                signal: controller.signal,
+                body: JSON.stringify(data)
+            });
+            
+            clearTimeout(id);
+    
+            console.log(response.text());
+            if(!response.ok) {
+                return false;
+            }
+            return true;
+        } catch(reason) {
+            console.log(`ERROR: Sending Command failed: ${reason}`);
+            return false;
+        }
+        
+    }
+
+
 
     async function receiveGameUpdate(instanceid:number) {
         const wsurl = `ws://${window.location.host}/stompbroker`;
@@ -132,6 +161,7 @@ export function useGame(): any {
     return {
         mapUpdates: readonly(gameState),
         instanceId: readonly(instanceIdState),
+        joinGame,
         receiveGameUpdate,
         sendCommand,
         createGameInstance

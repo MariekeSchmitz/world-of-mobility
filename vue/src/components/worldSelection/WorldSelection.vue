@@ -16,9 +16,7 @@ onMounted( async() => {
 
 function changeView(name : string) {
   console.log(name)
-  // router.push("/gameConfig")
-  router.push({ name: 'GameConfig', params: { mapName: name } })
-  
+  router.push("/gameConfig/"+name)  
 }
 
 

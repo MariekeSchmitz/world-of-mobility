@@ -5,8 +5,9 @@ import { useGameConfig } from "@/services/useGameConfig";
 import { useGame } from "@/services/useGame";
 
 
-const { instanceId, createGameInstance, receiveGameUpdate } = useGame()
+const { instanceId, createGameInstance, receiveGameUpdate, joinGame } = useGame()
 const { sendConfig, valSuccess } = useGameConfig()
+
 
 const name = ""
 const playerLimit = 0
@@ -14,9 +15,12 @@ const npcs = false
 const validationChecked = ref(false)
 const validationPassed = ref(false)
 
+const props = defineProps<{
+  mapName: string
+}>()
 
 async function checkValidation(name: string) {
-  await sendConfig(name)
+  await sendConfig(props.mapName, name)
 
   validationChecked.value = true
 
@@ -26,17 +30,21 @@ async function checkValidation(name: string) {
 
 }
 
-async function startGame() {
-  await createGameInstance("", name)
+async function startGame(name: string) {
+  await createGameInstance(props.mapName, name)
   console.log(instanceId.id)
-  receiveGameUpdate(instanceId.id)
+  if(instanceId.id != -1){
+    joinGame(instanceId.id, "usernamedenwirleidernichthaben", "MOTORIZED_OBJECT")
+    receiveGameUpdate(instanceId.id)
+  }
 }
 
 </script>
 
 <template>
+
   <div class="wrapper">
-    <h1>Neues Spiel</h1>
+    <h1>Neues Spiel in der Welt {{props.mapName}}</h1>
     <div class="square"></div>
     <p>Spielname</p>
     <input id="gamename" v-model="name" placeholder="Spielname eingeben" :disabled=validationPassed>
@@ -49,7 +57,7 @@ async function startGame() {
     </label>
 
     <button v-if="!(validationChecked && validationPassed)" @click="checkValidation(name)">Erstellen</button>
-    <button v-if="(validationChecked && validationPassed)" @click="startGame()">Start</button>
+    <button v-if="(validationChecked && validationPassed)" @click="startGame(name)">Start</button>
 
     <p v-if="(validationChecked && !validationPassed)">Der Name {{name}} wurde schon vergeben.</p>
     <p v-if="(validationChecked && validationPassed)">Name {{name}} ok</p>
