@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import de.hsrm.mi.swt_project.demo.instancehandling.GameMap;
@@ -19,8 +20,8 @@ import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
 
 @SpringBootTest
 public class GameConfigurationTest {
-    
-    private InstanceHandler instanceHandler = new InstanceHandler();
+    @Autowired
+    private InstanceHandler instanceHandler;
 
     @Test
     protected void validationGameNameCorrect() {
