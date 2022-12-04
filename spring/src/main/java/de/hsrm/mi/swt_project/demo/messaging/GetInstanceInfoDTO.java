@@ -22,14 +22,14 @@ public record GetInstanceInfoDTO(long id, String gamename, String worldname, int
         if (instance instanceof GameInstance) {
             return new GetInstanceInfoDTO(
                 instance.getId(),
-                "Platzhalter - GameName" + instance.getId(),
+                "GameName" + instance.getId(),
                 instance.getMap().getName(),
                 GameUserListDTO.from(((GameInstance)instance).getMoveableObjects()).users().size()
                 );
         } else {
             return new GetInstanceInfoDTO(
                 instance.getId(),
-                "Platzhalter - GameName" + instance.getId(),
+                "GameName" + instance.getId(),
                 instance.getMap().getName(),
                 ((EditorInstance) instance).getUsers().size()
                 );

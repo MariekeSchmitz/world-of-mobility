@@ -26,9 +26,10 @@ const router = createRouter({
       component: GameIntroView,
     },
     {
-      path: "/joingame",
+      path: "/joingame/:instanceID",
       name: "JoinGame",
       component: JoinGame,
+      props:true
     },
     {
       path: "/createWorld",

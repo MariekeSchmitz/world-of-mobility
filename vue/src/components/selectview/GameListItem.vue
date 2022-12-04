@@ -19,6 +19,7 @@ const props = withDefaults(
 
 <template>
     <div id="frame">
+            
         <button id="framebutton">
             <div>
                 <img id="worldimage" src="" alt=""> 
@@ -35,6 +36,7 @@ const props = withDefaults(
                 </div>
             </div>
         </button>
+     
     </div>
 </template>
 

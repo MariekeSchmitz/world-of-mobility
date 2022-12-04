@@ -14,7 +14,7 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 public class GameMap {
 
     private Tile[][] tiles = new Tile[2][2];
-    private String name;
+    private String name = "HalloWelt";
     private List<MoveableObject> npcs = new ArrayList<>();
 
     public GameMap() {

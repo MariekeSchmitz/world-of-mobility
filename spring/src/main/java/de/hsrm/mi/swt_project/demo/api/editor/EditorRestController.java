@@ -81,7 +81,7 @@ public class EditorRestController {
      * @param getListInstanceDTO
      * @author Finn Schindel, Astrid Klemmer
      */
-    @PostMapping(value = "/editorlist")
+    @PostMapping(value = "/instancelist")
     public GetListInstanceDTO post_EditorList() {
         logger.info("Post Request for List form all EditorList");
         List<Instance> editorlist = instanceHandler.getEditorInstances();

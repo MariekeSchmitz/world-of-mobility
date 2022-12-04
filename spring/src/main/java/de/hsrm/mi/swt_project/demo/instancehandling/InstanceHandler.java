@@ -33,6 +33,8 @@ public class InstanceHandler implements Updateable {
         instances = new ArrayList<Instance>();
         instances.add(new GameInstance(new GameMap(), "GameName", 0));
         instances.add(new EditorInstance(new GameMap(), 1));
+        instances.add(new EditorInstance(new GameMap(), 2));
+        instances.add(new GameInstance(new GameMap(), "GameName", 3));
     }
 
     /**

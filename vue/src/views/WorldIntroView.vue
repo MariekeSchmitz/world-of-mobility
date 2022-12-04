@@ -1,15 +1,28 @@
 <script setup lang="ts">
-import GameListItem from '@/components/selectview/GameListItem.vue';
-import { useGameList } from "@/services/useGameList"
-import { computed } from '@vue/reactivity';
-import { onMounted } from 'vue';
+    import GameListItem from '@/components/selectview/GameListItem.vue';
+    import { useInstanceList } from "@/services/useInstanceList"
+    import { computed, ref } from '@vue/reactivity';
+    import { onMounted } from 'vue';
 
-const { gameState, getGameList } = useGameList();
+    const { instanceState, getInstanceList } = useInstanceList();
 
-const instancelist = []
-onMounted(() => {
-    getGameList()
-});
+    onMounted(() => {
+        getInstanceList("editor")
+        console.log(instanceState)
+    });
+
+    const showAll = ref(true);
+
+    function switchScene(mode:string){
+        if(mode == "all"){
+            showAll.value = true;
+        }
+        if(mode == "edit"){
+            showAll.value = false;
+        }
+
+        console.log(showAll.value)
+    }
 
 
 
@@ -19,9 +32,7 @@ onMounted(() => {
 <template>
     <div>
         <div>
-            <button>
-                <img src="../buttons/editor/arrow-left.png" alt="">
-            </button>
+            <RouterLink to="/login"><img src="../buttons/editor/arrow-left.png" alt=""></RouterLink>
             <button>
                 <img src="../buttons/editor/plus.png" alt=""> Welt erstellen
             </button>
@@ -33,16 +44,18 @@ onMounted(() => {
         <div id="selection">
             <h1>Welt editieren</h1>
             <fieldset>
-                <input type="radio" id="editmode" name="selectmode" value="Wird gerade editiert">
+                <input type="radio" id="editmode" name="selectmode" value="Wird gerade editiert" @click="switchScene('edit')">
                 <label for="editmode">Wird gerade editiert</label>
-                <input type="radio" id="allmode" name="selectmode" checked value="Alle">
+                <input type="radio" id="allmode" name="selectmode" checked value="Alle" @click="switchScene('all')">
                 <label for="allmode">Alle</label>
             </fieldset>
-            <div>
-                <GameListItem :worldname="'Worldname'"  :people="0"></GameListItem>
+     
+            <div v-for="ele in instanceState.instancelist.instancelist">
+                <GameListItem :id="ele.id" :gamename="ele.gamename" :worldname="ele.worldname"  :people="ele.playeramount"></GameListItem>
             </div>
-            <div v-for="ele in gameState.gameInstanceList">
-                <p>{{gameState.gameInstanceList}}</p>
+
+            <div v-if="showAll" v-for="ele in instanceState.instancelist.instancelist">
+                <GameListItem :id="ele.id" :gamename="ele.gamename" :worldname="ele.worldname"  :people="ele.playeramount"></GameListItem>
             </div>
 
         </div>
@@ -59,5 +72,6 @@ onMounted(() => {
 button {
     text-align:center;
 }
+
 
 </style>

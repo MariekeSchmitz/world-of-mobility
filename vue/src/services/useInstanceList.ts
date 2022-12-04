@@ -2,31 +2,29 @@
 import { Client } from "@stomp/stompjs";
 import { reactive, readonly, ref } from "vue";
 
-export function useGameList(): any {
-
-    interface IGameInstanceState{
-        instancelist:IGameInstanceItem[]
+export function useInstanceList(): any {
+    
+    interface IInstanceInfo{
+        id: number, 
+        gamename: string, 
+        worldname: string, 
+        playeramount: number
+    }
+    
+    interface IInstanceInfoListe{
+        instancelist: IInstanceInfo[]
     }
 
-    interface IGameInstanceItem {
-        map: {
-            tiles: [],
-            name: string,
-            npcs: []
-        }
-        id: number,
-        moveableObjects: [],
-        name: string
-    }
- 
-    const gameState = reactive<IGameInstanceState>({gameInstanceList:[]})
+    const instanceState = reactive<IInstanceInfoListe>({instancelist:[]})
 
-    async function getGameList(clientid: number, user: string, command: string) {
+    async function getInstanceList(path: string) {
         try {
+    
             const controller = new AbortController();
-            const URL = '/api/game/gamelist';
+            const URL = '/api/' + path + '/instancelist';
             
-            const data = {user, command};
+            //clientid: number, user: string, command: string, 
+            //const data = {user, command};
     
             const id = setTimeout(() => controller.abort(), 8000);
     
@@ -36,13 +34,17 @@ export function useGameList(): any {
                     'Content-Type': 'application/json'
                 },
                 signal: controller.signal,
-                body: JSON.stringify(data)
+                //body: JSON.stringify(data)
             });
             if(!response.ok) {
                 return false;
             }
-            const jsonData: IGameInstanceState[] = await response.json();
+            const jsonData = await response.json();
             
+            console.log(jsonData)
+
+            instanceState.instancelist = jsonData
+
             clearTimeout(id);
 
             // jsonData.forEach(element => {
@@ -64,7 +66,7 @@ export function useGameList(): any {
 
 
     return {
-        gameState: readonly(gameState),
-        getGameList
+        instanceState: readonly(instanceState),
+        getInstanceList
     }
 }
