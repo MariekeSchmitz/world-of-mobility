@@ -15,8 +15,8 @@ const toggleAvatarSelection = () => {
   choosingAvatar.value = !choosingAvatar.value;
 };
 
-function loginAndRedirect(url:string) {
-  login(name.value)
+async function loginAndRedirect(url:string) {
+  await login(name.value)
   if (loginData.loggedIn) {
     router.push(url)
   }
