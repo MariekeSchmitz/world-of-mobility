@@ -4,6 +4,7 @@ import Avatar_Selection from "@/components/User/Avatar_Selection.vue";
 import Avatar from "@/components/User/Avatar.vue";
 import { useLogin } from "@/services/login/useLogin";
 import { ref } from "vue";
+import router from "@/router";
 
 const { loginData, login, logout } = useLogin();
 
@@ -13,7 +14,17 @@ const choosingAvatar = ref(false);
 const toggleAvatarSelection = () => {
   choosingAvatar.value = !choosingAvatar.value;
 };
+
+function loginAndRedirect(url:string) {
+  login(name.value)
+  if (loginData.loggedIn) {
+    router.push(url)
+  }
+}
+
 </script>
+
+
 
 <template>
   <div class="wrapper">
@@ -31,8 +42,8 @@ const toggleAvatarSelection = () => {
       <p v-if="loginData.error !== ''">{{ loginData.error }}</p>
     </div>
 
-    <button @click="login(name)">Spielen</button>
-    <button @click="login(name)">Baumodus</button>
+    <button @click="loginAndRedirect('/gameintro')">Spielen</button>
+    <button @click="loginAndRedirect('/worldintro')">Baumodus</button>
     <button @click="logout()">Logout</button>
 
     <!-- Avatar Selection Mode -->
