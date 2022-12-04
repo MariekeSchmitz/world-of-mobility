@@ -6,6 +6,8 @@ import CreateWorld from "@/views/CreateWorld.vue";
 
 import StartPage from "@/views/StartPage.vue";
 import { createRouter, createWebHistory } from "vue-router";
+import WorldSelection from "@/components/worldSelection/WorldSelection.vue";
+import GameConfig from "@/components/gameConfig/GameConfig.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,6 +44,17 @@ const router = createRouter({
       name: "Login",
       component: StartPage,
     },
+    {
+      path: "/worldSelection",
+      name: "WorldSelection",
+      component: WorldSelection,
+    },
+    {
+      path: "/gameConfig",
+      name: "GameConfig",
+      component: GameConfig,
+    }
+
   ],
 });
 
