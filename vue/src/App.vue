@@ -8,7 +8,6 @@ import { RouterLink, RouterView } from "vue-router";
         <RouterLink to="/game">Game</RouterLink>
         <RouterLink to="/worldintro">WorldSelect</RouterLink>
         <RouterLink to="/gameintro">GameSelect</RouterLink>
-        <RouterLink to="/joingame">JoinGame</RouterLink>
         <RouterLink to="/createWorld">CreateWorld</RouterLink>
         <RouterLink to="/worldSelection">WorldSelection</RouterLink>
     </nav>

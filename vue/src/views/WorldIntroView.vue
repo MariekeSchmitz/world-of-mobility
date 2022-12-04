@@ -6,11 +6,11 @@
     import { useMapOverview } from "@/services/useMapOverview";
     
     const { instanceState, getInstanceList } = useInstanceList();
-    const { mapsOverview } = useMapOverview()
+    const { mapsOverview, getMaps } = useMapOverview()
 
     onMounted(() => {
         getInstanceList("editor")
-        console.log(instanceState)
+        getMaps()  
     });
 
     const showAll = ref(true);
@@ -22,8 +22,6 @@
         if(mode == "edit"){
             showAll.value = false;
         }
-
-        console.log(showAll.value)
     }
     
 
@@ -57,8 +55,8 @@
                 <GameListItem :gamename="ele.gamename" :worldname="ele.worldname"  :people="ele.playeramount"></GameListItem>
             </div>
 
-            <div v-if="showAll" v-for="ele in mapsOverview.maps">
-                <GameListItem :worldname="ele.name"></GameListItem>
+            <div v-if="showAll" v-for="ele in mapsOverview.allMaps">
+                <GameListItem :worldname="ele.mapName"></GameListItem>
             </div>
 
         </div>
