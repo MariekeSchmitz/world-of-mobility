@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.demo;
+package de.hsrm.mi.swt_project.demo.instancehandling;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -8,10 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import de.hsrm.mi.swt_project.demo.editor.tiles.Streetile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
-import de.hsrm.mi.swt_project.demo.instancehandling.GameMap;
 
 @SpringBootTest
-public class GameMapTest {
+class GameMapTest {
     
     @Test
     void testAddTile() {
