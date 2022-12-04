@@ -1,14 +1,12 @@
-package de.hsrm.mi.swt_project.demo;
+package de.hsrm.mi.swt_project.demo.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import de.hsrm.mi.swt_project.demo.util.ArrayHelpers;
-
 @SpringBootTest
-public class ArrayHelpersTest {
+class ArrayHelpersTest {
     
     @Test
     void testCopy() {
