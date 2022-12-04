@@ -55,12 +55,12 @@ public class EditorInstance extends Instance {
                 break;
             case TURN_LEFT:
                 if(map.getTiles()[yPos][xPos] != null) {
-                    map.getTiles()[xPos][yPos].turn(Direction.LEFT);
+                    map.getTiles()[yPos][xPos].turn(Direction.LEFT);
                 }
                 break;
             case TURN_RIGHT:
                 if(map.getTiles()[yPos][xPos] != null) {
-                    map.getTiles()[xPos][yPos].turn(Direction.RIGHT);
+                    map.getTiles()[yPos][xPos].turn(Direction.RIGHT);
                 }
                 break;
         }

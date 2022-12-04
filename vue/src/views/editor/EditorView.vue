@@ -1,7 +1,7 @@
 <!-- eslint-disable prettier/prettier -->
 <!-- eslint-disable prettier/prettier -->
 <script setup lang="ts">
-    import { ref, onMounted, reactive } from "vue";
+    import { ref, onMounted, reactive, watch } from "vue";
 
     import * as THREE from 'three'
     import {
@@ -29,115 +29,51 @@ import { computed } from "@vue/reactivity";
     const rendererC = ref();
     const camera = ref();
     const scene = ref();
-    const {sendMapUpdates, receiveMapUpdates, mapState} = useMapUpdate("test");
+    const {sendMapUpdates, receiveMapUpdates, mapUpdates} = useMapUpdate("test");
     const {getMap, saveMap} = useMap();
-    //receiveMapUpdates();
-    
-    
-    
-    //List of Tiles
-    let tiles: Object[][] = [
-                [
-                {
-                    type: "SIDEWAY",
-                    orientation: "NORTH",
-                    placedObjects:[]
-                },
-                {
-                    type: "STREET_T_CROSS",
-                    orientation: "SOUTH",
-                    placedObjects:[]
-                },
-                {
-                
-                },
-                {
-                    
-                }
-              ],
-              [
-                {
-                  type: "STREET_STRAIGHT",
-                    orientation: "EAST",
-                    placedObjects:[]
-                },
-                {
-                    type: "STREET_CURVE",
-                    orientation: "SOUTH",
-                    placedObjects:[]
-                },
-                {
-                    type: "STREET_CURVE",
-                    orientation: "EAST",
-                    placedObjects:[]
-                },
-                {
-                   
-                }
-              ],
-              [
-                {
-                  type: "STREET_STRAIGHT",
-                    orientation: "WEST",
-                    placedObjects:[]
-                },
-                {
-                    type: "STREET_CURVE",
-                    orientation: "WEST",
-                    placedObjects:[]
-                },
-                {
-                    type: "STREET_CURVE",
-                    orientation: "NORTH",
-                    placedObjects:[]
-                },
-                {
-                    
-                }
-              ],
-              [
-                {
-                  type: "STREET_STRAIGHT",
-                    orientation: "NORTH",
-                    placedObjects:[]
-                },
-                {
-                    
-                },
-                {
-                    
-                },
-                {
-                    
-                }
-              ]
-              ]
+    receiveMapUpdates(1);
 
-    //Tile Map width and height
-    const mapWidth = ref(tiles[0].length)
-    const mapHeight = ref(tiles.length)
-                
-    //Offset so Tiles start on Bottom Right for 0,0
-    const offsetx = computed(() => (-(mapWidth.value + 1) / 2));
-     
-    const offsety = computed(() => (-(mapHeight.value + 1) / 2));
-    console.log(offsetx.value, offsety.value)
+    
+    watch(mapUpdates.value,(newValue,oldValue) =>{
+      createMap(mapUpdates.value.map.tiles)
+    
+    })
+
+   
+    
+    
     
     
 
     //loaded Map (once Backend works)
     const loadedMap = getMap("", 1);
+    const mapWidth = ref(8)
+    const mapHeight = ref(8)
+    const offsetx = computed(() => (-(mapWidth.value + 1) / 2));
+    const offsety = computed(() => (-(mapHeight.value + 1) / 2));
     
     let prevTexture:String = "";
     let overwritten = false
+
+    function removeMap(){
+     
+      for (let id = scene.value.scene.children.length -1 ; id >= 0 ; id--){
+        if (scene.value.scene.children[id].position.z == 0.01 ){
+          scene.value.scene.remove(scene.value.scene.children[id])
+          console.log("removed: ",id)
+        }
+      }
+    }
+
 
     /**
      * create Editable Map in Editor from Map object
      * @param tiles 2D Array containing Tiles
      */
 
-    function createMap(tiles:Tile[][]){
-      console.log("mapwidth: ",mapWidth.value)
+    function createMap(tiles){
+      removeMap();
+    
 
       const loadManager = new THREE.LoadingManager();
       const loader = new THREE.TextureLoader(loadManager);
@@ -145,70 +81,35 @@ import { computed } from "@vue/reactivity";
 
       for(let row = 0;row < tiles.length;row++){
         for(let column =0 ;column < tiles[0].length; column++){
-          console.log(row,column)
+        
+          
 
           const TileGeometry = new THREE.PlaneGeometry( 0.99, 0.99 );
           let material = new THREE.MeshBasicMaterial();
           
           let texturePath = 'src/textures/editor/Default.jpg'
-          if (tiles[row][column] != null){
-            texturePath = 'src/textures/editor/'+tiles[row][column].type+'.jpg'
+          if (tiles[column][row] != null){
+            texturePath = 'src/textures/editor/'+tiles[column][row].type+'.jpg'
           }
-          console.log(texturePath);
+          
           material.map = loader.load(texturePath)
           const TileMesh = new THREE.Mesh( TileGeometry, material );
           TileMesh.position.x = row + offsetx.value +1;
           TileMesh.position.y = column + offsety.value +1;
           TileMesh.position.z = 0.01;
           TileMesh.rotation.z = 0;
-          if (tiles[row][column] != null){
-            TileMesh.rotation.z = Orientation[tiles[row][column].orientation]
+          if (tiles[column][row] != null){
+            TileMesh.rotation.z = Orientation[tiles[column][row].orientation]
           }
           scene.value.add(TileMesh);
+          //console.log(TileMesh)
           
           
        }
       }
-
-    }
-
-    /**
-     * receives New Tile to be updated, and updates it in the stored Map Array and Frontend.
-     * NOT YET FUNCTIONAL, Contingent on Stompbroker and EditorInstance to send Updates
-     * 
-     * @param update received updated Tile
-     */
-    function updateMap(update:ExportTile){
-      let newTile = tiles[update.newXPos][update.newYPos]
-      newTile.type = update.type
-      newTile.orientation = update.orientation
-      newTile.placedObjects = update.placedObjects
-
-      let frontendTile = new THREE.Mesh(new THREE.BufferGeometry, new THREE.Material());
-
-      for (let i =0; i < scene.value.scene.children.length; i++){
-        if (scene.value.scene.children[i].position.x == update.newXPos - offsetx.value  && scene.value.scene.children[i].position.y == update.newYPos - offsety.value){
-          frontendTile = scene.value.scene.children[i]
-          break
-        }
-        
-      }
-
-        let texturePath = tiles[row][column].type == '' ? 'src/textures/editor/Default.jpg' : 'src/textures/editor/'+tiles[row][column].type+'.jpg'
-        frontendTile.material.map = loader.load(texturePath)
-        frontendTile.rotation.z = tiles[row][column].orientation == '' ? 0 : Orientation[tiles[row][column].orientation]
       
 
-      if (update.prevXPos != null){
-        let oldTile = tiles[update.prevXPos][update.prevXPos];
-        oldTile.orientation = "NORTH";
-        oldTile.type = "";
-        oldTile.placedObjects = [];
-      }
     }
-    
-
-
 
     //defines Tile to be placed on click and whether click triggers a Tile place
         
@@ -243,23 +144,14 @@ import { computed } from "@vue/reactivity";
       } 
 
       sendMapUpdates(toSendObj);
-      /** 
-      let toPlace:Tile = {
-        typ: place.placeType,
-        orientation: "NORTH",
-        placedObjects:[]
       }
-          
-        //reset rotation to 0  
-        tileObject.setRotationFromEuler(new THREE.Euler());
-        tileObject.material.map = loader.load('src/textures/editor/'+place.placeType+'.jpg')
-        tiles[posX][posY] = toPlace;*/
-      }
+      
 
     }
     
     let activeContextMenu: Array<THREE.Mesh>; 
     activeContextMenu = [];
+
 /**
  * Creates a contextmenu with turn buttons and a remove button above the selected tile on right click.
  * Objects belonging to the Menu get saved in the "activeContextMenu" Array
@@ -335,7 +227,16 @@ import { computed } from "@vue/reactivity";
      * @param callingObject Tile-Object that the function operates on
      */
     function turnLeft(callingObject){
-      callingObject.rotation.z += Math.PI/2  
+        let posX = callingObject.position.x - offsetx.value -1;
+        let posY = callingObject.position.y - offsety.value -1;
+        let turnleftDTO: ExportTile = {
+          type: "SIDEWAY",
+          orientation: "NORTH",
+          xPos: posX,
+          yPos: posY,
+          control: "TURN_LEFT",
+        }
+        sendMapUpdates(turnleftDTO);
     }
     /**
      * turns the tile right, currently only for frontend user, to be connected to backend
@@ -343,7 +244,16 @@ import { computed } from "@vue/reactivity";
      * @param callingObject Tile-Object that the function operates on
      */
     function turnRight(callingObject){
-      callingObject.rotation.z -= Math.PI/2 
+      let posX = callingObject.position.x - offsetx.value -1;
+        let posY = callingObject.position.y - offsety.value -1;
+        let turnrightDTO: ExportTile = {
+          type: "SIDEWAY",
+          orientation: "NORTH",
+          xPos: posX,
+          yPos: posY,
+          control: "TURN_RIGHT",
+        }
+        sendMapUpdates(turnrightDTO);
     }
 
     /**
@@ -352,26 +262,30 @@ import { computed } from "@vue/reactivity";
      * @param callingObject Tile-Object that the function operates on
      */
     function removeTile(callingObject){
-      callingObject.material.map = loader.load('src/textures/editor/Default.jpg')
+        let posX = callingObject.position.x - offsetx.value -1;
+        let posY = callingObject.position.y - offsety.value -1;
+        let removeDTO: ExportTile = {
+          type: "SIDEWAY",
+          orientation: "NORTH",
+          xPos: posX,
+          yPos: posY,
+          control: "REMOVE",
+        }
+        sendMapUpdates(removeDTO);
     }
 
     onMounted(() => {
-      /*
-      const orbitControls = rendererC.value.three.cameraCtrl;
-      const cameraControls = camera.value.camera;
-      orbitControls.target = (new THREE.Vector3(2,2,0));
-      cameraControls.position.set(new THREE.Vector3(2,2,10));
-      orbitControls.update();*/
-
+      
+      
       rendererC.value.canvas.addEventListener("click", onDocumentLeftMouseDown)
       rendererC.value.canvas.addEventListener("mousemove", onMouseOver)
       rendererC.value.canvas.addEventListener("contextmenu", onDocumentRightMouseDown)
       loadedMap.then((result) => setLoadedMap(result.tiles))
-      console.log(tiles)
+      
 
       
       let changeTileFrontend = null;
-      console.log(scene.value.scene.children.length)
+     
       
       
 
@@ -498,7 +412,7 @@ onMounted(() => {
 
 <template>
   <div class="mapTitle">
-    <p>Farmerama Map</p> <button @click="saveMap('testMap2',1)"></button>
+    <p>Farmerama Map</p> <button @click="saveMap('testMap2',1)">save</button>
   </div>
 
   <div id="exitButton">

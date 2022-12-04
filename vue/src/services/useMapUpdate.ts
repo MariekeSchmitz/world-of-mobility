@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Client } from "@stomp/stompjs";
-import { reactive, readonly } from "vue";
+import { reactive, readonly, ref } from "vue";
 
 export function useMapUpdate(mapName: string): any {
 
@@ -36,7 +36,7 @@ export function useMapUpdate(mapName: string): any {
         NPCS: Array<any>
     }
 
-    const mapState = reactive<IMapState> ({
+    const mapState = ref<IMapState> ({
         map: {
             tiles: [[]],
             NPCS: []
@@ -54,9 +54,11 @@ export function useMapUpdate(mapName: string): any {
         stompClient.onConnect = frame => {
             console.log("Connected Stompbroker to MapUpdate");
             stompClient.subscribe(DEST, (message) => {
+                
+                
                 console.log(`Stompbroker received message: \n${message.body}`);
                 const mapUpdate: IMapDTO = JSON.parse(message.body);
-                mapState.map = mapUpdate;
+                mapState.value.map = mapUpdate;
             });
         }
     
