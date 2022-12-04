@@ -3,6 +3,8 @@ import Game from "@/components/Game.vue";
 import WorldIntroView from "@/views/WorldIntroView.vue";
 import GameIntroView from "@/views/GameIntroView.vue";
 import JoinGame from "@/components/joinGame/JoinGame.vue";
+import CreateWorld from "@/views/CreateWorld.vue";
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +28,11 @@ const router = createRouter({
       path: "/joingame",
       name: "JoinGame",
       component: JoinGame,
+    },
+    {
+      path: "/createWorld",
+      name: "CreateWorld",
+      component: CreateWorld,
     },
   ],
 });

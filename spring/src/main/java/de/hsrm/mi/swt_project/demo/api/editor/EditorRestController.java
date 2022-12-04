@@ -99,4 +99,18 @@ public class EditorRestController {
         String output = s + ": " + newServerMsgDTO.txt();
         messaging.convertAndSend("/topic/ServerMessage", new ServerMessageDTO(newServerMsgDTO.usrId(), output));
     }
+
+
+    @PostMapping("/createNewWorld")
+    public SendNewWorldDTO post_NewWorld(@RequestBody GetNewWorldDTO newWorldDTO){
+        String name = newWorldDTO.name();
+        long id = instanceHandler.createEditorInstance(name);
+
+        return SendNewWorldDTO.from(id, "");
+
+
+
+    }
+
+
 }
