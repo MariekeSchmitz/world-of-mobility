@@ -2,7 +2,10 @@
 
 import { ref, computed } from "vue";
 import { useGameConfig } from "@/services/useGameConfig";
+import { useGame } from "@/services/useGame";
 
+
+const { instanceId, createGameInstance, receiveGameUpdate } = useGame()
 const { sendConfig, valSuccess } = useGameConfig()
 
 const name = ""
@@ -23,10 +26,10 @@ async function checkValidation(name: string) {
 
 }
 
-function startGame() {
-
-  console.log("Jetzt müsste es ins Spiel gehen.")
-
+async function startGame() {
+  await createGameInstance("", name)
+  console.log(instanceId.id)
+  receiveGameUpdate(instanceId.id)
 }
 
 </script>

@@ -57,9 +57,13 @@ export function useGame(): any {
                 body: JSON.stringify(data as IGameControl)
             });
             
-            const jsonData: IInstanceId = await response.json()
             clearTimeout(id);
-            instanceIdState.id = jsonData.id
+    
+            console.log(response.text());
+            if(!response.ok) {
+                return false;
+            }
+            return true;
 
         } catch(reason) {
             console.log(`ERROR: Sending Command failed: ${reason}`);
@@ -73,7 +77,7 @@ export function useGame(): any {
             const controller = new AbortController();
             const URL = '/api/game/create-game';
             
-            const data = {mapeName: "map", sessionName: sessionName};
+            const data = {mapName: "map", sessionName: sessionName};
     
             const id = setTimeout(() => controller.abort(), 8000);
     
@@ -86,9 +90,10 @@ export function useGame(): any {
                 body: JSON.stringify(data)
             });
             
+            const jsonData = await response.json()
             clearTimeout(id);
-            
-            console.log(response.json());
+            console.log(jsonData)
+            instanceIdState.id = jsonData
             if(!response.ok) {
                 return false;
             }
