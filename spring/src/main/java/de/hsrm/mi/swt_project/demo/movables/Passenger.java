@@ -118,5 +118,45 @@ public class Passenger extends MoveableObject {
             
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof Passenger)) {
+            return false;
+        }
+
+        Passenger p = (Passenger) o;
+        return this.xPos == p.xPos
+            && this.yPos == p.yPos
+            && this.maxVelocity == p.maxVelocity
+            && this.currentVelocity == p.currentVelocity
+            && this.capacity == p.capacity
+            && this.orientation.equals(p.orientation)
+            && this.script.equals(p.script);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Float.hashCode(this.xPos);
+        result = 31 * result + Float.hashCode(this.yPos);
+        result = 31 * result + Float.hashCode(this.maxVelocity);
+        result = 31 * result + Float.hashCode(this.currentVelocity);
+        result = 31 * result + Float.hashCode(this.capacity);
+        result = 31 * result + this.orientation.hashCode();
+        result = 31 * result + this.script.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Passenger[xPos=%.2f,yPos=%.2f,curV=%.2f,maxV=%.2f,cap=%.2f,orientation=%s]", this.xPos, this.yPos, this.currentVelocity, this.maxVelocity, this.capacity, this.orientation);
+    }
+
+    
     
 }

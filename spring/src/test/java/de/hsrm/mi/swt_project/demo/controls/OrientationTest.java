@@ -1,17 +1,15 @@
-package de.hsrm.mi.swt_project.demo;
+package de.hsrm.mi.swt_project.demo.controls;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import de.hsrm.mi.swt_project.demo.controls.Orientation;
-
 @SpringBootTest
-public class OrientationEnumTest {
+class OrientationTest {
     
     @Test
-    protected void nextCycleWorks() {
+    void testNext() {
 
         Orientation[] expectedOrder = {
             Orientation.NORTH_EAST,
@@ -33,7 +31,7 @@ public class OrientationEnumTest {
     }
 
     @Test
-    protected void prevCycleWorks() {
+    void testPrev() {
 
         Orientation[] expectedOrder = {
             Orientation.NORTH_WEST,

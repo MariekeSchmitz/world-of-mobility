@@ -1,7 +1,12 @@
-import { createRouter, createWebHistory } from "vue-router";
 import Game from "@/components/Game.vue";
-import WorldSelect from "@/views/WorldSelect.vue";
-import GameSelect from "@/views/GameSelect.vue";
+import WorldIntroView from "@/views/WorldIntroView.vue";
+import GameIntroView from "@/views/GameIntroView.vue";
+import WorldSelection from "@/components/worldSelection/WorldSelection.vue";
+import GameConfig from "@/components/gameConfig/GameConfig.vue";
+import EditorView from "@/views/editor/EditorView.vue";
+import StartPage from "@/views/StartPage.vue";
+import { createRouter, createWebHistory } from "vue-router";
+
 import JoinGame from "@/components/joinGame/JoinGame.vue";
 
 const router = createRouter({
@@ -13,20 +18,43 @@ const router = createRouter({
       component: Game,
     },
     {
-      path: "/worldselect",
+      path: "/worldintro",
       name: "worldSelect",
-      component: WorldSelect,
+      component: WorldIntroView,
     },
     {
-      path: "/gameselect",
+      path: "/gameintro",
       name: "GameSelect",
-      component: GameSelect,
+      component: GameIntroView,
     },
     {
-      path: "/joingame",
+      path: "/worldSelection",
+      name: "WorldSelection",
+      component: WorldSelection,
+    },
+    {
+      path: "/gameConfig/:mapName",
+      name: "GameConfig",
+      component: GameConfig,
+      props: true
+    },
+
+    {
+      path: "/login",
+      name: "Login",
+      component: StartPage,
+    },
+    {
+      path: "/joingame/:instanceID",
       name: "JoinGame",
       component: JoinGame,
+      props: true
     },
+    {
+      path: "/editor",
+      name: "EditorView",
+      component: EditorView,
+    }
   ],
 });
 

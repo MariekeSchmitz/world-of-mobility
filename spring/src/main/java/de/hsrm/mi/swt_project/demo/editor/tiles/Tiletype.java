@@ -1,62 +1,81 @@
 
 package de.hsrm.mi.swt_project.demo.editor.tiles;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
 
 public enum Tiletype {
 
-    STREET_STRAIGHT(Orientation.NORTH, Orientation.SOUTH) {
+    STREET_STRAIGHT() {
         @Override
         public Tile createTile() {
-            return new Streetile();
+            TrafficTile tile = new Streetile();
+            tile.allowedDirections.add(Orientation.NORTH);
+            tile.allowedDirections.add(Orientation.SOUTH);
+            tile.type = this;
+            return tile;
         }
     },
-    STREET_CURVE(Orientation.SOUTH, Orientation.WEST) {
+    STREET_CURVE() {
         @Override
         public Tile createTile() {
-            return new Streetile();
+            TrafficTile tile = new Streetile();
+            tile.allowedDirections.add(Orientation.SOUTH);
+            tile.allowedDirections.add(Orientation.WEST);
+            tile.type = this;
+            return tile;
         }
     }, 
-    STREET_CROSS(Orientation.NORTH, Orientation.EAST, Orientation.SOUTH, Orientation.WEST) {
+    STREET_CROSS() {
         @Override
         public Tile createTile() {
+            TrafficTile tile = new Streetile();
+            tile.allowedDirections.add(Orientation.NORTH);
+            tile.allowedDirections.add(Orientation.EAST);
+            tile.allowedDirections.add(Orientation.SOUTH);
+            tile.allowedDirections.add(Orientation.WEST);
+            tile.type = this;
+            return tile;
+        }
+    },
+    STREET_T_CROSS() {
+        @Override
+        public Tile createTile() {
+            TrafficTile tile = new Streetile();
+            tile.allowedDirections.add(Orientation.EAST);
+            tile.allowedDirections.add(Orientation.SOUTH);
+            tile.allowedDirections.add(Orientation.WEST);
+            tile.type = this;
             return new Streetile();
         }
     },
-    STREET_T_CROSS(Orientation.EAST, Orientation.SOUTH, Orientation.WEST) {
+    RAIL_STRAIGHT() {
         @Override
         public Tile createTile() {
-            return new Streetile();
+            TrafficTile tile = new Railtile();
+            tile.allowedDirections.add(Orientation.NORTH);
+            tile.allowedDirections.add(Orientation.SOUTH);
+            tile.type = this;
+            return tile;
         }
     },
-    RAIL_STRAIGHT(Orientation.NORTH, Orientation.SOUTH) {
+    RAIL_CURVE() {
         @Override
         public Tile createTile() {
-            return new Railtile();
-        }
-    },
-    RAIL_CURVE(Orientation.SOUTH, Orientation.WEST) {
-        @Override
-        public Tile createTile() {
-            return new Railtile();
+            TrafficTile tile = new Railtile();
+            tile.allowedDirections.add(Orientation.SOUTH);
+            tile.allowedDirections.add(Orientation.WEST);
+            tile.type = this;
+            return tile;
         }
     },
     SIDEWAY() {
         @Override
         public Tile createTile() {
-            return new PassengerTile();
+            Tile tile = new PassengerTile();
+            tile.type = this;
+            return tile;
         }
     };
-
-    List<Orientation> allowedOrientations = new ArrayList<>();
-
-    private Tiletype(Orientation... o){
-        allowedOrientations.addAll(Arrays.asList(o));
-    }
 
     public abstract Tile createTile();
 }

@@ -3,15 +3,23 @@
 import { useUser } from "@/services/useUser";
 import User from "@/components/joinGame/User.vue";
 import { onMounted } from "vue";
+import { useGame } from "@/services/useGame";
+import { useLogin } from "@/services/login/useLogin";
+const { receiveGameUpdate, joinGame } = useGame()
 const { userList,getUserList } = useUser()
+const { loginData } = useLogin()
 
 const props = 
   defineProps<{
     instanceID: number;
   }>();
 
-function joinGame(){
+function join(){
     console.log("join game")
+    if(props.instanceID != undefined){
+      joinGame(props.instanceID, loginData.username, "MOTORIZED_OBJECT")
+      receiveGameUpdate(props.instanceID)
+    }
 }
 
 onMounted(()=> {
@@ -28,7 +36,7 @@ onMounted(()=> {
             <User :name="user"></User>
         </div>
     </div>
-    <button @click="joinGame()">Beitreten</button>
+    <button @click="join()">Beitreten</button>
   </div>
 </template>
 

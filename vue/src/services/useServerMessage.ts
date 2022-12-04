@@ -13,7 +13,7 @@ const msgState = reactive<IMsgState> ({
 
 function receiveMessages(){
     const wsurl = `ws://${window.location.host}/stompbroker`
-    const DEST = "/topic/ServerMessage"
+    const DEST = "/topic/servermessage"
 
     const stompClient = new Client({brokerURL : wsurl})
     stompClient.onWebSocketError = (event) => console.log(`ERROR: WebSocket-Error: ${event}`);
@@ -38,7 +38,7 @@ function receiveMessages(){
 }
 
 async function updateTestMessage(message: string): Promise<void> {
-    const url = '/api/ServerMessage' 
+    const url = '/api/servermessage' 
     try {
         const data: IServerMessage = {
             id: 1,

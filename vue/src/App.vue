@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import { RouterLink, RouterView  } from "vue-router";
+import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
-    <nav>
-        <RouterLink to="/game">Game</RouterLink>
-        <RouterLink to="/worldselect">WorldSelect</RouterLink>
-        <RouterLink to="/gameselect">GameSelect</RouterLink>
-        <RouterLink to="/joingame">JoinGame</RouterLink>
-    </nav>
-    <RouterView></RouterView>
+  <nav>
+    <RouterLink to="/login">Login</RouterLink>
+    <RouterLink to="/game">Game</RouterLink>
+    <RouterLink to="/worldintro">WorldSelect</RouterLink>
+    <RouterLink to="/gameintro">GameSelect</RouterLink>
+    <RouterLink to="/joingame">JoinGame</RouterLink>
+    <RouterLink to="/worldSelection">WorldSelection</RouterLink>
+  </nav>
+  <RouterView></RouterView>
 </template>
 
 <style>
-
 nav {
   width: 100%;
   font-size: 20px;
@@ -39,5 +40,4 @@ nav a {
 nav a:first-of-type {
   border: 0;
 }
-
 </style>

@@ -1,5 +1,6 @@
 package de.hsrm.mi.swt_project.demo.messaging;
 
+import de.hsrm.mi.swt_project.demo.controls.EditorControl;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.editor.placeable_objects.Placeable;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
@@ -11,8 +12,6 @@ import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 public record GetMapUpdateDTO (
     Tiletype type,
     Orientation orientation, 
-    int prevXPos, 
-    int prevYPos, 
-    int newXPos, 
-    int newYPos, 
-    Placeable [] placedObjects){}
+    EditorControl control,
+    int xPos, 
+    int yPos){}

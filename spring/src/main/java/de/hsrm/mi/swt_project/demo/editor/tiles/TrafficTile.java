@@ -1,6 +1,7 @@
 package de.hsrm.mi.swt_project.demo.editor.tiles;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
@@ -11,7 +12,8 @@ import de.hsrm.mi.swt_project.demo.controls.Orientation;
  */
 public abstract class TrafficTile extends Tile {
 
-    protected List <Orientation> allowedDirections;
+    protected List<Orientation> allowedDirections = new ArrayList<>();
+
     @Override
     public void turn(Direction direction) {
         if (direction == Direction.LEFT) {
