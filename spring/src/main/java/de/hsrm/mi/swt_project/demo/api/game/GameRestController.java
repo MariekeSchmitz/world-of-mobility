@@ -51,8 +51,10 @@ public class GameRestController{
     public GetListInstanceDTO post_GameList() {
         logger.info("Post Request for List form all GameList");
         List<Instance> gamelist = instanceHandler.getGameInstances();
-        return new GetListInstanceDTO(gamelist);
+        return GetListInstanceDTO.from(gamelist);
     } 
+
+
     @GetMapping(value="/{id}/players", produces = MediaType.APPLICATION_JSON_VALUE)
     public GameUserListDTO getGamePlayers(@PathVariable long id) {
         return GameUserListDTO.from(instanceHandler.getGameInstanceById(id).getMoveableObjects());

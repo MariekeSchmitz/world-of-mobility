@@ -83,7 +83,7 @@ public class EditorRestController {
     public GetListInstanceDTO post_EditorList() {
         logger.info("Post Request for List form all EditorList");
         List<Instance> editorlist = instanceHandler.getEditorInstances();
-        return new GetListInstanceDTO(editorlist);
+        return GetListInstanceDTO.from(editorlist);
     }  
 
     /**

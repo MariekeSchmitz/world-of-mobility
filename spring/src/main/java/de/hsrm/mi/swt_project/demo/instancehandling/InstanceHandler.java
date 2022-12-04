@@ -20,6 +20,8 @@ import de.hsrm.mi.swt_project.demo.controls.Updateable;
      */
     public InstanceHandler() {
         instances = new ArrayList<Instance>();
+        instances.add(new GameInstance(new GameMap(), "GameName", 0));
+        instances.add(new EditorInstance(new GameMap(), 1));
     }
 
     /**
