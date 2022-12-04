@@ -1,15 +1,13 @@
 <script setup lang="ts">
+/**
+ * view in which a  new world can be created
+ * @author Marie Bohnert, Tom Gouthier, Victoria Thee
+ */
 import { ref } from 'vue';
-
 import {useEditor} from "@/services/useEditor";
-
- 
 
 const name = ref("")
 const {createWorld} = useEditor()
-
-
-
 </script>
 
 
@@ -21,6 +19,5 @@ const {createWorld} = useEditor()
         <input type="text" id="name" v-model="name"/>
     </div> 
     <button @click="createWorld(name)">Erstellen</button>
-
 
 </template>
