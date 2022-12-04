@@ -1,5 +1,6 @@
 package de.hsrm.mi.swt_project.demo.instancehandling;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -34,6 +35,8 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
     // TODO think of another solution because long can reach limit
     protected long idCounter = 1;
+    @Value("${mapSavePath:maps}")
+    private String mapSavePath;
 
 
     /**
@@ -62,15 +65,17 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
      * 
      * @param mapName the map to use for the instance
      * @param sessionName the name of the session
+     * @return the id of the new instance
      */
-    public void createGameInstance(String mapName, String sessionName) {
+    public long createGameInstance(String mapName, String sessionName) {
         try {
-            JSONObject mapFile = new JSONObject(Files.readString(Path.of("./maps/" + mapName + ".json")));
-            instances.add(new GameInstance(loadMap(mapFile), sessionName, idCounter++));
+            JSONObject mapFile = new JSONObject(Files.readString(Path.of(mapSavePath + mapName + ".json")));
+            instances.add(new GameInstance(loadMap(mapFile), sessionName, idCounter));
+            return idCounter++;
         } catch (IOException e) {
             e.printStackTrace();
+            return -1;
         }
-        
     }
 
     /**
@@ -78,13 +83,15 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
      * 
      * @param mapName the map to use for the instance
      */
-    public void createEditorInstance(String mapName) {
+    public long createEditorInstance(String mapName) {
         try {
-            JSONObject mapFile = new JSONObject(Files.readString(Path.of("./maps/" + mapName + ".json")));
-            instances.add(new EditorInstance(loadMap(mapFile), idCounter++));
+            JSONObject mapFile = new JSONObject(Files.readString(Path.of(mapSavePath + mapName + ".json")));
+            instances.add(new EditorInstance(loadMap(mapFile), idCounter));
         } catch (IOException e) {
-            instances.add(new EditorInstance(new GameMap(), idCounter++));
+            instances.add(new EditorInstance(new GameMap(), idCounter));
         }
+
+        return idCounter++;
     }
 
     /**
@@ -186,5 +193,20 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
             }
         }
         return null;
+    }
+
+    public List<String> getMaps() {
+        File[] directoryListing = new File(mapSavePath).listFiles();
+        List<String> mapNames = new ArrayList<>();
+
+        if (directoryListing != null) {
+            for (File child : directoryListing) {
+                mapNames.add(child.getName().replace(".json", ""));
+            }
+            return mapNames;
+        } else {
+            System.out.println("No maps found");
+            return null;
+        }
     }
 }
