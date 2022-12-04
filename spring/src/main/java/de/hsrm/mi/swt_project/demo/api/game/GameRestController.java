@@ -1,5 +1,7 @@
 package de.hsrm.mi.swt_project.demo.api.game;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -14,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
+import de.hsrm.mi.swt_project.demo.messaging.GetAllMapsOverviewDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetGameCommandDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetGameConfigDTO;
+import de.hsrm.mi.swt_project.demo.messaging.GetMapOverviewDataDTO;
 import de.hsrm.mi.swt_project.demo.messaging.SendGameUpdateDTO;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;
 import de.hsrm.mi.swt_project.demo.messaging.ValidationDTO;
@@ -94,10 +98,17 @@ public class GameRestController{
      * @return a list of all maps
      */
     @GetMapping(value="/get-all-maps", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<String> getMaps() {
+    public GetAllMapsOverviewDTO getMaps() {
         logger.info("GET Request for '/api/game/get-all-maps'");
 
-        return instanceHandler.getMaps();
+        LinkedList<GetMapOverviewDataDTO> test = new LinkedList<>();
+        test.add(new GetMapOverviewDataDTO("Map1"));
+        test.add(new GetMapOverviewDataDTO("Map2"));
+        test.add(new GetMapOverviewDataDTO("Map3"));
+
+        return new GetAllMapsOverviewDTO(test);
+
+        // return instanceHandler.getMaps();
     }
 
     @PostMapping(value="/game-config", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -106,6 +117,10 @@ public class GameRestController{
         logger.info("GET Request for '/api/game/game-config'");
 
         Boolean validationSuccess = instanceHandler.checkSessionNameAvailable(gameConfig.sessionName());
+
+        logger.info("SessionName:" + gameConfig.sessionName());
+        logger.info("MapName:" + gameConfig.mapName());
+
 
         return new ValidationDTO(validationSuccess);
         // return new ValidationDTO(false);

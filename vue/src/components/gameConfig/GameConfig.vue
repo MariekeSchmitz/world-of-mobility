@@ -12,7 +12,7 @@ const validationChecked = ref(false)
 const validationPassed = ref(false)
 
 
-async function checkValidation() {
+async function checkValidation(name: string) {
   await sendConfig(name)
 
   validationChecked.value = true
@@ -25,7 +25,7 @@ async function checkValidation() {
 
 function startGame() {
 
-  // TO DO 
+  console.log("Jetzt müsste es ins Spiel gehen.")
 
 }
 
@@ -45,7 +45,7 @@ function startGame() {
         <span class="slider round"></span>
     </label>
 
-    <button v-if="!(validationChecked && validationPassed)" @click="checkValidation()">Erstellen</button>
+    <button v-if="!(validationChecked && validationPassed)" @click="checkValidation(name)">Erstellen</button>
     <button v-if="(validationChecked && validationPassed)" @click="startGame()">Start</button>
 
     <p v-if="(validationChecked && !validationPassed)">Der Name {{name}} wurde schon vergeben.</p>

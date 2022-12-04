@@ -19,7 +19,7 @@ async function sendConfig(gamename: string) {
         const controller = new AbortController();
         const URL = '/api/game/game-config';
         
-        const data = {gamename};
+        const data = {mapName: "test", sessionName: gamename};
 
         const id = setTimeout(() => controller.abort(), 8000);
 

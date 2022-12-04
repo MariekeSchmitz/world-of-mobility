@@ -1,11 +1,26 @@
 <script setup lang="ts">
 
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import GameListItem from "@/components/selectview/GameListItem.vue";
 
 import { useMapOverview } from "@/services/useMapOverview";
+import type { RouterLink } from "vue-router";
+import router from "@/router";
 
-const { mapsOverview } = useMapOverview()
+const { mapsOverview, getMaps } = useMapOverview()
+
+
+onMounted( async() => {
+  await getMaps()
+})
+
+function changeView(name : string) {
+  console.log(name)
+  // router.push("/gameConfig")
+  router.push({ name: 'GameConfig', params: { mapName: name } })
+  
+}
+
 
 </script>
 
@@ -13,8 +28,8 @@ const { mapsOverview } = useMapOverview()
     <div class="wrapper">
         <h1>Welt für neues Spiel wählen</h1>
         <div class="flex-box">
-            <div v-for="map in (mapsOverview.maps)">
-                <GameListItem :worldname="(map.name)"></GameListItem>
+            <div v-for="map in (mapsOverview.allMaps)">
+                <GameListItem @click="changeView(map.mapName)" :worldname="(map.mapName)"></GameListItem>
             </div>
         </div>
     </div>
