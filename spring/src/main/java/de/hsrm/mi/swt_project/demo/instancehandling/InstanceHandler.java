@@ -1,45 +1,133 @@
 package de.hsrm.mi.swt_project.demo.instancehandling;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.controls.Updateable;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
+import de.hsrm.mi.swt_project.demo.movables.MoveableType;
+import de.hsrm.mi.swt_project.demo.movables.Passenger;
+import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
 /**
  * This class maintains all instances of the game.
  * 
  * @author Alexandra Müller
+ * @author Sascha Scheid
  */
  public class InstanceHandler implements Updateable {
+
+    @Autowired
+    protected UpdateloopService loopservice;
+
     protected List<Instance> instances;
+
     // TODO think of another solution because long can reach limit
     protected long idCounter = 1;
+    @Value("${mapSavePath:maps}")
+    private String mapSavePath;
+
 
     /**
      * Creates a new instance handler.
      */
     public InstanceHandler() {
         instances = new ArrayList<Instance>();
+
+        Passenger p1 = new Passenger(0,0, 1);
+        Passenger p2 = new Passenger(5, 5 , 1);
+
+        GameMap map = new GameMap();
+
+        map.addNpc(p1);
+        map.addNpc(p2);
+
+        Instance instance1 = new EditorInstance(map, 1);
+        Instance instance2 = new GameInstance(map, "test", 1);
+
+        this.instances.add(instance1);
+        this.instances.add(instance2);
     }
 
     /**
      * Adds a new game instance to the handler.
      * 
-     * @param map the map to use for the instance
+     * @param mapName the map to use for the instance
+     * @param sessionName the name of the session
+     * @return the id of the new instance
      */
-    public void createGameInstance(GameMap map, String name) {
-        instances.add(new GameInstance(map, name, idCounter));
-        idCounter++;
+    public long createGameInstance(String mapName, String sessionName) {
+        try {
+            JSONObject mapFile = new JSONObject(Files.readString(Path.of(mapSavePath + mapName + ".json")));
+            instances.add(new GameInstance(loadMap(mapFile), sessionName, idCounter));
+            return idCounter++;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     /**
      * Adds a new editor instance to the handler.
      * 
-     * @param map the map to use for the instance
+     * @param mapName the map to use for the instance
      */
-    public void createEditorInstance(GameMap map) {
-        instances.add(new EditorInstance(map, idCounter));
-        idCounter++;
+    public long createEditorInstance(String mapName) {
+        try {
+            JSONObject mapFile = new JSONObject(Files.readString(Path.of(mapSavePath + mapName + ".json")));
+            instances.add(new EditorInstance(loadMap(mapFile), idCounter));
+        } catch (IOException e) {
+            instances.add(new EditorInstance(new GameMap(), idCounter));
+        }
+
+        return idCounter++;
+    }
+
+    /**
+     * Loads a map from a JSON file.
+     * 
+     * @param mapFile the JSON file to load the map from
+     * @return the loaded map
+     */
+    private GameMap loadMap(JSONObject mapFile) {
+        JSONArray tiles = mapFile.getJSONArray("Tiles");
+        JSONArray npcs = mapFile.getJSONArray("Npcs");
+
+        GameMap map = new GameMap();
+        
+        tiles.forEach(tile -> {
+            JSONObject tileObject = (JSONObject) tile;
+            Tiletype tileType = tileObject.getEnum(Tiletype.class, "type");
+            int xPos = tileObject.getInt("xPos");
+            int yPos = tileObject.getInt("yPos");
+            Orientation orientation = tileObject.getEnum(Orientation.class, "orientation");
+            Tile newTile = tileType.createTile();
+            newTile.setOrientation(orientation);
+            map.addTile(newTile, xPos, yPos);
+        });
+
+        npcs.forEach(npc -> {
+            JSONObject npcObject = (JSONObject) npc;
+            MoveableType npcType = npcObject.getEnum(MoveableType.class, "type");
+            int xPos = npcObject.getInt("xPos");
+            int yPos = npcObject.getInt("yPos");
+            int maxVelocity = npcObject.getInt("maxVelocity");
+            MoveableObject newNpc = npcType.createMovable(xPos, yPos, maxVelocity);
+            map.addNpc(newNpc);
+        });
+
+        return map;
     }
 
     /**
@@ -52,11 +140,14 @@ import de.hsrm.mi.swt_project.demo.controls.Updateable;
     }
 
     /**
-     * Updates all instances.
+     * This method triggers all instances to update
+     * their state. After an update of the state, 
+     * the new state of an instance will be published.
      */
     public void update() {
         for (Instance instance : instances) {
             instance.update();
+            loopservice.publishInstanceState(instance);
         }
     }
 
@@ -102,6 +193,21 @@ import de.hsrm.mi.swt_project.demo.controls.Updateable;
             }
         }
         return null;
+    }
+
+    public List<String> getMaps() {
+        File[] directoryListing = new File(mapSavePath).listFiles();
+        List<String> mapNames = new ArrayList<>();
+
+        if (directoryListing != null) {
+            for (File child : directoryListing) {
+                mapNames.add(child.getName().replace(".json", ""));
+            }
+            return mapNames;
+        } else {
+            System.out.println("No maps found");
+            return null;
+        }
     }
 
 

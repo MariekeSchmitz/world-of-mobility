@@ -1,5 +1,6 @@
 package de.hsrm.mi.swt_project.demo.editor.tiles;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
@@ -15,8 +16,8 @@ import de.hsrm.mi.swt_project.demo.editor.placeable_objects.Placeable;
      */
 public abstract class Tile implements Turnable{
     
-    protected Orientation orientation;
-    protected List <Placeable> placedObjects;
+    protected Orientation orientation = Orientation.NORTH;
+    protected List <Placeable> placedObjects = new ArrayList<>();
     protected Tiletype type;
     
     /** adds a placeable Object on itself
@@ -65,7 +66,12 @@ public abstract class Tile implements Turnable{
         this.placedObjects = placedObjects;
     }
 
+    @Override
+    public String toString() {
+        return "Tile [orientation=" + orientation + ", placedObjects=" + placedObjects + ", type=" + type + "]";
+    }
 
 
+    
 
 }

@@ -4,6 +4,7 @@ import WorldIntroView from "@/views/WorldIntroView.vue";
 import GameIntroView from "@/views/GameIntroView.vue";
 import WorldSelection from "@/components/worldSelection/WorldSelection.vue";
 import GameConfig from "@/components/gameConfig/GameConfig.vue";
+import EditorView from "@/views/editor/EditorView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,6 +35,11 @@ const router = createRouter({
       component: GameConfig,
     }
 
+    {
+      path: "/editor",
+      name: "EditorView",
+      component: EditorView,
+    }
   ],
 });
 

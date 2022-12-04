@@ -21,15 +21,15 @@ export function useGame(): any {
     }
 
     interface IGameUpdate {
-        movables: Array<IMoveable>
+        moveableUpdates: Array<IMoveable>
     }
 
     interface IGameState {
         gameUpdateListe: IGameUpdate[]
     }
 
-    const gameState = reactive<IGameState> ({
-        gameUpdateListe: []
+    const gameState = reactive<IGameUpdate> ({
+        moveableUpdates: []
     });
 
     async function sendCommand(clientid: number, user: string, command: string) {
@@ -37,7 +37,7 @@ export function useGame(): any {
             const controller = new AbortController();
             const URL = '/api/game/'+clientid+'/game-command';
             
-            const data = {user, command};
+            const data = {user: user, control: command};
     
             const id = setTimeout(() => controller.abort(), 8000);
     
@@ -47,7 +47,7 @@ export function useGame(): any {
                     'Content-Type': 'application/json'
                 },
                 signal: controller.signal,
-                body: JSON.stringify(data)
+                body: JSON.stringify(data as IGameControl)
             });
             
             clearTimeout(id);
@@ -65,20 +65,19 @@ export function useGame(): any {
         
     }
 
-    async function receiveGameUpdate() {
+    async function receiveGameUpdate(instanceid:number) {
         const wsurl = `ws://${window.location.host}/stompbroker`;
-        const DEST = "/topic/GameUpdate";
+        const DEST = `/topic/game/${instanceid}`;
     
         const stompClient = new Client({ brokerURL: wsurl });
-        stompClient.onWebSocketError = event => console.log(`ERROR: WebSocket-Error in GameUpdate: ${event}`);
-        stompClient.onStompError = event => console.log(`ERROR: Stomp-Error in GameUpdate: ${event}`);
+        stompClient.onWebSocketError = (event: any) => console.log(`ERROR: WebSocket-Error in GameUpdate: ${event}`);
+        stompClient.onStompError = (event: any) => console.log(`ERROR: Stomp-Error in GameUpdate: ${event}`);
     
-        stompClient.onConnect = frame => {
+        stompClient.onConnect = (frame: any) => {
             console.log("Connected Stompbroker to GameUpdate");
-            stompClient.subscribe(DEST, (message) => {
-                console.log(`Stompbroker received message: \n${message.body}`);
+            stompClient.subscribe(DEST, (message: { body: string; }) => {
                 const gameUpdate: IGameUpdate = JSON.parse(message.body);
-                gameState.gameUpdateListe.push(gameUpdate);
+                gameState.moveableUpdates = gameUpdate.moveableUpdates;
             });
         }
     
