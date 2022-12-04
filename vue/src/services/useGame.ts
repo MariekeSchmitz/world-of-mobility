@@ -4,7 +4,6 @@ import { reactive, readonly } from "vue";
 
 export function useGame(): any {
 
-
     interface IMoveable {
         user: string,
         xPos: number,
@@ -32,6 +31,14 @@ export function useGame(): any {
         moveableUpdates: []
     });
 
+    interface IInstanceId {
+        id:number
+    }
+
+    const instanceIdState = reactive<IInstanceId> ({
+        id: -1 
+    });
+
     async function sendCommand(clientid: number, user: string, command: string) {
         try {
             const controller = new AbortController();
@@ -50,9 +57,38 @@ export function useGame(): any {
                 body: JSON.stringify(data as IGameControl)
             });
             
+            const jsonData: IInstanceId = await response.json()
             clearTimeout(id);
+            instanceIdState.id = jsonData.id
+
+        } catch(reason) {
+            console.log(`ERROR: Sending Command failed: ${reason}`);
+            return false;
+        }
+        
+    }
+
+    async function createGameInstance(mapName: string, sessionName: string) {
+        try {
+            const controller = new AbortController();
+            const URL = '/api/game/create-game';
+            
+            const data = {mapeName: "map", sessionName: sessionName};
     
-            console.log(response.text());
+            const id = setTimeout(() => controller.abort(), 8000);
+    
+            const response = await fetch(URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                signal: controller.signal,
+                body: JSON.stringify(data)
+            });
+            
+            clearTimeout(id);
+            
+            console.log(response.json());
             if(!response.ok) {
                 return false;
             }
@@ -90,7 +126,9 @@ export function useGame(): any {
 
     return {
         mapUpdates: readonly(gameState),
+        instanceId: readonly(instanceIdState),
         receiveGameUpdate,
-        sendCommand
+        sendCommand,
+        createGameInstance
     }
 }
