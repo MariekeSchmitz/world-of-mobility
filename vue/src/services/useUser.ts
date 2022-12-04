@@ -13,8 +13,6 @@ export function useUser(): any {
 
     async function getUserList(instanceID: number) {
         try {
-            //code preperation for REST-Call
-            /*
             const controller = new AbortController();
             const URL = '/api/game/'+instanceID+'/players';
     
@@ -30,10 +28,9 @@ export function useUser(): any {
             clearTimeout(id);
     
             console.log(response.text());
-            usersListState.users = jsonData.users
-            */
-            const jsonData : IUserList = json
             userListState.users = jsonData.users
+            //const jsonData : IUserList = json
+            //userListState.users = jsonData.users
         } catch(reason) {
             console.log(`ERROR: Fetching Map failed: ${reason}`);
         }

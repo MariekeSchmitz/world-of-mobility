@@ -57,6 +57,7 @@ public class GameRestController{
 
     @GetMapping(value="/{id}/players", produces = MediaType.APPLICATION_JSON_VALUE)
     public GameUserListDTO getGamePlayers(@PathVariable long id) {
+        logger.info("GET Request for '/api/game/" + id + "/players'");
         return GameUserListDTO.from(instanceHandler.getGameInstanceById(id).getMoveableObjects());
     }
 }
