@@ -3,8 +3,10 @@
     import { useInstanceList } from "@/services/useInstanceList"
     import { computed, ref } from '@vue/reactivity';
     import { onMounted } from 'vue';
-
+    import { useMapOverview } from "@/services/useMapOverview";
+    
     const { instanceState, getInstanceList } = useInstanceList();
+    const { mapsOverview } = useMapOverview()
 
     onMounted(() => {
         getInstanceList("editor")
@@ -23,8 +25,7 @@
 
         console.log(showAll.value)
     }
-
-
+    
 
 
 </script>
@@ -33,9 +34,11 @@
     <div>
         <div>
             <RouterLink to="/login"><img src="../buttons/editor/arrow-left.png" alt=""></RouterLink>
-            <button>
-                <img src="../buttons/editor/plus.png" alt=""> Welt erstellen
-            </button>
+            <RouterLink to="/createWorld">
+                <button>
+                    <img src="../buttons/editor/plus.png" alt=""> Welt erstellen
+                </button>
+            </RouterLink>
             <img id="logo" src="" alt="Logo Fehlt">
         </div>
 
@@ -51,11 +54,11 @@
             </fieldset>
      
             <div v-for="ele in instanceState.instancelist.instancelist">
-                <GameListItem :id="ele.id" :gamename="ele.gamename" :worldname="ele.worldname"  :people="ele.playeramount"></GameListItem>
+                <GameListItem :gamename="ele.gamename" :worldname="ele.worldname"  :people="ele.playeramount"></GameListItem>
             </div>
 
-            <div v-if="showAll" v-for="ele in instanceState.instancelist.instancelist">
-                <GameListItem :id="ele.id" :gamename="ele.gamename" :worldname="ele.worldname"  :people="ele.playeramount"></GameListItem>
+            <div v-if="showAll" v-for="ele in mapsOverview.maps">
+                <GameListItem :worldname="ele.name"></GameListItem>
             </div>
 
         </div>

@@ -19,9 +19,12 @@
 
             <RouterLink to="/login"><img src="../buttons/editor/arrow-left.png" alt=""></RouterLink>
 
-            <button>
-                <img src="../buttons/editor/plus.png" alt=""> Neues Spiel erstellen
-            </button>
+            <RouterLink to="/worldSelection">
+                <button>
+                    <img src="../buttons/editor/plus.png" alt=""> Neues Spiel erstellen 
+                </button>
+            </RouterLink>
+
             <img src="" alt="Logo Fehlt">
         </div>
 
