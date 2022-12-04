@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-import {createWorld} from "@/services/useEditor";
+import {useEditor} from "@/services/useEditor";
 
  
 
 const name = ref("")
+const {createWorld} = useEditor()
 
 
 

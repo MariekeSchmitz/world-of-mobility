@@ -54,13 +54,15 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
      * 
      * @param mapName the map to use for the instance
      */
-    public void createEditorInstance(String mapName) {
+    public long createEditorInstance(String mapName) {
         try {
             JSONObject mapFile = new JSONObject(Files.readString(Path.of("./maps/" + mapName + ".json")));
-            instances.add(new EditorInstance(loadMap(mapFile), idCounter++));
+            instances.add(new EditorInstance(loadMap(mapFile), idCounter));
         } catch (IOException e) {
-            instances.add(new EditorInstance(new GameMap(), idCounter++));
+            instances.add(new EditorInstance(new GameMap(), idCounter));
         }
+
+        return idCounter++;
     }
 
     /**

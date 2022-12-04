@@ -86,10 +86,14 @@ public class EditorRestController {
     }
 
 
-    @PostMapping
-    public void post_NewWorld(@RequestBody GetNewWorldDTO newWorldDTO){
+    @PostMapping("/createNewWorld")
+    public SendNewWorldDTO post_NewWorld(@RequestBody GetNewWorldDTO newWorldDTO){
         String name = newWorldDTO.name();
-        
+        long id = instanceHandler.createEditorInstance(name);
+
+        return SendNewWorldDTO.from(id, "");
+
+
 
     }
 

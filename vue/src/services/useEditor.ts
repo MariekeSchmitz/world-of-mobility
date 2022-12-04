@@ -7,11 +7,11 @@ interface ISendNewWorld{
 
 interface INewWorldResponse{
     error: string;
-    name: string;
+    id: number;
 }
 
 const newWorldState: INewWorldResponse = reactive({
-    name: "",
+    id: -1,
     error: "",
 })
 
@@ -43,8 +43,8 @@ async function createWorld(name: string){
             console.log(jsondata);
             if(jsondata.error === ""){
                 newWorldState.error = "";
-                newWorldState.name = jsondata.name;
-                console.log("worldName = ", newWorldState.name)
+                newWorldState.id = jsondata.id;
+                console.log("worldId = ", newWorldState.id)
                 
             } else{
                 newWorldState.error = jsondata.error;
