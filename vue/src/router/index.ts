@@ -33,8 +33,7 @@ const router = createRouter({
       path: "/gameConfig",
       name: "GameConfig",
       component: GameConfig,
-    }
-
+    },
     {
       path: "/editor",
       name: "EditorView",
