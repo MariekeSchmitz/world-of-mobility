@@ -21,7 +21,7 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
  * 
  * @author Alexandra Müller
  */
- public class InstanceHandler implements Updateable {
+public class InstanceHandler implements Updateable {
     protected List<Instance> instances;
     // TODO think of another solution because long can reach limit
     protected long idCounter = 1;
@@ -36,7 +36,7 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
     /**
      * Adds a new game instance to the handler.
      * 
-     * @param mapName the map to use for the instance
+     * @param mapName     the map to use for the instance
      * @param sessionName the name of the session
      */
     public void createGameInstance(String mapName, String sessionName) {
@@ -46,13 +46,14 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
     }
 
     /**
      * Adds a new editor instance to the handler.
      * 
      * @param mapName the map to use for the instance
+     * @return idCounter
      */
     public long createEditorInstance(String mapName) {
         try {
@@ -76,7 +77,7 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
         JSONArray npcs = mapFile.getJSONArray("Npcs");
 
         GameMap map = new GameMap();
-        
+
         tiles.forEach(tile -> {
             JSONObject tileObject = (JSONObject) tile;
             Tiletype tileType = tileObject.getEnum(Tiletype.class, "type");
@@ -138,7 +139,7 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
     public GameInstance getGameInstanceById(long id) {
         for (Instance instance : instances) {
             if (instance.getId() == id) {
-                if(instance instanceof GameInstance) {
+                if (instance instanceof GameInstance) {
                     return (GameInstance) instance;
                 }
             }
@@ -155,7 +156,7 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
     public EditorInstance getEditorInstanceById(long id) {
         for (Instance instance : instances) {
             if (instance.getId() == id) {
-                if(instance instanceof EditorInstance) {
+                if (instance instanceof EditorInstance) {
                     return (EditorInstance) instance;
                 }
             }

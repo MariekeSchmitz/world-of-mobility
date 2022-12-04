@@ -28,16 +28,17 @@ public class EditorRestController {
 
     @Autowired
     private InstanceHandler instanceHandler;
-    
+
     Logger logger = LoggerFactory.getLogger(EditorRestController.class);
 
     @Autowired
     public EditorRestController() {
-        
+
     }
 
     /**
      * Post for Mapupdates
+     * 
      * @param getMapUpdateDTO
      * @author Felix Ruf, Finn Schindel
      */
@@ -47,10 +48,10 @@ public class EditorRestController {
 
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(0);
 
-        // TODO add controlEnum 
+        // TODO add controlEnum
         editorInstance.editMap(getMapUpdateDTO.newXPos(), getMapUpdateDTO.newYPos(), null, getMapUpdateDTO.type());
     }
-    
+
     @PostMapping(value = "/GetMap", consumes = MediaType.APPLICATION_JSON_VALUE)
     public SendMapDTO post_GetMap(@RequestBody GetMapDTO getMapDTO) {
         logger.info("Post Request for Map: Received GetMapDTO = {}", getMapDTO.toString());
@@ -61,6 +62,7 @@ public class EditorRestController {
 
     /**
      * Post for Map Save
+     * 
      * @param saveMapDTO
      * @author Felix Ruf, Finn Schindel
      */
@@ -73,11 +75,12 @@ public class EditorRestController {
 
     /**
      * Post for Global Server Messages
+     * 
      * @param newServerMsgDTO
      * @author Felix Ruf, Finn Schindel
      */
-    @PostMapping(value="/ServerMessage", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void post_ServerMessage(@RequestBody ServerMessageDTO newServerMsgDTO){
+    @PostMapping(value = "/ServerMessage", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void post_ServerMessage(@RequestBody ServerMessageDTO newServerMsgDTO) {
         long now = System.currentTimeMillis();
         Timestamp currentTime = new Timestamp(now);
         String s = new SimpleDateFormat("HH:mm").format(currentTime);
@@ -85,17 +88,20 @@ public class EditorRestController {
         messaging.convertAndSend("/topic/ServerMessage", new ServerMessageDTO(newServerMsgDTO.usrId(), output));
     }
 
-
+    /**
+     * Post for a new world instance
+     * 
+     * @param newWorldDTO
+     * @return id, error
+     * @author Marie Bohnert, Tom Gouthier, Victoria Thee
+     */
     @PostMapping("/createNewWorld")
-    public SendNewWorldDTO post_NewWorld(@RequestBody GetNewWorldDTO newWorldDTO){
+    public SendNewWorldDTO post_NewWorld(@RequestBody GetNewWorldDTO newWorldDTO) {
         String name = newWorldDTO.name();
         long id = instanceHandler.createEditorInstance(name);
 
         return SendNewWorldDTO.from(id, "");
 
-
-
     }
-
 
 }
