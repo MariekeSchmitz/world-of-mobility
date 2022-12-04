@@ -35,8 +35,8 @@ public class InstanceHandler implements Updateable {
 
     // TODO think of another solution because long can reach limit
     protected long idCounter = 1;
-    @Value("${mapSavePath:maps}")
-    private String mapSavePath;
+    @Value("${map.savedir:maps}")
+    protected String mapSavePath;
 
     /**
      * Creates a new instance handler.
@@ -72,7 +72,7 @@ public class InstanceHandler implements Updateable {
             return idCounter++;
         } else {
             try {
-                JSONObject mapFile = new JSONObject(Files.readString(Path.of(mapSavePath + mapName + ".json")));
+                JSONObject mapFile = new JSONObject(Files.readString(Path.of(mapSavePath +"/"+ mapName + ".json")));
                 instances.add(new GameInstance(loadMap(mapFile), sessionName, idCounter));
                 return idCounter++;
             } catch (IOException e) {
