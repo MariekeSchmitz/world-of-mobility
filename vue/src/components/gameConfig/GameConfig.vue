@@ -3,11 +3,11 @@
 import { ref, computed } from "vue";
 import { useGameConfig } from "@/services/useGameConfig";
 import { useGame } from "@/services/useGame";
-
+import { useLogin } from "@/services/login/useLogin";
 
 const { instanceId, createGameInstance, receiveGameUpdate, joinGame } = useGame()
 const { sendConfig, valSuccess } = useGameConfig()
-
+const { loginData } = useLogin()
 
 const name = ""
 const playerLimit = 0
@@ -33,8 +33,10 @@ async function checkValidation(name: string) {
 async function startGame(name: string) {
   await createGameInstance(props.mapName, name)
   console.log(instanceId.id)
+  console.log(loginData.username)
+
   if(instanceId.id != -1){
-    joinGame(instanceId.id, "usernamedenwirleidernichthaben", "MOTORIZED_OBJECT")
+    joinGame(instanceId.id, loginData.username, "MOTORIZED_OBJECT")
     receiveGameUpdate(instanceId.id)
   }
 }
