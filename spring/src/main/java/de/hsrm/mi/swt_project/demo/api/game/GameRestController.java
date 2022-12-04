@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
 import de.hsrm.mi.swt_project.demo.messaging.GetGameCommandDTO;
+import de.hsrm.mi.swt_project.demo.messaging.GetGameConfigDTO;
 import de.hsrm.mi.swt_project.demo.messaging.SendGameUpdateDTO;
+import de.hsrm.mi.swt_project.demo.messaging.ValidationDTO;
 
 @RestController
 @RequestMapping("/api/game")
@@ -36,4 +38,17 @@ public class GameRestController{
 
         return SendGameUpdateDTO.from(instanceHandler.getGameInstanceById(id).getMoveableObjects());
     }
+
+    @PostMapping(value="/game-config", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ValidationDTO getGameConfig(@RequestBody GetGameConfigDTO gameConfig) {
+
+        logger.info("GET Request for '/api/game/game-config'");
+
+        Boolean validationSuccess = instanceHandler.checkSessionNameAvailable(gameConfig.sessionName());
+
+        return new ValidationDTO(validationSuccess);
+        // return new ValidationDTO(false);
+    }
+
+
 }

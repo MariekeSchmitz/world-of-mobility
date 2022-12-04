@@ -3,7 +3,7 @@ import { reactive, readonly } from "vue";
 import json from './testMapOverview.json';
 
 
-// Interface für eine einzige Mao
+// Interface für eine einzige Map
 interface IMap {
     name: string,
     img: string

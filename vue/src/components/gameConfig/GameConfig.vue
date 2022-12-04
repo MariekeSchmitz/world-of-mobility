@@ -1,10 +1,33 @@
 <script setup lang="ts">
 
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useGameConfig } from "@/services/useGameConfig";
+
+const { sendConfig, valSuccess } = useGameConfig()
 
 const name = ""
 const playerLimit = 0
 const npcs = false
+const validationChecked = ref(false)
+const validationPassed = ref(false)
+
+
+async function checkValidation() {
+  await sendConfig(name)
+
+  validationChecked.value = true
+
+  if(valSuccess.validationSuccess) {
+    validationPassed.value = true
+  }
+
+}
+
+function startGame() {
+
+  // TO DO 
+
+}
 
 </script>
 
@@ -13,14 +36,21 @@ const npcs = false
     <h1>Neues Spiel</h1>
     <div class="square"></div>
     <p>Spielname</p>
-    <input v-model="name" placeholder="Spielname eingeben">
+    <input id="gamename" v-model="name" placeholder="Spielname eingeben" :disabled=validationPassed>
     <p>Spieleranzahl</p>
-    <input type="number" v-model="playerLimit">
+    <input id="playerLimit" type="number" v-model="playerLimit" :disabled=validationPassed>
     <p>NPCs platzieren</p>
     <label class="switch">
-        <input type="checkbox">
+        <input if="npcSwitch" type="checkbox" :disabled=validationPassed>
         <span class="slider round"></span>
     </label>
+
+    <button v-if="!(validationChecked && validationPassed)" @click="checkValidation()">Erstellen</button>
+    <button v-if="(validationChecked && validationPassed)" @click="startGame()">Start</button>
+
+    <p v-if="(validationChecked && !validationPassed)">Der Name {{name}} wurde schon vergeben.</p>
+    <p v-if="(validationChecked && validationPassed)">Name {{name}} ok</p>
+
   </div>
 </template>
 

@@ -103,4 +103,24 @@ import de.hsrm.mi.swt_project.demo.controls.Updateable;
         }
         return null;
     }
+
+
+    /**
+     * Checks if suggested gamename is already used or is still available
+     * 
+     * @param sessionName  suggested gamename by gameconfiguration
+     * @return  if suggested gamename can be used
+     */
+    public Boolean checkSessionNameAvailable(String sessionName) {
+        
+        for (Instance instance : instances) {
+            if (instance instanceof GameInstance){
+                String name = ((GameInstance)instance).getName();
+                if (name.equals(sessionName)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
