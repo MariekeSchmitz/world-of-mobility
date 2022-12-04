@@ -66,13 +66,13 @@ public class GameRestController{
      * @param sessionName the name of the session to use for the instance
      * @return the id of the new instance
      */
-    /*
+    
     @PostMapping(value="/create-game", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public long createGame(@RequestBody GetGameConfigDTO gameconfig) {
+    public long createGame(@RequestBody GetGameConfigDTO gameConfig) {
         logger.info("POST Request for '/api/game/create-game' with body: " + gameConfig.mapName() + " and " + gameConfig.sessionName());
 
         return instanceHandler.createGameInstance(gameConfig.mapName(), gameConfig.sessionName());
-    }*/
+    }
 
     /**
      * Joins a player into an existing game.
