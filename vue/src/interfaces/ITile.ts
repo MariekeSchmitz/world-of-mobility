@@ -7,4 +7,5 @@ export interface ITile {
   placedObjects: any;
   positionX?: number;
   positionY?: number;
+  positionZ?: number;
 }

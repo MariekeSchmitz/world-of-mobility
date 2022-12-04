@@ -1,26 +1,69 @@
 <script setup lang="ts">
 
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useGameConfig } from "@/services/useGameConfig";
+import { useGame } from "@/services/useGame";
+import { useLogin } from "@/services/login/useLogin";
+
+const { instanceId, createGameInstance, receiveGameUpdate, joinGame } = useGame()
+const { sendConfig, valSuccess } = useGameConfig()
+const { loginData } = useLogin()
 
 const name = ""
 const playerLimit = 0
 const npcs = false
+const validationChecked = ref(false)
+const validationPassed = ref(false)
+
+const props = defineProps<{
+  mapName: string
+}>()
+
+async function checkValidation(name: string) {
+  await sendConfig(props.mapName, name)
+
+  validationChecked.value = true
+
+  if(valSuccess.validationSuccess) {
+    validationPassed.value = true
+  }
+
+}
+
+async function startGame(name: string) {
+  await createGameInstance(props.mapName, name)
+  console.log(instanceId.id)
+  console.log(loginData.username)
+
+  if(instanceId.id != -1){
+    joinGame(instanceId.id, loginData.username, "MOTORIZED_OBJECT")
+    receiveGameUpdate(instanceId.id)
+  }
+}
 
 </script>
 
 <template>
+
   <div class="wrapper">
-    <h1>Neues Spiel</h1>
+    <h1>Neues Spiel in der Welt {{props.mapName}}</h1>
     <div class="square"></div>
     <p>Spielname</p>
-    <input v-model="name" placeholder="Spielname eingeben">
+    <input id="gamename" v-model="name" placeholder="Spielname eingeben" :disabled=validationPassed>
     <p>Spieleranzahl</p>
-    <input type="number" v-model="playerLimit">
+    <input id="playerLimit" type="number" v-model="playerLimit" :disabled=validationPassed>
     <p>NPCs platzieren</p>
     <label class="switch">
-        <input type="checkbox">
+        <input if="npcSwitch" type="checkbox" :disabled=validationPassed>
         <span class="slider round"></span>
     </label>
+
+    <button v-if="!(validationChecked && validationPassed)" @click="checkValidation(name)">Erstellen</button>
+    <button v-if="(validationChecked && validationPassed)" @click="startGame(name)">Start</button>
+
+    <p v-if="(validationChecked && !validationPassed)">Der Name {{name}} wurde schon vergeben.</p>
+    <p v-if="(validationChecked && validationPassed)">Name {{name}} ok</p>
+
   </div>
 </template>
 

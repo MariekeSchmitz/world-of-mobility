@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.hsrm.mi.swt_project.demo.controls.EditorControl;
 import de.hsrm.mi.swt_project.demo.instancehandling.EditorInstance;
 import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
@@ -45,17 +46,18 @@ public class EditorRestController {
      * @param getMapUpdateDTO
      * @author Felix Ruf, Finn Schindel
      */
-    @PostMapping(value = "/MapUpdate", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/mapupdate", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void post_MapUpdate(@RequestBody GetMapUpdateDTO getMapUpdateDTO) {
         logger.info("Post Request for Map Update: Received GetMapUpdateDTO = {}", getMapUpdateDTO.toString());
 
-        EditorInstance editorInstance = instanceHandler.getEditorInstanceById(0);
+        // TODO add correct editorinstanceid
+        EditorInstance editorInstance = instanceHandler.getEditorInstanceById(1);
 
-        // TODO add controlEnum
-        editorInstance.editMap(getMapUpdateDTO.newXPos(), getMapUpdateDTO.newYPos(), null, getMapUpdateDTO.type());
+        // TODO add controlEnum 
+        editorInstance.editMap(getMapUpdateDTO.xPos(), getMapUpdateDTO.yPos(), getMapUpdateDTO.control(), getMapUpdateDTO.type());
     }
-
-    @PostMapping(value = "/GetMap", consumes = MediaType.APPLICATION_JSON_VALUE)
+    
+    @PostMapping(value = "/getmap", consumes = MediaType.APPLICATION_JSON_VALUE)
     public SendMapDTO post_GetMap(@RequestBody GetMapDTO getMapDTO) {
         logger.info("Post Request for Map: Received GetMapDTO = {}", getMapDTO.toString());
 
@@ -69,7 +71,7 @@ public class EditorRestController {
      * @param saveMapDTO
      * @author Felix Ruf, Finn Schindel
      */
-    @PostMapping(value = "/SaveMap", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/savemap", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void post_MapSave(@RequestBody GetMapDTO getMapDTO) {
         logger.info("Post Request for Map Save: Received SaveMapDTO = {}", getMapDTO.toString());
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(getMapDTO.mapId());
@@ -94,13 +96,13 @@ public class EditorRestController {
      * @param newServerMsgDTO
      * @author Felix Ruf, Finn Schindel
      */
-    @PostMapping(value = "/ServerMessage", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void post_ServerMessage(@RequestBody ServerMessageDTO newServerMsgDTO) {
+    @PostMapping(value="/servermessage", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void post_ServerMessage(@RequestBody ServerMessageDTO newServerMsgDTO){
         long now = System.currentTimeMillis();
         Timestamp currentTime = new Timestamp(now);
         String s = new SimpleDateFormat("HH:mm").format(currentTime);
         String output = s + ": " + newServerMsgDTO.txt();
-        messaging.convertAndSend("/topic/ServerMessage", new ServerMessageDTO(newServerMsgDTO.usrId(), output));
+        messaging.convertAndSend("/topic/servermessage", new ServerMessageDTO(newServerMsgDTO.usrId(), output));
     }
 
     /**

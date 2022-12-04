@@ -8,6 +8,7 @@ import StartPage from "@/views/StartPage.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import WorldSelection from "@/components/worldSelection/WorldSelection.vue";
 import GameConfig from "@/components/gameConfig/GameConfig.vue";
+import EditorView from "@/views/editor/EditorView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,11 +51,16 @@ const router = createRouter({
       component: WorldSelection,
     },
     {
-      path: "/gameConfig",
+      path: "/gameConfig/:mapName",
       name: "GameConfig",
       component: GameConfig,
+      props: true
+    },  
+    {
+      path: "/editor",
+      name: "EditorView",
+      component: EditorView,
     }
-
   ],
 });
 

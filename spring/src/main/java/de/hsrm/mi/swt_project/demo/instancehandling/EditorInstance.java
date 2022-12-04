@@ -98,6 +98,7 @@ public class EditorInstance extends Instance {
      * @param name the name of the map
      */
     public void saveMap(String name) {
+        File saveDir = new File(mapSavePath);
 
         if(this.map.getName() == null || this.map.getName().isEmpty()) {
             this.map.setName(name);
@@ -107,9 +108,9 @@ public class EditorInstance extends Instance {
         mapToSave.put("Tiles", this.map.getTiles());
         mapToSave.put("Npcs", this.map.getNpcs());
 
-        File savePath = new File(mapSavePath, map.getName() + ".json"); 
+        File savePath = new File(saveDir, map.getName() + ".json"); 
     
-        mapSavePath.mkdirs();
+        saveDir.mkdirs();
 
         if (!savePath.exists()) {
             try {

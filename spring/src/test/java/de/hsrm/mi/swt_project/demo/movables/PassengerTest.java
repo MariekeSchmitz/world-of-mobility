@@ -1,20 +1,21 @@
-package de.hsrm.mi.swt_project.demo;
+package de.hsrm.mi.swt_project.demo.movables;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
-import de.hsrm.mi.swt_project.demo.movables.Passenger;
 
 @SpringBootTest
-public class PassengerTest {
+class PassengerTest {
 
     @Test
-    protected void testTurn() {
+    void testTurn() {
 
         Orientation[] expectedOrientations = {
             Orientation.NORTH_EAST,
@@ -36,7 +37,7 @@ public class PassengerTest {
     }
 
     @Test
-    protected void testMove() {
+    void testMove() {
 
         float startX = 50;
         float startY = 50;
@@ -62,5 +63,42 @@ public class PassengerTest {
         assertEquals(startY, passenger.getYPos());
     }
 
+    @Test
+    void testCopy() {
+
+        Passenger passenger = new Passenger(Orientation.EAST, 50, 50, 20);
+        passenger.setCurrentVelocity(0.5f);
+
+        Passenger copy = passenger.copy();
+
+        assertNotSame(passenger, copy);
+        assertEquals(passenger, copy);
+
+    }
+    
+    @Test
+    void testEquals() {
+        Passenger p1 = new Passenger(50, 50, 100);
+        Passenger p2 = new Passenger(50, 50, 100);
+
+        assertNotSame(p1, p2);
+        assertTrue(p1.equals(p2));
+        assertTrue(p2.equals(p1));
+    }
+
+    @Test
+    void testHashcode() {
+        Passenger p1 = new Passenger(10, 20, 30);
+        Passenger p2 = new Passenger(10, 20, 30);
+
+        assertNotSame(p1, p2);
+        assertEquals(p1.hashCode(), p2.hashCode());
+    }
+
+    @Test
+    void testToString() {
+        Passenger p = new Passenger(1, 2, 3);
+        assertEquals("Passenger[xPos=1.00,yPos=2.00,curV=0.00,maxV=3.00,cap=1.00,orientation=NORTH]", p.toString());
+    }
     
 }

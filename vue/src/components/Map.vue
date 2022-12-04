@@ -3,12 +3,15 @@
 //@ts-ignore
 import * as THREE from "three";
 import Tile from "@/components/Tile.vue";
-import type { IMap } from "@/interfaces/IMap";
+import type { I3DMap } from "@/services/I3DMap";
 import type { ITile } from "@/interfaces/ITile";
+import { reactive } from "vue";
+import { useMap } from "@/services/useMap";
 
 const squareSize = 10;
+const { getMap } = useMap();
 
-const obj: IMap = {
+const defaultMap: I3DMap = {
   //@ts-ignore
   tiles: [
     [
@@ -110,6 +113,11 @@ const obj: IMap = {
   ],
 };
 
+const mapReactive: I3DMap = reactive(defaultMap);
+/**
+ * translates the orientation as string into an acutal vector.
+ * @param orientation the orientation of a tile
+ */
 function computeVector3(orientation: string): THREE.Vector3 {
   const quarterTurn = Math.PI / 2;
   let vector3 = new THREE.Vector3(0, 0, 0);
@@ -131,32 +139,47 @@ function computeVector3(orientation: string): THREE.Vector3 {
   }
   return vector3;
 }
-
-function modifyMap(map: IMap) {
-  let tempY = 0;
+/**
+ * prepares the map for our causes.
+ * generates and sets an x and y position for every Tile.
+ * @param map the fetched map
+ */
+function modifyMap(map: I3DMap) {
+  let tempZ = 0;
   map.tiles.forEach((subArray: ITile[]) => {
     let tempX = 0;
     subArray.forEach((tile: ITile) => {
-      tile.positionX = tempX;
-      tile.positionY = tempY;
+      if (tile) {
+        tile.positionX = tempX;
+        tile.positionZ = tempZ;
+      }
       tempX += squareSize;
     });
-    tempY += squareSize;
+    tempZ += squareSize;
   });
 }
 
-modifyMap(obj);
+async function prepareMap() {
+  const fetchedMap: I3DMap = await getMap("", 1);
+  modifyMap(fetchedMap);
+  mapReactive.tiles = fetchedMap.tiles;
+  console.log(mapReactive);
+}
+
+modifyMap(defaultMap);
+prepareMap();
 </script>
 <template>
   <!-- Loop to build the map -->
-  <div v-for="(subTile, index) in obj.tiles" :key="`row-${index}`">
-    <div v-for="tile in subTile" :key="tile.type">
+  <div v-for="(subTile, index) in mapReactive.tiles" :key="`row-${index}`">
+    <div v-for="(tile, index) in subTile" :key="`column-${index}`">
       <Tile
         :width="squareSize"
         :height="squareSize"
-        :position="new THREE.Vector3(tile.positionX, 0, tile.positionY)"
+        :position="new THREE.Vector3(tile.positionX, 0, tile.positionZ)"
         :rotation="computeVector3(tile.orientation)"
         :type="tile.type"
+        v-if="tile != null"
       >
       </Tile>
     </div>
