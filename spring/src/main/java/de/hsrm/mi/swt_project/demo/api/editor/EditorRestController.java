@@ -2,6 +2,7 @@ package de.hsrm.mi.swt_project.demo.api.editor;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import de.hsrm.mi.swt_project.demo.controls.EditorControl;
 import de.hsrm.mi.swt_project.demo.instancehandling.EditorInstance;
+import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
+import de.hsrm.mi.swt_project.demo.messaging.GetListInstanceDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetMapUpdateDTO;
 import de.hsrm.mi.swt_project.demo.messaging.SendMapDTO;
 import de.hsrm.mi.swt_project.demo.messaging.ServerMessageDTO;
@@ -29,16 +32,17 @@ public class EditorRestController {
 
     @Autowired
     private InstanceHandler instanceHandler;
-    
+
     Logger logger = LoggerFactory.getLogger(EditorRestController.class);
 
     @Autowired
     public EditorRestController() {
-        
+
     }
 
     /**
      * Post for Mapupdates
+     * 
      * @param getMapUpdateDTO
      * @author Felix Ruf, Finn Schindel
      */
@@ -63,6 +67,7 @@ public class EditorRestController {
 
     /**
      * Post for Map Save
+     * 
      * @param saveMapDTO
      * @author Felix Ruf, Finn Schindel
      */
@@ -74,7 +79,20 @@ public class EditorRestController {
     }
 
     /**
+     * Post for Getting EditorInstanceList
+     * @param getListInstanceDTO
+     * @author Finn Schindel, Astrid Klemmer
+     */
+    @PostMapping(value = "/instancelist")
+    public GetListInstanceDTO post_EditorList() {
+        logger.info("Post Request for List form all EditorList");
+        List<Instance> editorlist = instanceHandler.getEditorInstances();
+        return GetListInstanceDTO.from(editorlist);
+    }  
+
+    /**
      * Post for Global Server Messages
+     * 
      * @param newServerMsgDTO
      * @author Felix Ruf, Finn Schindel
      */
@@ -86,4 +104,21 @@ public class EditorRestController {
         String output = s + ": " + newServerMsgDTO.txt();
         messaging.convertAndSend("/topic/servermessage", new ServerMessageDTO(newServerMsgDTO.usrId(), output));
     }
+
+    /**
+     * Post for a new world instance
+     * 
+     * @param newWorldDTO
+     * @return id, error
+     * @author Marie Bohnert, Tom Gouthier, Victoria Thee
+     */
+    @PostMapping("/createNewWorld")
+    public SendNewWorldDTO post_NewWorld(@RequestBody GetNewWorldDTO newWorldDTO) {
+        String name = newWorldDTO.name();
+        long id = instanceHandler.createEditorInstance(name);
+
+        return SendNewWorldDTO.from(id, "");
+
+    }
+
 }

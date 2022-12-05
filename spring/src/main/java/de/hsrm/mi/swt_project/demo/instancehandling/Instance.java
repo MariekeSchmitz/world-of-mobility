@@ -12,7 +12,7 @@ import de.hsrm.mi.swt_project.demo.controls.Updateable;
  * @author Alexandra Müller
  */
 public abstract class Instance implements Updateable {
-    @Value("${mapSavePath:maps}")
+    @Value("${map.savedir:maps}")
     protected String mapSavePath;
 
     protected GameMap map;

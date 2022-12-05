@@ -127,4 +127,8 @@ public class EditorInstance extends Instance {
         }
         
     }
+
+    public List<String> getUsers() {
+        return users;
+    }
 }
