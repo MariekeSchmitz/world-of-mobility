@@ -20,7 +20,7 @@
     import type { ExportTile } from "@/services/editor/ExportTileInterface";
     import {useMapUpdate} from "@/services/useMapUpdate"
     import {useMap} from "@/services/useMap"
-import { computed } from "@vue/reactivity";
+    import { computed } from "@vue/reactivity";
 
 
     /**
@@ -29,34 +29,62 @@ import { computed } from "@vue/reactivity";
     const rendererC = ref();
     const camera = ref();
     const scene = ref();
+
+    onMounted(() => {
+      rendererC.value.canvas.addEventListener("click", onDocumentLeftMouseDown)
+      rendererC.value.canvas.addEventListener("mousemove", onMouseOver)
+      rendererC.value.canvas.addEventListener("contextmenu", onDocumentRightMouseDown)
+      loadedMap.then((result) => setLoadedMap(result.tiles))
+    });
+
+    //Texture Loader
+    const loadManager = new THREE.LoadingManager();
+    const loader = new THREE.TextureLoader(loadManager);
+
+    //Raycaster for Hover & Click detection
+    var raycaster = new THREE.Raycaster();
+    var mouse = new THREE.Vector2();
+
+    //defines Tile to be placed on click and whether click triggers a Tile place    
+    interface PlaceItem{
+      placeType:string,
+      placeMode:boolean
+    }
+
+    let place:PlaceItem;
+    place = {placeType:"none",placeMode: false}
+
+    //Contextmenu Meshes
+    let activeContextMenu: Array<THREE.Mesh>; 
+    activeContextMenu = [];
+
+    //Imported REST-Controller and Stompbroker connection
     const {sendMapUpdates, receiveMapUpdates, mapUpdates} = useMapUpdate("test");
     const {getMap, saveMap} = useMap();
+
+    //connect to Stompbroker
     receiveMapUpdates(1);
 
-    
+    //Rerender Map on Stompbroker Update
     watch(mapUpdates.value,(newValue,oldValue) =>{
       createMap(mapUpdates.value.map.tiles)
     
     })
-
-   
-    
-    
-    
-    
-
-    //loaded Map (once Backend works)
+    //Get Map on Loading EditorView
     const loadedMap = getMap("", 1);
+
+    //Dynamic Parameters, updated with Stomp re-render
     const mapWidth = ref(8)
     const mapHeight = ref(8)
     const offsetx = computed(() => (-(mapWidth.value + 1) / 2));
     const offsety = computed(() => (-(mapHeight.value + 1) / 2));
-    
-    let prevTexture:String = "";
-    let overwritten = false
 
+    /**
+     * Function to remove Editor Tile Meshes from the Scene in order to re-render the Scene
+     * 
+     * Author: Timothy Doukhin
+     */
     function removeMap(){
-     
       for (let id = scene.value.scene.children.length -1 ; id >= 0 ; id--){
         if (scene.value.scene.children[id].position.z == 0.01 ){
           scene.value.scene.remove(scene.value.scene.children[id])
@@ -69,21 +97,16 @@ import { computed } from "@vue/reactivity";
     /**
      * create Editable Map in Editor from Map object
      * @param tiles 2D Array containing Tiles
+     * 
+     * Author: Timothy Doukhin
      */
 
     function createMap(tiles){
       removeMap();
-    
-
-      const loadManager = new THREE.LoadingManager();
-      const loader = new THREE.TextureLoader(loadManager);
-
-
+      
       for(let row = 0;row < tiles.length;row++){
         for(let column =0 ;column < tiles[0].length; column++){
         
-          
-
           const TileGeometry = new THREE.PlaneGeometry( 0.99, 0.99 );
           let material = new THREE.MeshBasicMaterial();
           
@@ -102,8 +125,6 @@ import { computed } from "@vue/reactivity";
             TileMesh.rotation.z = Orientation[tiles[column][row].orientation]
           }
           scene.value.add(TileMesh);
-          //console.log(TileMesh)
-          
           
        }
       }
@@ -111,24 +132,27 @@ import { computed } from "@vue/reactivity";
 
     }
 
-    //defines Tile to be placed on click and whether click triggers a Tile place
-        
-    interface PlaceItem{
-      placeType:string,
-      placeMode:boolean
-    }
+    
 
-    let place:PlaceItem;
-    place = {placeType:"none",placeMode: false}
-
+    /**
+     * Sets Tile to be placed when selected from Bottom Menu
+     * @param tileType name of Tiletype
+     * 
+     * Author: Astrid Klemmer
+     */
     function setTileInfo(tileType:string){
       place = {placeType: tileType, placeMode: true}
     }
 
 
 
-
-    function planeClick(tileObject:THREE.Mesh) {
+    /**
+     * If a Tile has been Selected, handles the Placement Logic 
+     * @param tileObject Object to be operated on
+     * 
+     * Author: Timothy Doukhin & Astrid Klemmer
+     */
+    function tileClick(tileObject:THREE.Mesh) {
       removeContextMenu();
       
       if (place.placeMode){
@@ -149,15 +173,16 @@ import { computed } from "@vue/reactivity";
 
     }
     
-    let activeContextMenu: Array<THREE.Mesh>; 
-    activeContextMenu = [];
+    
 
 /**
  * Creates a contextmenu with turn buttons and a remove button above the selected tile on right click.
  * Objects belonging to the Menu get saved in the "activeContextMenu" Array
  * any preexisting contextmenus get removed so that only one is active at any time.
  * 
- * @param callingObject Tile-Object that the contextmenu operates on
+ * @param callingObject Tile-Mesh that the contextmenu operates on
+ * 
+ * Author: Timothy Doukhin
  * 
  */
     function createContextMenu(callingObject:THREE.Mesh){
@@ -166,7 +191,6 @@ import { computed } from "@vue/reactivity";
       const x = callingObject.position.x
       const y = callingObject.position.y
 
-      
       const contextMenuGeometry = new THREE.PlaneGeometry( 0.8, 0.3 );
       contextMenuGeometry.translate(0,0,0.02)
       let material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
@@ -211,6 +235,8 @@ import { computed } from "@vue/reactivity";
 
     /**
      * Removes the currently active Contextmenu from the Scene and from the "activeContextMenu" array
+     * 
+     * Author: Timothy Doukhin
      */
     function removeContextMenu(){
       if (activeContextMenu.length > 0){
@@ -221,10 +247,12 @@ import { computed } from "@vue/reactivity";
         activeContextMenu.splice(0);
       }
     }
+
     /**
-     * turns the tile left, currently only for frontend user, to be connected to backend
-     * 
+     * Rest request to turn Tile to the Left 
      * @param callingObject Tile-Object that the function operates on
+     * 
+     * Author: Timothy Doukhin
      */
     function turnLeft(callingObject){
         let posX = callingObject.position.x - offsetx.value -1;
@@ -238,10 +266,12 @@ import { computed } from "@vue/reactivity";
         }
         sendMapUpdates(turnleftDTO);
     }
+
     /**
-     * turns the tile right, currently only for frontend user, to be connected to backend
-     * 
+     * Rest request to turn Tile to the Right
      * @param callingObject Tile-Object that the function operates on
+     * 
+     * Author: Timothy Doukhin
      */
     function turnRight(callingObject){
       let posX = callingObject.position.x - offsetx.value -1;
@@ -257,9 +287,10 @@ import { computed } from "@vue/reactivity";
     }
 
     /**
-     * removes the current Tile, currently only for frontend user, to be connected to backend
-     * 
+     * Rest request to remove current Tile 
      * @param callingObject Tile-Object that the function operates on
+     * 
+     * Author: Timothy Doukhin
      */
     function removeTile(callingObject){
         let posX = callingObject.position.x - offsetx.value -1;
@@ -274,45 +305,26 @@ import { computed } from "@vue/reactivity";
         sendMapUpdates(removeDTO);
     }
 
-    onMounted(() => {
-      
-      
-      rendererC.value.canvas.addEventListener("click", onDocumentLeftMouseDown)
-      rendererC.value.canvas.addEventListener("mousemove", onMouseOver)
-      rendererC.value.canvas.addEventListener("contextmenu", onDocumentRightMouseDown)
-      loadedMap.then((result) => setLoadedMap(result.tiles))
-      
 
-      
-      let changeTileFrontend = null;
-     
-      
-      
-
-    });
-
+/**
+ * Sets the parameters for the World and creates map after loading
+ * @param receivedTiles TileArray for Map
+ * 
+ * Author: Timothy Doukhin
+ */
     function setLoadedMap(receivedTiles){
-      tiles = receivedTiles;
-      console.log ("tiles = ", tiles)
-      mapWidth.value = tiles[0].length
-      mapHeight.value = tiles.length
-      console.log(mapWidth.value, mapHeight.value, "a")
-      createMap(tiles);
-
+      mapWidth.value = receivedTiles[0].length
+      mapHeight.value = receivedTiles.length
+      createMap(receivedTiles);
     }
 
-    
-
-    
-
-
-    var raycaster = new THREE.Raycaster();
-    var mouse = new THREE.Vector2();
+   
 
     /**
      * update mouse position to properly highlight on hover 
-     * 
      * @param event to determine mouse Position
+     * 
+     * Author: Timothy Doukhin
      */
 
     function onMouseOver(event){
@@ -326,6 +338,8 @@ import { computed } from "@vue/reactivity";
     /**
      * checks if mouse intersects any objects via raycaster.
      * If yes, Mesh gets highlighted and previous mesh saved, in order to restore old texture/color after leaving hover range.
+     * 
+     * Author: Timothy Doukhin
      */
     function checkHover(){
       raycaster.setFromCamera( mouse, camera.value.camera );
@@ -352,11 +366,15 @@ import { computed } from "@vue/reactivity";
 		intersected = null;
       }
     }
+
+
     /**
      * checks if mouse intersects any Meshes via Raycaster on mouseclick.
-     * If yes, calls callback of contexmenu or planeClick for Tiles.
+     * If yes, calls callback of contexmenu or tileClick for Tiles.
      * 
      * @param event used to determine mouse position at click
+     * 
+     * Author: Timothy Doukhin
      */
     function onDocumentLeftMouseDown( event ) {
     
@@ -369,7 +387,7 @@ import { computed } from "@vue/reactivity";
         if ( intersects.length > 0 ) {
             let selectedObject = intersects[0];
             if (selectedObject.object.geometry.parameters.width == 0.99 && selectedObject.object.geometry.parameters.height == 0.99){
-              planeClick(selectedObject.object)
+              tileClick(selectedObject.object)
             }else{
               try {
                 selectedObject.object.callback();
@@ -384,9 +402,11 @@ import { computed } from "@vue/reactivity";
 
     /**
      * checks if mouse intersects any Meshes via Raycaster on right click.
-     * If rightclick is on a tile, a contextMenu is created.
+     * If rightclick is on a Tile-Mesh, a contextMenu is created.
      * 
      * @param event used to determine mouse position at click
+     * 
+     * Author: Timothy Doukhin
      */
     function onDocumentRightMouseDown( event ) {
       event.preventDefault();
@@ -405,9 +425,7 @@ import { computed } from "@vue/reactivity";
         }
     }
 
-onMounted(() => {
-  const renderer = rendererC.value as RendererPublicInterface;
-});
+
 </script>
 
 <template>
@@ -450,11 +468,6 @@ onMounted(() => {
 
             
          <!--   
-        <Plane :width="tiles.length" :height="tiles[0].length" :rotation="{ x: 0 }" :position="{ x: 0, y: 0, z: 0 }" ref="tile{{n}},{{m}}">
-          <ToonMaterial color="green" :props="{ side:THREE.DoubleSide}"/>
-        </Plane>
-
-
         <template v-for="row in mapWidth" >
           <template v-for="column in mapHeight" >
               <Plane :width="0.99" :height="0.99" :rotation="{ z: tiles[row-1][column-1].orientation==''?0:Orientation[tiles[row-1][column-1].orientation]}" :position="{ x: row  + offsetx, y: column + offsety, z: 0.01 }">
