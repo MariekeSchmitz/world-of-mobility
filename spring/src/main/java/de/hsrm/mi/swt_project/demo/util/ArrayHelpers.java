@@ -1,7 +1,5 @@
 package de.hsrm.mi.swt_project.demo.util;
 
-import java.util.Arrays;
-
 /**
  * This class contains static methods helping with
  * array manipulation. 
