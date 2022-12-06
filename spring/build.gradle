@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.7.5'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 	id 'java'
+	id 'jacoco'
 	id 'org.sonarqube' version '3.4.0.2513'
 }
 
@@ -13,7 +14,7 @@ repositories {
 	mavenCentral()
 }
 
-dependencies {
+dependencies { 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.json:json:20220320'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -21,6 +22,18 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-tasks.named('test') {
+test {
 	useJUnitPlatform()
+	finalizedBy jacocoTestReport
+}
+
+jacoco {
+	toolVersion = "0.8.8"
+}
+
+jacocoTestReport {
+	dependsOn test
+	reports {
+		xml.required = true
+	}
 }
