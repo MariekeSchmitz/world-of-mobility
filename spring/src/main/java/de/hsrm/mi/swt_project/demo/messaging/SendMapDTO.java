@@ -50,7 +50,7 @@ public record SendMapDTO(Tile[][] tiles, List<MoveableObject> npcs) {
     @Override
     public String toString() {
         return "SendMapDTO{" +
-                "tiles=" + tiles.toString() +
+                "tiles=" + Arrays.toString(tiles) +
                 ", npcs=" + npcs.toString() + "}";
     }
 

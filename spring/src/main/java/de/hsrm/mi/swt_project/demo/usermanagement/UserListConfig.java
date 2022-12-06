@@ -18,7 +18,6 @@ public class UserListConfig {
      */
     @Bean
     public UserList userList() {
-        UserList userList = new UserList();
-        return userList;
+        return new UserList();
     }
 }
