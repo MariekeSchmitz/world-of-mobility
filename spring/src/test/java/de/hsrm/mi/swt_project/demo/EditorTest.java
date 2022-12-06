@@ -31,9 +31,11 @@ class EditorTest {
 
     EditorInstance editorInstance;
 
+    long editorId;
+
     @BeforeEach
     void setUp() {
-        instanceHandler.createEditorInstance("");
+        editorId = instanceHandler.createEditorInstance("test");
         
     }
 
@@ -46,14 +48,57 @@ class EditorTest {
         body.put("control", "PLACE");
         body.put("type", "STREET_STRAIGHT");
 
-
         mockMvc.perform(
             post("/api/editor/mapupdate")
             .contentType(MediaType.APPLICATION_JSON)
             .content(body.toString())
             ).andExpect(status().isOk());
+    }
 
+    @Test
+    void post_getMap_good() throws Exception {
 
+        JSONObject body = new JSONObject();
+        body.put("mapName", "test");
+        body.put("mapId", editorId);
+
+        mockMvc.perform(
+            post("/api/editor/getmap")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(body.toString())
+            .accept(MediaType.APPLICATION_JSON)
+            ).andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("tiles").exists())
+            .andExpect(jsonPath("npcs").exists());
+    }
+
+    // TODO: This test does't work currently. NullPointerException on MapSave for missing mapSavePath. Maybe I just don't understand the @Value annotation in Instance 
+    // @Test void post_mapsave_good() throws Exception {
+
+    //     JSONObject body = new JSONObject();
+    //     body.put("mapName", "test");
+    //     body.put("mapId", editorId);
+
+    //     mockMvc.perform(
+    //         post("/api/editor/savemap")
+    //         .contentType(MediaType.APPLICATION_JSON)
+    //         .content(body.toString())
+    //     ).andExpect(status().isOk());
+    // }
+
+    @Test
+    void post_servermessage_good() throws Exception {
+        
+        JSONObject body = new JSONObject();
+        body.put("usrId", 1);
+        body.put("txt", "Dies ist ein Test");
+
+        mockMvc.perform(
+            post("/api/editor/servermessage")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(body.toString())
+        ).andExpect(status().isOk());
     }
 
     @Test
