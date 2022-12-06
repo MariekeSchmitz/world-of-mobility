@@ -9,6 +9,14 @@ package de.hsrm.mi.swt_project.demo.util;
 public class ArrayHelpers {
 
     /**
+     * Private default constructor to avoid instanciation.
+     */
+    private ArrayHelpers() {
+        // do nothing
+    }
+
+
+    /**
      * Copies elements from one array to another array.
      * 
      * @param <T> Type of the array elements.
