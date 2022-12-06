@@ -118,7 +118,9 @@ public class EditorInstance extends Instance {
 
         if (!savePath.exists()) {
             try {
-                savePath.createNewFile();
+                if(!savePath.createNewFile()) {
+                    throw new IOException("Something went wrong when creating a new file");
+                };
             } catch (IOException e) {
                 // e.printStackTrace();
                 logger.info("IOException occured in saveMap in EditorInstance, when creating a file: {}", e);
