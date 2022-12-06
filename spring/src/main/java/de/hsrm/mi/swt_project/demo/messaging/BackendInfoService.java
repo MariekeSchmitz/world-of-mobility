@@ -21,7 +21,7 @@ public interface BackendInfoService {
      * @param operation = the operation for the sending infomation
      * @param mapObject = Obeject SendMapDTO has to be converted into a JSON-String
      */
-    public void sendInfo(String topicName, BackendOperation operation, SendMapDTO Object);
+    public void sendInfo(String topicName, BackendOperation operation, SendMapDTO object);
 
     /**
      * 
@@ -29,7 +29,7 @@ public interface BackendInfoService {
      * @param operation = the operation for the sending infomation
      * @param SendGameUpdateDTO = Obeject SendGameUpdateDTO has to be converted into a JSON-String
      */
-    public void sendInfo(String topicName, BackendOperation operation, SendGameUpdateDTO Object);
+    public void sendInfo(String topicName, BackendOperation operation, SendGameUpdateDTO object);
 
     /**
      * 
@@ -37,7 +37,7 @@ public interface BackendInfoService {
      * @param operation = the operation for the sending infomation
      * @param SendMoveableUpdateDTO = Obeject SendMoveableUpdateDTO has to be converted into a JSON-String
      */
-    public void sendInfo(String topicName, BackendOperation operation, SendMoveableUpdateDTO Object);
+    public void sendInfo(String topicName, BackendOperation operation, SendMoveableUpdateDTO object);
 
 
     /**
@@ -46,5 +46,5 @@ public interface BackendInfoService {
      * @param operation = the operation for the sending infomation
      * @param GetMapUpdateDTO = Object GetMapUpdateDTO has to be converted into a JSON-String
      */
-    public void sendInfo(String topicName, BackendOperation operation, GetMapUpdateDTO Object);
+    public void sendInfo(String topicName, BackendOperation operation, GetMapUpdateDTO object);
 }

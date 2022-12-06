@@ -1,5 +1,7 @@
 package de.hsrm.mi.swt_project.demo.movables;
 
+import java.util.Locale;
+
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
 
@@ -167,7 +169,7 @@ public class MotorizedObject extends MoveableObject {
 
     @Override
     public String toString() {
-        return String.format("MotorizedObject[xPos=%.2f,yPos=%.2f,curV=%.2f,maxV=%.2f,cap=%.2f,orientation=%s]", this.xPos, this.yPos, this.currentVelocity, this.maxVelocity, this.capacity, this.orientation);
+        return String.format(Locale.ENGLISH, "MotorizedObject[xPos=%.2f,yPos=%.2f,curV=%.2f,maxV=%.2f,cap=%.2f,orientation=%s]", this.xPos, this.yPos, this.currentVelocity, this.maxVelocity, this.capacity, this.orientation);
     }
 
 }

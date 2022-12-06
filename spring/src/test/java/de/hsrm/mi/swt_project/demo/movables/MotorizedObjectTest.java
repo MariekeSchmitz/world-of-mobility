@@ -2,8 +2,6 @@ package de.hsrm.mi.swt_project.demo.movables;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -76,8 +74,8 @@ class MotorizedObjectTest {
         MotorizedObject mo2 = new MotorizedObject(50, 50, 100);
 
         assertNotSame(mo1, mo2);
-        assertTrue(mo1.equals(mo2));
-        assertTrue(mo2.equals(mo1));
+        assertEquals(mo1, mo2);
+        assertEquals(mo2, mo1);
     }
 
     @Test

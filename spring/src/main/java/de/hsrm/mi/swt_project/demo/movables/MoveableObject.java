@@ -1,6 +1,5 @@
 package de.hsrm.mi.swt_project.demo.movables;
 
-import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.Moveable;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.controls.Scriptable;

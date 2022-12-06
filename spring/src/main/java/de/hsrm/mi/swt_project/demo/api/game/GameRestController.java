@@ -1,5 +1,7 @@
 package de.hsrm.mi.swt_project.demo.api.game;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -13,10 +15,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
+import de.hsrm.mi.swt_project.demo.messaging.GameUserListDTO;
+import de.hsrm.mi.swt_project.demo.messaging.GetAllMapsOverviewDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetGameCommandDTO;
+import de.hsrm.mi.swt_project.demo.messaging.GetListInstanceDTO;
+import de.hsrm.mi.swt_project.demo.messaging.GetGameConfigDTO;
+import de.hsrm.mi.swt_project.demo.messaging.GetMapOverviewDataDTO;
 import de.hsrm.mi.swt_project.demo.messaging.SendGameUpdateDTO;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;
+import de.hsrm.mi.swt_project.demo.messaging.ValidationDTO;
 
 /**
  * This class handles all requests to the game instance.
@@ -58,19 +67,38 @@ public class GameRestController{
     }
 
     /**
+     * Post for Getting GameInstanceList
+     * @param getListInstanceDTO
+     * @author Finn Schindel, Astrid Klemmer
+     */
+    @PostMapping(value = "/instancelist")
+    public GetListInstanceDTO postGameList() {
+        logger.info("Post Request for List form all GameList");
+        List<Instance> gamelist = instanceHandler.getGameInstances();
+        return GetListInstanceDTO.from(gamelist);
+    } 
+
+
+    @GetMapping(value="/{id}/players", produces = MediaType.APPLICATION_JSON_VALUE)
+    public GameUserListDTO getGamePlayers(@PathVariable long id) {
+        logger.info("GET Request for '/api/game/" + id + "/players'");
+        return GameUserListDTO.from(instanceHandler.getGameInstanceById(id).getMoveableObjects());
+    }
+
+    /**
      * Creates a new game instance.
      * 
      * @param mapName the name of the map to use for the instance
      * @param sessionName the name of the session to use for the instance
      * @return the id of the new instance
      */
-    /*
+    
     @PostMapping(value="/create-game", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public long createGame(@RequestBody GetGameConfigDTO gameconfig) {
+    public long createGame(@RequestBody GetGameConfigDTO gameConfig) {
         logger.info("POST Request for '/api/game/create-game' with body: " + gameConfig.mapName() + " and " + gameConfig.sessionName());
 
         return instanceHandler.createGameInstance(gameConfig.mapName(), gameConfig.sessionName());
-    }*/
+    }
 
     /**
      * Joins a player into an existing game.
@@ -92,9 +120,40 @@ public class GameRestController{
      * @return a list of all maps
      */
     @GetMapping(value="/get-all-maps", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<String> getMaps() {
+    public GetAllMapsOverviewDTO getMaps() {
         logger.info("GET Request for '/api/game/get-all-maps'");
 
-        return instanceHandler.getMaps();
+        LinkedList<GetMapOverviewDataDTO> maps = new LinkedList<>();
+        maps.add(new GetMapOverviewDataDTO("Map1"));
+        maps.add(new GetMapOverviewDataDTO("Map2"));
+        maps.add(new GetMapOverviewDataDTO("Map3"));
+
+        // TO DO : unterhalb reinkommentieren + händisches adden (obendrüber) in maps-Liste rausschmeissen (aktuell noch keine richtigen Maps zum testen vorhanden)
+        // for (String mapName : instanceHandler.getMaps()) {
+        //     maps.add(new GetMapOverviewDataDTO("mapName"));
+        // }
+
+        return new GetAllMapsOverviewDTO(maps);
+
     }
+
+
+    /**
+     * Validates sessionName
+     * 
+     * @param gameConfig a DTO that contains mapName and sessionName
+     * @return if validation was successful
+     */
+    @PostMapping(value="/game-config", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ValidationDTO getGameConfig(@RequestBody GetGameConfigDTO gameConfig) {
+
+        logger.info("GET Request for '/api/game/game-config' with body: " + gameConfig.mapName() + " and " + gameConfig.sessionName());
+
+        Boolean validationSuccess = instanceHandler.checkSessionNameAvailable(gameConfig.sessionName());
+
+        return new ValidationDTO(validationSuccess);
+        // return new ValidationDTO(false);
+    }
+
+
 }

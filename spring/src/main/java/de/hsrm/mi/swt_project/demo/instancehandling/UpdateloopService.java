@@ -42,10 +42,10 @@ public class UpdateloopService {
      * @param instance Instance thats state will be sent to the topic.
      */
     public void publishInstanceState(Instance instance) {
-        if (instance instanceof GameInstance) {
-            this.publishGameInstanceState((GameInstance) instance);
-        } else if (instance instanceof EditorInstance) {
-            this.publishEditorInstanceState((EditorInstance) instance);
+        if (instance instanceof GameInstance gameInstance) {
+            this.publishGameInstanceState(gameInstance);
+        } else if (instance instanceof EditorInstance editorInstance) {
+            this.publishEditorInstanceState(editorInstance);
         }
     }
 

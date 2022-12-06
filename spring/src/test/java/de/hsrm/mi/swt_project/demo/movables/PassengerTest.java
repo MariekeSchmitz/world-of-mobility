@@ -3,8 +3,6 @@ package de.hsrm.mi.swt_project.demo.movables;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -82,8 +80,8 @@ class PassengerTest {
         Passenger p2 = new Passenger(50, 50, 100);
 
         assertNotSame(p1, p2);
-        assertTrue(p1.equals(p2));
-        assertTrue(p2.equals(p1));
+        assertEquals(p1, p2);
+        assertEquals(p2, p1);
     }
 
     @Test

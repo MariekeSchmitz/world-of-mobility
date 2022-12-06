@@ -8,6 +8,22 @@ package de.hsrm.mi.swt_project.demo.util;
  */
 public class ArrayHelpers {
 
+    protected static final String ARRAY_NULL_ERROR = "input array is not allowed to be null.";
+    protected static final String SRC_DEST_NULL_ERROR = "src and dest arrays are not allowed to be null.";
+    protected static final String SRC_DEST_SQUARED_ERROR = "src and dest arrays must both be square shaped.";
+    protected static final String SRC_DEST_EVEN_ODD_ERROR = "src and dest must both be of even or both of odd size";
+    protected static final String DEST_SMALLER_SRC_ERROR = "dest array size must be smaller than or equal to src array size. src size: %d, dest size: %d";
+    protected static final String DEST_BIGGER_SRC_ERROR = "dest array must be bigger than src array. src size: %d, dest size: %d";
+    protected static final String OFFSET_SMALLER_EQUAL_ERROR = "offset must be smaller than or equal to %d, was %d";
+
+    /**
+     * Private default constructor to avoid instanciation.
+     */
+    private ArrayHelpers() {
+        // do nothing
+    }
+
+
     /**
      * Copies elements from one array to another array.
      * 
@@ -18,16 +34,14 @@ public class ArrayHelpers {
     public static <T> void copy(T[] src, T[] dest) {
 
         if (src == null || dest == null) {
-            throw new IllegalArgumentException("src and dest arrays are not allowed to be null.");
+            throw new IllegalArgumentException(SRC_DEST_NULL_ERROR);
         }
 
         if (dest.length < src.length) {
-            throw new IllegalArgumentException("dest array must be bigger than src array. src size: %d, dest size: %d".formatted(src.length, dest.length));
+            throw new IllegalArgumentException(DEST_BIGGER_SRC_ERROR.formatted(src.length, dest.length));
         }
 
-        for (int i = 0; i < src.length; i++) {
-            dest[i] = src[i];
-        }
+        System.arraycopy(src, 0, dest, 0, src.length);
     }
 
     /**
@@ -40,11 +54,11 @@ public class ArrayHelpers {
     public static <T> void copy2D(T[][] src, T[][] dest) {
 
         if (src == null || dest == null) {
-            throw new IllegalArgumentException("src and dest arrays are not allowed to be null.");
+            throw new IllegalArgumentException(SRC_DEST_NULL_ERROR);
         }
 
         if (dest.length < src.length) {
-            throw new IllegalArgumentException("dest array must be bigger than src array. src size: %d, dest size: %d".formatted(src.length, dest.length));
+            throw new IllegalArgumentException(DEST_BIGGER_SRC_ERROR.formatted(src.length, dest.length));
         }
 
         for (int i = 0; i < src.length; i++) {
@@ -64,15 +78,15 @@ public class ArrayHelpers {
     public static <T> void shrink(T[] src, T[] dest, int offset) {
 
         if (src == null || dest == null) {
-            throw new IllegalArgumentException("src and dest arrays are not allowed to be null.");
+            throw new IllegalArgumentException(SRC_DEST_NULL_ERROR);
         }
 
         if (dest.length > src.length) {
-            throw new IllegalArgumentException("dest array size must be smaller than or equal to src array size.");
+            throw new IllegalArgumentException(DEST_SMALLER_SRC_ERROR.formatted(src.length, dest.length));
         }
 
         if (src.length - dest.length < offset) {
-            throw new IllegalArgumentException("offset must be smaller than or equal to %d, was %d".formatted(src.length - dest.length, offset));
+            throw new IllegalArgumentException(OFFSET_SMALLER_EQUAL_ERROR.formatted(src.length - dest.length, offset));
         }
 
         for (int i = 0; i < dest.length; i++) {
@@ -91,19 +105,19 @@ public class ArrayHelpers {
     public static <T> void shrink2D(T[][] src, T[][] dest, int offset) {
 
         if (src == null || dest == null) {
-            throw new IllegalArgumentException("src and dest arrays are not allowed to be null.");
+            throw new IllegalArgumentException(SRC_DEST_NULL_ERROR);
         }
 
         if (!isSquare(src) || !isSquare(dest)) {
-            throw new IllegalArgumentException("src and dest arrays must both be square shaped.");
+            throw new IllegalArgumentException(SRC_DEST_SQUARED_ERROR);
         }
 
         if (dest.length > src.length) {
-            throw new IllegalArgumentException("dest array size must be smaller than or equal to src array size.");
+            throw new IllegalArgumentException(DEST_SMALLER_SRC_ERROR.formatted(src.length, dest.length));
         }
 
         if (src.length - dest.length < offset) {
-            throw new IllegalArgumentException("offset must be smaller than or equal to %d, was %d".formatted(src.length - dest.length, offset));
+            throw new IllegalArgumentException(OFFSET_SMALLER_EQUAL_ERROR.formatted(src.length - dest.length, offset));
         }
 
         for (int i = 0; i < dest.length; i++) {
@@ -123,15 +137,15 @@ public class ArrayHelpers {
     public static <T> void expand(T[] src, T[] dest, int offset) {
 
         if (src == null || dest == null) {
-            throw new IllegalArgumentException("src and dest arrays are not allowed to be null.");
+            throw new IllegalArgumentException(SRC_DEST_NULL_ERROR);
         }
 
         if (src.length > dest.length) {
-            throw new IllegalArgumentException("dest array size must be bigger than or equal to src array size.");
+            throw new IllegalArgumentException(DEST_BIGGER_SRC_ERROR.formatted(src.length, dest.length));
         }
 
         if (dest.length - src.length < offset) {
-            throw new IllegalArgumentException("offset must be smaller than or equal to %d, was %d".formatted(dest.length - src.length, offset));
+            throw new IllegalArgumentException(OFFSET_SMALLER_EQUAL_ERROR.formatted(dest.length - src.length, offset));
         }
 
         for (int i = 0; i < src.length; i++) {
@@ -150,19 +164,19 @@ public class ArrayHelpers {
     public static <T> void expand2D(T[][] src, T[][] dest, int offset) {
 
         if (src == null || dest == null) {
-            throw new IllegalArgumentException("src and dest arrays are not allowed to be null.");
+            throw new IllegalArgumentException(SRC_DEST_NULL_ERROR);
         }
 
         if (!isSquare(src) || !isSquare(dest)) {
-            throw new IllegalArgumentException("src and dest arrays must both be square shaped.");
+            throw new IllegalArgumentException(SRC_DEST_SQUARED_ERROR);
         }
 
         if (src.length > dest.length) {
-            throw new IllegalArgumentException("dest array size must be bigger than or equal to src array size.");
+            throw new IllegalArgumentException(DEST_BIGGER_SRC_ERROR.formatted(src.length, dest.length));
         }
 
         if (dest.length - src.length < offset) {
-            throw new IllegalArgumentException("offset must be smaller than or equal to %d, was %d".formatted(dest.length - src.length, offset));
+            throw new IllegalArgumentException(OFFSET_SMALLER_EQUAL_ERROR.formatted(dest.length - src.length, offset));
         }
 
         for (int i = 0; i < src.length; i++) {
@@ -202,11 +216,11 @@ public class ArrayHelpers {
     public static <T> void transfer(T[] src, T[] dest) {
 
         if (src == null || dest == null) {
-            throw new IllegalArgumentException("src and dest arrays are not allowed to be null.");
+            throw new IllegalArgumentException(SRC_DEST_NULL_ERROR);
         }
 
         if (src.length % 2 != dest.length % 2) {
-            throw new IllegalArgumentException("Transfer is only supported if src and dest are both of even or both of odd size.");
+            throw new IllegalArgumentException(SRC_DEST_EVEN_ODD_ERROR);
         }
 
         int offset = (src.length - dest.length) / 2;
@@ -268,15 +282,15 @@ public class ArrayHelpers {
     public static <T> void transfer2D(T[][] src, T[][] dest) {
 
         if (src == null || dest == null) {
-            throw new IllegalArgumentException("src and dest arrays are not allowed to be null.");
+            throw new IllegalArgumentException(SRC_DEST_NULL_ERROR);
         }
 
         if (!isSquare(src) || !isSquare(dest)) {
-            throw new IllegalArgumentException("src and dest arrays must both be square shaped.");
+            throw new IllegalArgumentException(SRC_DEST_SQUARED_ERROR);
         }
 
         if (src.length % 2 != dest.length % 2) {
-            throw new IllegalArgumentException("Transfer2D is only supported if src and dest are both of even or both of odd size.");
+            throw new IllegalArgumentException(SRC_DEST_EVEN_ODD_ERROR);
         }
 
 
@@ -300,7 +314,7 @@ public class ArrayHelpers {
     public static <T> boolean isSquare(T[][] toCheck) {
 
         if (toCheck == null) {
-            throw new IllegalArgumentException("toCheck array is not allowed to be null");
+            throw new IllegalArgumentException(ARRAY_NULL_ERROR);
         }
 
         for (T[] row: toCheck) {

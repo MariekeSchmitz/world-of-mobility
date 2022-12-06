@@ -28,7 +28,7 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
  * @author Alexandra Müller
  * @author Sascha Scheid
  */
- public class InstanceHandler implements Updateable {
+public class InstanceHandler implements Updateable {
 
     @Autowired
     protected UpdateloopService loopservice;
@@ -39,9 +39,8 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
     // TODO think of another solution because long can reach limit
     protected long idCounter = 1;
-    @Value("${mapSavePath:maps}")
-    private String mapSavePath;
-
+    @Value("${map.savedir:maps}")
+    protected String mapSavePath;
 
     /**
      * Creates a new instance handler.
@@ -49,8 +48,8 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
     public InstanceHandler() {
         instances = new ArrayList<Instance>();
 
-        Passenger p1 = new Passenger(0,0, 1);
-        Passenger p2 = new Passenger(5, 5 , 1);
+        Passenger p1 = new Passenger(0, 0, 1);
+        Passenger p2 = new Passenger(5, 5, 1);
 
         GameMap map = new GameMap();
 
@@ -67,19 +66,24 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
     /**
      * Adds a new game instance to the handler.
      * 
-     * @param mapName the map to use for the instance
+     * @param mapName     the map to use for the instance
      * @param sessionName the name of the session
      * @return the id of the new instance
      */
     public long createGameInstance(String mapName, String sessionName) {
-        try {
-            JSONObject mapFile = new JSONObject(Files.readString(Path.of(mapSavePath + mapName + ".json")));
-            instances.add(new GameInstance(loadMap(mapFile), sessionName, idCounter));
+        if (mapName == null) {
+            instances.add(new GameInstance(new GameMap(), sessionName, idCounter));
             return idCounter++;
-        } catch (IOException e) {
-            // e.printStackTrace();
-            logger.info("IOException occured on createGameInstance in InstanceHandler: {}", e);
+        } else {
+            try {
+                JSONObject mapFile = new JSONObject(Files.readString(Path.of(mapSavePath +"/"+ mapName + ".json")));
+                instances.add(new GameInstance(loadMap(mapFile), sessionName, idCounter));
+                return idCounter++;
+            } catch (IOException e) {
+                // e.printStackTrace();
+                logger.info("IOException occured on createGameInstance in InstanceHandler: {}", e);
             return -1;
+            }
         }
     }
 
@@ -87,6 +91,7 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
      * Adds a new editor instance to the handler.
      * 
      * @param mapName the map to use for the instance
+     * @return idCounter
      */
     public long createEditorInstance(String mapName) {
         try {
@@ -110,7 +115,7 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
         JSONArray npcs = mapFile.getJSONArray("Npcs");
 
         GameMap map = new GameMap();
-        
+
         tiles.forEach(tile -> {
             JSONObject tileObject = (JSONObject) tile;
             Tiletype tileType = tileObject.getEnum(Tiletype.class, "type");
@@ -146,7 +151,7 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
     /**
      * This method triggers all instances to update
-     * their state. After an update of the state, 
+     * their state. After an update of the state,
      * the new state of an instance will be published.
      */
     public void update() {
@@ -167,6 +172,38 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
     }
 
     /**
+     * Returns a list from all gameinstances
+     * 
+     * @return a list form all gameinstances
+     * @author Finn Schindel, Astrid Klemmer
+     */
+    public List<Instance> getGameInstances(){
+        List<Instance> gList = new ArrayList<>();
+        for (Instance instance : instances) {
+            if (instance instanceof GameInstance) {
+                gList.add(instance);
+            }
+        }
+        return gList;
+    }
+
+    /**
+     * Returns a list from all editorinstances
+     * 
+     * @return a list form all editorinstances
+     * @author Finn Schindel, Astrid Klemmer
+     */
+    public List<Instance> getEditorInstances(){
+        List<Instance> eList = new ArrayList<>();
+        for (Instance instance : instances) {
+            if (instance instanceof EditorInstance) {
+                eList.add(instance);
+            }
+        }
+        return eList;
+    }
+
+    /**
      * Returns the game instance with the given id.
      * 
      * @param id the id of the instance
@@ -175,7 +212,7 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
     public GameInstance getGameInstanceById(long id) {
         for (Instance instance : instances) {
             if (instance.getId() == id) {
-                if(instance instanceof GameInstance) {
+                if (instance instanceof GameInstance) {
                     return (GameInstance) instance;
                 }
             }
@@ -192,7 +229,7 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
     public EditorInstance getEditorInstanceById(long id) {
         for (Instance instance : instances) {
             if (instance.getId() == id) {
-                if(instance instanceof EditorInstance) {
+                if (instance instanceof EditorInstance) {
                     return (EditorInstance) instance;
                 }
             }
@@ -213,5 +250,24 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
             System.out.println("No maps found");
             return null;
         }
+    }
+
+    /**
+     * Checks if suggested gamename is already used or is still available
+     * 
+     * @param sessionName suggested gamename by gameconfiguration
+     * @return if suggested gamename can be used
+     */
+    public Boolean checkSessionNameAvailable(String sessionName) {
+
+        for (Instance instance : instances) {
+            if (instance instanceof GameInstance) {
+                String name = ((GameInstance) instance).getName();
+                if (name.equals(sessionName)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
