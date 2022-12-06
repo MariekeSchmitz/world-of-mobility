@@ -26,31 +26,31 @@ public class BackendInfoServiceImpl implements BackendInfoService{
     }
 
     @Override
-    public void sendInfo(String topicName, BackendOperation operation, SendMoveableUpdateDTO Object) {
+    public void sendInfo(String topicName, BackendOperation operation, SendMoveableUpdateDTO object) {
         logger.info("Send Info: Topicname = {}, Operation = {}", topicName, operation);
         String destName = "/topic/" + topicName;
-        messaging.convertAndSend(destName, Object);    
+        messaging.convertAndSend(destName, object);    
     }
 
     @Override
-    public void sendInfo(String topicName, BackendOperation operation, SendMapDTO Object) {
+    public void sendInfo(String topicName, BackendOperation operation, SendMapDTO object) {
         logger.info("Send Info: Topicname = {}, Operation = {}", topicName, operation);
         String destName = "/topic/" + topicName;
-        messaging.convertAndSend(destName, Object);    
+        messaging.convertAndSend(destName, object);    
     }
 
     @Override
-    public void sendInfo(String topicName, BackendOperation operation, SendGameUpdateDTO Object) {
+    public void sendInfo(String topicName, BackendOperation operation, SendGameUpdateDTO object) {
         logger.info("Send Info: Topicname = {}, Operation = {}", topicName, operation);
         String destName = "/topic/" + topicName;
-        messaging.convertAndSend(destName, Object);       
+        messaging.convertAndSend(destName, object);       
     }
 
     @Override
-    public void sendInfo(String topicName, BackendOperation operation, GetMapUpdateDTO Object) {
+    public void sendInfo(String topicName, BackendOperation operation, GetMapUpdateDTO object) {
         logger.info("Send Info: Topicname = {}, Operation = {}", topicName, operation);
         String destName = "/topic/" + topicName;
-        messaging.convertAndSend(destName, Object);  
+        messaging.convertAndSend(destName, object);  
     }
 
     
