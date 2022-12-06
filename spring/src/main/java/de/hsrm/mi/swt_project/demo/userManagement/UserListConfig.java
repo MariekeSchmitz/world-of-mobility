@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.demo.userManagement;
+package de.hsrm.mi.swt_project.demo.usermanagement;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

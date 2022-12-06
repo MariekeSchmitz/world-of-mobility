@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.demo.userManagement;
+package de.hsrm.mi.swt_project.demo.usermanagement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,9 +40,7 @@ public class UserRestController {
         try {
             userService.addUser(user.name());
             return SendUserDTO.from(user.name(), "");
-        } catch (UserNotUniqueException e) {
-            return SendUserDTO.from(user.name(), e.getMessage());
-        } catch (UsernameTooShortException e) {
+        } catch (UserNotUniqueException|UsernameTooShortException e) {
             return SendUserDTO.from(user.name(), e.getMessage());
         }
     }

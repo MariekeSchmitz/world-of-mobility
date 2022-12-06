@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.demo.userManagement;
+package de.hsrm.mi.swt_project.demo.usermanagement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
