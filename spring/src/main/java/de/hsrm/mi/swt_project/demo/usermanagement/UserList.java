@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.demo.userManagement;
+package de.hsrm.mi.swt_project.demo.usermanagement;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -10,18 +10,18 @@ import java.util.List;
  */
 public class UserList {
 
-    private List<String> userList;
+    private List<String> users;
 
     public UserList() {
-        userList = new LinkedList<>();
+        users = new LinkedList<>();
     }
 
     public List<String> getUserList() {
-        return userList;
+        return users;
     }
 
     public void setUserList(List<String> userList) {
-        this.userList = userList;
+        this.users = userList;
     }
 
 }
