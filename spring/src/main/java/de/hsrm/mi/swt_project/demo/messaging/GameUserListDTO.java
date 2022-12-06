@@ -3,6 +3,7 @@ package de.hsrm.mi.swt_project.demo.messaging;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
@@ -13,7 +14,7 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
  */
 public record GameUserListDTO(List<String> users) {
     
-    public static GameUserListDTO from(HashMap<String,MoveableObject> moveableObjects) {
+    public static GameUserListDTO from(Map<String,MoveableObject> moveableObjects) {
 
         List<String> users = new LinkedList<>();
 

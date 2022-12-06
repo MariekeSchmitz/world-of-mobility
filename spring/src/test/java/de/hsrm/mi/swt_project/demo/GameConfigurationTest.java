@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import de.hsrm.mi.swt_project.demo.instancehandling.GameMap;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
 
 
@@ -19,12 +18,12 @@ import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
  */
 
 @SpringBootTest
-public class GameConfigurationTest {
+class GameConfigurationTest {
     @Autowired
     private InstanceHandler instanceHandler;
 
     @Test
-    protected void validationGameNameCorrect() {
+    void validationGameNameCorrect() {
 
         instanceHandler.createGameInstance(null, "Instance1");
         instanceHandler.createGameInstance(null, "Instance2");
