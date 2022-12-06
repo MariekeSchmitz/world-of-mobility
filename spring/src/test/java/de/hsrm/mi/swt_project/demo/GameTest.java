@@ -11,18 +11,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import de.hsrm.mi.swt_project.demo.instancehandling.EditorInstance;
-import de.hsrm.mi.swt_project.demo.instancehandling.GameInstance;
-import de.hsrm.mi.swt_project.demo.instancehandling.GameMap;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
-import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class GameTest {
+class GameTest {
     
     @Autowired 
     private MockMvc mockMvc;
@@ -31,7 +24,7 @@ public class GameTest {
     private InstanceHandler instanceHandler;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         instanceHandler.createGameInstance("Map1", "Game1");
         instanceHandler.createGameInstance("Map2", "Game2");
         instanceHandler.createEditorInstance("Map3");
@@ -39,7 +32,7 @@ public class GameTest {
     }
 
     @Test
-    public void post_instancelist_good() throws Exception {
+    void post_instancelist_good() throws Exception {
         int amountGameItems = instanceHandler.getGameInstances().size();
 
         mockMvc.perform(

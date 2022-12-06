@@ -7,9 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +21,7 @@ import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class EditorTest {
+class EditorTest {
     
     @Autowired 
     private MockMvc mockMvc;
@@ -35,13 +32,13 @@ public class EditorTest {
     EditorInstance editorInstance;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         instanceHandler.createEditorInstance("");
         
     }
 
     @Test
-    public void post_map_update_good() throws Exception {
+    void post_map_update_good() throws Exception {
 
         JSONObject body = new JSONObject();
         body.put("mapName", "Test");
@@ -60,7 +57,7 @@ public class EditorTest {
     }
 
     @Test
-    public void post_instancelist_good() throws Exception {
+    void post_instancelist_good() throws Exception {
         int amountEditorItems = instanceHandler.getEditorInstances().size();
 
         mockMvc.perform(
