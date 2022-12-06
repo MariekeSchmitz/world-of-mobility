@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ch.qos.logback.classic.Level;
 import de.hsrm.mi.swt_project.demo.controls.EditorControl;
 import de.hsrm.mi.swt_project.demo.instancehandling.EditorInstance;
 import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
@@ -48,12 +49,8 @@ public class EditorRestController {
      */
     @PostMapping(value = "/mapupdate", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void postMapUpdate(@RequestBody GetMapUpdateDTO getMapUpdateDTO) {
-        logger.info("Post Request for Map Update: Received GetMapUpdateDTO = {}", getMapUpdateDTO.toString());
-
-        // TODO add correct editorinstanceid
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(1);
 
-        // TODO add controlEnum 
         editorInstance.editMap(getMapUpdateDTO.xPos(), getMapUpdateDTO.yPos(), getMapUpdateDTO.control(), getMapUpdateDTO.type());
     }
     
@@ -63,8 +60,6 @@ public class EditorRestController {
      */
     @PostMapping(value = "/getmap", consumes = MediaType.APPLICATION_JSON_VALUE)
     public SendMapDTO postGetMap(@RequestBody GetMapDTO getMapDTO) {
-        logger.info("Post Request for Map: Received GetMapDTO = {}", getMapDTO.toString());
-
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(getMapDTO.mapId());
         return SendMapDTO.from(editorInstance.getMap());
     }
@@ -77,7 +72,6 @@ public class EditorRestController {
      */
     @PostMapping(value = "/savemap", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void postMapSave(@RequestBody GetMapDTO getMapDTO) {
-        logger.info("Post Request for Map Save: Received SaveMapDTO = {}", getMapDTO.toString());
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(getMapDTO.mapId());
         editorInstance.saveMap(getMapDTO.mapName());
     }
@@ -89,7 +83,7 @@ public class EditorRestController {
      */
     @PostMapping(value = "/instancelist")
     public GetListInstanceDTO postEditorList() {
-        logger.info("Post Request for List form all EditorList");
+        // logger.info("Post Request for List form all EditorList");
         List<Instance> editorlist = instanceHandler.getEditorInstances();
         return GetListInstanceDTO.from(editorlist);
     }  
