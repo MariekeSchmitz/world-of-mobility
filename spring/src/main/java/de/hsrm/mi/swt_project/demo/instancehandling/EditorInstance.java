@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.EditorControl;
@@ -21,6 +23,8 @@ import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 public class EditorInstance extends Instance {
 
     private List<String> users;
+
+    Logger logger = LoggerFactory.getLogger(EditorInstance.class);
     
     /**
      * Creates a new editor instance.
@@ -116,14 +120,16 @@ public class EditorInstance extends Instance {
             try {
                 savePath.createNewFile();
             } catch (IOException e) {
-                e.printStackTrace();
+                // e.printStackTrace();
+                logger.info("IOException occured in saveMap in EditorInstance, when creating a file: {}", e);
             }
         }
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(savePath))) {
             mapToSave.write(bw);
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            logger.info("Exception occured in saveMap in EditorInstance when writing to a file: {}", e);
         }
         
     }

@@ -53,6 +53,10 @@ public class EditorRestController {
         editorInstance.editMap(getMapUpdateDTO.xPos(), getMapUpdateDTO.yPos(), getMapUpdateDTO.control(), getMapUpdateDTO.type());
     }
     
+    /**
+     * Post for getting a specific map
+     * @param getMapDTO
+     */
     @PostMapping(value = "/getmap", consumes = MediaType.APPLICATION_JSON_VALUE)
     public SendMapDTO post_GetMap(@RequestBody GetMapDTO getMapDTO) {
         logger.info("Post Request for Map: Received GetMapDTO = {}", getMapDTO.toString());

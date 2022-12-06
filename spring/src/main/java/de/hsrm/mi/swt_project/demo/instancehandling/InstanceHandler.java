@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.controls.Updateable;
@@ -30,6 +32,8 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
     @Autowired
     protected UpdateloopService loopservice;
+
+    Logger logger = LoggerFactory.getLogger(InstanceHandler.class);
 
     protected List<Instance> instances;
 
@@ -73,7 +77,8 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
             instances.add(new GameInstance(loadMap(mapFile), sessionName, idCounter));
             return idCounter++;
         } catch (IOException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            logger.info("IOException occured on createGameInstance in InstanceHandler: {}", e);
             return -1;
         }
     }
