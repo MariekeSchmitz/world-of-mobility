@@ -19,12 +19,12 @@ public record GetInstanceInfoDTO(long id, String gamename, String worldname, int
      * @return GetInstanceInfoDTO
      */
     public static GetInstanceInfoDTO from(Instance instance) {
-        if (instance instanceof GameInstance) {
+        if (instance instanceof GameInstance gameinstance) {
             return new GetInstanceInfoDTO(
-                instance.getId(),
-                "GameName" + instance.getId(),
-                instance.getMap().getName(),
-                GameUserListDTO.from(((GameInstance)instance).getMoveableObjects()).users().size()
+                gameinstance.getId(),
+                "GameName" + gameinstance.getId(),
+                gameinstance.getMap().getName(),
+                GameUserListDTO.from(gameinstance.getMoveableObjects()).users().size()
                 );
         } else {
             return new GetInstanceInfoDTO(

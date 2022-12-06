@@ -4,6 +4,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,5 +58,17 @@ public class EditorTest {
 
 
     }
+
+    @Test
+    public void post_instancelist_good() throws Exception {
+        int amountEditorItems = instanceHandler.getEditorInstances().size();
+
+        mockMvc.perform(
+            post("/api/editor/instancelist")
+        ).andExpect(status().isOk())
+        .andExpect(jsonPath("$.instancelist", hasSize(amountEditorItems)));
+
+    }
+
 
 }
