@@ -72,7 +72,7 @@ public class GameRestController{
      * @author Finn Schindel, Astrid Klemmer
      */
     @PostMapping(value = "/instancelist")
-    public GetListInstanceDTO post_GameList() {
+    public GetListInstanceDTO postGameList() {
         logger.info("Post Request for List form all GameList");
         List<Instance> gamelist = instanceHandler.getGameInstances();
         return GetListInstanceDTO.from(gamelist);
