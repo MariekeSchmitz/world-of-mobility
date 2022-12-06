@@ -1,5 +1,7 @@
 package de.hsrm.mi.swt_project.demo.util;
 
+import java.util.Arrays;
+
 /**
  * This class contains static methods helping with
  * array manipulation. 
@@ -41,9 +43,7 @@ public class ArrayHelpers {
             throw new IllegalArgumentException(DEST_BIGGER_SRC_ERROR.formatted(src.length, dest.length));
         }
 
-        for (int i = 0; i < src.length; i++) {
-            dest[i] = src[i];
-        }
+        System.arraycopy(src, 0, dest, 0, src.length);
     }
 
     /**
