@@ -23,6 +23,7 @@ import de.hsrm.mi.swt_project.demo.messaging.GetGameCommandDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetListInstanceDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetGameConfigDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetMapOverviewDataDTO;
+import de.hsrm.mi.swt_project.demo.messaging.JoinGameDTO;
 import de.hsrm.mi.swt_project.demo.messaging.SendGameUpdateDTO;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;
 import de.hsrm.mi.swt_project.demo.messaging.ValidationDTO;
@@ -108,10 +109,9 @@ public class GameRestController{
      * @param id the id of the game
      */
     @PostMapping(value="/{id}/join-game", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void joinGame(@RequestBody String user, @RequestBody String type, @PathVariable long id) {
-        logger.info("POST Request for '/api/game/" + id + "/join-game' with body: " + user, " and " + type);
-
-        instanceHandler.getGameInstanceById(id).addPlayer(user, MoveableType.valueOf(type).createMovable());
+    public void joinGame(@RequestBody JoinGameDTO joinGameRequest , @PathVariable long id) {
+        logger.info("POST Request for '/api/game/" + id + "/join-game' with body: " + joinGameRequest.user(), " and " + joinGameRequest.type());
+        instanceHandler.getGameInstanceById(id).addPlayer(joinGameRequest.user(), MoveableType.valueOf(joinGameRequest.type()).createMovable());
     }
 
     /**
