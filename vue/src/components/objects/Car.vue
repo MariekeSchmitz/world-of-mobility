@@ -4,13 +4,10 @@ import { Box, ToonMaterial } from "troisjs";
 import { Vector3 } from "three";
 import { computed } from "vue";
 
-const props = withDefaults(
-  defineProps<{
-    pos: Vector3;
-    rotation: number; //in radians
-  }>(),
-  { pos: new Vector3(0, -2.5, 0), rotation: 0 }
-);
+const props = defineProps<{
+  pos: Vector3;
+  rotation: number; //in radians
+}>();
 
 function rotate(offsetVec: Vector3, angle: number) {
   const axis = new Vector3(0, 1, 0);
@@ -20,8 +17,8 @@ function rotate(offsetVec: Vector3, angle: number) {
 }
 
 const offsets = {
-  offsetBody: new Vector3(2, 0.15, 0),
-  offsetTop: new Vector3(2, 0.9, -0.15),
+  offsetBody: new Vector3(0, 0.15, 0),
+  offsetTop: new Vector3(0, 0.9, -0.15),
   // offsetTireLeftFront: new Vector3(3, -0.25, 1),
   // offsetTireLeftBack: new Vector3(3, -0.25, -1),
   // offsetTireRigthFront: new Vector3(1, -0.25, 1),
@@ -31,10 +28,10 @@ const offsets = {
 };
 
 const tires = [
-  { offset: new Vector3(3, -0.25, 1), name: "tireLeftFront" },
-  { offset: new Vector3(3, -0.25, -1), name: "tireLeftBack" },
-  { offset: new Vector3(1, -0.25, 1), name: "tireRightFront" },
-  { offset: new Vector3(1, -0.25, -1), name: "tireRightBack" },
+  { offset: new Vector3(1, -0.25, 1), name: "tireLeftFront" },
+  { offset: new Vector3(1, -0.25, -1), name: "tireLeftBack" },
+  { offset: new Vector3(-1, -0.25, 1), name: "tireRightFront" },
+  { offset: new Vector3(-1, -0.25, -1), name: "tireRightBack" },
 ];
 
 const rotatedTires = computed(() => {
@@ -52,8 +49,8 @@ const rotatedTires = computed(() => {
 });
 
 const lights = [
-  { offset: new Vector3(1.5, 0, 1.28), name: "lightRightFront" },
-  { offset: new Vector3(2.5, 0, 1.28), name: "lightLeftFront" },
+  { offset: new Vector3(-0.5, 0, 1.28), name: "lightRightFront" },
+  { offset: new Vector3(0.5, 0, 1.28), name: "lightLeftFront" },
 ];
 
 const rotatedLights = computed(() => {
