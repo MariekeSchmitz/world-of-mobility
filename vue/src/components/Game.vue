@@ -15,35 +15,49 @@ import Map from "@/components/Map.vue";
 import Car from "@/components/objects/Car.vue";
 import { MathUtils, Vector3 } from "three";
 import { useGame } from "@/services/useGame";
+import { Orientation } from "@/services/editor/OrientationEnum";
+import { useLogin } from "@/services/login/useLogin";
+
+const props = withDefaults(
+  defineProps<{
+    instanceID: number;
+    user: string;
+  }>(),
+  { instanceID: 1, user: "NPC0" }
+);
+const { sendCommand, receiveGameUpdate, mapUpdates } = useGame();
+const { loginData } = useLogin();
 
 const renderer = ref();
 const camera = ref();
 const car = ref();
+let playerOrientation = reactive({ o: Orientation.NORTH });
 
-//TODO: dynamisch anpassen
-const instanceID = 1;
-const user = "NPC0";
-
-const { sendCommand, receiveGameUpdate, mapUpdates } = useGame();
 
 //TODO: could be an interface
 const gameControl = "";
+const degree = Math.PI / 4;
 
-const restPath = `/${instanceID}/game-command`;
+const restPath = `/${props.instanceID}/game-command`;
 
+let thirdPerson = true;
+const thirdPersonOffset = new Vector3(0, 8, -15);
+const firstPersonOffset = new Vector3(0, 1, -3);
 const cameraOffset = reactive(new Vector3(0, 8, -15));
+const upVector = new Vector3(0, 1, 0);
 
 const positionTemp = reactive(new Vector3(15, 1, 15));
 
 const cameraPosition = computed(() => {
-  const vecTempObj = positionTemp.clone();
-  const vecTempCar = cameraOffset.clone();
-  return vecTempObj.add(vecTempCar);
+  const vecTempTarget = positionTemp.clone();
+  const vecTempOffset = cameraOffset.clone();
+  vecTempOffset.applyAxisAngle(upVector, playerOrientation.o);
+  return vecTempTarget.add(vecTempOffset);
 });
 
 const allMoveables = computed(() => {
-      //console.log(mapUpdates.moveableUpdates);
-      return mapUpdates.moveableUpdates;
+  //console.log(mapUpdates.moveableUpdates);
+  return mapUpdates.moveableUpdates;
 });
 /**
  * In this method we set the KeyListner for the Gameview
@@ -52,7 +66,6 @@ const allMoveables = computed(() => {
 onMounted(() => {
   const orbitControls = renderer.value.three.cameraCtrl;
   const cameraControls = camera.value.camera;
-  const carMesh = car.value.mesh;
   orbitControls.target = positionTemp;
   orbitControls.enablePan = false;
 
@@ -63,23 +76,23 @@ onMounted(() => {
   //orbitControls.minAzimuthAngle = 0;
   document.addEventListener("keyup", (e) => {
     if (e.code === "KeyW") {
-      sendCommand(instanceID, user, "SPEED_UP");
+      playerOrientation.o = Orientation.NORTH;
+      sendCommand(props.instanceID, loginData.username, "SPEED_UP");
     } else if (e.code === "KeyS") {
-      sendCommand(instanceID, user, "SPEED_DOWN");
+      playerOrientation.o = Orientation.SOUTH;
+      sendCommand(props.instanceID, loginData.username, "SPEED_DOWN");
     } else if (e.code === "KeyA") {
-      sendCommand(instanceID, user, "RIGHT");
+      sendCommand(props.instanceID, loginData.username, "RIGHT");
+      playerOrientation.o = Orientation.WEST;
     } else if (e.code === "KeyD") {
-      sendCommand(instanceID, user, "LEFT");
-    } else if (e.code === "KeyO") {
-      const degree = Math.PI / 4;
-      cameraOffset.applyAxisAngle(new Vector3(0, 1, 0), degree);
-      cameraControls.position.set(cameraPosition.value);
-      carMesh.rotateY(degree);
-      orbitControls.update();
+      sendCommand(props.instanceID, loginData.username, "LEFT");
+      playerOrientation.o = Orientation.EAST;
+    } else if (e.code === "KeyV") {
+      switchPerspective();
     }
   });
 
-  receiveGameUpdate(instanceID);
+  receiveGameUpdate(props.instanceID);
 });
 
 const pi = MathUtils.degToRad(180);
@@ -97,9 +110,9 @@ function rotation(value: number) {
  * @param orientation the orientation of an object as string.
  */
 function orientation2angle(orientation: string) {
-  switch(orientation) {
+  switch (orientation) {
     case "NORTH":
-      return rotation(0)
+      return rotation(0);
     case "NORTH_EAST":
       return rotation(1);
     case "EAST":
@@ -118,6 +131,15 @@ function orientation2angle(orientation: string) {
       return rotation(0);
   }
 }
+
+function switchPerspective() {
+  thirdPerson = !thirdPerson;
+  if (thirdPerson) {
+    cameraOffset.copy(thirdPersonOffset);
+  } else {
+    cameraOffset.copy(firstPersonOffset);
+  }
+}
 </script>
 
 <template>
@@ -134,6 +156,8 @@ function orientation2angle(orientation: string) {
         ><ToonMaterial>
           <Texture src="src\textures\Obsidian.jpg" /> </ToonMaterial
       ></Box>
+      <Car :pos="positionTemp" :rotation="orientation2angle('NORTH')"> </Car>
+
       <div v-for="(moveable, index) in allMoveables" :key="index">
         <Car
           v-if="moveable.classname === 'Passenger'"
