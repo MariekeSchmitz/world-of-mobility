@@ -38,7 +38,6 @@ async function startGame(name: string) {
 
   if(instanceId.id != -1){
     joinGame(instanceId.id, loginData.username, "MOTORIZED_OBJECT")
-    receiveGameUpdate(instanceId.id)
     router.push("/game/"+instanceId.id)  
   }
 }

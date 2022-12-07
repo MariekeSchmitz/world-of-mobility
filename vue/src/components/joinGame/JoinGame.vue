@@ -19,7 +19,6 @@ function join(){
     console.log("join game")
     if(props.instanceID != undefined){
       joinGame(props.instanceID, loginData.username, "MOTORIZED_OBJECT")
-      receiveGameUpdate(props.instanceID)
       router.push("/game/"+props.instanceID)  
     }
 }
