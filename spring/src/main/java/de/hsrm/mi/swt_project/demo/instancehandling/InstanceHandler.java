@@ -34,6 +34,7 @@ public class InstanceHandler implements Updateable {
     protected UpdateloopService loopservice;
 
     Logger logger = LoggerFactory.getLogger(InstanceHandler.class);
+    private final String JSON = ".json";
 
     protected List<Instance> instances;
 
@@ -76,7 +77,7 @@ public class InstanceHandler implements Updateable {
             return idCounter++;
         } else {
             try {
-                JSONObject mapFile = new JSONObject(Files.readString(Path.of(mapSavePath +"/"+ mapName + ".json")));
+                JSONObject mapFile = new JSONObject(Files.readString(Path.of(mapSavePath +"/"+ mapName + JSON)));
                 instances.add(new GameInstance(loadMap(mapFile), sessionName, idCounter));
                 return idCounter++;
             } catch (IOException e) {
@@ -95,7 +96,7 @@ public class InstanceHandler implements Updateable {
      */
     public long createEditorInstance(String mapName) {
         try {
-            JSONObject mapFile = new JSONObject(Files.readString(Path.of(mapSavePath + mapName + ".json")));
+            JSONObject mapFile = new JSONObject(Files.readString(Path.of(mapSavePath + mapName + JSON)));
             instances.add(new EditorInstance(loadMap(mapFile), idCounter));
         } catch (IOException e) {
             instances.add(new EditorInstance(new GameMap(), idCounter));
@@ -243,7 +244,7 @@ public class InstanceHandler implements Updateable {
 
         if (directoryListing != null) {
             for (File child : directoryListing) {
-                mapNames.add(child.getName().replace(".json", ""));
+                mapNames.add(child.getName().replace(JSON, ""));
             }
             return mapNames;
         } else {
