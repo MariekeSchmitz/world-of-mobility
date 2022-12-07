@@ -14,9 +14,10 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/game",
+      path: "/game/:instanceID",
       name: "GameView",
       component: Game,
+      props:true
     },
     {
       path: "/worldintro",

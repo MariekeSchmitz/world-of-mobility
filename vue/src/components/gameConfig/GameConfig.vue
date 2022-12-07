@@ -1,5 +1,6 @@
 <script setup lang="ts">
 
+import router from "@/router";
 import { ref, computed } from "vue";
 import { useGameConfig } from "@/services/useGameConfig";
 import { useGame } from "@/services/useGame";
@@ -38,6 +39,7 @@ async function startGame(name: string) {
   if(instanceId.id != -1){
     joinGame(instanceId.id, loginData.username, "MOTORIZED_OBJECT")
     receiveGameUpdate(instanceId.id)
+    router.push("/game/"+instanceId.id)  
   }
 }
 
