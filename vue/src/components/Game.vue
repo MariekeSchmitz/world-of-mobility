@@ -21,9 +21,8 @@ import { useLogin } from "@/services/login/useLogin";
 const props = withDefaults(
   defineProps<{
     instanceID: number;
-    user: string;
   }>(),
-  { instanceID: 1, user: "NPC0" }
+  { instanceID: 1 }
 );
 const { sendCommand, receiveGameUpdate, mapUpdates } = useGame();
 const { loginData } = useLogin();
