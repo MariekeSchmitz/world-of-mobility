@@ -15,7 +15,6 @@ import Map from "@/components/Map.vue";
 import Car from "@/components/objects/Car.vue";
 import { MathUtils, Vector3 } from "three";
 import { useGame } from "@/services/useGame";
-import { Orientation } from "@/services/editor/OrientationEnum";
 import { useLogin } from "@/services/login/useLogin";
 
 const props = withDefaults(
@@ -24,13 +23,13 @@ const props = withDefaults(
   }>(),
   { instanceID: 1 }
 );
-const { sendCommand, receiveGameUpdate, mapUpdates, getUserMoveable } = useGame();
+const { sendCommand, receiveGameUpdate, mapUpdates, getUserMoveable } =
+  useGame();
 const { loginData } = useLogin();
 
 const renderer = ref();
 const camera = ref();
 const car = ref();
-
 
 //TODO: could be an interface
 const gameControl = "";
@@ -43,24 +42,31 @@ const thirdPersonOffset = new Vector3(0, 8, -15);
 const firstPersonOffset = new Vector3(0, 1, -3);
 const cameraOffset = reactive(new Vector3(0, 8, -15));
 const upVector = new Vector3(0, 1, 0);
+const userMovable = computed(() => {
+  return getUserMoveable(loginData.username);
+});
 
 const positionTemp = reactive(new Vector3(15, 1, 15));
 
 const cameraPosition = computed(() => {
   const vecTempTarget = positionTemp.clone();
   const vecTempOffset = cameraOffset.clone();
-  vecTempOffset.applyAxisAngle(
-    upVector,
-    orientation2angle(getUserMoveable().orientation)
-  );
+  if (userMovable.value != undefined) {
+    vecTempOffset.applyAxisAngle(
+      upVector,
+      orientation2angle(userMovable.value.orientation)
+    );
+  }
   return vecTempTarget.add(vecTempOffset);
 });
 
 const allMoveables = computed(() => {
   //console.log(mapUpdates.moveableUpdates);
-  positionTemp.copy(
-    new Vector3(getUserMoveable().xPos, 0, getUserMoveable().yPos)
-  );
+  if (userMovable.value != undefined) {
+    positionTemp.copy(
+      new Vector3(userMovable.value.xPos, 0, userMovable.value.yPos)
+    );
+  }
   return mapUpdates.moveableUpdates;
 });
 /**
@@ -80,17 +86,13 @@ onMounted(() => {
   //orbitControls.minAzimuthAngle = 0;
   document.addEventListener("keyup", (e) => {
     if (e.code === "KeyW") {
-
       sendCommand(props.instanceID, loginData.username, "SPEED_UP");
     } else if (e.code === "KeyS") {
-
       sendCommand(props.instanceID, loginData.username, "SPEED_DOWN");
     } else if (e.code === "KeyA") {
       sendCommand(props.instanceID, loginData.username, "RIGHT");
-
     } else if (e.code === "KeyD") {
       sendCommand(props.instanceID, loginData.username, "LEFT");
-
     } else if (e.code === "KeyV") {
       switchPerspective();
     }
