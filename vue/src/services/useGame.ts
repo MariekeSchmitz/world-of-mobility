@@ -158,12 +158,21 @@ export function useGame(): any {
         stompClient.activate();
     }
 
+    function getUserMoveable(user:string) {
+        for (const moveable of gameState.moveableUpdates) {
+            if (moveable.user === user) {
+                return moveable;        
+            }
+        }
+    }
+
     return {
         mapUpdates: readonly(gameState),
         instanceId: readonly(instanceIdState),
         joinGame,
         receiveGameUpdate,
         sendCommand,
+        getUserMoveable,
         createGameInstance
     }
 }

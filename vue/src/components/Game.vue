@@ -24,13 +24,12 @@ const props = withDefaults(
   }>(),
   { instanceID: 1 }
 );
-const { sendCommand, receiveGameUpdate, mapUpdates } = useGame();
+const { sendCommand, receiveGameUpdate, mapUpdates, getUserMoveable } = useGame();
 const { loginData } = useLogin();
 
 const renderer = ref();
 const camera = ref();
 const car = ref();
-let playerOrientation = reactive({ o: Orientation.NORTH });
 
 
 //TODO: could be an interface
@@ -50,12 +49,18 @@ const positionTemp = reactive(new Vector3(15, 1, 15));
 const cameraPosition = computed(() => {
   const vecTempTarget = positionTemp.clone();
   const vecTempOffset = cameraOffset.clone();
-  vecTempOffset.applyAxisAngle(upVector, playerOrientation.o);
+  vecTempOffset.applyAxisAngle(
+    upVector,
+    orientation2angle(getUserMoveable().orientation)
+  );
   return vecTempTarget.add(vecTempOffset);
 });
 
 const allMoveables = computed(() => {
   //console.log(mapUpdates.moveableUpdates);
+  positionTemp.copy(
+    new Vector3(getUserMoveable().xPos, 0, getUserMoveable().yPos)
+  );
   return mapUpdates.moveableUpdates;
 });
 /**
@@ -75,17 +80,17 @@ onMounted(() => {
   //orbitControls.minAzimuthAngle = 0;
   document.addEventListener("keyup", (e) => {
     if (e.code === "KeyW") {
-      playerOrientation.o = Orientation.NORTH;
+
       sendCommand(props.instanceID, loginData.username, "SPEED_UP");
     } else if (e.code === "KeyS") {
-      playerOrientation.o = Orientation.SOUTH;
+
       sendCommand(props.instanceID, loginData.username, "SPEED_DOWN");
     } else if (e.code === "KeyA") {
       sendCommand(props.instanceID, loginData.username, "RIGHT");
-      playerOrientation.o = Orientation.WEST;
+
     } else if (e.code === "KeyD") {
       sendCommand(props.instanceID, loginData.username, "LEFT");
-      playerOrientation.o = Orientation.EAST;
+
     } else if (e.code === "KeyV") {
       switchPerspective();
     }
@@ -155,11 +160,9 @@ function switchPerspective() {
         ><ToonMaterial>
           <Texture src="src\textures\Obsidian.jpg" /> </ToonMaterial
       ></Box>
-      <Car :pos="positionTemp" :rotation="orientation2angle('NORTH')"> </Car>
 
       <div v-for="(moveable, index) in allMoveables" :key="index">
         <Car
-          v-if="moveable.classname === 'Passenger'"
           :pos="new Vector3(moveable.xPos, 1, moveable.yPos)"
           :rotation="orientation2angle(moveable.orientation)"
         ></Car>
