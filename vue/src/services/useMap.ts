@@ -58,6 +58,28 @@ export function useMap(): any {
         
     }
 
+    async function getMapEditor(editorId: number) {
+        try {
+            const controller = new AbortController();
+            const URL = `/api/editor/getmap/editor?editorid=${editorId}`;
+    
+            const id = setTimeout(() => controller.abort(), 8000);
+    
+            const response = await fetch(URL);
+            
+            const jsonData: IMapDTO = await response.json();
+
+            clearTimeout(id);
+    
+            console.log(response.text());
+
+            return jsonData;
+        } catch(reason) {
+            console.log(`ERROR: Fetching Map failed: ${reason}`);
+        }
+        
+    }
+
     async function saveMap(mapName: string, mapId: number) {
         try {
             const controller = new AbortController();
@@ -92,6 +114,7 @@ export function useMap(): any {
 
     return {
         getMap,
-        saveMap
+        saveMap,
+        getMapEditor
     }
 }

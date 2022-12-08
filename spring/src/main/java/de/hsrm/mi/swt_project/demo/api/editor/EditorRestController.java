@@ -9,9 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.qos.logback.classic.Level;
@@ -40,7 +42,7 @@ public class EditorRestController {
     public EditorRestController() {
 
     }
-
+ 
     /**
      * Post for Mapupdates
      * 
@@ -63,6 +65,35 @@ public class EditorRestController {
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(getMapDTO.mapId());
         return SendMapDTO.from(editorInstance.getMap());
     }
+
+
+
+    /**
+     * Post for Mapupdates from Editor
+     * 
+     * @param getMapUpdateDTO
+     * @author Timothy Doukhin
+     */
+    @PostMapping(value = "/mapupdate/editor", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void postMapUpdateEditor(@RequestParam Long editorId, @RequestBody GetMapUpdateDTO getMapUpdateDTO) {
+        EditorInstance editorInstance = instanceHandler.getEditorInstanceById(editorId);
+        editorInstance.editMap(getMapUpdateDTO.xPos(), getMapUpdateDTO.yPos(), getMapUpdateDTO.control(), getMapUpdateDTO.type());
+        
+    }
+    
+    /**
+     * Post for getting the map from Editor Instance
+     * @param getMapDTO
+     * @author Timothy Doukhin
+     */
+    @GetMapping(value = "/getmap/editor")
+    public SendMapDTO getMapEditor(@RequestParam Long editorId) {
+        EditorInstance editorInstance = instanceHandler.getEditorInstanceById(editorId);
+        return SendMapDTO.from(editorInstance.getMap());
+    }
+
+
+
 
     /**
      * Post for Map Save
