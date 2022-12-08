@@ -144,7 +144,7 @@ export function useGame(): any {
         stompClient.onStompError = (event: any) => console.log(`ERROR: Stomp-Error in GameUpdate: ${event}`);
     
         stompClient.onConnect = (frame: any) => {
-            console.log("Connected Stompbroker to GameUpdate");
+            console.log(`Connected Stompbroker to /topic/game/${instanceid}`);
             stompClient.subscribe(DEST, (message: { body: string; }) => {
                 const gameUpdate: IGameUpdate = JSON.parse(message.body);
                 gameState.moveableUpdates = gameUpdate.moveableUpdates;
