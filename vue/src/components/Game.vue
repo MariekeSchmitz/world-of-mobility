@@ -38,34 +38,45 @@ const degree = Math.PI / 4;
 const restPath = `/${props.instanceID}/game-command`;
 
 let thirdPerson = true;
+let freeCam = true;
 const thirdPersonOffset = new Vector3(0, 8, -15);
-const firstPersonOffset = new Vector3(0, 1, -3);
+const firstPersonOffset = new Vector3(0, 0, -2);
 const cameraOffset = reactive(new Vector3(0, 8, -15));
 const upVector = new Vector3(0, 1, 0);
+let movementVector = new Vector3(0, 0, 0);
+
 const userMovable = computed(() => {
   return getUserMoveable(loginData.username);
 });
 
-const positionTemp = reactive(new Vector3(15, 1, 15));
+const lookAt = reactive(new Vector3(15, 1, 15));
 
 const cameraPosition = computed(() => {
-  const vecTempTarget = positionTemp.clone();
-  const vecTempOffset = cameraOffset.clone();
-  if (userMovable.value != undefined) {
-    vecTempOffset.applyAxisAngle(
-      upVector,
-      orientation2angle(userMovable.value.orientation)
-    );
+  const vecTempTarget = lookAt.clone();
+  if (freeCam && camera.value) {
+    return camera.value.camera.position.add(movementVector);
+  } else {
+    const vecTempOffset = cameraOffset.clone();
+    if (userMovable.value != undefined) {
+      vecTempOffset.applyAxisAngle(
+        upVector,
+        orientation2angle(userMovable.value.orientation)
+      );
+    }
+    return vecTempTarget.add(vecTempOffset);
   }
-  return vecTempTarget.add(vecTempOffset);
 });
 
 const allMoveables = computed(() => {
   //console.log(mapUpdates.moveableUpdates);
   if (userMovable.value != undefined) {
-    positionTemp.copy(
-      new Vector3(userMovable.value.xPos, 0, userMovable.value.yPos)
+    const newLookAt = new Vector3(
+      userMovable.value.xPos,
+      2,
+      userMovable.value.yPos
     );
+    movementVector = newLookAt.clone().sub(lookAt);
+    lookAt.copy(newLookAt);
   }
   return mapUpdates.moveableUpdates;
 });
@@ -76,7 +87,7 @@ const allMoveables = computed(() => {
 onMounted(() => {
   const orbitControls = renderer.value.three.cameraCtrl;
   const cameraControls = camera.value.camera;
-  orbitControls.target = positionTemp;
+  orbitControls.target = lookAt;
   orbitControls.enablePan = false;
 
   orbitControls.screenSpacePanning = false;
@@ -95,6 +106,9 @@ onMounted(() => {
       sendCommand(props.instanceID, loginData.username, "LEFT");
     } else if (e.code === "KeyV") {
       switchPerspective();
+    } else if (e.code === "KeyF") {
+      freeCam = !freeCam;
+      orbitControls.enableRotate = !orbitControls.enableRotate;
     }
   });
 
@@ -158,14 +172,17 @@ function switchPerspective() {
       <!-- Map -->
       <Map></Map>
       <!-- "Car" -->
-      <Box :position="positionTemp" :scale="{ x: 1, y: 1, z: 2 }" ref="car"
+      <Box
+        :position="{ x: 1, y: 1, z: 2 }"
+        :scale="{ x: 1, y: 1, z: 2 }"
+        ref="car"
         ><ToonMaterial>
           <Texture src="src\textures\Obsidian.jpg" /> </ToonMaterial
       ></Box>
 
       <div v-for="(moveable, index) in allMoveables" :key="index">
         <Car
-          :pos="new Vector3(moveable.xPos, 1, moveable.yPos)"
+          :pos="new Vector3(moveable.xPos, 0, moveable.yPos)"
           :rotation="orientation2angle(moveable.orientation)"
         ></Car>
       </div>
