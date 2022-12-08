@@ -8,7 +8,7 @@ import de.hsrm.mi.swt_project.demo.controls.Orientation;
 public class MotorizedObject extends MoveableObject {
 
     public MotorizedObject() {
-        this(0, 0, 100);
+        this(0, 0, 1);
     }
 
     /**
