@@ -61,7 +61,7 @@ export function useMap(): any {
     async function getMapEditor(editorId: number) {
         try {
             const controller = new AbortController();
-            const URL = `/api/editor/getmap/editor?editorid=${editorId}`;
+            const URL = `/api/editor/getmap/editor?editorId=${editorId}`;
     
             const id = setTimeout(() => controller.abort(), 8000);
     

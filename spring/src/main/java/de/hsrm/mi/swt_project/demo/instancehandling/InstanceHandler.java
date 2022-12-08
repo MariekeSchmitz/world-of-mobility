@@ -158,7 +158,9 @@ public class InstanceHandler implements Updateable {
     public void update() {
         for (Instance instance : instances) {
             instance.update();
-            loopservice.publishInstanceState(instance);
+            if (instance instanceof GameInstance) {             // Only publish state of GameInstances periodically
+                loopservice.publishInstanceState(instance);
+            }
         }
     }
 
