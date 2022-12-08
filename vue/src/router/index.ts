@@ -60,6 +60,7 @@ const router = createRouter({
       path: "/editor",
       name: "EditorView",
       component: EditorView,
+      props: { editorID: 1 },
     }
   ],
 });
