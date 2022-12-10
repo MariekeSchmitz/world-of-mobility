@@ -57,7 +57,7 @@ public class InstanceHandler implements Updateable {
         map.addNpc(p1);
         map.addNpc(p2);
 
-        Instance instance1 = new EditorInstance(map, 1);
+        Instance instance1 = new EditorInstance(map, idCounter++);
         Instance instance2 = new GameInstance(map, "test", 1);
 
         this.instances.add(instance1);
@@ -77,13 +77,13 @@ public class InstanceHandler implements Updateable {
             return idCounter++;
         } else {
             try {
-                JSONObject mapFile = new JSONObject(Files.readString(Path.of(mapSavePath +"/"+ mapName + JSON)));
+                JSONObject mapFile = new JSONObject(Files.readString(Path.of(mapSavePath + "/" + mapName + JSON)));
                 instances.add(new GameInstance(loadMap(mapFile), sessionName, idCounter));
                 return idCounter++;
             } catch (IOException e) {
                 // e.printStackTrace();
                 logger.info("IOException occured on createGameInstance in InstanceHandler: {}", e);
-            return -1;
+                return -1;
             }
         }
     }
@@ -178,7 +178,7 @@ public class InstanceHandler implements Updateable {
      * @return a list form all gameinstances
      * @author Finn Schindel, Astrid Klemmer
      */
-    public List<Instance> getGameInstances(){
+    public List<Instance> getGameInstances() {
         List<Instance> gList = new ArrayList<>();
         for (Instance instance : instances) {
             if (instance instanceof GameInstance) {
@@ -194,7 +194,7 @@ public class InstanceHandler implements Updateable {
      * @return a list form all editorinstances
      * @author Finn Schindel, Astrid Klemmer
      */
-    public List<Instance> getEditorInstances(){
+    public List<Instance> getEditorInstances() {
         List<Instance> eList = new ArrayList<>();
         for (Instance instance : instances) {
             if (instance instanceof EditorInstance) {

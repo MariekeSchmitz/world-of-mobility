@@ -42,7 +42,7 @@ public class EditorRestController {
     public EditorRestController() {
 
     }
- 
+
     /**
      * Post for Mapupdates
      * 
@@ -53,11 +53,13 @@ public class EditorRestController {
     public void postMapUpdate(@RequestBody GetMapUpdateDTO getMapUpdateDTO) {
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(1);
 
-        editorInstance.editMap(getMapUpdateDTO.xPos(), getMapUpdateDTO.yPos(), getMapUpdateDTO.control(), getMapUpdateDTO.type());
+        editorInstance.editMap(getMapUpdateDTO.xPos(), getMapUpdateDTO.yPos(), getMapUpdateDTO.control(),
+                getMapUpdateDTO.type());
     }
-    
+
     /**
      * Post for getting a specific map
+     * 
      * @param getMapDTO
      */
     @PostMapping(value = "/getmap", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -65,8 +67,6 @@ public class EditorRestController {
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(getMapDTO.mapId());
         return SendMapDTO.from(editorInstance.getMap());
     }
-
-
 
     /**
      * Post for Mapupdates from Editor
@@ -77,12 +77,14 @@ public class EditorRestController {
     @PostMapping(value = "/mapupdate/editor", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void postMapUpdateEditor(@RequestParam Long editorId, @RequestBody GetMapUpdateDTO getMapUpdateDTO) {
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(editorId);
-        editorInstance.editMap(getMapUpdateDTO.xPos(), getMapUpdateDTO.yPos(), getMapUpdateDTO.control(), getMapUpdateDTO.type());
-        
+        editorInstance.editMap(getMapUpdateDTO.xPos(), getMapUpdateDTO.yPos(), getMapUpdateDTO.control(),
+                getMapUpdateDTO.type());
+
     }
-    
+
     /**
      * Post for getting the map from Editor Instance
+     * 
      * @param getMapDTO
      * @author Timothy Doukhin
      */
@@ -91,9 +93,6 @@ public class EditorRestController {
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(editorId);
         return SendMapDTO.from(editorInstance.getMap());
     }
-
-
-
 
     /**
      * Post for Map Save
@@ -109,6 +108,7 @@ public class EditorRestController {
 
     /**
      * Post for Getting EditorInstanceList
+     * 
      * @param getListInstanceDTO
      * @author Finn Schindel, Astrid Klemmer
      */
@@ -117,7 +117,7 @@ public class EditorRestController {
         // logger.info("Post Request for List form all EditorList");
         List<Instance> editorlist = instanceHandler.getEditorInstances();
         return GetListInstanceDTO.from(editorlist);
-    }  
+    }
 
     /**
      * Post for Global Server Messages
@@ -125,8 +125,8 @@ public class EditorRestController {
      * @param newServerMsgDTO
      * @author Felix Ruf, Finn Schindel
      */
-    @PostMapping(value="/servermessage", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void postServerMessage(@RequestBody ServerMessageDTO newServerMsgDTO){
+    @PostMapping(value = "/servermessage", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void postServerMessage(@RequestBody ServerMessageDTO newServerMsgDTO) {
         long now = System.currentTimeMillis();
         Timestamp currentTime = new Timestamp(now);
         String s = new SimpleDateFormat("HH:mm").format(currentTime);
