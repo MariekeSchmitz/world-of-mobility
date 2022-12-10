@@ -152,13 +152,17 @@ function onReady(model: any) {
       <!-- Light -->
       <PointLight :position="{ x: 0, y: 0, z: 10 }" />
       <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
-      <GltfModel ref="model" src="src/assets/models/Qube.glb" @load="onReady" />
+      <GltfModel
+        ref="model"
+        src="/src/assets/models/Qube.glb"
+        @load="onReady"
+      />
       <!-- Map -->
       <Map></Map>
       <!-- "Car" -->
       <Box :position="positionTemp" :scale="{ x: 1, y: 1, z: 2 }" ref="car"
         ><ToonMaterial>
-          <Texture src="src\textures\Obsidian.jpg" /> </ToonMaterial
+          <Texture src="/src/textures/Obsidian.jpg" /> </ToonMaterial
       ></Box>
       <Car :pos="positionTemp" :rotation="orientation2angle('NORTH')"> </Car>
 
