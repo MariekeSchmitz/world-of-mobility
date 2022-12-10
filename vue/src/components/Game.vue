@@ -10,6 +10,7 @@ import {
   Renderer,
   ToonMaterial,
   Texture,
+  GltfModel,
 } from "troisjs";
 import Map from "@/components/Map.vue";
 import Car from "@/components/objects/Car.vue";
@@ -28,10 +29,10 @@ const { sendCommand, receiveGameUpdate, mapUpdates } = useGame();
 const { loginData } = useLogin();
 
 const renderer = ref();
+const model = ref(null);
 const camera = ref();
 const car = ref();
 let playerOrientation = reactive({ o: Orientation.NORTH });
-
 
 //TODO: could be an interface
 const gameControl = "";
@@ -139,6 +140,9 @@ function switchPerspective() {
     cameraOffset.copy(firstPersonOffset);
   }
 }
+function onReady(model: any) {
+  console.log("model Ready", model);
+}
 </script>
 
 <template>
@@ -148,6 +152,7 @@ function switchPerspective() {
       <!-- Light -->
       <PointLight :position="{ x: 0, y: 0, z: 10 }" />
       <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
+      <GltfModel ref="model" src="src/assets/models/Qube.glb" @load="onReady" />
       <!-- Map -->
       <Map></Map>
       <!-- "Car" -->
