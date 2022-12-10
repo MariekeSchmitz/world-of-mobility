@@ -16,11 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import ch.qos.logback.classic.Level;
-import de.hsrm.mi.swt_project.demo.controls.EditorControl;
 import de.hsrm.mi.swt_project.demo.instancehandling.EditorInstance;
 import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
+import de.hsrm.mi.swt_project.demo.instancehandling.UpdateloopService;
 import de.hsrm.mi.swt_project.demo.messaging.GetListInstanceDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetMapUpdateDTO;
 import de.hsrm.mi.swt_project.demo.messaging.SendMapDTO;
@@ -35,6 +34,9 @@ public class EditorRestController {
 
     @Autowired
     private InstanceHandler instanceHandler;
+
+    @Autowired
+    private UpdateloopService loopService;
 
     Logger logger = LoggerFactory.getLogger(EditorRestController.class);
 
@@ -54,6 +56,7 @@ public class EditorRestController {
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(1);
 
         editorInstance.editMap(getMapUpdateDTO.xPos(), getMapUpdateDTO.yPos(), getMapUpdateDTO.control(), getMapUpdateDTO.type());
+        loopService.publishInstanceState(editorInstance);
     }
     
     /**
@@ -78,7 +81,7 @@ public class EditorRestController {
     public void postMapUpdateEditor(@RequestParam Long editorId, @RequestBody GetMapUpdateDTO getMapUpdateDTO) {
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(editorId);
         editorInstance.editMap(getMapUpdateDTO.xPos(), getMapUpdateDTO.yPos(), getMapUpdateDTO.control(), getMapUpdateDTO.type());
-        
+        loopService.publishInstanceState(editorInstance);
     }
     
     /**
