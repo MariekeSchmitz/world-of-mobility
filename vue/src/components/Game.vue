@@ -13,9 +13,10 @@ import {
 } from "troisjs";
 import Map from "@/components/Map.vue";
 import Car from "@/components/objects/Car.vue";
-import { MathUtils, Vector3 } from "three";
+import { Vector3 } from "three";
 import { useGame } from "@/services/useGame";
 import { useLogin } from "@/services/login/useLogin";
+import { orientations } from "@/services/Orientations";
 
 const props = withDefaults(
   defineProps<{
@@ -31,14 +32,9 @@ const renderer = ref();
 const camera = ref();
 const car = ref();
 
-//TODO: could be an interface
-const gameControl = "";
-const degree = Math.PI / 4;
-
-const restPath = `/${props.instanceID}/game-command`;
-
 let thirdPerson = true;
 let freeCam = true;
+let switchedMode = false;
 const thirdPersonOffset = new Vector3(0, 8, -15);
 const firstPersonOffset = new Vector3(0, 0, -2);
 const cameraOffset = reactive(new Vector3(0, 8, -15));
@@ -53,16 +49,19 @@ const lookAt = reactive(new Vector3(15, 1, 15));
 
 const cameraPosition = computed(() => {
   const vecTempTarget = lookAt.clone();
-  if (freeCam && camera.value) {
+  if (freeCam && camera.value && !switchedMode) {
+    console.log(camera.value.camera.position); // NaN bei V Taste
+    console.log(movementVector);
     return camera.value.camera.position.add(movementVector);
   } else {
     const vecTempOffset = cameraOffset.clone();
     if (userMovable.value != undefined) {
       vecTempOffset.applyAxisAngle(
         upVector,
-        orientation2angle(userMovable.value.orientation)
+        orientations[userMovable.value.orientation]
       );
     }
+    switchedMode = false;
     return vecTempTarget.add(vecTempOffset);
   }
 });
@@ -80,21 +79,53 @@ const allMoveables = computed(() => {
   }
   return mapUpdates.moveableUpdates;
 });
-/**
- * In this method we set the KeyListner for the Gameview
- * and setup the cam to work as intended.
- */
+
 onMounted(() => {
   const orbitControls = renderer.value.three.cameraCtrl;
   const cameraControls = camera.value.camera;
   orbitControls.target = lookAt;
   orbitControls.enablePan = false;
-
+  orbitControls.enableRotate = true;
   orbitControls.screenSpacePanning = false;
-  //orbitControls.minPolarAngle = Math.PI/2;
   orbitControls.maxPolarAngle = Math.PI / 2;
-  //orbitControls.maxAzimuthAngle = 0;
-  //orbitControls.minAzimuthAngle = 0;
+
+  const minAzimuthAngle = computed(() => {
+    if (freeCam && !thirdPerson) {
+      return orientations[userMovable.value.orientation] + Math.PI / 2;
+    } else {
+      return 0;
+    }
+  });
+
+  const maxAzimuthAngle = computed(() => {
+    if (freeCam && !thirdPerson) {
+      return orientations[userMovable.value.orientation] - Math.PI / 2;
+    } else {
+      return 1.99 * Math.PI;
+    }
+  });
+
+  orbitControls.minAzimuthAngle = minAzimuthAngle;
+  orbitControls.maxAzimuthAngle = maxAzimuthAngle;
+
+  receiveGameUpdate(props.instanceID);
+
+  function switchCamMode() {
+    freeCam = !freeCam;
+  }
+
+  function switchPerspective() {
+    thirdPerson = !thirdPerson;
+    if (thirdPerson) {
+      cameraOffset.copy(thirdPersonOffset);
+    } else {
+      cameraOffset.copy(firstPersonOffset);
+    }
+    cameraControls.position.set(cameraPosition.value);
+    orbitControls.update();
+    switchedMode = true;
+  }
+
   document.addEventListener("keyup", (e) => {
     if (e.code === "KeyW") {
       sendCommand(props.instanceID, loginData.username, "SPEED_UP");
@@ -107,59 +138,10 @@ onMounted(() => {
     } else if (e.code === "KeyV") {
       switchPerspective();
     } else if (e.code === "KeyF") {
-      freeCam = !freeCam;
-      orbitControls.enableRotate = !orbitControls.enableRotate;
+      switchCamMode();
     }
   });
-
-  receiveGameUpdate(props.instanceID);
 });
-
-const pi = MathUtils.degToRad(180);
-
-/**
- * returns the radiant value of a passed amount of steps - value.
- * @param value each step represents 1/8 of an 360* turn.
- */
-function rotation(value: number) {
-  return (value * pi) / 4;
-}
-/**
- * returns the rotation value as radiant based of our orientation.
- * calls the rotation method for that.
- * @param orientation the orientation of an object as string.
- */
-function orientation2angle(orientation: string) {
-  switch (orientation) {
-    case "NORTH":
-      return rotation(0);
-    case "NORTH_EAST":
-      return rotation(1);
-    case "EAST":
-      return rotation(2);
-    case "SOUTH_EAST":
-      return rotation(3);
-    case "SOUTH":
-      return rotation(4);
-    case "SOUTH_WEST":
-      return rotation(5);
-    case "WEST":
-      return rotation(6);
-    case "NORTH_WEST":
-      return rotation(7);
-    default:
-      return rotation(0);
-  }
-}
-
-function switchPerspective() {
-  thirdPerson = !thirdPerson;
-  if (thirdPerson) {
-    cameraOffset.copy(thirdPersonOffset);
-  } else {
-    cameraOffset.copy(firstPersonOffset);
-  }
-}
 </script>
 
 <template>
@@ -183,7 +165,7 @@ function switchPerspective() {
       <div v-for="(moveable, index) in allMoveables" :key="index">
         <Car
           :pos="new Vector3(moveable.xPos, 0, moveable.yPos)"
-          :rotation="orientation2angle(moveable.orientation)"
+          :rotation="orientations[moveable.orientation]"
         ></Car>
       </div>
     </Scene>
