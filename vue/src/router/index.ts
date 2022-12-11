@@ -9,14 +9,18 @@ import { createRouter, createWebHistory } from "vue-router";
 import WorldSelection from "@/components/worldSelection/WorldSelection.vue";
 import GameConfig from "@/components/gameConfig/GameConfig.vue";
 import EditorView from "@/views/editor/EditorView.vue";
+import { useLogin } from "@/services/login/useLogin";
+
+const { loginData } = useLogin();
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/game",
+      path: "/game/:instanceID",
       name: "GameView",
       component: Game,
+      props: true,
     },
     {
       path: "/worldintro",
@@ -32,7 +36,7 @@ const router = createRouter({
       path: "/joingame/:instanceID",
       name: "JoinGame",
       component: JoinGame,
-      props:true
+      props: true,
     },
     {
       path: "/createWorld",
@@ -54,14 +58,23 @@ const router = createRouter({
       path: "/gameConfig/:mapName",
       name: "GameConfig",
       component: GameConfig,
-      props: true
-    },  
+      props: true,
+    },
     {
-      path: "/editor",
+      path: "/editor/:editorID",
       name: "EditorView",
       component: EditorView,
-    }
+      props: true,
+    },
   ],
 });
+
+/* router.beforeEach(async (to, from) => {
+  // wenn z.B. ein 'berechtigt' nicht wahr ist,
+  // alle Nicht-/login-Navigationen auf /login leiten
+  if (!loginData.loggedIn && to.name !== "Login") {
+    return { name: "Login" };
+  }
+}); */
 
 export default router;

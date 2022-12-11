@@ -2,7 +2,7 @@
 import { Client } from "@stomp/stompjs";
 import { reactive, readonly, ref } from "vue";
 
-export function useMapUpdate(mapName: string): any {
+export function useMapUpdate(editorId: number): any {
 
     interface IMapUpdate {
         tiletype: string,
@@ -43,7 +43,7 @@ export function useMapUpdate(mapName: string): any {
         }
     });
     
-    function receiveMapUpdates(editorId: number) {
+    function receiveMapUpdates() {
         const wsurl = `ws://${window.location.host}/stompbroker`;
         const DEST = `/topic/editor/${editorId}`;
     
@@ -72,7 +72,7 @@ export function useMapUpdate(mapName: string): any {
     async function sendMapUpdates(mapUpdateObj: IMapUpdate) {
         try {
             const controller = new AbortController();
-            const URL = '/api/editor/mapupdate';
+            const URL = `/api/editor/mapupdate/editor?editorId=${editorId}`;
 
             const id = setTimeout(() => controller.abort(), 8000);
 

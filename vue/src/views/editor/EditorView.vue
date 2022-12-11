@@ -1,5 +1,4 @@
-<!-- eslint-disable prettier/prettier -->
-<!-- eslint-disable prettier/prettier -->
+<!-- prettier-ignore -->
 <script setup lang="ts">
     import { ref, onMounted, reactive, watch } from "vue";
 
@@ -20,8 +19,22 @@
     import type { ExportTile } from "@/services/editor/ExportTileInterface";
     import {useMapUpdate} from "@/services/useMapUpdate"
     import {useMap} from "@/services/useMap"
-    import { computed } from "@vue/reactivity";
+    import { computed } from "vue";
 
+    
+    
+    
+    
+
+import { number } from "mathjs";
+
+    const props = defineProps({
+      editorID: {
+       default: 0,
+       type: number
+      } 
+    })
+    console.log(props.editorID)
 
     /**
      * in order to Execute THREE code in script tag, create a reactive item and add :ref="name" to the Vue Element
@@ -40,7 +53,7 @@
     //Texture Loader
     const loadManager = new THREE.LoadingManager();
     const loader = new THREE.TextureLoader(loadManager);
-
+    
     //Raycaster for Hover & Click detection
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();
@@ -51,6 +64,11 @@
       placeMode:boolean
     }
 
+    interface mapTile{
+      type: string,
+      orientation: string
+    }
+
     let place:PlaceItem;
     place = {placeType:"none",placeMode: false}
 
@@ -59,19 +77,23 @@
     activeContextMenu = [];
 
     //Imported REST-Controller and Stompbroker connection
-    const {sendMapUpdates, receiveMapUpdates, mapUpdates} = useMapUpdate("test");
-    const {getMap, saveMap} = useMap();
+    const {sendMapUpdates, receiveMapUpdates, mapUpdates} = useMapUpdate(props.editorID);
+    const {getMapEditor, saveMap} = useMap();
 
     //connect to Stompbroker
-    receiveMapUpdates(1);
+
+    
+      receiveMapUpdates(props.editorID);
+    
+    
 
     //Rerender Map on Stompbroker Update
-    watch(mapUpdates.value,(newValue,oldValue) =>{
+    watch(mapUpdates.value,() =>{
       createMap(mapUpdates.value.map.tiles)
     
     })
     //Get Map on Loading EditorView
-    const loadedMap = getMap("", 1);
+    const loadedMap = getMapEditor(1);
 
     //Dynamic Parameters, updated with Stomp re-render
     const mapWidth = ref(8)
@@ -88,7 +110,6 @@
       for (let id = scene.value.scene.children.length -1 ; id >= 0 ; id--){
         if (scene.value.scene.children[id].position.z == 0.01 ){
           scene.value.scene.remove(scene.value.scene.children[id])
-          console.log("removed: ",id)
         }
       }
     }
@@ -101,7 +122,7 @@
      * Author: Timothy Doukhin
      */
 
-    function createMap(tiles){
+    function createMap(tiles: mapTile[][]){
       removeMap();
       
       for(let row = 0;row < tiles.length;row++){
@@ -110,9 +131,9 @@
           const TileGeometry = new THREE.PlaneGeometry( 0.99, 0.99 );
           let material = new THREE.MeshBasicMaterial();
           
-          let texturePath = 'src/textures/editor/Default.jpg'
+          let texturePath = "../src/textures/editor/Default.jpg"
           if (tiles[column][row] != null){
-            texturePath = 'src/textures/editor/'+tiles[column][row].type+'.jpg'
+            texturePath = '../src/textures/editor/'+tiles[column][row].type+'.jpg'
           }
           
           material.map = loader.load(texturePath)
@@ -122,7 +143,8 @@
           TileMesh.position.z = 0.01;
           TileMesh.rotation.z = 0;
           if (tiles[column][row] != null){
-            TileMesh.rotation.z = Orientation[tiles[column][row].orientation]
+            let orientation: string = tiles[column][row].orientation
+            TileMesh.rotation.z = Orientation[orientation]
           }
           scene.value.add(TileMesh);
           
@@ -254,7 +276,7 @@
      * 
      * Author: Timothy Doukhin
      */
-    function turnLeft(callingObject){
+    function turnLeft(callingObject: THREE.Mesh){
         let posX = callingObject.position.x - offsetx.value -1;
         let posY = callingObject.position.y - offsety.value -1;
         let turnleftDTO: ExportTile = {
@@ -273,7 +295,7 @@
      * 
      * Author: Timothy Doukhin
      */
-    function turnRight(callingObject){
+    function turnRight(callingObject: THREE.Mesh){
       let posX = callingObject.position.x - offsetx.value -1;
         let posY = callingObject.position.y - offsety.value -1;
         let turnrightDTO: ExportTile = {
@@ -292,7 +314,7 @@
      * 
      * Author: Timothy Doukhin
      */
-    function removeTile(callingObject){
+    function removeTile(callingObject: THREE.Mesh){
         let posX = callingObject.position.x - offsetx.value -1;
         let posY = callingObject.position.y - offsety.value -1;
         let removeDTO: ExportTile = {
@@ -312,7 +334,7 @@
  * 
  * Author: Timothy Doukhin
  */
-    function setLoadedMap(receivedTiles){
+    function setLoadedMap(receivedTiles: mapTile[][]){
       mapWidth.value = receivedTiles[0].length
       mapHeight.value = receivedTiles.length
       createMap(receivedTiles);
@@ -327,7 +349,7 @@
      * Author: Timothy Doukhin
      */
 
-    function onMouseOver(event){
+    function onMouseOver(event: MouseEvent){
       mouse.x = ( event.clientX / rendererC.value.renderer.domElement.clientWidth ) * 2 - 1;
       mouse.y = - ( event.clientY / rendererC.value.renderer.domElement.clientHeight ) * 2 + 1;
       checkHover();
@@ -376,7 +398,7 @@
      * 
      * Author: Timothy Doukhin
      */
-    function onDocumentLeftMouseDown( event ) {
+    function onDocumentLeftMouseDown( event: MouseEvent ) {
     
         //mouse position updated
         mouse.x = ( event.clientX / rendererC.value.renderer.domElement.clientWidth ) * 2 - 1;
@@ -392,7 +414,7 @@
               try {
                 selectedObject.object.callback();
               } catch (error) {
-
+                console.log("cannot call back")
               }
             }
 
@@ -430,18 +452,18 @@
 
 <template>
   <div class="mapTitle">
-    <p>Farmerama Map</p> <button @click="saveMap('testMap2',1)">save</button>
+    <p>Farmerama Map</p>
+    <button @click="saveMap('testMap2', 1)">save</button>
   </div>
-
   <div id="exitButton">
     <button class="roundButton">
-      <img src="src/buttons/editor/close.png" />
+      <img src="@/buttons/editor/close.png" />
     </button>
   </div>
 
   <div class="buttonMenuRight">
-    <button><img src="src/buttons/editor/plus.png" /><br />Starte Spiel</button>
-    <button><img src="src/buttons/editor/plus.png" /><br />Welt testen</button>
+    <button><img src="@/buttons/editor/plus.png" /><br />Starte Spiel</button>
+    <button><img src="@/buttons/editor/plus.png" /><br />Welt testen</button>
   </div>
 
   <LeftMenu />
@@ -463,11 +485,10 @@
     />
 
     <Scene background="#97FFFF" ref="scene">
-        <PointLight :position="{ x: 0, y: 0, z: 10 }" />
-        <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
+      <PointLight :position="{ x: 0, y: 0, z: 10 }" />
+      <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
 
-            
-         <!--   
+      <!--   
         <template v-for="row in mapWidth" >
           <template v-for="column in mapHeight" >
               <Plane :width="0.99" :height="0.99" :rotation="{ z: tiles[row-1][column-1].orientation==''?0:Orientation[tiles[row-1][column-1].orientation]}" :position="{ x: row  + offsetx, y: column + offsety, z: 0.01 }">
@@ -475,11 +496,8 @@
               </Plane>
           </template>
         </template>-->
-          
-      </Scene>
-
-    </Renderer>
-
+    </Scene>
+  </Renderer>
 </template>
 
 <style>

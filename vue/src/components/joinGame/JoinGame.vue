@@ -5,6 +5,7 @@ import User from "@/components/joinGame/User.vue";
 import { onMounted } from "vue";
 import { useGame } from "@/services/useGame";
 import { useLogin } from "@/services/login/useLogin";
+import router from "@/router";
 const { receiveGameUpdate, joinGame } = useGame()
 const { userList,getUserList } = useUser()
 const { loginData } = useLogin()
@@ -18,7 +19,7 @@ function join(){
     console.log("join game")
     if(props.instanceID != undefined){
       joinGame(props.instanceID, loginData.username, "MOTORIZED_OBJECT")
-      receiveGameUpdate(props.instanceID)
+      router.push("/game/"+props.instanceID)  
     }
 }
 

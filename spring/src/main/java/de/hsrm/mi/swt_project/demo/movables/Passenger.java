@@ -11,7 +11,7 @@ public class Passenger extends MoveableObject {
      * Creates an instance of Passenger
      */
     public Passenger() {
-        this(0, 0, 100);
+        this(0, 0, 1);
     }
 
     /**

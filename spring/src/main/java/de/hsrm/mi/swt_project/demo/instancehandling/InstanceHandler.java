@@ -33,6 +33,7 @@ public class InstanceHandler implements Updateable {
     protected UpdateloopService loopservice;
 
     Logger logger = LoggerFactory.getLogger(InstanceHandler.class);
+    private final String JSON = ".json";
 
     protected List<Instance> instances;
 
@@ -80,7 +81,7 @@ public class InstanceHandler implements Updateable {
                 return idCounter++;
             } catch (IOException e) {
                 logger.info("IOException occured on createGameInstance in InstanceHandler: {}", e);
-            return -1;
+                return -1;
             }
         }
     }
@@ -177,7 +178,9 @@ public class InstanceHandler implements Updateable {
     public void update() {
         for (Instance instance : instances) {
             instance.update();
-            loopservice.publishInstanceState(instance);
+            if (instance instanceof GameInstance) {             // Only publish state of GameInstances periodically
+                loopservice.publishInstanceState(instance);
+            }
         }
     }
 
@@ -197,7 +200,7 @@ public class InstanceHandler implements Updateable {
      * @return a list form all gameinstances
      * @author Finn Schindel, Astrid Klemmer
      */
-    public List<Instance> getGameInstances(){
+    public List<Instance> getGameInstances() {
         List<Instance> gList = new ArrayList<>();
         for (Instance instance : instances) {
             if (instance instanceof GameInstance) {
@@ -213,7 +216,7 @@ public class InstanceHandler implements Updateable {
      * @return a list form all editorinstances
      * @author Finn Schindel, Astrid Klemmer
      */
-    public List<Instance> getEditorInstances(){
+    public List<Instance> getEditorInstances() {
         List<Instance> eList = new ArrayList<>();
         for (Instance instance : instances) {
             if (instance instanceof EditorInstance) {
@@ -263,7 +266,7 @@ public class InstanceHandler implements Updateable {
 
         if (directoryListing != null) {
             for (File child : directoryListing) {
-                mapNames.add(child.getName().replace(".json", ""));
+                mapNames.add(child.getName().replace(JSON, ""));
             }
             return mapNames;
         } else {
