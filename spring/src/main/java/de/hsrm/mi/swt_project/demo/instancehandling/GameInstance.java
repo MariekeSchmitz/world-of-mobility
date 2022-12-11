@@ -1,6 +1,7 @@
 package de.hsrm.mi.swt_project.demo.instancehandling;
 
 import java.util.HashMap;
+import java.util.ListIterator;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.GameControl;
@@ -17,23 +18,36 @@ import de.hsrm.mi.swt_project.demo.movables.Passenger;
  * @author Alexandra Müller
  */
 public class GameInstance extends Instance {
-    private HashMap<String, MoveableObject> moveableObjects;
+
+    private HashMap<String, MoveableObject> moveableObjects = new HashMap<>();
     private String name;
     
     /**
      * Creates a new instance of the game.
+     * 
+     * NPCs that are placed on the map are deep-copied into
+     * the game instance to avoid cross-instance changes when
+     * creating multiple instances using the same map.
      * 
      * @param map the map to use for the instance
      * @param name the name of the instance
      * @param id the id of the instance
      */
     public GameInstance(GameMap map, String name, long id) {
+
         super(map, id);
-        this.moveableObjects = new HashMap<String, MoveableObject>();
-        for (MoveableObject npc : map.getNpcs()) {
-            moveableObjects.put(("NPC" + map.getNpcs().indexOf(npc)), npc.copy());
-        }
         this.name = name;
+
+        ListIterator<MoveableObject> iterator = map.getNpcs().listIterator();
+
+        while (iterator.hasNext()) {
+
+            MoveableObject npc = iterator.next().copy();
+            int index = iterator.nextIndex();
+
+            String npcName = "NPC%d".formatted(index);
+            moveableObjects.put(npcName, npc);
+        }
     }
 
     /**
@@ -149,13 +163,20 @@ public class GameInstance extends Instance {
         }
 
         // check if moveable still on map
-        if (!((newPosX < (mapSize + 1)) && (newPosX >= 0) && (newPosY < (mapSize + 1)) && (newPosY >= 0))) {
+
+        int xTileAfterMovement = (int) newPosX;
+        int yTileAfterMovement = (int) newPosY;
+
+        boolean xTileInvalid = (newPosX >= mapSize) || (newPosX < 0);
+        boolean yTileInvalid = (newPosY >= mapSize) || (newPosY < 0);
+
+        if (xTileInvalid || yTileInvalid) {
             moveableObject.setCurrentVelocity(0);
             return;
         }
        
         // check if moveable moves on allowed tile 
-        Tile potentialTile = this.map.getTiles()[(int)newPosX][(int)newPosY];
+        Tile potentialTile = this.map.getTiles()[yTileAfterMovement][xTileAfterMovement];
 
         if (moveableObject instanceof MotorizedObject) {
             if (!(potentialTile instanceof DriveableByCar)) {

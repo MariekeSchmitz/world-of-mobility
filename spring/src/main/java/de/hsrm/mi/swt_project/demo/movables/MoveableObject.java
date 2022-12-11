@@ -82,6 +82,11 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
     }
 
 
+    /**
+     * Gets maximum velocity of the moveable object.
+     * 
+     * @return maximum velocity
+     */
     public float getMaxVelocity() {
         return maxVelocity;
     }
