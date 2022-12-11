@@ -4,7 +4,12 @@ import java.util.HashMap;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.GameControl;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
+import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.DriveableByCar;
+import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.Walkable;
+import de.hsrm.mi.swt_project.demo.movables.MotorizedObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
+import de.hsrm.mi.swt_project.demo.movables.Passenger;
 
 /**
  * This class represents a single game instance of the game.
@@ -37,7 +42,8 @@ public class GameInstance extends Instance {
      * @param user the user that is associated with the moveable object
      * @param control the control type that is used to move the moveable object
      */
-    public void moveMovable(String user, GameControl control) {
+    public void moveMoveable(String user, GameControl control) {
+        
         switch (control) {
             case LEFT:
                 moveableObjects.get(user).turn(Direction.LEFT);
@@ -52,17 +58,18 @@ public class GameInstance extends Instance {
                 moveableObjects.get(user).setCurrentVelocity(moveableObjects.get(user).getCurrentVelocity() - 0.1F);
                 break;
         };
-        // TODO check if move is legal
+
     }
 
+   
     /**
      * Adds a new user to the instance.
      * 
      * @param user the user to add
-     * @param movableObject the movableObject of the user
+     * @param moveableObject the moveableObject of the user
      */
-    public void addPlayer(String user, MoveableObject movableObject) {
-        moveableObjects.put(user, movableObject);
+    public void addPlayer(String user, MoveableObject moveableObject) {
+        moveableObjects.put(user, moveableObject);
     }
 
     /**
@@ -79,9 +86,93 @@ public class GameInstance extends Instance {
      */
     @Override
     public void update() {
-        for(MoveableObject movableObject : moveableObjects.values()) {
-            movableObject.move();
+        
+        for(MoveableObject moveableObject : moveableObjects.values()) {
+            validateAndMove(moveableObject);
         }
+    }
+
+    private void validateAndMove(MoveableObject moveableObject) {
+
+        int mapSize = this.map.getTiles().length;
+
+        // predict new X- and Y-Pos
+        float currentPosX = moveableObject.getXPos();
+        float currentPosY = moveableObject.getYPos();
+
+        float newPosX = currentPosX;
+        float newPosY = currentPosY;
+
+        float straightMovement = moveableObject.getCurrentVelocity() * moveableObject.getMaxVelocity();
+        float diagonalMovement = (float) (straightMovement / Math.sqrt(2));
+        
+        switch (moveableObject.getOrientation()) {
+
+            case NORTH:
+                newPosY += straightMovement;
+                break;
+
+            case NORTH_EAST:
+                newPosX += diagonalMovement;
+                newPosY += diagonalMovement;
+                break;
+
+            case EAST:
+                newPosX += straightMovement;
+                break;
+
+            case SOUTH_EAST:
+                newPosX += diagonalMovement;
+                newPosY -= diagonalMovement;
+                break;
+
+            case SOUTH:
+                newPosY -= straightMovement;
+                break;
+
+            case SOUTH_WEST:
+                newPosX -= diagonalMovement;
+                newPosY -= diagonalMovement;
+                break;
+
+            case WEST:
+                newPosX -= straightMovement;
+                break;
+
+            case NORTH_WEST:
+                newPosX -= diagonalMovement;
+                newPosY += diagonalMovement;
+                break;
+
+            default:
+                break;
+        }
+
+        // check if moveable still on map
+        if (!((newPosX < (mapSize + 1)) && (newPosX >= 0) && (newPosY < (mapSize + 1)) && (newPosY >= 0))) {
+            moveableObject.setCurrentVelocity(0);
+            return;
+        }
+       
+        // check if moveable moves on allowed tile 
+        Tile potentialTile = this.map.getTiles()[(int)newPosX][(int)newPosY];
+
+        if (moveableObject instanceof MotorizedObject) {
+            if (!(potentialTile instanceof DriveableByCar)) {
+                moveableObject.setCurrentVelocity(0);
+                return;
+            }
+        }
+
+        if (moveableObject instanceof Passenger) {
+            if (!(potentialTile instanceof Walkable)) {
+                moveableObject.setCurrentVelocity(0);
+                return;
+            }
+        } 
+
+        moveableObject.move(newPosX, newPosY);
+        
     }
 
     /**

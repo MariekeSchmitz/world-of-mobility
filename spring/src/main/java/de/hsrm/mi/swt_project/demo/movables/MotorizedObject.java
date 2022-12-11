@@ -53,34 +53,7 @@ public class MotorizedObject extends MoveableObject {
         return copy;
     }
 
-    @Override
-    public void move() {
-
-        float movement = this.currentVelocity * this.maxVelocity;
-
-        switch (this.orientation) {
-            
-            case NORTH:
-                this.yPos += movement;
-                break;
-
-            case EAST:
-                this.xPos += movement;
-                break;
-
-            case SOUTH:
-                this.yPos -= movement;
-                break;
-
-            case WEST:
-                this.xPos -= movement;
-                break;
-
-            default:
-                break;
-            
-        }
-    }
+  
 
     @Override
     public void turn(Direction direction) {

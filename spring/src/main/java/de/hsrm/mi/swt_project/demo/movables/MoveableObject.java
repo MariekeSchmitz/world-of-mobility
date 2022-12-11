@@ -81,6 +81,11 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
         return currentVelocity;
     }
 
+
+    public float getMaxVelocity() {
+        return maxVelocity;
+    }
+
     /**
      * Sets new x-position of the movable object.
      * @param xPos New x-position
@@ -135,11 +140,21 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
         }
     }
 
+    @Override
+    public void move(float posX, float posY) {
+
+        this.setXPos(posX);
+        this.setYPos(posY);
+
+    }
+
     /**
      * Creates a copy of the instance.
      * 
      * @return Copy of the object.
      */
     public abstract MoveableObject copy();
+
+
 
 }
