@@ -20,6 +20,12 @@
     import {useMapUpdate} from "@/services/useMapUpdate"
     import {useMap} from "@/services/useMap"
     import { computed } from "vue";
+
+    
+    
+    
+    
+
 import { number } from "mathjs";
 
     const props = defineProps({
@@ -28,7 +34,7 @@ import { number } from "mathjs";
        type: number
       } 
     })
-
+    console.log(props.editorID)
 
     /**
      * in order to Execute THREE code in script tag, create a reactive item and add :ref="name" to the Vue Element
@@ -47,7 +53,7 @@ import { number } from "mathjs";
     //Texture Loader
     const loadManager = new THREE.LoadingManager();
     const loader = new THREE.TextureLoader(loadManager);
-
+    
     //Raycaster for Hover & Click detection
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();
@@ -75,7 +81,11 @@ import { number } from "mathjs";
     const {getMapEditor, saveMap} = useMap();
 
     //connect to Stompbroker
-    receiveMapUpdates(props.editorID);
+
+    
+      receiveMapUpdates(props.editorID);
+    
+    
 
     //Rerender Map on Stompbroker Update
     watch(mapUpdates.value,() =>{
@@ -100,7 +110,6 @@ import { number } from "mathjs";
       for (let id = scene.value.scene.children.length -1 ; id >= 0 ; id--){
         if (scene.value.scene.children[id].position.z == 0.01 ){
           scene.value.scene.remove(scene.value.scene.children[id])
-          console.log("removed: ",id)
         }
       }
     }
@@ -122,9 +131,9 @@ import { number } from "mathjs";
           const TileGeometry = new THREE.PlaneGeometry( 0.99, 0.99 );
           let material = new THREE.MeshBasicMaterial();
           
-          let texturePath = 'src/textures/editor/Default.jpg'
+          let texturePath = "../src/textures/editor/Default.jpg"
           if (tiles[column][row] != null){
-            texturePath = 'src/textures/editor/'+tiles[column][row].type+'.jpg'
+            texturePath = '../src/textures/editor/'+tiles[column][row].type+'.jpg'
           }
           
           material.map = loader.load(texturePath)
@@ -448,13 +457,13 @@ import { number } from "mathjs";
   </div>
   <div id="exitButton">
     <button class="roundButton">
-      <img src="src/buttons/editor/close.png" />
+      <img src="@/buttons/editor/close.png" />
     </button>
   </div>
 
   <div class="buttonMenuRight">
-    <button><img src="src/buttons/editor/plus.png" /><br />Starte Spiel</button>
-    <button><img src="src/buttons/editor/plus.png" /><br />Welt testen</button>
+    <button><img src="@/buttons/editor/plus.png" /><br />Starte Spiel</button>
+    <button><img src="@/buttons/editor/plus.png" /><br />Welt testen</button>
   </div>
 
   <LeftMenu />

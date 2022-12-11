@@ -59,6 +59,8 @@ async function createWorld(name: string) {
   } else {
     newWorldState.error = "Name too short.";
   }
+
+  return newWorldState.id;
 }
 
 export function useEditor() {
