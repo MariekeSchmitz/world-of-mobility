@@ -108,9 +108,11 @@ public class EditorInstance extends Instance {
             this.map.setName(name);
         }
 
+        // this.map.addTile(Tiletype.STREET_CROSS.createTile(), 0, 0);
+
         JSONObject mapToSave = new JSONObject();
-        mapToSave.put("Tiles", this.map.getTiles());
-        mapToSave.put("Npcs", this.map.getNpcs());
+        mapToSave.put("tiles", this.map.getTiles());
+        mapToSave.put("npcs", this.map.getNpcs());
 
         File savePath = new File(saveDir, map.getName() + ".json"); 
     

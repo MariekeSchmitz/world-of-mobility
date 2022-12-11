@@ -1,9 +1,5 @@
 package de.hsrm.mi.swt_project.demo.instancehandling;
 
-import java.io.File;
-
-import org.springframework.beans.factory.annotation.Value;
-
 import de.hsrm.mi.swt_project.demo.controls.Updateable;
 
 /**
@@ -12,8 +8,8 @@ import de.hsrm.mi.swt_project.demo.controls.Updateable;
  * @author Alexandra Müller
  */
 public abstract class Instance implements Updateable {
-    @Value("${map.savedir:maps}")
-    protected String mapSavePath;
+    // @Value("${map.savedir:maps}")
+    protected String mapSavePath = "maps";
 
     protected GameMap map;
     protected long id;

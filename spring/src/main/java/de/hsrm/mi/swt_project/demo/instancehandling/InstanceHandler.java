@@ -6,9 +6,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -39,8 +39,8 @@ public class InstanceHandler implements Updateable {
 
     // TODO think of another solution because long can reach limit
     protected long idCounter = 1;
-    @Value("${map.savedir:maps}")
-    protected String mapSavePath;
+    // @Value("${map.savedir:maps}")
+    protected String mapSavePath = "maps";
 
     /**
      * Creates a new instance handler.
@@ -48,8 +48,8 @@ public class InstanceHandler implements Updateable {
     public InstanceHandler() {
         instances = new ArrayList<Instance>();
 
-        Passenger p1 = new Passenger(0, 0, 1);
-        Passenger p2 = new Passenger(5, 5, 1);
+        MoveableObject p1 = MoveableType.PASSENGER.createMovable(0, 0, 1);
+        MoveableObject p2 = MoveableType.PASSENGER.createMovable(5, 5, 1);
 
         GameMap map = new GameMap();
 
@@ -111,29 +111,38 @@ public class InstanceHandler implements Updateable {
      * @return the loaded map
      */
     private GameMap loadMap(JSONObject mapFile) {
-        JSONArray tiles = mapFile.getJSONArray("Tiles");
-        JSONArray npcs = mapFile.getJSONArray("Npcs");
+        JSONArray tiles = mapFile.getJSONArray("tiles");
+        JSONArray npcs = mapFile.getJSONArray("npcs");
 
         GameMap map = new GameMap();
 
-        tiles.forEach(tile -> {
-            JSONObject tileObject = (JSONObject) tile;
-            Tiletype tileType = tileObject.getEnum(Tiletype.class, "type");
-            int xPos = tileObject.getInt("xPos");
-            int yPos = tileObject.getInt("yPos");
-            Orientation orientation = tileObject.getEnum(Orientation.class, "orientation");
-            Tile newTile = tileType.createTile();
-            newTile.setOrientation(orientation);
-            map.addTile(newTile, xPos, yPos);
-        });
+        int xPos = 0;
+        for(Object rowsObject: tiles) {
+            JSONArray rows = (JSONArray) rowsObject;
+            int yPos = 0;
+            for(int i = 0; i < rows.length(); i++) {
+                List<Object> ls = rows.toList();
+                if(ls.get(i) != null) {
+                    JSONObject tileObject = rows.getJSONObject(i);
+                    Tiletype tileType = tileObject.getEnum(Tiletype.class, "type");
+                    
+                    Orientation orientation = tileObject.getEnum(Orientation.class, "orientation");
+                    Tile newTile = tileType.createTile();
+                    newTile.setOrientation(orientation);
+                    map.addTile(newTile, xPos, yPos);
+                }
+                yPos++;
+            }
+            xPos++;
+        }
 
         npcs.forEach(npc -> {
             JSONObject npcObject = (JSONObject) npc;
             MoveableType npcType = npcObject.getEnum(MoveableType.class, "type");
-            int xPos = npcObject.getInt("xPos");
+            int xPosition = npcObject.getInt("xPos");
             int yPos = npcObject.getInt("yPos");
             int maxVelocity = npcObject.getInt("maxVelocity");
-            MoveableObject newNpc = npcType.createMovable(xPos, yPos, maxVelocity);
+            MoveableObject newNpc = npcType.createMovable(xPosition, yPos, maxVelocity);
             map.addNpc(newNpc);
         });
 

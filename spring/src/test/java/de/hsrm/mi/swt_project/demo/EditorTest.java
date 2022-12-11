@@ -74,18 +74,18 @@ class EditorTest {
     }
 
     // TODO: This test does't work currently. NullPointerException on MapSave for missing mapSavePath. Maybe I just don't understand the @Value annotation in Instance 
-    // @Test void post_mapsave_good() throws Exception {
+    @Test void post_mapsave_good() throws Exception {
 
-    //     JSONObject body = new JSONObject();
-    //     body.put("mapName", "test");
-    //     body.put("mapId", editorId);
+        JSONObject body = new JSONObject();
+        body.put("mapName", "test");
+        body.put("mapId", editorId);
 
-    //     mockMvc.perform(
-    //         post("/api/editor/savemap")
-    //         .contentType(MediaType.APPLICATION_JSON)
-    //         .content(body.toString())
-    //     ).andExpect(status().isOk());
-    // }
+        mockMvc.perform(
+            post("/api/editor/savemap")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(body.toString())
+        ).andExpect(status().isOk());
+    }
 
     @Test
     void post_servermessage_good() throws Exception {
