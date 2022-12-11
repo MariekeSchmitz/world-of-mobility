@@ -87,6 +87,18 @@ public class GameMap {
         this.tiles = tiles;
     }
 
+    public void setTile(Tile tile, int xPos, int yPos) throws IllegalArgumentException {
+        if (tile == null) {
+            throw new IllegalArgumentException("tile is not allowed to be null.");
+        }
+
+        if (yPos < 0 || xPos < 0 || yPos >= this.tiles.length || xPos >= this.tiles[yPos].length) {
+            throw new IllegalArgumentException("tile must be placed from position (0, 0) to (%d, %d), was (%d, %d)".formatted(this.tiles.length -1, this.tiles[0].length -1, xPos, yPos));
+        }
+
+        this.tiles[yPos][xPos] = tile;
+    }
+
 
     public String getName() {
         return name;

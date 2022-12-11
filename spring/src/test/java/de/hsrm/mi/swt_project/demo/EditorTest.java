@@ -1,6 +1,5 @@
 package de.hsrm.mi.swt_project.demo;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -36,7 +35,6 @@ class EditorTest {
     @BeforeEach
     void setUp() {
         editorId = instanceHandler.createEditorInstance("test");
-        
     }
 
     @Test
@@ -59,7 +57,7 @@ class EditorTest {
     void post_getMap_good() throws Exception {
 
         JSONObject body = new JSONObject();
-        body.put("mapName", "test");
+        body.put("name", "test");
         body.put("mapId", editorId);
 
         mockMvc.perform(
@@ -73,8 +71,8 @@ class EditorTest {
             .andExpect(jsonPath("npcs").exists());
     }
 
-    // TODO: This test does't work currently. NullPointerException on MapSave for missing mapSavePath. Maybe I just don't understand the @Value annotation in Instance 
-    @Test void post_mapsave_good() throws Exception {
+    @Test
+    void post_mapsave_good() throws Exception {
 
         JSONObject body = new JSONObject();
         body.put("mapName", "test");

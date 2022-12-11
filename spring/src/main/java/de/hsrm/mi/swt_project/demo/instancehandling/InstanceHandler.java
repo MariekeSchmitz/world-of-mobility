@@ -6,9 +6,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -19,7 +19,6 @@ import de.hsrm.mi.swt_project.demo.controls.Updateable;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;
-import de.hsrm.mi.swt_project.demo.movables.Passenger;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
 /**
@@ -56,11 +55,11 @@ public class InstanceHandler implements Updateable {
         map.addNpc(p1);
         map.addNpc(p2);
 
-        Instance instance1 = new EditorInstance(map, 1);
-        Instance instance2 = new GameInstance(map, "test", 1);
+        // Instance instance1 = new EditorInstance(map, 1);
+        // Instance instance2 = new GameInstance(map, "test", 1);
 
-        this.instances.add(instance1);
-        this.instances.add(instance2);
+        // this.instances.add(instance1);
+        // this.instances.add(instance2);
     }
 
     /**
@@ -76,11 +75,10 @@ public class InstanceHandler implements Updateable {
             return idCounter++;
         } else {
             try {
-                JSONObject mapFile = new JSONObject(Files.readString(Path.of(mapSavePath +"/"+ mapName + ".json")));
+                String mapFile = Files.readString(Path.of(mapSavePath +"/"+ mapName + ".json"));
                 instances.add(new GameInstance(loadMap(mapFile), sessionName, idCounter));
                 return idCounter++;
             } catch (IOException e) {
-                // e.printStackTrace();
                 logger.info("IOException occured on createGameInstance in InstanceHandler: {}", e);
             return -1;
             }
@@ -95,7 +93,7 @@ public class InstanceHandler implements Updateable {
      */
     public long createEditorInstance(String mapName) {
         try {
-            JSONObject mapFile = new JSONObject(Files.readString(Path.of(mapSavePath + mapName + ".json")));
+            String mapFile = Files.readString(Path.of(mapSavePath + "/" + mapName + ".json"));
             instances.add(new EditorInstance(loadMap(mapFile), idCounter));
         } catch (IOException e) {
             instances.add(new EditorInstance(new GameMap(), idCounter));
@@ -109,11 +107,12 @@ public class InstanceHandler implements Updateable {
      * 
      * @param mapFile the JSON file to load the map from
      * @return the loaded map
+     * @author Felix Ruf, Alexandra Müller
      */
-    private GameMap loadMap(JSONObject mapFile) {
-        JSONArray tiles = mapFile.getJSONArray("tiles");
-        JSONArray npcs = mapFile.getJSONArray("npcs");
-
+    private GameMap loadMap(String mapFile) {
+        JSONObject file = new JSONObject(mapFile);
+        JSONArray tiles = file.getJSONArray("tiles");
+        JSONArray npcs = file.getJSONArray("npcs");
         GameMap map = new GameMap();
 
         int xPos = 0;
@@ -124,12 +123,18 @@ public class InstanceHandler implements Updateable {
                 List<Object> ls = rows.toList();
                 if(ls.get(i) != null) {
                     JSONObject tileObject = rows.getJSONObject(i);
+                    // Functionality of placedObjects unknown because of a lack of Placeable objects
+                    // JSONArray placedObjects = tileObject.getJSONArray("placedObjects");
+                    // List<Placeable> placedObjsToPlace = new ArrayList<>();
+                    // placedObjects.forEach(obj -> {
+                    //     Placeable placeable = (Placeable) obj;
+                    //     placedObjsToPlace.add(placeable);
+                    // });
                     Tiletype tileType = tileObject.getEnum(Tiletype.class, "type");
-                    
                     Orientation orientation = tileObject.getEnum(Orientation.class, "orientation");
                     Tile newTile = tileType.createTile();
                     newTile.setOrientation(orientation);
-                    map.addTile(newTile, xPos, yPos);
+                    map.setTile(newTile, xPos, yPos);
                 }
                 yPos++;
             }
@@ -139,12 +144,18 @@ public class InstanceHandler implements Updateable {
         npcs.forEach(npc -> {
             JSONObject npcObject = (JSONObject) npc;
             MoveableType npcType = npcObject.getEnum(MoveableType.class, "type");
-            int xPosition = npcObject.getInt("xPos");
-            int yPos = npcObject.getInt("yPos");
-            int maxVelocity = npcObject.getInt("maxVelocity");
+            float xPosition = npcObject.getFloat("xPos");
+            float yPos = npcObject.getFloat("yPos");
+            float maxVelocity = npcObject.getFloat("maxVelocity");
+            float capacity = npcObject.getFloat("capacity");
+            String script = npcObject.getString("script");
             MoveableObject newNpc = npcType.createMovable(xPosition, yPos, maxVelocity);
+            newNpc.setCapacity(capacity);
+            newNpc.loadScript(script);
             map.addNpc(newNpc);
         });
+
+        map.setName(file.getString("name"));
 
         return map;
     }

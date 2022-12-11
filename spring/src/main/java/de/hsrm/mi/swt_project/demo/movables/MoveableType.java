@@ -4,7 +4,7 @@ public enum MoveableType {
 
     PASSENGER() {
         @Override
-        public MoveableObject createMovable(int xPos, int yPos, float maxVelocity) {
+        public MoveableObject createMovable(float xPos, float yPos, float maxVelocity) {
             MoveableObject mvObj = new Passenger(xPos, yPos, maxVelocity);
             mvObj.type = this;
             return mvObj;
@@ -19,7 +19,7 @@ public enum MoveableType {
     },
     MOTORIZED_OBJECT() {
         @Override
-        public MoveableObject createMovable(int xPos, int yPos, float maxVelocity) {
+        public MoveableObject createMovable(float xPos, float yPos, float maxVelocity) {
             MoveableObject mvObj = new MotorizedObject(xPos, yPos, maxVelocity);
             mvObj.type = this;
             return mvObj;
@@ -34,5 +34,5 @@ public enum MoveableType {
     };
 
     public abstract MoveableObject createMovable();
-    public abstract MoveableObject createMovable(int xPos, int yPos, float maxVelocity);
+    public abstract MoveableObject createMovable(float xPos, float yPos, float maxVelocity);
 }
