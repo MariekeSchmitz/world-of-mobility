@@ -1,3 +1,4 @@
 .vscode
 .DS_Store
-spring/maps
+spring/maps/*
+!spring/maps/test.json

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 import de.hsrm.mi.swt_project.demo.util.ArrayHelpers;
 
@@ -22,6 +23,13 @@ public class GameMap {
     private List<MoveableObject> npcs = new ArrayList<>();
 
     public GameMap() {
+        for (int i = 0; i < DEFAULT_SIZE; i++) {
+            for (int j = 0; j < DEFAULT_SIZE; j++) {
+                // TODO: change STREET_CROSS to DEFAULT as soon as it is implemented
+                this.tiles[i][j] = Tiletype.STREET_CROSS.createTile();
+            }
+        }
+        
     }
 
     /** adds a moveable Object to the map. e.g. a scripted car
