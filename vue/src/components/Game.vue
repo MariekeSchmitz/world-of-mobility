@@ -156,6 +156,7 @@ function onReady(model: any) {
         ref="model"
         src="/src/assets/models/Qube.glb"
         @load="onReady"
+        :position="new Vector3(10, 0, 10)"
       />
       <!-- Map -->
       <Map></Map>
