@@ -42,8 +42,8 @@ public class GameInstance extends Instance {
 
         while (iterator.hasNext()) {
 
-            MoveableObject npc = iterator.next().copy();
             int index = iterator.nextIndex();
+            MoveableObject npc = iterator.next().copy();
 
             String npcName = "NPC%d".formatted(index);
             moveableObjects.put(npcName, npc);
