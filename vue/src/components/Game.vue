@@ -43,18 +43,17 @@ let movementVector = new Vector3(0, 0, 0);
 
 const userMovable = computed(() => {
   return getUserMoveable(loginData.username);
-});
+});    
 
 const lookAt = reactive(new Vector3(15, 1, 15));
 
 const cameraPosition = computed(() => {
   const vecTempTarget = lookAt.clone();
+  const vecTempOffset = cameraOffset.clone();
   if (freeCam && camera.value && !switchedMode) {
     console.log(camera.value.camera.position); // NaN bei V Taste
-    console.log(movementVector);
     return camera.value.camera.position.add(movementVector);
   } else {
-    const vecTempOffset = cameraOffset.clone();
     if (userMovable.value != undefined) {
       vecTempOffset.applyAxisAngle(
         upVector,
@@ -89,7 +88,8 @@ onMounted(() => {
   orbitControls.screenSpacePanning = false;
   orbitControls.maxPolarAngle = Math.PI / 2;
 
-  const minAzimuthAngle = computed(() => {
+  /*
+  orbitControls.minAzimuthAngle = computed(() => {
     if (freeCam && !thirdPerson) {
       return orientations[userMovable.value.orientation] + Math.PI / 2;
     } else {
@@ -97,7 +97,7 @@ onMounted(() => {
     }
   });
 
-  const maxAzimuthAngle = computed(() => {
+  orbitControls.maxAzimuthAngle = computed(() => {
     if (freeCam && !thirdPerson) {
       return orientations[userMovable.value.orientation] - Math.PI / 2;
     } else {
@@ -105,9 +105,7 @@ onMounted(() => {
     }
   });
 
-  orbitControls.minAzimuthAngle = minAzimuthAngle;
-  orbitControls.maxAzimuthAngle = maxAzimuthAngle;
-
+  */
   receiveGameUpdate(props.instanceID);
 
   function switchCamMode() {
@@ -116,13 +114,20 @@ onMounted(() => {
 
   function switchPerspective() {
     thirdPerson = !thirdPerson;
+    console.log(camera.value.camera.position);
     if (thirdPerson) {
       cameraOffset.copy(thirdPersonOffset);
+      orbitControls.minAzimuthAngle =
+        orientations[userMovable.value.orientation];
+      orbitControls.maxAzimuthAngle =
+        orientations[userMovable.value.orientation] + 1.99 * Math.PI;
     } else {
       cameraOffset.copy(firstPersonOffset);
+      orbitControls.minAzimuthAngle =
+        orientations[userMovable.value.orientation] + Math.PI / 2;
+      orbitControls.maxAzimuthAngle =
+        orientations[userMovable.value.orientation] - Math.PI / 2;
     }
-    cameraControls.position.set(cameraPosition.value);
-    orbitControls.update();
     switchedMode = true;
   }
 
