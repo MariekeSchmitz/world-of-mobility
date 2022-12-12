@@ -12,7 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
-import de.hsrm.mi.swt_project.demo.controls.EditorControl;
+import de.hsrm.mi.swt_project.demo.controls.PlaceableControl;
+import de.hsrm.mi.swt_project.demo.controls.TileControl;
+import de.hsrm.mi.swt_project.demo.editor.placeableObjects.PlaceableObjectType;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 
 /**
@@ -45,7 +48,7 @@ public class EditorInstance extends Instance {
      * @param control the control option to use
      * @param tiletype the tile type associated with the control option
      */
-    public void editMap(int xPos, int yPos, EditorControl control, Tiletype tiletype) {
+    public void editMap(int xPos, int yPos, TileControl control, Tiletype tiletype) {
         switch(control) {
             case PLACE:
                 if(map.getTiles()[yPos][xPos] == null) {
@@ -68,6 +71,31 @@ public class EditorInstance extends Instance {
                 }
                 break;
         }
+    }
+
+    /**
+     * Edits the map by adding or removing placeable objects on a map.
+     * 
+     * @param xPos
+     * @param yPos
+     * @param placeableControl
+     * @param placeableObjectType
+     * @return edit on map valid
+     */
+    public Boolean editPlaceablesOnMap(int xPos, int yPos, PlaceableControl placeableControl, PlaceableObjectType placeableObjectType) {
+
+        switch(placeableControl) {
+            case ADD:
+                if(map.getTiles()[yPos][xPos] == null) {
+                    Tile tile = map.getTiles()[yPos][xPos];
+                    return map.validateAndAddPlaceableObject(tile, xPos, yPos, placeableObjectType.createPlaceableObject());
+                }
+                break;
+            case REMOVE: 
+                break;
+        }
+
+        return false;
     }
 
     /**
