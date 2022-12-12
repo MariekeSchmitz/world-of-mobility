@@ -38,7 +38,7 @@ class EditorTest {
     }
 
     @Test
-    void post_map_update_good() throws Exception {
+    void postMapUpdateGood() throws Exception {
 
         JSONObject body = new JSONObject();
         body.put("mapName", "Test");
@@ -54,7 +54,7 @@ class EditorTest {
     }
 
     @Test
-    void post_getMap_good() throws Exception {
+    void postGetMapGood() throws Exception {
 
         JSONObject body = new JSONObject();
         body.put("name", "test");
@@ -72,7 +72,7 @@ class EditorTest {
     }
 
     @Test
-    void post_mapsave_good() throws Exception {
+    void postMapsaveGood() throws Exception {
 
         JSONObject body = new JSONObject();
         body.put("mapName", "test");
@@ -86,7 +86,7 @@ class EditorTest {
     }
 
     @Test
-    void post_servermessage_good() throws Exception {
+    void postServerMessageGood() throws Exception {
         
         JSONObject body = new JSONObject();
         body.put("usrId", 1);

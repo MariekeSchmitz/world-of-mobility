@@ -31,7 +31,7 @@ class InstanceHandlerTest {
     }
 
     @Test
-    void saveload_map_test() throws Exception {
+    void saveloadMapTest() throws Exception {
         editorInstance.saveMap("testSaveLoad");
         long id = instanceHandler.createGameInstance("testSaveLoad", "testSession");
         assertTrue(id != -1, "Map has been found!");

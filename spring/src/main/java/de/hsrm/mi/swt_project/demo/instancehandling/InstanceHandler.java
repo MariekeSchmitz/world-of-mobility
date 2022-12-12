@@ -55,12 +55,6 @@ public class InstanceHandler implements Updateable {
 
         map.addNpc(p1);
         map.addNpc(p2);
-
-        // Instance instance1 = new EditorInstance(map, 1);
-        // Instance instance2 = new GameInstance(map, "test", 1);
-
-        // this.instances.add(instance1);
-        // this.instances.add(instance2);
     }
 
     /**
@@ -76,7 +70,9 @@ public class InstanceHandler implements Updateable {
             return idCounter++;
         } else {
             try {
-                String mapFile = Files.readString(Path.of(mapSavePath +"/"+ mapName + ".json"));
+                String fileName = "%s/%S.json".formatted(mapSavePath, mapName);
+                Path filePath = Path.of(fileName);
+                String mapFile = Files.readString(filePath);
                 instances.add(new GameInstance(loadMap(mapFile), sessionName, idCounter));
                 return idCounter++;
             } catch (IOException e) {
@@ -94,7 +90,9 @@ public class InstanceHandler implements Updateable {
      */
     public long createEditorInstance(String mapName) {
         try {
-            String mapFile = Files.readString(Path.of(mapSavePath + "/" + mapName + ".json"));
+            String fileName = "%s/%S.json".formatted(mapSavePath, mapName);
+            Path filePath = Path.of(fileName);
+            String mapFile = Files.readString(filePath);
             instances.add(new EditorInstance(loadMap(mapFile), idCounter));
         } catch (IOException e) {
             instances.add(new EditorInstance(new GameMap(), idCounter));

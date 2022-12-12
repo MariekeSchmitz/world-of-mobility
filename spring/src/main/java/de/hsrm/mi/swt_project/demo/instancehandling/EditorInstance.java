@@ -117,7 +117,7 @@ public class EditorInstance extends Instance {
 
         String mapToSave = gson.toJson(this.map);
 
-        File savePath = new File(saveDir, map.getName() + ".json");
+        File savePath = new File(saveDir, "%s.json".formatted(map.getName()));
     
         saveDir.mkdirs();
 
