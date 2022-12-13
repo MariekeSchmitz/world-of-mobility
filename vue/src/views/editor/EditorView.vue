@@ -13,6 +13,8 @@
 
     import BottomMenu from "../../components/editor/BottomMenu.vue";
     import LeftMenu from "../../components/editor/LeftMenu.vue";
+    import EditorTile from "../../components/editor/EditorTile.vue";
+    import EditorMap from "../../components/editor/EditorMap.vue";
     import MiniMap from "../../components/editor/MiniMap.vue";
     import type { Tile } from "../../services/editor/TileInterface";
     import { Orientation } from "../../services/editor/OrientationEnum";
@@ -20,12 +22,6 @@
     import {useMapUpdate} from "@/services/useMapUpdate"
     import {useMap} from "@/services/useMap"
     import { computed } from "vue";
-
-    
-    
-    
-    
-
 import { number } from "mathjs";
 
     const props = defineProps({
@@ -34,7 +30,7 @@ import { number } from "mathjs";
        type: number
       } 
     })
-    console.log(props.editorID)
+
 
     /**
      * in order to Execute THREE code in script tag, create a reactive item and add :ref="name" to the Vue Element
@@ -47,7 +43,7 @@ import { number } from "mathjs";
       rendererC.value.canvas.addEventListener("click", onDocumentLeftMouseDown)
       rendererC.value.canvas.addEventListener("mousemove", onMouseOver)
       rendererC.value.canvas.addEventListener("contextmenu", onDocumentRightMouseDown)
-      loadedMap.then((result) => setLoadedMap(result.tiles))
+      
     });
 
     //Texture Loader
@@ -64,11 +60,6 @@ import { number } from "mathjs";
       placeMode:boolean
     }
 
-    interface mapTile{
-      type: string,
-      orientation: string
-    }
-
     let place:PlaceItem;
     place = {placeType:"none",placeMode: false}
 
@@ -80,81 +71,12 @@ import { number } from "mathjs";
     const {sendMapUpdates, receiveMapUpdates, mapUpdates} = useMapUpdate(props.editorID);
     const {getMapEditor, saveMap} = useMap();
 
-    //connect to Stompbroker
-
-    
-      receiveMapUpdates(props.editorID);
-    
-    
-
-    //Rerender Map on Stompbroker Update
-    watch(mapUpdates.value,() =>{
-      createMap(mapUpdates.value.map.tiles)
-    
-    })
-    //Get Map on Loading EditorView
-    const loadedMap = getMapEditor(1);
-
     //Dynamic Parameters, updated with Stomp re-render
     const mapWidth = ref(8)
     const mapHeight = ref(8)
     const offsetx = computed(() => (-(mapWidth.value + 1) / 2));
     const offsety = computed(() => (-(mapHeight.value + 1) / 2));
 
-    /**
-     * Function to remove Editor Tile Meshes from the Scene in order to re-render the Scene
-     * 
-     * Author: Timothy Doukhin
-     */
-    function removeMap(){
-      for (let id = scene.value.scene.children.length -1 ; id >= 0 ; id--){
-        if (scene.value.scene.children[id].position.z == 0.01 ){
-          scene.value.scene.remove(scene.value.scene.children[id])
-        }
-      }
-    }
-
-
-    /**
-     * create Editable Map in Editor from Map object
-     * @param tiles 2D Array containing Tiles
-     * 
-     * Author: Timothy Doukhin
-     */
-
-    function createMap(tiles: mapTile[][]){
-      removeMap();
-      
-      for(let row = 0;row < tiles.length;row++){
-        for(let column =0 ;column < tiles[0].length; column++){
-        
-          const TileGeometry = new THREE.PlaneGeometry( 0.99, 0.99 );
-          let material = new THREE.MeshBasicMaterial();
-          
-          let texturePath = "../src/textures/editor/Default.jpg"
-          if (tiles[column][row] != null){
-            texturePath = '../src/textures/editor/'+tiles[column][row].type+'.jpg'
-          }
-          
-          material.map = loader.load(texturePath)
-          const TileMesh = new THREE.Mesh( TileGeometry, material );
-          TileMesh.position.x = row + offsetx.value +1;
-          TileMesh.position.y = column + offsety.value +1;
-          TileMesh.position.z = 0.01;
-          TileMesh.rotation.z = 0;
-          if (tiles[column][row] != null){
-            let orientation: string = tiles[column][row].orientation
-            TileMesh.rotation.z = Orientation[orientation]
-          }
-          scene.value.add(TileMesh);
-          
-       }
-      }
-      
-
-    }
-
-    
 
     /**
      * Sets Tile to be placed when selected from Bottom Menu
@@ -162,11 +84,10 @@ import { number } from "mathjs";
      * 
      * Author: Astrid Klemmer
      */
+    //PASS REACTIVE COMPONENT TO BOTTOM MENU AND EDITORMAP, SO PLACEMENT LOGIC CAN BE IMPLEMENTED IN EDITORMAP
     function setTileInfo(tileType:string){
       place = {placeType: tileType, placeMode: true}
     }
-
-
 
     /**
      * If a Tile has been Selected, handles the Placement Logic 
@@ -175,7 +96,10 @@ import { number } from "mathjs";
      * Author: Timothy Doukhin & Astrid Klemmer
      */
     function tileClick(tileObject:THREE.Mesh) {
+      
       removeContextMenu();
+      console.log(tileObject)
+      console.log(tileObject.position.x)
       
       if (place.placeMode){
         let posX = tileObject.position.x - offsetx.value -1;
@@ -207,6 +131,7 @@ import { number } from "mathjs";
  * Author: Timothy Doukhin
  * 
  */
+
     function createContextMenu(callingObject:THREE.Mesh){
       removeContextMenu();
      
@@ -327,21 +252,6 @@ import { number } from "mathjs";
         sendMapUpdates(removeDTO);
     }
 
-
-/**
- * Sets the parameters for the World and creates map after loading
- * @param receivedTiles TileArray for Map
- * 
- * Author: Timothy Doukhin
- */
-    function setLoadedMap(receivedTiles: mapTile[][]){
-      mapWidth.value = receivedTiles[0].length
-      mapHeight.value = receivedTiles.length
-      createMap(receivedTiles);
-    }
-
-   
-
     /**
      * update mouse position to properly highlight on hover 
      * @param event to determine mouse Position
@@ -446,7 +356,7 @@ import { number } from "mathjs";
           
         }
     }
-
+   
 
 </script>
 
@@ -460,6 +370,7 @@ import { number } from "mathjs";
       <img src="@/buttons/editor/close.png" />
     </button>
   </div>
+
 
   <div class="buttonMenuRight">
     <button><img src="@/buttons/editor/plus.png" /><br />Starte Spiel</button>
@@ -488,14 +399,8 @@ import { number } from "mathjs";
       <PointLight :position="{ x: 0, y: 0, z: 10 }" />
       <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
 
-      <!--   
-        <template v-for="row in mapWidth" >
-          <template v-for="column in mapHeight" >
-              <Plane :width="0.99" :height="0.99" :rotation="{ z: tiles[row-1][column-1].orientation==''?0:Orientation[tiles[row-1][column-1].orientation]}" :position="{ x: row  + offsetx, y: column + offsety, z: 0.01 }">
-                <BasicMaterial :props="{map: tiles[row-1][column-1].typ==''?loader.load('src/textures/editor/Default.jpg'):loader.load('src/textures/editor/'+tiles[row-1][column-1].typ+'.jpg')}" />
-              </Plane>
-          </template>
-        </template>-->
+      <EditorMap :editorID="editorID"></EditorMap>
+
     </Scene>
   </Renderer>
 </template>

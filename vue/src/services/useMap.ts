@@ -49,7 +49,6 @@ export function useMap(): any {
 
             clearTimeout(id);
     
-            console.log(response.text());
 
             return jsonData;
         } catch(reason) {
@@ -71,7 +70,7 @@ export function useMap(): any {
 
             clearTimeout(id);
     
-            console.log(response.text());
+
 
             return jsonData;
         } catch(reason) {
