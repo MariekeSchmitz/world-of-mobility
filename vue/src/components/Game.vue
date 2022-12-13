@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive } from "vue";
+import { ref, computed, onMounted, reactive, onUnmounted } from "vue";
 import {
   AmbientLight,
   Box,
@@ -43,7 +43,7 @@ let movementVector = new Vector3(0, 0, 0);
 
 const userMovable = computed(() => {
   return getUserMoveable(loginData.username);
-});    
+});
 
 const lookAt = reactive(new Vector3(15, 1, 15));
 
@@ -51,7 +51,6 @@ const cameraPosition = computed(() => {
   const vecTempTarget = lookAt.clone();
   const vecTempOffset = cameraOffset.clone();
   if (freeCam && camera.value && !switchedMode) {
-    console.log(camera.value.camera.position); // NaN bei V Taste
     return camera.value.camera.position.add(movementVector);
   } else {
     if (userMovable.value != undefined) {
@@ -66,7 +65,6 @@ const cameraPosition = computed(() => {
 });
 
 const allMoveables = computed(() => {
-  //console.log(mapUpdates.moveableUpdates);
   if (userMovable.value != undefined) {
     const newLookAt = new Vector3(
       userMovable.value.xPos,
@@ -80,12 +78,62 @@ const allMoveables = computed(() => {
 });
 
 /**
+ * switches from the Follower Cam to the Freecam and vica versa.
+ */
+function switchCamMode() {
+  freeCam = !freeCam;
+}
+
+/**
+ * switches from the third Person View to the Firstperson view and vica versa.
+ */
+function switchPerspective() {
+  thirdPerson = !thirdPerson;
+  console.log(camera.value.camera.position);
+  if (thirdPerson) {
+    cameraOffset.copy(thirdPersonOffset);
+    // orbitControls.minAzimuthAngle =
+    //   orientations[userMovable.value.orientation];
+    // orbitControls.maxAzimuthAngle =
+    //   orientations[userMovable.value.orientation] + 1.99 * Math.PI;
+  } else {
+    cameraOffset.copy(firstPersonOffset);
+    // orbitControls.minAzimuthAngle =
+    //   orientations[userMovable.value.orientation] + Math.PI / 2;
+    // orbitControls.maxAzimuthAngle =
+    //   orientations[userMovable.value.orientation] - Math.PI / 2;
+  }
+  switchedMode = true;
+}
+/**
+ * An Eventhandler for the Keyboardevents.
+ * @param e a KeyboardEvent, pressed button etc.
+ */
+function handleKeyEvent(e: KeyboardEvent) {
+  if (e.code === "KeyW") {
+    console.log("Event W");
+    sendCommand(props.instanceID, loginData.username, "SPEED_UP");
+  } else if (e.code === "KeyS") {
+    sendCommand(props.instanceID, loginData.username, "SPEED_DOWN");
+  } else if (e.code === "KeyA") {
+    sendCommand(props.instanceID, loginData.username, "RIGHT");
+  } else if (e.code === "KeyD") {
+    sendCommand(props.instanceID, loginData.username, "LEFT");
+  } else if (e.code === "KeyV") {
+    switchPerspective();
+  } else if (e.code === "KeyF") {
+    switchCamMode();
+  }
+}
+
+/**
  * sets up a big chunk of the functionality for the gamewindow.
  * prepares the camera functionality.
  * adds the keylistener to submit the commands to the backend.
  * adds the keylisteners to switch views and cam-modes.
  */
 onMounted(() => {
+
   const orbitControls = renderer.value.three.cameraCtrl;
   orbitControls.target = lookAt;
   orbitControls.enablePan = false;
@@ -95,7 +143,8 @@ onMounted(() => {
 
   orbitControls.minAzimuthAngle = computed(() => {
     if (freeCam && !thirdPerson) {
-      return orientations[userMovable.value.orientation] + Math.PI / 2;
+      const o = userMovable.value.orientation;
+      return orientations[o] + Math.PI / 2;
     } else {
       return 0;
     }
@@ -111,50 +160,10 @@ onMounted(() => {
 
   receiveGameUpdate(props.instanceID);
 
-  /**
-   * switches from the Follower Cam to the Freecam and vica versa.
-   */
-  function switchCamMode() {
-    freeCam = !freeCam;
-  }
-
-  /**
-   * switches from the third Person View to the Firstperson view and vica versa.
-   */
-  function switchPerspective() {
-    thirdPerson = !thirdPerson;
-    console.log(camera.value.camera.position);
-    if (thirdPerson) {
-      cameraOffset.copy(thirdPersonOffset);
-      // orbitControls.minAzimuthAngle =
-      //   orientations[userMovable.value.orientation];
-      // orbitControls.maxAzimuthAngle =
-      //   orientations[userMovable.value.orientation] + 1.99 * Math.PI;
-    } else {
-      cameraOffset.copy(firstPersonOffset);
-      // orbitControls.minAzimuthAngle =
-      //   orientations[userMovable.value.orientation] + Math.PI / 2;
-      // orbitControls.maxAzimuthAngle =
-      //   orientations[userMovable.value.orientation] - Math.PI / 2;
-    }
-    switchedMode = true;
-  }
-
-  document.addEventListener("keyup", (e) => {
-    if (e.code === "KeyW") {
-      sendCommand(props.instanceID, loginData.username, "SPEED_UP");
-    } else if (e.code === "KeyS") {
-      sendCommand(props.instanceID, loginData.username, "SPEED_DOWN");
-    } else if (e.code === "KeyA") {
-      sendCommand(props.instanceID, loginData.username, "RIGHT");
-    } else if (e.code === "KeyD") {
-      sendCommand(props.instanceID, loginData.username, "LEFT");
-    } else if (e.code === "KeyV") {
-      switchPerspective();
-    } else if (e.code === "KeyF") {
-      switchCamMode();
-    }
-  });
+  document.addEventListener("keyup", handleKeyEvent);
+});
+onUnmounted(() => {
+  document.removeEventListener("keyup", handleKeyEvent);
 });
 </script>
 
@@ -163,7 +172,7 @@ onMounted(() => {
     <Camera :position="cameraPosition" ref="camera" />
     <Scene background="#97FFFF">
       <!-- Light -->
-      <PointLight :position="{ x: 0, y: 0, z: 10 }" />
+      <PointLight :position="{ x: 0, y: 0, z: 10 }" />\
       <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
       <!-- Map -->
       <Map></Map>
