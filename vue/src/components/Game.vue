@@ -32,8 +32,8 @@ const renderer = ref();
 const camera = ref();
 const car = ref();
 
-let thirdPerson = true;
-let freeCam = true;
+let thirdPerson = reactive({ value: true });
+let freeCam = reactive({ value: true });
 let switchedMode = false;
 const thirdPersonOffset = new Vector3(0, 8, -15);
 const firstPersonOffset = new Vector3(0, 0, -2);
@@ -50,7 +50,8 @@ const lookAt = reactive(new Vector3(15, 1, 15));
 const cameraPosition = computed(() => {
   const vecTempTarget = lookAt.clone();
   const vecTempOffset = cameraOffset.clone();
-  if (freeCam && camera.value && !switchedMode) {
+  if (freeCam.value && camera.value && !switchedMode) {
+    console.log(camera.value.camera.position);
     return camera.value.camera.position.add(movementVector);
   } else {
     if (userMovable.value != undefined) {
@@ -65,6 +66,7 @@ const cameraPosition = computed(() => {
 });
 
 const allMoveables = computed(() => {
+  //console.log(mapUpdates.moveableUpdates);
   if (userMovable.value != undefined) {
     const newLookAt = new Vector3(
       userMovable.value.xPos,
@@ -81,16 +83,16 @@ const allMoveables = computed(() => {
  * switches from the Follower Cam to the Freecam and vica versa.
  */
 function switchCamMode() {
-  freeCam = !freeCam;
+  freeCam.value = !freeCam.value;
 }
 
 /**
  * switches from the third Person View to the Firstperson view and vica versa.
  */
 function switchPerspective() {
-  thirdPerson = !thirdPerson;
+  thirdPerson.value = !thirdPerson.value;
   console.log(camera.value.camera.position);
-  if (thirdPerson) {
+  if (thirdPerson.value) {
     cameraOffset.copy(thirdPersonOffset);
     // orbitControls.minAzimuthAngle =
     //   orientations[userMovable.value.orientation];
@@ -142,7 +144,7 @@ onMounted(() => {
   orbitControls.maxPolarAngle = Math.PI / 2;
 
   orbitControls.minAzimuthAngle = computed(() => {
-    if (freeCam && !thirdPerson) {
+    if (freeCam.value && !thirdPerson.value) {
       const o = userMovable.value.orientation;
       return orientations[o] + Math.PI / 2;
     } else {
@@ -151,7 +153,7 @@ onMounted(() => {
   });
 
   orbitControls.maxAzimuthAngle = computed(() => {
-    if (freeCam && !thirdPerson) {
+    if (freeCam.value && !thirdPerson.value) {
       return orientations[userMovable.value.orientation] - Math.PI / 2;
     } else {
       return 1.99 * Math.PI;
