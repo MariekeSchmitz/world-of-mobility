@@ -50,9 +50,7 @@ public class EditorInstance extends Instance {
     public void editMap(int xPos, int yPos, EditorControl control, Tiletype tiletype) {
         switch(control) {
             case PLACE:
-                if(map.getTiles()[yPos][xPos] == null) {
-                    map.addTile(tiletype.createTile(), xPos, yPos);                  
-                }
+                map.addTile(tiletype.createTile(), xPos, yPos);                  
                 break;
             case REMOVE:
                 if(map.getTiles()[yPos][xPos] != null) {
