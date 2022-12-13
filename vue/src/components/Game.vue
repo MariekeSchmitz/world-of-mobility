@@ -79,16 +79,20 @@ const allMoveables = computed(() => {
   return mapUpdates.moveableUpdates;
 });
 
+/**
+ * sets up a big chunk of the functionality for the gamewindow.
+ * prepares the camera functionality.
+ * adds the keylistener to submit the commands to the backend.
+ * adds the keylisteners to switch views and cam-modes.
+ */
 onMounted(() => {
   const orbitControls = renderer.value.three.cameraCtrl;
-  const cameraControls = camera.value.camera;
   orbitControls.target = lookAt;
   orbitControls.enablePan = false;
   orbitControls.enableRotate = true;
   orbitControls.screenSpacePanning = false;
   orbitControls.maxPolarAngle = Math.PI / 2;
 
-  /*
   orbitControls.minAzimuthAngle = computed(() => {
     if (freeCam && !thirdPerson) {
       return orientations[userMovable.value.orientation] + Math.PI / 2;
@@ -105,28 +109,33 @@ onMounted(() => {
     }
   });
 
-  */
   receiveGameUpdate(props.instanceID);
 
+  /**
+   * switches from the Follower Cam to the Freecam and vica versa.
+   */
   function switchCamMode() {
     freeCam = !freeCam;
   }
 
+  /**
+   * switches from the third Person View to the Firstperson view and vica versa.
+   */
   function switchPerspective() {
     thirdPerson = !thirdPerson;
     console.log(camera.value.camera.position);
     if (thirdPerson) {
       cameraOffset.copy(thirdPersonOffset);
-      orbitControls.minAzimuthAngle =
-        orientations[userMovable.value.orientation];
-      orbitControls.maxAzimuthAngle =
-        orientations[userMovable.value.orientation] + 1.99 * Math.PI;
+      // orbitControls.minAzimuthAngle =
+      //   orientations[userMovable.value.orientation];
+      // orbitControls.maxAzimuthAngle =
+      //   orientations[userMovable.value.orientation] + 1.99 * Math.PI;
     } else {
       cameraOffset.copy(firstPersonOffset);
-      orbitControls.minAzimuthAngle =
-        orientations[userMovable.value.orientation] + Math.PI / 2;
-      orbitControls.maxAzimuthAngle =
-        orientations[userMovable.value.orientation] - Math.PI / 2;
+      // orbitControls.minAzimuthAngle =
+      //   orientations[userMovable.value.orientation] + Math.PI / 2;
+      // orbitControls.maxAzimuthAngle =
+      //   orientations[userMovable.value.orientation] - Math.PI / 2;
     }
     switchedMode = true;
   }
@@ -169,7 +178,7 @@ onMounted(() => {
 
       <div v-for="(moveable, index) in allMoveables" :key="index">
         <Car
-          :pos="new Vector3(moveable.xPos, 0, moveable.yPos)"
+          :pos="new Vector3(moveable.xPos, 0.5, moveable.yPos)"
           :rotation="orientations[moveable.orientation]"
         ></Car>
       </div>
