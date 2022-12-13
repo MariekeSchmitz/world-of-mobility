@@ -1,6 +1,5 @@
 package de.hsrm.mi.swt_project.demo;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -36,11 +35,10 @@ class EditorTest {
     @BeforeEach
     void setUp() {
         editorId = instanceHandler.createEditorInstance("test");
-        
     }
 
     @Test
-    void post_map_update_good() throws Exception {
+    void postMapUpdateGood() throws Exception {
 
         JSONObject body = new JSONObject();
         body.put("mapName", "Test");
@@ -56,10 +54,10 @@ class EditorTest {
     }
 
     @Test
-    void post_getMap_good() throws Exception {
+    void postGetMapGood() throws Exception {
 
         JSONObject body = new JSONObject();
-        body.put("mapName", "test");
+        body.put("name", "test");
         body.put("mapId", editorId);
 
         mockMvc.perform(
@@ -73,22 +71,22 @@ class EditorTest {
             .andExpect(jsonPath("npcs").exists());
     }
 
-    // TODO: This test does't work currently. NullPointerException on MapSave for missing mapSavePath. Maybe I just don't understand the @Value annotation in Instance 
-    // @Test void post_mapsave_good() throws Exception {
+    @Test
+    void postMapsaveGood() throws Exception {
 
-    //     JSONObject body = new JSONObject();
-    //     body.put("mapName", "test");
-    //     body.put("mapId", editorId);
+        JSONObject body = new JSONObject();
+        body.put("mapName", "test");
+        body.put("mapId", editorId);
 
-    //     mockMvc.perform(
-    //         post("/api/editor/savemap")
-    //         .contentType(MediaType.APPLICATION_JSON)
-    //         .content(body.toString())
-    //     ).andExpect(status().isOk());
-    // }
+        mockMvc.perform(
+            post("/api/editor/savemap")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(body.toString())
+        ).andExpect(status().isOk());
+    }
 
     @Test
-    void post_servermessage_good() throws Exception {
+    void postServerMessageGood() throws Exception {
         
         JSONObject body = new JSONObject();
         body.put("usrId", 1);
