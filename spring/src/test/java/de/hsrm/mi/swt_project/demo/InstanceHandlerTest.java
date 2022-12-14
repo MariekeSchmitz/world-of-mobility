@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,8 +26,11 @@ class InstanceHandlerTest {
 
     long editorId;
 
+    Logger logger;
+
     @BeforeEach
     void setUp() {
+        logger = LoggerFactory.getLogger(getClass());
         editorId = instanceHandler.createEditorInstance("");
         editorInstance = instanceHandler.getEditorInstanceById(editorId);
     }
@@ -34,6 +39,7 @@ class InstanceHandlerTest {
     void saveloadMapTest() throws Exception {
         editorInstance.saveMap("testSaveLoad");
         long id = instanceHandler.createGameInstance("testSaveLoad", "testSession");
+        logger.info("ID of instance is: {}", id);
         assertTrue(id != -1, "Map has been found!");
 
         GameInstance gameInstance = instanceHandler.getGameInstanceById(id);
