@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive, onUnmounted } from "vue";
+import { ref, computed, onMounted, reactive, onUnmounted, watch } from "vue";
 import {
   AmbientLight,
   Box,
@@ -39,7 +39,7 @@ const thirdPersonOffset = new Vector3(0, 8, -15);
 const firstPersonOffset = new Vector3(0, 0, -2);
 const cameraOffset = reactive(new Vector3(0, 8, -15));
 const upVector = new Vector3(0, 1, 0);
-let movementVector = new Vector3(0, 0, 0);
+let movementVector = new Vector3(0, 0, 0);   
 
 const userMovable = computed(() => {
   return getUserMoveable(loginData.username);
@@ -51,7 +51,6 @@ const cameraPosition = computed(() => {
   const vecTempTarget = lookAt.clone();
   const vecTempOffset = cameraOffset.clone();
   if (freeCam.value && camera.value && !switchedMode) {
-    console.log(camera.value.camera.position);
     return camera.value.camera.position.add(movementVector);
   } else {
     if (userMovable.value != undefined) {
@@ -66,7 +65,6 @@ const cameraPosition = computed(() => {
 });
 
 const allMoveables = computed(() => {
-  //console.log(mapUpdates.moveableUpdates);
   if (userMovable.value != undefined) {
     const newLookAt = new Vector3(
       userMovable.value.xPos,
@@ -91,19 +89,10 @@ function switchCamMode() {
  */
 function switchPerspective() {
   thirdPerson.value = !thirdPerson.value;
-  console.log(camera.value.camera.position);
   if (thirdPerson.value) {
     cameraOffset.copy(thirdPersonOffset);
-    // orbitControls.minAzimuthAngle =
-    //   orientations[userMovable.value.orientation];
-    // orbitControls.maxAzimuthAngle =
-    //   orientations[userMovable.value.orientation] + 1.99 * Math.PI;
   } else {
     cameraOffset.copy(firstPersonOffset);
-    // orbitControls.minAzimuthAngle =
-    //   orientations[userMovable.value.orientation] + Math.PI / 2;
-    // orbitControls.maxAzimuthAngle =
-    //   orientations[userMovable.value.orientation] - Math.PI / 2;
   }
   switchedMode = true;
 }
@@ -113,7 +102,6 @@ function switchPerspective() {
  */
 function handleKeyEvent(e: KeyboardEvent) {
   if (e.code === "KeyW") {
-    console.log("Event W");
     sendCommand(props.instanceID, loginData.username, "SPEED_UP");
   } else if (e.code === "KeyS") {
     sendCommand(props.instanceID, loginData.username, "SPEED_DOWN");
@@ -143,26 +131,22 @@ onMounted(() => {
   orbitControls.screenSpacePanning = false;
   orbitControls.maxPolarAngle = Math.PI / 2;
 
-  orbitControls.minAzimuthAngle = computed(() => {
+  function setAzimuthAngle(){
+    console.log("hallo");
     if (freeCam.value && !thirdPerson.value) {
-      const o = userMovable.value.orientation;
-      return orientations[o] + Math.PI / 2;
+      orbitControls.minAzimuthAngle = orientations[userMovable.value.orientation] - Math.PI / 2;
+      orbitControls.minAzimuthAngle = orientations[userMovable.value.orientation] + Math.PI / 2;
     } else {
-      return 0;
+      orbitControls.minAzimuthAngle =
+      orientations[userMovable.value.orientation];
+      orbitControls.maxAzimuthAngle =
+      orientations[userMovable.value.orientation] + 1.99 * Math.PI;
     }
-  });
-
-  orbitControls.maxAzimuthAngle = computed(() => {
-    if (freeCam.value && !thirdPerson.value) {
-      return orientations[userMovable.value.orientation] - Math.PI / 2;
-    } else {
-      return 1.99 * Math.PI;
-    }
-  });
-
+  }
+  
   receiveGameUpdate(props.instanceID);
-
   document.addEventListener("keyup", handleKeyEvent);
+  watch(userMovable.value,()=>setAzimuthAngle());
 });
 onUnmounted(() => {
   document.removeEventListener("keyup", handleKeyEvent);
@@ -179,19 +163,14 @@ onUnmounted(() => {
       <!-- Map -->
       <Map></Map>
       <!-- "Car" -->
-      <Box
-        :position="{ x: 1, y: 1, z: 2 }"
-        :scale="{ x: 1, y: 1, z: 2 }"
-        ref="car"
-        ><ToonMaterial>
-          <Texture src="src\textures\Obsidian.jpg" /> </ToonMaterial
-      ></Box>
+      <Box :position="{ x: 1, y: 1, z: 2 }" :scale="{ x: 1, y: 1, z: 2 }" ref="car">
+        <ToonMaterial>
+          <Texture src="src\textures\Obsidian.jpg" />
+        </ToonMaterial>
+      </Box>
 
       <div v-for="(moveable, index) in allMoveables" :key="index">
-        <Car
-          :pos="new Vector3(moveable.xPos, 0.5, moveable.yPos)"
-          :rotation="orientations[moveable.orientation]"
-        ></Car>
+        <Car :pos="new Vector3(moveable.xPos, 0.5, moveable.yPos)" :rotation="orientations[moveable.orientation]"></Car>
       </div>
     </Scene>
   </Renderer>
