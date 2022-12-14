@@ -1,14 +1,14 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 //@ts-ignore
-import { Orientation } from "@/services/editor/OrientationEnum";
 import * as THREE from "three";
 import ContextMenu from "../../components/editor/ContextMenu.vue";
 import { Plane, Texture, BasicMaterial } from "troisjs";
-import { withDefaults, defineProps, defineEmits,ref,computed ,toRef, watch} from "vue";
+import { withDefaults, defineProps, defineEmits,ref,computed, watch} from "vue";
 import { usePlaceState } from "@/services/editor/usePlaceState";
 import { useContextMenu } from "@/services/editor/useContextMenu";
 import { useMapUpdate } from "@/services/useMapUpdate";
+import type { ExportTile } from "@/services/editor/ExportTileInterface";
 
 const emit = defineEmits(['tileclick'])
 const props = withDefaults(
@@ -18,51 +18,52 @@ const props = withDefaults(
     position: THREE.Vector3;
     rotation: THREE.Vector3;
     type: string;
-    editorID: string
+    editorID: number
     cmVisible: boolean
   }>(),
   { width: 0.99, height: 0.99, cmVisible: false}
 
   
 );
-let cmVisible = ref(false)
-//const cmVisible = ref(false);
-let contextMenuVector: THREE.Vector3 = props.position.clone().add(new THREE.Vector3(0,0.5,0.02))
-//console.log("vector",contextMenuVector);
+const cmVisible = ref(false)
 let texturePath = "../src/textures/editor/"+props.type+".jpg"
 
 const {readPlaceState} = usePlaceState();
 const {readCMState, setCMState} = useContextMenu();
 const {sendMapUpdates, receiveMapUpdates, mapUpdates} = useMapUpdate(props.editorID);
 
-
-function rightclick() {
-  console.log("rightclick")
-}
 const mapWidth = ref(8)
 const mapHeight = ref(8)
 const offsetx = computed(() => (-(mapWidth.value + 1) / 2));
 const offsety = computed(() => (-(mapHeight.value + 1) / 2));
 
-watch(readCMState.value, (newValue,oldValue) => {
-  console.log("cmState read")
+watch(readCMState.value, () => {
   cmVisible.value = false;
 })
 
-function tileClick(tileObject) {
+/**
+     * If a Tile has been Selected, handles the Placement Logic 
+     * @param tileObject Object to be operated on
+     * 
+     * Author: Timothy Doukhin & Astrid Klemmer
+     */
+
+function placeTile(callingObject:THREE.Mesh) {
+      
+      let posX = callingObject.position.x - offsetx.value -1;
+      let posY = callingObject.position.y - offsety.value -1;
+      
+      setCMState();
       
       
-      let posX = tileObject.position.x - offsetx.value -1;
-      let posY = tileObject.position.y - offsety.value -1;
-      console.log(tileObject);
-      
-      if(tileObject.type != "Default"){
-          setCMState("bla");
-          cmVisible.value = true;
+      if(callingObject.type != "Default"){
+        //make contextMenu visible after removing all ContextMenus from all tiles
+        setTimeout(() => {  cmVisible.value = true; }, 10);
+         
           
       }
   
-        if (readPlaceState.value.type != "none"){
+        if (readPlaceState.value.type != "none" && callingObject.type == "Default"){
           
   
           let toSendObj: ExportTile = {
@@ -77,11 +78,70 @@ function tileClick(tileObject) {
       }
     }
 
+/**
+     * Rest request to turn Tile to the Left 
+     * @param callingObject Tile-Object that the function operates on
+     * 
+     * Author: Timothy Doukhin
+     */
+     function turnLeft(callingObject: THREE.Mesh){
+        let posX = callingObject.position.x - offsetx.value -1;
+        let posY = callingObject.position.y - offsety.value -1 -0.4;
+        let turnleftDTO: ExportTile = {
+          type: "SIDEWAY",
+          orientation: "NORTH",
+          xPos: posX,
+          yPos: posY,
+          control: "TURN_LEFT",
+        }
+        sendMapUpdates(turnleftDTO);
+    }
+    
+/**
+ * Rest request to turn Tile to the Right
+ * @param callingObject Tile-Object that the function operates on
+ * 
+ * Author: Timothy Doukhin
+ */
+function turnRight(callingObject:THREE.Mesh){
+      let posX = callingObject.position.x - offsetx.value -1;
+      let posY = callingObject.position.y - offsety.value -1 -0.4;
+      let turnrightDTO: ExportTile = {
+        type: "SIDEWAY",
+        orientation: "NORTH",
+        xPos: posX,
+        yPos: posY,
+        control: "TURN_RIGHT",
+      }
+      sendMapUpdates(turnrightDTO);
+}
+
+/**
+     * Rest request to remove current Tile 
+     * @param callingObject Tile-Object that the function operates on
+     * 
+     * Author: Timothy Doukhin
+     */
+     function removeTile(callingObject: THREE.Mesh){
+        let posX = callingObject.position.x - offsetx.value -1;
+        let posY = callingObject.position.y - offsety.value -1 -0.4;
+        let removeDTO: ExportTile = {
+          type: "SIDEWAY",
+          orientation: "NORTH",
+          xPos: posX,
+          yPos: posY,
+          control: "REMOVE",
+        }
+        sendMapUpdates(removeDTO);
+    }
+
+
+
 </script>
 <template>
   
    
-  <Plane @click="tileClick(this)"
+  <Plane @click="placeTile(this)"
     :width="props.width"
     :height="props.height"
     :rotation="props.rotation"
@@ -92,9 +152,13 @@ function tileClick(tileObject) {
     </BasicMaterial>
   </Plane>
 
-  <ContextMenu v-if="cmVisible"
+  <ContextMenu 
+  v-if="cmVisible" 
+  v-on:turnRight="(turnRight($event))"
+  v-on:turnLeft="(turnLeft($event))"
+  v-on:removeTile="(removeTile($event))"
   :width="0.8"
   :height="0.3"
-  :position="contextMenuVector"
+  :position="props.position.clone().add(new THREE.Vector3(0,0.4,0.02))"
    ></ContextMenu>
 </template>

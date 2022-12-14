@@ -10,7 +10,7 @@ const props = defineProps<{
     position: THREE.Vector3;
   }>()
   
-
+const emit = defineEmits(['turnRight'])
 </script>
 <template>
     <!--Background-->

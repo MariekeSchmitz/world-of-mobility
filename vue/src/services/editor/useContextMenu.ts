@@ -1,14 +1,16 @@
 import { readonly, ref } from "vue";
 
 
-const CMState = ref<String> (
-    "none"
+const CMState = ref (
+    {
+        state: 0
+    }
 )
 
 
 
-function setCMState(state:String){
-    CMState.value = state
+function setCMState(){
+    CMState.value.state++
 }
 
 

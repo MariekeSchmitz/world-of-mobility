@@ -13,16 +13,10 @@
 
   import BottomMenu from "../../components/editor/BottomMenu.vue";
   import LeftMenu from "../../components/editor/LeftMenu.vue";
-  import EditorTile from "../../components/editor/EditorTile.vue";
   import EditorMap from "../../components/editor/EditorMap.vue";
   import MiniMap from "../../components/editor/MiniMap.vue";
-  import type { Tile } from "../../services/editor/TileInterface";
-  import { Orientation } from "../../services/editor/OrientationEnum";
-  import type { ExportTile } from "@/services/editor/ExportTileInterface";
   import { usePlaceState } from "@/services/editor/usePlaceState";
-  import {useMapUpdate} from "@/services/useMapUpdate"
   import {useMap} from "@/services/useMap"
-  import { computed } from "vue";
   import { number } from "mathjs";
 
     const props = defineProps({
@@ -41,10 +35,7 @@
     const scene = ref();
 
     onMounted(() => {
-      rendererC.value.canvas.addEventListener("click", onDocumentLeftMouseDown)
       rendererC.value.canvas.addEventListener("mousemove", onMouseOver)
-      rendererC.value.canvas.addEventListener("contextmenu", onDocumentRightMouseDown)
-      
     });
 
     //Texture Loader
@@ -55,30 +46,9 @@
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();
 
-    //defines Tile to be placed on click and whether click triggers a Tile place    
-    interface PlaceItem{
-      placeType:string,
-      placeMode:boolean
-    }
-
-    let place:PlaceItem;
-    place = {placeType:"none",placeMode: false}
-
-    //Contextmenu Meshes
-    let activeContextMenu: Array<THREE.Mesh>; 
-    activeContextMenu = [];
-
-    //Imported REST-Controller and Stompbroker connection
-    const {sendMapUpdates, receiveMapUpdates, mapUpdates} = useMapUpdate(props.editorID);
-    const {getMapEditor, saveMap} = useMap();
-    const {setPlaceState, readPlaceState} = usePlaceState();
-    //Dynamic Parameters, updated with Stomp re-render
-    const mapWidth = ref(8)
-    const mapHeight = ref(8)
-    const offsetx = computed(() => (-(mapWidth.value + 1) / 2));
-    const offsety = computed(() => (-(mapHeight.value + 1) / 2));
-
-
+    const {saveMap} = useMap();
+    const {setPlaceState} = usePlaceState();
+   
     /**
      * Sets Tile to be placed when selected from Bottom Menu
      * @param tileType name of Tiletype
@@ -90,169 +60,7 @@
       setPlaceState(tileType);
     }
 
-    /**
-     * If a Tile has been Selected, handles the Placement Logic 
-     * @param tileObject Object to be operated on
-     * 
-     * Author: Timothy Doukhin & Astrid Klemmer
-     */
-    function tileClick(tileObject:THREE.Mesh) {
-      
-      removeContextMenu();
-      /*console.log(tileObject)
-      console.log(tileObject.position.x)*/
-      
-      if (readPlaceState.value.type == "bruhnone"){
-        let posX = tileObject.position.x - offsetx.value -1;
-        let posY = tileObject.position.y - offsety.value -1;
-
-        let toSendObj: ExportTile = {
-        type: readPlaceState.value.type,
-        orientation: "NORTH",
-        xPos: posX,
-        yPos: posY,
-        control: "PLACE",
-      } 
-
-      sendMapUpdates(toSendObj);
-      }
-      
-
-    }
     
-    
-
-/**
- * Creates a contextmenu with turn buttons and a remove button above the selected tile on right click.
- * Objects belonging to the Menu get saved in the "activeContextMenu" Array
- * any preexisting contextmenus get removed so that only one is active at any time.
- * 
- * @param callingObject Tile-Mesh that the contextmenu operates on
- * 
- * Author: Timothy Doukhin
- * 
- */
-
-    function createContextMenu(callingObject:THREE.Mesh){
-      removeContextMenu();
-     
-      const x = callingObject.position.x
-      const y = callingObject.position.y
-
-      const contextMenuGeometry = new THREE.PlaneGeometry( 0.8, 0.3 );
-      contextMenuGeometry.translate(0,0,0.02)
-      let material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
-      const contextMenu = new THREE.Mesh( contextMenuGeometry, material );
-
-      const rightButtonGeometry = new THREE.PlaneGeometry(0.2,0.2)
-      rightButtonGeometry.translate(0.25,0,0.03)
-      material = new THREE.MeshBasicMaterial({color: "blue"})
-      const rightButton = new THREE.Mesh(rightButtonGeometry,material)
-      
-      const leftButtonGeometry = new THREE.PlaneGeometry(0.2,0.2)
-      leftButtonGeometry.translate(-0.25,0,0.03)
-      material = new THREE.MeshBasicMaterial({color: "blue"})
-      const leftButton = new THREE.Mesh(leftButtonGeometry,material)
-      
-      const removeButtonGeometry = new THREE.PlaneGeometry(0.2,0.2)
-      removeButtonGeometry.translate(0,0,0.03)
-      material = new THREE.MeshBasicMaterial({color:"red"})
-      const removeButton = new THREE.Mesh(removeButtonGeometry,material)
-      
-      //moving contextMenu to correct location according to tile clicked.
-      contextMenuGeometry.translate(x ,y+0.5,0)
-      rightButtonGeometry.translate(x ,y+0.5,0)
-      leftButtonGeometry.translate(x ,y+0.5,0)
-      removeButtonGeometry.translate(x,y+0.5,0)
-
-
-      //callback functions for raycast intersection
-      rightButton.callback = function(){turnRight(callingObject)}
-      leftButton.callback = function(){turnLeft(callingObject)}
-      removeButton.callback = function(){removeTile(callingObject)};
-
-      //Array to save current contextmenu objects
-      activeContextMenu.push(rightButton,leftButton,contextMenu,removeButton)
-
-      scene.value.add (rightButton);
-      scene.value.add (leftButton);
-      scene.value.add( removeButton );
-      scene.value.add( contextMenu );
-
-    }
-
-    /**
-     * Removes the currently active Contextmenu from the Scene and from the "activeContextMenu" array
-     * 
-     * Author: Timothy Doukhin
-     */
-    function removeContextMenu(){
-      if (activeContextMenu.length > 0){
-        scene.value.scene.remove(activeContextMenu[0])
-        scene.value.scene.remove(activeContextMenu[1])
-        scene.value.scene.remove(activeContextMenu[2])
-        scene.value.scene.remove(activeContextMenu[3])
-        activeContextMenu.splice(0);
-      }
-    }
-
-    /**
-     * Rest request to turn Tile to the Left 
-     * @param callingObject Tile-Object that the function operates on
-     * 
-     * Author: Timothy Doukhin
-     */
-    function turnLeft(callingObject: THREE.Mesh){
-        let posX = callingObject.position.x - offsetx.value -1;
-        let posY = callingObject.position.y - offsety.value -1;
-        let turnleftDTO: ExportTile = {
-          type: "SIDEWAY",
-          orientation: "NORTH",
-          xPos: posX,
-          yPos: posY,
-          control: "TURN_LEFT",
-        }
-        sendMapUpdates(turnleftDTO);
-    }
-
-    /**
-     * Rest request to turn Tile to the Right
-     * @param callingObject Tile-Object that the function operates on
-     * 
-     * Author: Timothy Doukhin
-     */
-    function turnRight(callingObject: THREE.Mesh){
-      let posX = callingObject.position.x - offsetx.value -1;
-        let posY = callingObject.position.y - offsety.value -1;
-        let turnrightDTO: ExportTile = {
-          type: "SIDEWAY",
-          orientation: "NORTH",
-          xPos: posX,
-          yPos: posY,
-          control: "TURN_RIGHT",
-        }
-        sendMapUpdates(turnrightDTO);
-    }
-
-    /**
-     * Rest request to remove current Tile 
-     * @param callingObject Tile-Object that the function operates on
-     * 
-     * Author: Timothy Doukhin
-     */
-    function removeTile(callingObject: THREE.Mesh){
-        let posX = callingObject.position.x - offsetx.value -1;
-        let posY = callingObject.position.y - offsety.value -1;
-        let removeDTO: ExportTile = {
-          type: "SIDEWAY",
-          orientation: "NORTH",
-          xPos: posX,
-          yPos: posY,
-          control: "REMOVE",
-        }
-        sendMapUpdates(removeDTO);
-    }
-
     /**
      * update mouse position to properly highlight on hover 
      * @param event to determine mouse Position
@@ -267,7 +75,7 @@
     }
 
     
-    let intersected:THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>
+    let intersected:THREE.Mesh
     /**
      * checks if mouse intersects any objects via raycaster.
      * If yes, Mesh gets highlighted and previous mesh saved, in order to restore old texture/color after leaving hover range.
@@ -301,72 +109,10 @@
     }
 
 
-    /**
-     * checks if mouse intersects any Meshes via Raycaster on mouseclick.
-     * If yes, calls callback of contexmenu or tileClick for Tiles.
-     * 
-     * @param event used to determine mouse position at click
-     * 
-     * Author: Timothy Doukhin
-     */
-    function onDocumentLeftMouseDown( event: MouseEvent ) {
-    
-        //mouse position updated
-        mouse.x = ( event.clientX / rendererC.value.renderer.domElement.clientWidth ) * 2 - 1  ;
-        mouse.y = - ( event.clientY / rendererC.value.renderer.domElement.clientHeight ) * 2 + 1  ;
-
-        raycaster.setFromCamera( mouse, camera.value.camera );
-        var intersects = raycaster.intersectObjects( scene.value.scene.children ); 
-        if ( intersects.length > 0 ) {
-            let selectedObject = intersects[0];
-            if (selectedObject.object.geometry.parameters.width == 0.99 && selectedObject.object.geometry.parameters.height == 0.99){
-              tileClick(selectedObject.object)
-            }else{
-              try {
-                selectedObject.object.callback();
-              } catch (error) {
-                console.log("cannot call back")
-              }
-            }
-
-        }
-
-    }
-
-    /**
-     * checks if mouse intersects any Meshes via Raycaster on right click.
-     * If rightclick is on a Tile-Mesh, a contextMenu is created.
-     * 
-     * @param event used to determine mouse position at click
-     * 
-     * Author: Timothy Doukhin
-     */
-    
-    function onDocumentRightMouseDown( event ) {
-      event.preventDefault();
-        mouse.x = ( event.clientX / rendererC.value.renderer.domElement.clientWidth ) * 2 - 1  ;
-        mouse.y = - ( event.clientY / rendererC.value.renderer.domElement.clientHeight ) * 2 + 1   ;
-
-        raycaster.setFromCamera( mouse, camera.value.camera );
-        var intersects = raycaster.intersectObjects( scene.value.scene.children );
-        if (intersects.length > 0){
-          let selectedObject = intersects[0];
-          if (selectedObject.object.geometry.parameters.width == 0.99 && selectedObject.object.geometry.parameters.height == 0.99){
-              createContextMenu(selectedObject.object)
-
-            }
-          
-        }
-      }
-    
-function rightclick(event){
-  console.log("rightclick"),event
-}
-
 </script>
 
 <template>
-  <div class="mapTitle" @click.middle = rightclick(this)>
+  <div class="mapTitle">
     <p>Farmerama Map</p>
     <button @click="saveMap('testMap2', 1)">save</button>
   </div>
@@ -404,7 +150,7 @@ function rightclick(event){
       <PointLight :position="{ x: 0, y: 0, z: 10 }" />
       <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
 
-      <EditorMap :editorID="editorID" v-bind:place="place"></EditorMap>
+      <EditorMap :editorID="editorID"></EditorMap>
 
     </Scene>
   </Renderer>

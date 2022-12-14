@@ -7,31 +7,24 @@ import { onMounted, defineProps, ref, watch, computed, toRef } from "vue";
 import {useMapUpdate} from "@/services/useMapUpdate"
 import {useMap} from "@/services/useMap"
 import {usePlaceState} from "@/services/editor/usePlaceState"
-import type {MapInterface} from "@/services/MapInterface"
 import { number } from "mathjs";
 import EditorTile from "../../components/editor/EditorTile.vue";
 import * as THREE from "three";
+import type { MapInterface } from "@/services/editor/MapInterface";
 
 
 const props = defineProps({
     editorID: {
     default: 0,
     type: number
-    }, 
-    place: {
-        type: Object,
-        default: {placeType:"none",placeMode: false
-
-        }
     }
 })
 
+let editorID:number = props.editorID
 
 
-
-const {sendMapUpdates, receiveMapUpdates, mapUpdates} = useMapUpdate(props.editorID);
-const {getMapEditor, saveMap} = useMap();
-const {readPlaceState} = usePlaceState();
+const {receiveMapUpdates, mapUpdates} = useMapUpdate(props.editorID);
+const {getMapEditor} = useMap();
 
 receiveMapUpdates(props.editorID);
 const loadedMap = getMapEditor(props.editorID);
@@ -56,59 +49,22 @@ watch(mapUpdates.value,() =>{
       mapReactive.value = mapUpdates.value.map;
 })
 
-
-function tileClick(tileObject) {
-    console.log("tileObject",tileObject)
-      
-      
-    let posX = tileObject.position.x - offsetx.value -1;
-    let posY = tileObject.position.y - offsety.value -1;
-    console.log(tileObject);
-    
-    if(tileObject.type != "Default"){
-        console.log("contextmenu")
-        tileObject.cmVisible = true;
-        tileObject.type = tileObject.type;
-    }
-
-      if (readPlaceState.value.type != "none"){
-        
-
-        let toSendObj: ExportTile = {
-        type: readPlaceState.value.type,
-        orientation: "NORTH",
-        xPos: posX,
-        yPos: posY,
-        control: "PLACE",
-      } 
-      
-      sendMapUpdates(toSendObj);
-      }
-      
-
-    }
-
-
-
 onMounted(() => {
-    loadedMap.then((result) => mapReactive.value = {...result})
+    loadedMap.then((result:Object) => mapReactive.value = {...result})
 });
-
-
-
 
 </script>
 
 <template>
     <template v-for="(subTile, column) in mapReactive.tiles">
         <template v-for="(tile, row) in subTile" :key="tile">
-            <EditorTile v-on:tileclick="tileClick($event)"
+            <EditorTile
             :width="0.99"
             :height="0.99"
             :position="new THREE.Vector3(row + offsetx + 1, column + offsety + 1, 0.01)"
             :rotation="new THREE.Vector3(0, 0, tile ? Orientation[tile.orientation] : 0)"
             :type="tile?tile.type:'Default'"
-            :editorID="props.editorID"
+            :editorID="editorID"
             :cmVisible="false"
             >
             </EditorTile>
