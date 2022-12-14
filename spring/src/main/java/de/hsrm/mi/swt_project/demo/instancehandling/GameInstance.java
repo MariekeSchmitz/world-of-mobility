@@ -80,6 +80,7 @@ public class GameInstance extends Instance {
     @Override
     public void update() {
         for(MoveableObject movableObject : moveableObjects.values()) {
+            movableObject.executeScript();
             movableObject.move();
         }
     }

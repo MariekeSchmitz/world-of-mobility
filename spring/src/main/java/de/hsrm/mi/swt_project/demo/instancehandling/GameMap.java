@@ -1,7 +1,14 @@
 package de.hsrm.mi.swt_project.demo.instancehandling;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
@@ -15,6 +22,8 @@ import de.hsrm.mi.swt_project.demo.util.ArrayHelpers;
  * @author Sascha Scheid
  */
 public class GameMap {
+
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     public static final int DEFAULT_SIZE = 8;
 
@@ -37,6 +46,14 @@ public class GameMap {
      * @author Tom Gouthier
      */
     public void addNpc(MoveableObject moveable){
+        try {
+            Resource resource = new ClassPathResource("DefaultNPCScript.py");
+            File scriptfile = resource.getFile();
+            String script = Files.readString(scriptfile.toPath());
+            moveable.loadScript(script);
+        } catch (Exception e) {
+            logger.error("LoadDefaultScript Error");
+        }
         this.npcs.add(moveable);
     }
     
