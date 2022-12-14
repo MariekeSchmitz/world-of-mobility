@@ -23,8 +23,6 @@
 
     
     
-    
-    
 
 import { number } from "mathjs";
 
@@ -93,7 +91,7 @@ import { number } from "mathjs";
     
     })
     //Get Map on Loading EditorView
-    const loadedMap = getMapEditor(1);
+    const loadedMap = getMapEditor(props.editorID);
 
     //Dynamic Parameters, updated with Stomp re-render
     const mapWidth = ref(8)
@@ -131,19 +129,19 @@ import { number } from "mathjs";
           const TileGeometry = new THREE.PlaneGeometry( 0.99, 0.99 );
           let material = new THREE.MeshBasicMaterial();
           
-          let texturePath = "../src/textures/editor/Default.jpg"
+          let texturePath = "../src/textures/editor/GRASS.jpg"
           if (tiles[column][row] != null){
-            texturePath = '../src/textures/editor/'+tiles[column][row].type+'.jpg'
+            texturePath = '../src/textures/editor/'+tiles[row][column].type+'.jpg'
           }
           
           material.map = loader.load(texturePath)
           const TileMesh = new THREE.Mesh( TileGeometry, material );
-          TileMesh.position.x = row + offsetx.value +1;
-          TileMesh.position.y = column + offsety.value +1;
+          TileMesh.position.x = column + offsetx.value +1;
+          TileMesh.position.y = row + offsety.value +1;
           TileMesh.position.z = 0.01;
           TileMesh.rotation.z = 0;
           if (tiles[column][row] != null){
-            let orientation: string = tiles[column][row].orientation
+            let orientation: string = tiles[row][column].orientation
             TileMesh.rotation.z = Orientation[orientation]
           }
           scene.value.add(TileMesh);
@@ -453,7 +451,7 @@ import { number } from "mathjs";
 <template>
   <div class="mapTitle">
     <p>Farmerama Map</p>
-    <button @click="saveMap('testMap2', 1)">save</button>
+    <button @click="saveMap('testMap2', props.editorID)">save</button>
   </div>
   <div id="exitButton">
     <button class="roundButton">

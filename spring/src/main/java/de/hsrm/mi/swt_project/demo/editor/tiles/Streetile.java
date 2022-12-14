@@ -3,9 +3,10 @@ package de.hsrm.mi.swt_project.demo.editor.tiles;
 import java.util.List;
 
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
-import de.hsrm.mi.swt_project.demo.editor.placeable_objects.Placeable;
 import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.DriveableByBike;
 import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.DriveableByCar;
+import de.hsrm.mi.swt_project.demo.editor.placeableObjects.Placeable;
+
 
 /**
  * @author Tom Gouthier
@@ -21,8 +22,5 @@ public class Streetile extends TrafficTile implements DriveableByBike, Driveable
         return super.getPlacedObjects();
     }
 
-    public Tiletype getType() {
-        return this.type;
-    }
 
 }

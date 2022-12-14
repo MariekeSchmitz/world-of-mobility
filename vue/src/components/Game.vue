@@ -188,7 +188,7 @@ onUnmounted(() => {
         :position="new Vector3(10, 0, 10)"
       />
       <!-- Map -->
-      <Map></Map>
+      <Map :instanceID="props.instanceID"></Map>
       <!-- "Car" -->
       <Box
         :position="{ x: 1, y: 1, z: 2 }"

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.hsrm.mi.swt_project.demo.instancehandling.GameInstance;
 import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
 import de.hsrm.mi.swt_project.demo.messaging.GameUserListDTO;
@@ -25,6 +26,7 @@ import de.hsrm.mi.swt_project.demo.messaging.GetGameConfigDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetMapOverviewDataDTO;
 import de.hsrm.mi.swt_project.demo.messaging.JoinGameDTO;
 import de.hsrm.mi.swt_project.demo.messaging.SendGameUpdateDTO;
+import de.hsrm.mi.swt_project.demo.messaging.SendMapDTO;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;
 import de.hsrm.mi.swt_project.demo.messaging.ValidationDTO;
 
@@ -151,5 +153,15 @@ public class GameRestController{
         // return new ValidationDTO(false);
     }
 
-
+    /**
+     * Post for getting the map from Editor Instance
+     * 
+     * @param getMapDTO
+     * @author Fabio Bertels
+     */
+    @GetMapping(value = "/getmap/{instanceID}")
+    public SendMapDTO getMapEditor(@PathVariable Long instanceID) {
+        GameInstance gameInstance = instanceHandler.getGameInstanceById(instanceID);
+        return SendMapDTO.from(gameInstance.getMap());
+    }
 }
