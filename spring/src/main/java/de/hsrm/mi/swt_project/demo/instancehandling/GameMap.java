@@ -27,7 +27,7 @@ public class GameMap {
 
     public GameMap() {
 
-        // fillMapWithDefaultTiles(tiles, DEFAULT_SIZE);
+        fillMapWithDefaultTiles(tiles, DEFAULT_SIZE);
 
     }
 
@@ -76,7 +76,7 @@ public class GameMap {
      * @param yPos
      */
     public void removeTile(int xPos, int yPos) {
-        this.tiles[yPos][xPos] = null; 
+        this.tiles[yPos][xPos] = new GrassTile(); 
     }
 
     public Boolean validateAndAddPlaceableObject(Tile tile, int xPos, int yPos, PlaceableObject placeableObject) {
@@ -164,7 +164,7 @@ public class GameMap {
     private void expandMap(){
         int size = this.tiles.length * 2;
         Tile[][] newTiles = new Tile[size][size];
-        // fillMapWithDefaultTiles(newTiles, size);
+        fillMapWithDefaultTiles(newTiles, size);
         ArrayHelpers.transfer2D(this.tiles, newTiles);
         this.tiles = newTiles;
     }

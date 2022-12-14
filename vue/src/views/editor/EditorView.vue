@@ -131,7 +131,7 @@ import { number } from "mathjs";
           const TileGeometry = new THREE.PlaneGeometry( 0.99, 0.99 );
           let material = new THREE.MeshBasicMaterial();
           
-          let texturePath = "../src/textures/editor/Default.jpg"
+          let texturePath = "../src/textures/editor/GRASS.jpg"
           if (tiles[column][row] != null){
             texturePath = '../src/textures/editor/'+tiles[column][row].type+'.jpg'
           }
