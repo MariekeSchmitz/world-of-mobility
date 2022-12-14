@@ -7,19 +7,27 @@ import { ref } from "vue";
 import { useEditor } from "@/services/useEditor";
 import { create } from "mathjs";
 import router from "@/router";
+import { useLogin } from "@/services/login/useLogin";
+import { useUserEditor } from "@/services/useUserEditor";
 
 const name = ref("");
 const { createWorld, worldCreateData } = useEditor();
+const { joinEditor } = useUserEditor();
+const { loginData } = useLogin();
 
 async function createWorldAndForwardToEditor(name: string) {
-  const id = await createWorld(name);
+  const id = await createWorld(name, "createNewWorld");
   console.log(id);
   if (worldCreateData.error === "") {
+    joinEditor(id, loginData.username);
     router.push(`/editor/${id}`);
   }
 }
 </script>
 <template>
+  <RouterLink to="/worldintro"
+    ><img src="../buttons/editor/arrow-left.png" alt=""
+  /></RouterLink>
   <h1>Neue Welt erstellen</h1>
   <div>
     <label for="name">Name</label>

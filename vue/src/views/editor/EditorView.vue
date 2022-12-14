@@ -457,7 +457,9 @@ import { number } from "mathjs";
   </div>
   <div id="exitButton">
     <button class="roundButton">
-      <img src="@/buttons/editor/close.png" />
+      <RouterLink to="/worldintro">
+        <img src="@/buttons/editor/close.png" />
+      </RouterLink>
     </button>
   </div>
 

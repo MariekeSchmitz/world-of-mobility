@@ -23,8 +23,8 @@ const newWorldState: INewWorldResponse = reactive({
  * posts a world name and gets a new world instance with a unique id
  * @param name
  */
-async function createWorld(name: string) {
-  const url = "/api/editor/createNewWorld";
+async function createWorld(name: string, path: string) {
+  const url = `/api/editor/${path}`;
 
   const newWorld: ISendNewWorld = {
     name: name,

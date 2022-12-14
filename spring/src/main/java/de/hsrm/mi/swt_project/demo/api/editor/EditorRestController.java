@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
 import de.hsrm.mi.swt_project.demo.instancehandling.UpdateloopService;
 import de.hsrm.mi.swt_project.demo.messaging.GetListInstanceDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetMapUpdateDTO;
+import de.hsrm.mi.swt_project.demo.messaging.JoinEditorDTO;
 import de.hsrm.mi.swt_project.demo.messaging.SendMapDTO;
 import de.hsrm.mi.swt_project.demo.messaging.ServerMessageDTO;
 
@@ -155,6 +157,34 @@ public class EditorRestController {
             return SendNewWorldDTO.from(-1, "Name not unique.");
         }
 
+    }
+
+    /**
+     * Post creates world instance of given map name
+     * 
+     * @param newWorldDTO
+     * @return id
+     * @author Astrid Klemmer, Finn Schindel
+     */
+    @PostMapping("/createWorldFromMap")
+    public SendNewWorldDTO postWorldFromMap(@RequestBody GetNewWorldDTO newWorldDTO) {
+        
+        String name = newWorldDTO.name();
+        long id = instanceHandler.createEditorInstance(name);
+        
+        return SendNewWorldDTO.from(id, "");
+
+    }
+
+    /**
+     * Post for adding a user to a editor instance
+     * @param joinEditorRequest Dto with name of new joining user
+     * @param id editor instance that user is joining
+     * @author Astrid Klemmer
+     */
+    @PostMapping(value="/{id}/join-editor", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void joinGame(@RequestBody JoinEditorDTO joinEditorRequest , @PathVariable long id) {
+        instanceHandler.getEditorInstanceById(id).addUser(joinEditorRequest.user());
     }
 
 }
