@@ -83,7 +83,7 @@ public class GameMap {
      * @param yPos
      */
     public void removeTile(int xPos, int yPos) {
-        this.tiles[yPos][xPos] = new GrassTile(); 
+        this.tiles[yPos][xPos] = Tiletype.GRASSTILE.createTile(); 
     }
 
     public Boolean validateAndAddPlaceableObject(Tile tile, int xPos, int yPos, PlaceableObject placeableObject) {

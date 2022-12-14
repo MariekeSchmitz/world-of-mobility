@@ -91,7 +91,7 @@ import { number } from "mathjs";
     
     })
     //Get Map on Loading EditorView
-    const loadedMap = getMapEditor(1);
+    const loadedMap = getMapEditor(props.editorID);
 
     //Dynamic Parameters, updated with Stomp re-render
     const mapWidth = ref(8)
