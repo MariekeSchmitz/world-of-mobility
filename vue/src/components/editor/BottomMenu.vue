@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { TileName } from "../../services/editor/TileNameEnum";
+import { NaturObjectEnum } from "@/services/NaturObjectEnum";
+
 
 function scrollingLeft() {
   document.getElementById("box-wrapper").scrollLeft -= 200;
@@ -23,16 +25,16 @@ function switchItems(element: string) {
   switch (element) {
     case "componentItems":
       document.getElementById("streetItems").style.display = "none";
-      document.getElementById("componentItems").style.display = "grid";
+      document.getElementById("componentItems").style.display = "block";
       document.getElementById("otherItems").style.display = "none";
       break;
     case "otherItems":
       document.getElementById("streetItems").style.display = "none";
       document.getElementById("componentItems").style.display = "none";
-      document.getElementById("otherItems").style.display = "grid";
+      document.getElementById("otherItems").style.display = "block";
       break;
     default:
-      document.getElementById("streetItems").style.display = "grid";
+      document.getElementById("streetItems").style.display = "block";
       document.getElementById("componentItems").style.display = "none";
       document.getElementById("otherItems").style.display = "none";
       break;
@@ -67,8 +69,12 @@ function switchContent(element: string) {
         <button @click="switchItems('streetItems')">
           <img src="@/textures/editor/STREET_STRAIGHT.jpg" />
         </button>
-        <button @click="switchItems('componentItems')">Baum</button>
-        <button @click="switchItems('otherItems')">Tankstelle</button>
+        <button @click="switchItems('componentItems')">
+          Natur/<br />Tiere
+        </button>
+        <button @click="switchItems('otherItems')">
+          Gegenstände/<br />Tankstelle
+        </button>
       </div>
 
       <!--
@@ -79,62 +85,75 @@ function switchContent(element: string) {
         </div>
         -->
 
-      <div id="streetItems">
+      <div id="itemList">
         <button id="scrollLeft" @mousedown="scrollingLeft">
           <img src="@/buttons/editor/arrow-left.png" />
         </button>
 
         <ul id="box-wrapper">
-          <li>
-            <button
-              class="tileButton"
-              @click="$emit('selectTile', TileName.STREET_STRAIGHT)"
-            >
-              <img src="@/textures/editor/STREET_STRAIGHT.jpg" />
-            </button>
-          </li>
-          <li>
-            <button
-              class="tileButton"
-              @click="$emit('selectTile', TileName.STREET_CURVE)"
-            >
-              <img src="@/textures/editor/STREET_CURVE.jpg" />
-            </button>
-          </li>
-          <li>
-            <button
-              class="tileButton"
-              @click="$emit('selectTile', TileName.STREET_T_CROSS)"
-            >
-              <img src="@/textures/editor/STREET_T_CROSS.jpg" />
-            </button>
-          </li>
-          <li>
-            <button
-              class="tileButton"
-              @click="$emit('selectTile', TileName.STREET_CROSS)"
-            >
-              <img src="@/textures/editor/STREET_CROSS.jpg" />
-            </button>
-          </li>
-          <li>
-            <button
-              class="tileButton"
-              @click="$emit('selectTile', TileName.SIDEWAY)"
-            >
-              <img src="@/textures/editor/SIDEWAY.jpg" />
-            </button>
-          </li>
+          <div id="streetItems">
+            <li>
+              <button
+                class="tileButton"
+                @click="$emit('selectTile', TileName.STREET_STRAIGHT)"
+              >
+                <img src="@/textures/editor/STREET_STRAIGHT.jpg" />
+              </button>
+            </li>
+            <li>
+              <button
+                class="tileButton"
+                @click="$emit('selectTile', TileName.STREET_CURVE)"
+              >
+                <img src="@/textures/editor/STREET_CURVE.jpg" />
+              </button>
+            </li>
+            <li>
+              <button
+                class="tileButton"
+                @click="$emit('selectTile', TileName.STREET_T_CROSS)"
+              >
+                <img src="@/textures/editor/STREET_T_CROSS.jpg" />
+              </button>
+            </li>
+            <li>
+              <button
+                class="tileButton"
+                @click="$emit('selectTile', TileName.STREET_CROSS)"
+              >
+                <img src="@/textures/editor/STREET_CROSS.jpg" />
+              </button>
+            </li>
+            <li>
+              <button
+                class="tileButton"
+                @click="$emit('selectTile', TileName.SIDEWAY)"
+              >
+                <img src="@/textures/editor/SIDEWAY.jpg" />
+              </button>
+            </li>
+          </div>
+
+          <div id="componentItems" v-for="naturObject in NaturObjectEnum">
+              <p>{{ naturObject }}</p>
+              <li>
+                <button @click="$emit('', null)">
+                <img
+                  :props="{ src: 'src/textures/editor/' + null + '.jpg' }"
+                />
+                </button>
+              </li>
+                
+            </div>
+          </div>
+
+          <div id="otherItems"></div>
         </ul>
 
         <button id="scrollRight" @click="scrollingRight">
           <img src="@/buttons/editor/arrow-right.png" />
         </button>
       </div>
-
-      <div id="componentItems"></div>
-
-      <div id="otherItems"></div>
     </div>
 
     <button id="hideElement" @click="toggle">
@@ -189,7 +208,7 @@ function switchContent(element: string) {
   grid-template-rows: 1fr 1fr 1fr;
 }
 
-#streetItems {
+#itemList {
   display: grid;
   grid-template-columns: 10% 80% 10%;
   margin: auto 0;
