@@ -8,7 +8,7 @@ import type { ITile } from "@/interfaces/ITile";
 import { reactive } from "vue";
 import { useMap } from "@/services/useMap";
 
-const squareSize = 10;
+const squareSize = 16;
 const { getMap } = useMap();
 
 const defaultMap: I3DMap = {
@@ -131,16 +131,16 @@ function computeVector3(orientation: string): THREE.Vector3 {
   let vector3 = new THREE.Vector3(0, 0, 0);
   switch (orientation) {
     case "NORTH":
-      vector3.set(-quarterTurn, 0 * quarterTurn, 0);
+      vector3.set(0, 2 * quarterTurn, 0);
       break;
     case "EAST":
-      vector3.set(-quarterTurn, 0, 1 * quarterTurn);
+      vector3.set(0, 3 * quarterTurn, 0);
       break;
     case "SOUTH":
-      vector3.set(-quarterTurn, 0, 2 * quarterTurn);
+      vector3.set(0, 0 * quarterTurn, 0);
       break;
     case "WEST":
-      vector3.set(-quarterTurn, 0, 3 * quarterTurn);
+      vector3.set(0, 1 * quarterTurn, 0);
       break;
     default:
       return vector3;
