@@ -95,7 +95,9 @@ public class InstanceHandler implements Updateable {
             String mapFile = Files.readString(filePath);
             instances.add(new EditorInstance(loadMap(mapFile), idCounter));
         } catch (IOException e) {
-            instances.add(new EditorInstance(new GameMap(), idCounter));
+            GameMap map = new GameMap();
+            map.setName(mapName);
+            instances.add(new EditorInstance(map, idCounter));
         }
 
         return idCounter++;
@@ -115,19 +117,19 @@ public class InstanceHandler implements Updateable {
         GameMap map = new GameMap();
 
         int xPos = 0;
-        for(Object rowsObject: tiles) {
+        for (Object rowsObject : tiles) {
             JSONArray rows = (JSONArray) rowsObject;
             int yPos = 0;
-            for(int i = 0; i < rows.length(); i++) {
+            for (int i = 0; i < rows.length(); i++) {
                 List<Object> ls = rows.toList();
-                if(ls.get(i) != null) {
+                if (ls.get(i) != null) {
                     JSONObject tileObject = rows.getJSONObject(i);
                     // Functionality of placedObjects unknown because of a lack of Placeable objects
                     // JSONArray placedObjects = tileObject.getJSONArray("placedObjects");
                     // List<Placeable> placedObjsToPlace = new ArrayList<>();
                     // placedObjects.forEach(obj -> {
-                    //     Placeable placeable = (Placeable) obj;
-                    //     placedObjsToPlace.add(placeable);
+                    // Placeable placeable = (Placeable) obj;
+                    // placedObjsToPlace.add(placeable);
                     // });
                     Tiletype tileType = tileObject.getEnum(Tiletype.class, "type");
                     Orientation orientation = tileObject.getEnum(Orientation.class, "orientation");
@@ -176,7 +178,7 @@ public class InstanceHandler implements Updateable {
     public void update() {
         for (Instance instance : instances) {
             instance.update();
-            if (instance instanceof GameInstance) {             // Only publish state of GameInstances periodically
+            if (instance instanceof GameInstance) { // Only publish state of GameInstances periodically
                 loopservice.publishInstanceState(instance);
             }
         }
@@ -289,6 +291,26 @@ public class InstanceHandler implements Updateable {
                 }
             }
         }
+        return true;
+    }
+
+    public Boolean checkWorldNameAvailable(String worldname) {
+        for (String name : getMaps()) {
+            if (name.equals(worldname)) {
+
+                return false;
+            }
+        }
+
+        for (Instance instance : getEditorInstances()) {
+            String mapName = instance.getMap().getName();
+            System.out.println(mapName);
+
+            if (mapName.equals(worldname)) {
+                return false;
+            }
+        }
+
         return true;
     }
 }

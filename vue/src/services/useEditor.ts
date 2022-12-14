@@ -41,17 +41,14 @@ async function createWorld(name: string) {
       });
 
       if (!response.ok) {
-        console.log(response.text);
+        newWorldState.error = response.statusText;
       } else {
         const jsondata: INewWorldResponse = await response.json();
         console.log(jsondata);
-        if (jsondata.error === "") {
-          newWorldState.error = "";
-          newWorldState.id = jsondata.id;
-          console.log("worldId = ", newWorldState.id);
-        } else {
-          newWorldState.error = jsondata.error;
-        }
+
+        newWorldState.error = jsondata.error;
+        newWorldState.id = jsondata.id;
+        console.log("worldId = ", newWorldState.id);
       }
     } catch (reason) {
       console.log(reason);

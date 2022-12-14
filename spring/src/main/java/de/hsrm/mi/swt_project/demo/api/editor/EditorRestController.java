@@ -147,9 +147,13 @@ public class EditorRestController {
     @PostMapping("/createNewWorld")
     public SendNewWorldDTO postNewWorld(@RequestBody GetNewWorldDTO newWorldDTO) {
         String name = newWorldDTO.name();
-        long id = instanceHandler.createEditorInstance(name);
 
-        return SendNewWorldDTO.from(id, "");
+        if (instanceHandler.checkWorldNameAvailable(name)) {
+            long id = instanceHandler.createEditorInstance(name);
+            return SendNewWorldDTO.from(id, "");
+        } else {
+            return SendNewWorldDTO.from(-1, "Name not unique.");
+        }
 
     }
 
