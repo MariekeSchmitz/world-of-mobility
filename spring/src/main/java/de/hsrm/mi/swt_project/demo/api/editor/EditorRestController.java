@@ -138,7 +138,7 @@ public class EditorRestController {
     }
 
     /**
-     * Post for a new world instance
+     * Post for a new world instance if name is unique
      * 
      * @param newWorldDTO
      * @return id, error

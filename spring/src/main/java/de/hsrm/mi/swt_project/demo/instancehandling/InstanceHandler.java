@@ -294,6 +294,12 @@ public class InstanceHandler implements Updateable {
         return true;
     }
 
+    /**
+     * Checks if suggested WorldName is available
+     * 
+     * @param worldname name to be checked
+     * @return if suggested World Name is unique or not
+     */
     public Boolean checkWorldNameAvailable(String worldname) {
         for (String name : getMaps()) {
             if (name.equals(worldname)) {
