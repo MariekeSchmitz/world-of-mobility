@@ -7,9 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.PlaceableControl;
@@ -51,9 +53,7 @@ public class EditorInstance extends Instance {
     public void editMap(int xPos, int yPos, TileControl control, Tiletype tiletype) {
         switch(control) {
             case PLACE:
-                // if(map.getTiles()[yPos][xPos] == null) {
-                    map.addTile(tiletype.createTile(), xPos, yPos);                  
-                // }
+                map.addTile(tiletype.createTile(), xPos, yPos);                  
                 break;
             case REMOVE:
                 if(map.getTiles()[yPos][xPos] != null) {
@@ -128,6 +128,7 @@ public class EditorInstance extends Instance {
      * Saves the map to a file.
      * 
      * @param name the name of the map
+     * @author Felix Ruf, Alexandra Müller, Sascha Scheid
      */
     public void saveMap(String name) {
         File saveDir = new File(mapSavePath);
@@ -136,11 +137,13 @@ public class EditorInstance extends Instance {
             this.map.setName(name);
         }
 
-        JSONObject mapToSave = new JSONObject();
-        mapToSave.put("Tiles", this.map.getTiles());
-        mapToSave.put("Npcs", this.map.getNpcs());
+        GsonBuilder builder = new GsonBuilder();
+        builder.setPrettyPrinting();
+        Gson gson = builder.create();
 
-        File savePath = new File(saveDir, map.getName() + ".json"); 
+        String mapToSave = gson.toJson(this.map);
+
+        File savePath = new File(saveDir, "%s.json".formatted(map.getName()));
     
         saveDir.mkdirs();
 
@@ -155,7 +158,7 @@ public class EditorInstance extends Instance {
         }
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(savePath))) {
-            mapToSave.write(bw);
+            bw.write(mapToSave);
         } catch (Exception e) {
             logger.info("Exception occured in saveMap in EditorInstance when writing to a file: {}", e);
         }

@@ -45,7 +45,7 @@ public enum Tiletype {
             tile.allowedDirections.add(Orientation.SOUTH);
             tile.allowedDirections.add(Orientation.WEST);
             tile.type = this;
-            return new Streetile();
+            return tile;
         }
     },
     RAIL_STRAIGHT() {

@@ -89,8 +89,6 @@ export function useMapUpdate(editorId: number): any {
 
             clearTimeout(id);
 
-            console.log(response.text());
-
         } catch(reason) {
             console.log(`ERROR: POST MapUpdate failed: ${reason}`);
         }

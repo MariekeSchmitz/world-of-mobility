@@ -124,14 +124,10 @@ public class GameRestController{
         logger.info("GET Request for '/api/game/get-all-maps'");
 
         LinkedList<GetMapOverviewDataDTO> maps = new LinkedList<>();
-        maps.add(new GetMapOverviewDataDTO("Map1"));
-        maps.add(new GetMapOverviewDataDTO("Map2"));
-        maps.add(new GetMapOverviewDataDTO("Map3"));
 
-        // TO DO : unterhalb reinkommentieren + händisches adden (obendrüber) in maps-Liste rausschmeissen (aktuell noch keine richtigen Maps zum testen vorhanden)
-        // for (String mapName : instanceHandler.getMaps()) {
-        //     maps.add(new GetMapOverviewDataDTO("mapName"));
-        // }
+        for (String mapName : instanceHandler.getMaps()) {
+            maps.add(new GetMapOverviewDataDTO(mapName));
+        }
 
         return new GetAllMapsOverviewDTO(maps);
 

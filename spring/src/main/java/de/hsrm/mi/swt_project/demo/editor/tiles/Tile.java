@@ -17,7 +17,7 @@ import de.hsrm.mi.swt_project.demo.editor.placeableObjects.Placeable;
 public abstract class Tile implements Turnable{
     
     protected Orientation orientation = Orientation.NORTH;
-    protected List <Placeable> placedObjects = new ArrayList<>();
+    protected List<Placeable> placedObjects = new ArrayList<>();
     protected Tiletype type;
     
     /** adds a placeable Object on itself
@@ -42,8 +42,6 @@ public abstract class Tile implements Turnable{
        
     }
 
-
-
     public Orientation getOrientation() {
         return orientation;
     }
@@ -59,8 +57,6 @@ public abstract class Tile implements Turnable{
     public List<Placeable> getPlacedObjects() {
         return placedObjects;
     }
-
-
 
     public void setPlacedObjects(List<Placeable> placedObjects) {
         this.placedObjects = placedObjects;

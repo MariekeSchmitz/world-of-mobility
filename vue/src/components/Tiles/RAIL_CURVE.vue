@@ -24,7 +24,7 @@ const props = withDefaults(
     :position="props.position"
   >
     <ToonMaterial>
-      <Texture src="src\textures\tiles\RAIL_CURVE.jpg"
+      <Texture src="/src/textures/tiles/RAIL_CURVE.jpg"
     /></ToonMaterial>
   </Plane>
 </template>
