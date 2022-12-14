@@ -1,12 +1,17 @@
 package de.hsrm.mi.swt_project.demo.instancehandling;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.hsrm.mi.swt_project.demo.editor.placeableObjects.PlaceableObject;
 import de.hsrm.mi.swt_project.demo.editor.placeableObjects.Tree;
 import de.hsrm.mi.swt_project.demo.editor.tiles.GrassTile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.CanHoldTree;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 import de.hsrm.mi.swt_project.demo.util.ArrayHelpers;
@@ -24,6 +29,8 @@ public class GameMap {
     private Tile[][] tiles = new Tile[DEFAULT_SIZE][DEFAULT_SIZE];
     private String name;
     private List<MoveableObject> npcs = new ArrayList<>();
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     public GameMap() {
 
@@ -177,8 +184,9 @@ public class GameMap {
     private void fillMapWithDefaultTiles(Tile[][] newTiles, int size) {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                newTiles[i][j] = new GrassTile();
+                newTiles[i][j] = Tiletype.GRASSTILE.createTile();
             }
         }
+        logger.info(""+newTiles[0][0]); 
     }
 }

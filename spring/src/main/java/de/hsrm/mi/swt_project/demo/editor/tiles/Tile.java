@@ -71,6 +71,10 @@ public abstract class Tile implements Turnable{
         return "Tile [orientation=" + orientation + ", placedObjects=" + placedObjects + ", type=" + type + "]";
     }
 
+    public Tiletype getType() {
+        return this.type;
+    }
+
 
     
 

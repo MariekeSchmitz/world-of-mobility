@@ -7,4 +7,5 @@ import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.Walkable;
 
 public class GrassTile extends Tile implements Walkable, DriveableByCar, DriveableByBike, CanHoldTree{
     
+
 }

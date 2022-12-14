@@ -23,8 +23,6 @@
 
     
     
-    
-    
 
 import { number } from "mathjs";
 

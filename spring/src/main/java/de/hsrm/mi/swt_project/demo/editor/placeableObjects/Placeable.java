@@ -8,10 +8,4 @@ import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
  */
 public interface Placeable {
     
-//     /**
-//      * places itself on given tile
-//     @author Tom Gouthier
-//     @param tile That that should be placed on map
-//  */
-//     public void place(Tile tile);
 }

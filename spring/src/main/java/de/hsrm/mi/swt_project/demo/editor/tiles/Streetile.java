@@ -22,8 +22,5 @@ public class Streetile extends TrafficTile implements DriveableByBike, Driveable
         return super.getPlacedObjects();
     }
 
-    public Tiletype getType() {
-        return this.type;
-    }
 
 }
