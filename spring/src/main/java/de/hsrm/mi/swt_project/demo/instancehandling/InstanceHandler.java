@@ -35,7 +35,7 @@ public class InstanceHandler implements Updateable {
     Logger logger = LoggerFactory.getLogger(InstanceHandler.class);
     private final String JSON = ".json";
 
-    protected List<Instance> instances;
+    protected List<Instance> instances = new ArrayList<Instance>();
 
     // TODO think of another solution because long can reach limit
     protected long idCounter = 1;
@@ -46,15 +46,7 @@ public class InstanceHandler implements Updateable {
      * Creates a new instance handler.
      */
     public InstanceHandler() {
-        instances = new ArrayList<Instance>();
 
-        MoveableObject p1 = MoveableType.PASSENGER.createMovable(0, 0, 1);
-        MoveableObject p2 = MoveableType.PASSENGER.createMovable(5, 5, 1);
-
-        GameMap map = new GameMap();
-
-        map.addNpc(p1);
-        map.addNpc(p2);
     }
 
     /**
@@ -145,10 +137,9 @@ public class InstanceHandler implements Updateable {
             MoveableType npcType = npcObject.getEnum(MoveableType.class, "type");
             float xPosition = npcObject.getFloat("xPos");
             float yPos = npcObject.getFloat("yPos");
-            float maxVelocity = npcObject.getFloat("maxVelocity");
             float capacity = npcObject.getFloat("capacity");
             String script = npcObject.getString("script");
-            MoveableObject newNpc = npcType.createMovable(xPosition, yPos, maxVelocity);
+            MoveableObject newNpc = npcType.createMovable(xPosition, yPos);
             newNpc.setCapacity(capacity);
             newNpc.loadScript(script);
             map.addNpc(newNpc);

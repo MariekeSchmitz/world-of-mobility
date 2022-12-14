@@ -1,6 +1,5 @@
 package de.hsrm.mi.swt_project.demo.api.game;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -111,7 +110,7 @@ public class GameRestController{
     @PostMapping(value="/{id}/join-game", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void joinGame(@RequestBody JoinGameDTO joinGameRequest , @PathVariable long id) {
         logger.info("POST Request for '/api/game/" + id + "/join-game' with body: " + joinGameRequest.user(), " and " + joinGameRequest.type());
-        instanceHandler.getGameInstanceById(id).addPlayer(joinGameRequest.user(), MoveableType.valueOf(joinGameRequest.type()).createMovable());
+        instanceHandler.getGameInstanceById(id).addPlayer(joinGameRequest.user(), MoveableType.valueOf(joinGameRequest.type()).createMovable(joinGameRequest.xPos(), joinGameRequest.yPos()));
     }
 
     /**
@@ -128,15 +127,13 @@ public class GameRestController{
         maps.add(new GetMapOverviewDataDTO("Map2"));
         maps.add(new GetMapOverviewDataDTO("Map3"));
 
-        // TO DO : unterhalb reinkommentieren + händisches adden (obendrüber) in maps-Liste rausschmeissen (aktuell noch keine richtigen Maps zum testen vorhanden)
+        // TODO : unterhalb reinkommentieren + händisches adden (obendrüber) in maps-Liste rausschmeissen (aktuell noch keine richtigen Maps zum testen vorhanden)
         // for (String mapName : instanceHandler.getMaps()) {
         //     maps.add(new GetMapOverviewDataDTO("mapName"));
         // }
 
         return new GetAllMapsOverviewDTO(maps);
-
     }
-
 
     /**
      * Validates sessionName
@@ -154,6 +151,5 @@ public class GameRestController{
         return new ValidationDTO(validationSuccess);
         // return new ValidationDTO(false);
     }
-
 
 }
