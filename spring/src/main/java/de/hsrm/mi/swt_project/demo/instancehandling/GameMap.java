@@ -38,6 +38,11 @@ public class GameMap {
 
     }
 
+    public GameMap(int customSize) {
+        tiles = new Tile[customSize][customSize];
+        fillMapWithDefaultTiles(tiles, customSize);
+    }
+
     /**
      * adds a moveable Object to the map. e.g. a scripted car
      * 
@@ -130,7 +135,7 @@ public class GameMap {
             throw new IllegalArgumentException("tile is not allowed to be null.");
         }
 
-        if (yPos < 0 || xPos < 0) {
+        if (yPos < 0 || xPos < 0 || yPos >= this.tiles.length || xPos >= this.tiles[yPos].length) {
             throw new IllegalArgumentException("tile must be placed from position (0, 0) to (%d, %d), was (%d, %d)"
                     .formatted(this.tiles.length - 1, this.tiles[0].length - 1, xPos, yPos));
         }
