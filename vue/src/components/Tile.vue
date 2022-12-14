@@ -21,6 +21,7 @@ const props = withDefaults(
   }>(),
   { width: 10, height: 10 }
 );
+console.log(props.position);
 </script>
 <template>
   <SIDEWAY
