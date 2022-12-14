@@ -3,13 +3,13 @@ import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
-    <nav>
+    <!--<nav>
         <RouterLink to="/login">Login</RouterLink>
         <RouterLink to="/worldintro">WorldSelect</RouterLink>
         <RouterLink to="/gameintro">GameSelect</RouterLink>
         <RouterLink to="/createWorld">CreateWorld</RouterLink>
         <RouterLink to="/worldSelection">WorldSelection</RouterLink>
-    </nav>
+    </nav>-->
   <RouterView></RouterView>
 </template>
 

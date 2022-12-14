@@ -1,28 +1,29 @@
 <!-- prettier-ignore -->
 <script setup lang="ts">
-    import { ref, onMounted, reactive, watch } from "vue";
+  import { ref, onMounted, reactive, watch } from "vue";
 
-    import * as THREE from 'three'
-    import {
-      AmbientLight,
-      Camera,
-      PointLight,
-      Renderer,
-      Scene,
-    } from "troisjs";
+  import * as THREE from 'three'
+  import {
+    AmbientLight,
+    Camera,
+    PointLight,
+    Renderer,
+    Scene,
+  } from "troisjs";
 
-    import BottomMenu from "../../components/editor/BottomMenu.vue";
-    import LeftMenu from "../../components/editor/LeftMenu.vue";
-    import EditorTile from "../../components/editor/EditorTile.vue";
-    import EditorMap from "../../components/editor/EditorMap.vue";
-    import MiniMap from "../../components/editor/MiniMap.vue";
-    import type { Tile } from "../../services/editor/TileInterface";
-    import { Orientation } from "../../services/editor/OrientationEnum";
-    import type { ExportTile } from "@/services/editor/ExportTileInterface";
-    import {useMapUpdate} from "@/services/useMapUpdate"
-    import {useMap} from "@/services/useMap"
-    import { computed } from "vue";
-import { number } from "mathjs";
+  import BottomMenu from "../../components/editor/BottomMenu.vue";
+  import LeftMenu from "../../components/editor/LeftMenu.vue";
+  import EditorTile from "../../components/editor/EditorTile.vue";
+  import EditorMap from "../../components/editor/EditorMap.vue";
+  import MiniMap from "../../components/editor/MiniMap.vue";
+  import type { Tile } from "../../services/editor/TileInterface";
+  import { Orientation } from "../../services/editor/OrientationEnum";
+  import type { ExportTile } from "@/services/editor/ExportTileInterface";
+  import { usePlaceState } from "@/services/editor/usePlaceState";
+  import {useMapUpdate} from "@/services/useMapUpdate"
+  import {useMap} from "@/services/useMap"
+  import { computed } from "vue";
+  import { number } from "mathjs";
 
     const props = defineProps({
       editorID: {
@@ -70,7 +71,7 @@ import { number } from "mathjs";
     //Imported REST-Controller and Stompbroker connection
     const {sendMapUpdates, receiveMapUpdates, mapUpdates} = useMapUpdate(props.editorID);
     const {getMapEditor, saveMap} = useMap();
-
+    const {setPlaceState, readPlaceState} = usePlaceState();
     //Dynamic Parameters, updated with Stomp re-render
     const mapWidth = ref(8)
     const mapHeight = ref(8)
@@ -86,7 +87,7 @@ import { number } from "mathjs";
      */
     //PASS REACTIVE COMPONENT TO BOTTOM MENU AND EDITORMAP, SO PLACEMENT LOGIC CAN BE IMPLEMENTED IN EDITORMAP
     function setTileInfo(tileType:string){
-      place = {placeType: tileType, placeMode: true}
+      setPlaceState(tileType);
     }
 
     /**
@@ -98,15 +99,15 @@ import { number } from "mathjs";
     function tileClick(tileObject:THREE.Mesh) {
       
       removeContextMenu();
-      console.log(tileObject)
-      console.log(tileObject.position.x)
+      /*console.log(tileObject)
+      console.log(tileObject.position.x)*/
       
-      if (place.placeMode){
+      if (readPlaceState.value.type == "bruhnone"){
         let posX = tileObject.position.x - offsetx.value -1;
         let posY = tileObject.position.y - offsety.value -1;
 
         let toSendObj: ExportTile = {
-        type: place.placeType,
+        type: readPlaceState.value.type,
         orientation: "NORTH",
         xPos: posX,
         yPos: posY,
@@ -260,8 +261,8 @@ import { number } from "mathjs";
      */
 
     function onMouseOver(event: MouseEvent){
-      mouse.x = ( event.clientX / rendererC.value.renderer.domElement.clientWidth ) * 2 - 1;
-      mouse.y = - ( event.clientY / rendererC.value.renderer.domElement.clientHeight ) * 2 + 1;
+      mouse.x = ( event.clientX / rendererC.value.renderer.domElement.clientWidth ) * 2 - 1  ;
+      mouse.y = - ( event.clientY / rendererC.value.renderer.domElement.clientHeight ) * 2 + 1 ;
       checkHover();
     }
 
@@ -311,8 +312,8 @@ import { number } from "mathjs";
     function onDocumentLeftMouseDown( event: MouseEvent ) {
     
         //mouse position updated
-        mouse.x = ( event.clientX / rendererC.value.renderer.domElement.clientWidth ) * 2 - 1;
-        mouse.y = - ( event.clientY / rendererC.value.renderer.domElement.clientHeight ) * 2 + 1;
+        mouse.x = ( event.clientX / rendererC.value.renderer.domElement.clientWidth ) * 2 - 1  ;
+        mouse.y = - ( event.clientY / rendererC.value.renderer.domElement.clientHeight ) * 2 + 1  ;
 
         raycaster.setFromCamera( mouse, camera.value.camera );
         var intersects = raycaster.intersectObjects( scene.value.scene.children ); 
@@ -340,10 +341,11 @@ import { number } from "mathjs";
      * 
      * Author: Timothy Doukhin
      */
+    
     function onDocumentRightMouseDown( event ) {
       event.preventDefault();
-        mouse.x = ( event.clientX / rendererC.value.renderer.domElement.clientWidth ) * 2 - 1;
-        mouse.y = - ( event.clientY / rendererC.value.renderer.domElement.clientHeight ) * 2 + 1;
+        mouse.x = ( event.clientX / rendererC.value.renderer.domElement.clientWidth ) * 2 - 1  ;
+        mouse.y = - ( event.clientY / rendererC.value.renderer.domElement.clientHeight ) * 2 + 1   ;
 
         raycaster.setFromCamera( mouse, camera.value.camera );
         var intersects = raycaster.intersectObjects( scene.value.scene.children );
@@ -355,13 +357,16 @@ import { number } from "mathjs";
             }
           
         }
-    }
-   
+      }
+    
+function rightclick(event){
+  console.log("rightclick"),event
+}
 
 </script>
 
 <template>
-  <div class="mapTitle">
+  <div class="mapTitle" @click.middle = rightclick(this)>
     <p>Farmerama Map</p>
     <button @click="saveMap('testMap2', 1)">save</button>
   </div>
@@ -399,7 +404,7 @@ import { number } from "mathjs";
       <PointLight :position="{ x: 0, y: 0, z: 10 }" />
       <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
 
-      <EditorMap :editorID="editorID"></EditorMap>
+      <EditorMap :editorID="editorID" v-bind:place="place"></EditorMap>
 
     </Scene>
   </Renderer>
