@@ -69,12 +69,12 @@ const router = createRouter({
   ],
 });
 
-/* router.beforeEach(async (to, from) => {
+router.beforeEach(async (to, from) => {
   // wenn z.B. ein 'berechtigt' nicht wahr ist,
   // alle Nicht-/login-Navigationen auf /login leiten
   if (!loginData.loggedIn && to.name !== "Login") {
     return { name: "Login" };
   }
-}); */
+});
 
 export default router;
