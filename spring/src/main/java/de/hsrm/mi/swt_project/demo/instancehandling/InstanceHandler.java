@@ -69,14 +69,14 @@ public class InstanceHandler implements Updateable {
             instances.add(new GameInstance(new GameMap(), sessionName, idCounter));
             return idCounter++;
         } else {
+            String fileName = "%s/%s.json".formatted(mapSavePath, mapName);
             try {
-                String fileName = "%s/%S.json".formatted(mapSavePath, mapName);
                 Path filePath = Path.of(fileName);
                 String mapFile = Files.readString(filePath);
                 instances.add(new GameInstance(loadMap(mapFile), sessionName, idCounter));
                 return idCounter++;
             } catch (IOException e) {
-                logger.info("IOException occured on createGameInstance in InstanceHandler: {}", e);
+                logger.info("IOException occured on createGameInstance in InstanceHandler: {}\nFilename: {}", e, fileName);
                 return -1;
             }
         }
