@@ -125,7 +125,7 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
 
     @Override
     public void loadScript(String script) {
-        this.script = script;        
+        this.script = script;    
     }
 
     @Override

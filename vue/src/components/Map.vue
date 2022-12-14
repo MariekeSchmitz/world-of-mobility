@@ -113,7 +113,15 @@ const defaultMap: I3DMap = {
   ],
 };
 
-const mapReactive: I3DMap = reactive(defaultMap);
+const props = withDefaults(
+  defineProps<{
+    instanceID: number;
+  }>(),
+  { instanceID: 1 }
+);
+
+//const mapReactive: I3DMap = getMap("", props.instanceID);
+const mapReactive: I3DMap = defaultMap;
 /**
  * translates the orientation as string into an acutal vector.
  * @param orientation the orientation of a tile
@@ -139,44 +147,21 @@ function computeVector3(orientation: string): THREE.Vector3 {
   }
   return vector3;
 }
-/**
- * prepares the map for our causes.
- * generates and sets an x and y position for every Tile.
- * @param map the fetched map
- */
-function modifyMap(map: I3DMap) {
-  let tempZ = 0;
-  map.tiles.forEach((subArray: ITile[]) => {
-    let tempX = 0;
-    subArray.forEach((tile: ITile) => {
-      if (tile) {
-        tile.positionX = tempX;
-        tile.positionZ = tempZ;
-      }
-      tempX += squareSize;
-    });
-    tempZ += squareSize;
-  });
-}
-
-async function prepareMap() {
-  const fetchedMap: I3DMap = await getMap("", 1);
-  modifyMap(fetchedMap);
-  mapReactive.tiles = fetchedMap.tiles;
-  console.log(mapReactive);
-}
-
-modifyMap(defaultMap);
-prepareMap();
 </script>
 <template>
   <!-- Loop to build the map -->
-  <div v-for="(subTile, index) in mapReactive.tiles" :key="`row-${index}`">
-    <div v-for="(tile, index) in subTile" :key="`column-${index}`">
+  <div v-for="(subTile, row) in mapReactive.tiles" :key="`${row}`">
+    <div v-for="(tile, column) in subTile" :key="`${column}`">
       <Tile
         :width="squareSize"
         :height="squareSize"
-        :position="new THREE.Vector3(tile.positionX, 0, tile.positionZ)"
+        :position="
+          new THREE.Vector3(
+            column * squareSize,
+            tile.positionY,
+            row * squareSize
+          )
+        "
         :rotation="computeVector3(tile.orientation)"
         :type="tile.type"
         v-if="tile != null"

@@ -48,8 +48,6 @@ export function useMap(): any {
             const jsonData: IMapDTO = await response.json();
 
             clearTimeout(id);
-    
-            //console.log(response.text());
 
             return jsonData;
         } catch(reason) {
@@ -61,7 +59,7 @@ export function useMap(): any {
     async function getMapEditor(editorId: number) {
         try {
             const controller = new AbortController();
-            const URL = `/api/editor/getmap/editor?editorid=${editorId}`;
+            const URL = `/api/editor/getmap/editor?editorId=${editorId}`;
     
             const id = setTimeout(() => controller.abort(), 8000);
     
@@ -70,8 +68,6 @@ export function useMap(): any {
             const jsonData: IMapDTO = await response.json();
 
             clearTimeout(id);
-    
-            console.log(response.text());
 
             return jsonData;
         } catch(reason) {
@@ -100,7 +96,6 @@ export function useMap(): any {
             
             clearTimeout(id);
     
-            console.log(response.text());
             if(!response.ok) {
                 return false;
             }
