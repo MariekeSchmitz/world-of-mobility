@@ -116,10 +116,10 @@ public class InstanceHandler implements Updateable {
         JSONArray npcs = file.getJSONArray("npcs");
         GameMap map = new GameMap();
 
-        int xPos = 0;
+        int yPos = 0;
         for (Object rowsObject : tiles) {
             JSONArray rows = (JSONArray) rowsObject;
-            int yPos = 0;
+            int xPos = 0;
             for (int i = 0; i < rows.length(); i++) {
                 List<Object> ls = rows.toList();
                 if (ls.get(i) != null) {
@@ -137,20 +137,20 @@ public class InstanceHandler implements Updateable {
                     newTile.setOrientation(orientation);
                     map.setTile(newTile, xPos, yPos);
                 }
-                yPos++;
+                xPos++;
             }
-            xPos++;
+            yPos++;
         }
 
         npcs.forEach(npc -> {
             JSONObject npcObject = (JSONObject) npc;
             MoveableType npcType = npcObject.getEnum(MoveableType.class, "type");
             float xPosition = npcObject.getFloat("xPos");
-            float yPos = npcObject.getFloat("yPos");
+            float yPosition = npcObject.getFloat("yPos");
             float maxVelocity = npcObject.getFloat("maxVelocity");
             float capacity = npcObject.getFloat("capacity");
             String script = npcObject.getString("script");
-            MoveableObject newNpc = npcType.createMovable(xPosition, yPos, maxVelocity);
+            MoveableObject newNpc = npcType.createMovable(xPosition, yPosition, maxVelocity);
             newNpc.setCapacity(capacity);
             newNpc.loadScript(script);
             map.addNpc(newNpc);

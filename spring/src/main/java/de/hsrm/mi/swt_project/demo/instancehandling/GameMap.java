@@ -30,7 +30,7 @@ public class GameMap {
     private String name;
     private List<MoveableObject> npcs = new ArrayList<>();
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private transient Logger logger = LoggerFactory.getLogger(getClass());
 
     public GameMap() {
 
