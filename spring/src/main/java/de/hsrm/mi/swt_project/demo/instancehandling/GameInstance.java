@@ -22,8 +22,8 @@ public class GameInstance extends Instance {
      * @param name the name of the instance
      * @param id the id of the instance
      */
-    public GameInstance(GameMap map, String name, long id) {
-        super(map, id);
+    public GameInstance(GameMap map, String name, long id, String mapSavePath) {
+        super(map, id, mapSavePath);
         this.moveableObjects = new HashMap<String, MoveableObject>();
         for (MoveableObject npc : map.getNpcs()) {
             moveableObjects.put(("NPC" + map.getNpcs().indexOf(npc)), npc.copy());

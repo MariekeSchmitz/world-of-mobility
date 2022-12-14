@@ -19,9 +19,10 @@ public abstract class Instance implements Updateable {
      * 
      * @param map the map to use for the instance
      */
-    public Instance(GameMap map, long id) {
+    public Instance(GameMap map, long id, String mapSavePath) {
         this.map = map;
         this.id = id;
+        this.mapSavePath = mapSavePath;
     }
 
     /**

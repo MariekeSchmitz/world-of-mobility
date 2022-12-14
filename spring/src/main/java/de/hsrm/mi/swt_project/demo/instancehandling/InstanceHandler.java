@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -39,8 +39,8 @@ public class InstanceHandler implements Updateable {
 
     // TODO think of another solution because long can reach limit
     protected long idCounter = 1;
-    // @Value("${map.savedir:maps}")
-    protected String mapSavePath = "maps";
+    @Value("${map.savedir:maps}")
+    protected String mapSavePath;
 
     /**
      * Creates a new instance handler.
@@ -66,14 +66,14 @@ public class InstanceHandler implements Updateable {
      */
     public long createGameInstance(String mapName, String sessionName) {
         if (mapName == null) {
-            instances.add(new GameInstance(new GameMap(), sessionName, idCounter));
+            instances.add(new GameInstance(new GameMap(), sessionName, idCounter, mapSavePath));
             return idCounter++;
         } else {
             String fileName = "%s/%s.json".formatted(mapSavePath, mapName);
             try {
                 Path filePath = Path.of(fileName);
                 String mapFile = Files.readString(filePath);
-                instances.add(new GameInstance(loadMap(mapFile), sessionName, idCounter));
+                instances.add(new GameInstance(loadMap(mapFile), sessionName, idCounter, mapSavePath));
                 return idCounter++;
             } catch (IOException e) {
                 logger.info("IOException occured on createGameInstance in InstanceHandler: {}\nFilename: {}", e, fileName);
@@ -93,9 +93,9 @@ public class InstanceHandler implements Updateable {
             String fileName = "%s/%S.json".formatted(mapSavePath, mapName);
             Path filePath = Path.of(fileName);
             String mapFile = Files.readString(filePath);
-            instances.add(new EditorInstance(loadMap(mapFile), idCounter));
+            instances.add(new EditorInstance(loadMap(mapFile), idCounter, mapSavePath));
         } catch (IOException e) {
-            instances.add(new EditorInstance(new GameMap(), idCounter));
+            instances.add(new EditorInstance(new GameMap(), idCounter, mapSavePath));
         }
 
         return idCounter++;
