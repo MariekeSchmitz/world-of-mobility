@@ -174,7 +174,7 @@ onUnmounted(() => {
     <Camera :position="cameraPosition" ref="camera" />
     <Scene background="#97FFFF">
       <!-- Light -->
-      <PointLight :position="{ x: 0, y: 0, z: 10 }" />\
+      <PointLight :position="{ x: 0, y: 0, z: 10 }" />
       <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
       <!-- Map -->
       <Map></Map>
