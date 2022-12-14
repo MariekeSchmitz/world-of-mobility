@@ -55,6 +55,9 @@ public class InstanceHandler implements Updateable {
 
         map.addNpc(p1);
         map.addNpc(p2);
+
+        GameInstance instance = new GameInstance(map, "Test", 10);
+        instances.add(instance);
     }
 
     /**
@@ -178,6 +181,14 @@ public class InstanceHandler implements Updateable {
             instance.update();
             if (instance instanceof GameInstance) {             // Only publish state of GameInstances periodically
                 loopservice.publishInstanceState(instance);
+            }
+        }
+    }
+
+    public void triggerScript() {
+        for (Instance instance : instances) {
+            if (instance instanceof GameInstance gameinstance) {     
+                gameinstance.updateScript();
             }
         }
     }

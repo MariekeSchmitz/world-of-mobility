@@ -31,4 +31,9 @@ public class UpdateloopTask {
         instanceHandler.update();
     }
 
+    @Scheduled(fixedRateString = "${skriptloop.tickrate:2000}")
+    public void triggerScript(){
+        instanceHandler.triggerScript();
+    }
+
 }
