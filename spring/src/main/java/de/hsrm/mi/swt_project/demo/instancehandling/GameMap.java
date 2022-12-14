@@ -130,7 +130,7 @@ public class GameMap {
             throw new IllegalArgumentException("tile is not allowed to be null.");
         }
 
-        if (yPos < 0 || xPos < 0 || yPos >= this.tiles.length || xPos >= this.tiles[yPos].length) {
+        if (yPos < 0 || xPos < 0) {
             throw new IllegalArgumentException("tile must be placed from position (0, 0) to (%d, %d), was (%d, %d)"
                     .formatted(this.tiles.length - 1, this.tiles[0].length - 1, xPos, yPos));
         }
