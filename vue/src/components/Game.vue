@@ -10,6 +10,7 @@ import {
   Renderer,
   ToonMaterial,
   Texture,
+  GltfModel,
 } from "troisjs";
 import Map from "@/components/Map.vue";
 import Car from "@/components/objects/Car.vue";
@@ -29,6 +30,7 @@ const { sendCommand, receiveGameUpdate, mapUpdates, getUserMoveable } =
 const { loginData } = useLogin();
 
 const renderer = ref();
+const model = ref(null);
 const camera = ref();
 const car = ref();
 
@@ -107,6 +109,9 @@ function switchPerspective() {
   }
   switchedMode = true;
 }
+function onReady(model: any) {
+  console.log("model Ready", model);
+}
 /**
  * An Eventhandler for the Keyboardevents.
  * @param e a KeyboardEvent, pressed button etc.
@@ -176,6 +181,12 @@ onUnmounted(() => {
       <!-- Light -->
       <PointLight :position="{ x: 0, y: 0, z: 10 }" />
       <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
+      <GltfModel
+        ref="model"
+        src="/src/assets/models/Qube.glb"
+        @load="onReady"
+        :position="new Vector3(10, 0, 10)"
+      />
       <!-- Map -->
       <Map></Map>
       <!-- "Car" -->
@@ -184,7 +195,7 @@ onUnmounted(() => {
         :scale="{ x: 1, y: 1, z: 2 }"
         ref="car"
         ><ToonMaterial>
-          <Texture src="src\textures\Obsidian.jpg" /> </ToonMaterial
+          <Texture src="/src/textures/Obsidian.jpg" /> </ToonMaterial
       ></Box>
 
       <div v-for="(moveable, index) in allMoveables" :key="index">
