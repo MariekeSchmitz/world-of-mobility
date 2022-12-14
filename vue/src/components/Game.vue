@@ -140,7 +140,6 @@ function handleKeyEvent(e: KeyboardEvent) {
  * adds the keylisteners to switch views and cam-modes.
  */
 onMounted(() => {
-
   const orbitControls = renderer.value.three.cameraCtrl;
   orbitControls.target = lookAt;
   orbitControls.enablePan = false;
@@ -180,27 +179,21 @@ onUnmounted(() => {
     <Scene background="#97FFFF">
       <!-- Light -->
       <PointLight :position="{ x: 0, y: 0, z: 10 }" />
-      <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
-      <GltfModel
-        ref="model"
-        src="/src/assets/models/Qube.glb"
-        @load="onReady"
-        :position="new Vector3(10, 0, 10)"
-      />
+      <AmbientLight :intensity="0.75" color="#ffffff"></AmbientLight>
       <!-- Map -->
       <Map></Map>
       <!-- "Car" -->
-      <Box
+      <!-- <Box
         :position="{ x: 1, y: 1, z: 2 }"
         :scale="{ x: 1, y: 1, z: 2 }"
         ref="car"
         ><ToonMaterial>
           <Texture src="/src/textures/Obsidian.jpg" /> </ToonMaterial
-      ></Box>
+      ></Box> -->
 
       <div v-for="(moveable, index) in allMoveables" :key="index">
         <Car
-          :pos="new Vector3(moveable.xPos, 0.5, moveable.yPos)"
+          :pos="new Vector3(moveable.xPos, 1.2, moveable.yPos)"
           :rotation="orientations[moveable.orientation]"
         ></Car>
       </div>
