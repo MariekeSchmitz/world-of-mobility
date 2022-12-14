@@ -47,17 +47,6 @@ public class InstanceHandler implements Updateable {
      */
     public InstanceHandler() {
         instances = new ArrayList<Instance>();
-
-        MoveableObject p1 = MoveableType.PASSENGER.createMovable(0, 0, 1);
-        MoveableObject p2 = MoveableType.PASSENGER.createMovable(5, 5, 1);
-
-        GameMap map = new GameMap();
-
-        map.addNpc(p1);
-        map.addNpc(p2);
-
-        GameInstance instance = new GameInstance(map, "Test", 10);
-        instances.add(instance);
     }
 
     /**
