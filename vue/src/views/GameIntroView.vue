@@ -12,7 +12,6 @@ const { instanceState, getInstanceList } = useInstanceList();
 
 onMounted(() => {
   getInstanceList("game");
-  console.log(instanceState);
 });
 </script>
 

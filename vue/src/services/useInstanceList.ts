@@ -50,17 +50,9 @@ export function useInstanceList(): any {
       }
       const jsonData = await response.json();
 
-      console.log(jsonData);
-
       instanceState.instancelist = jsonData;
 
       clearTimeout(id);
-
-      // jsonData.forEach(element => {
-
-      // });
-
-      console.log(jsonData);
 
       return true;
     } catch (reason) {

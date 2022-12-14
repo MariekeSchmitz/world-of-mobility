@@ -14,7 +14,6 @@ const props = defineProps<{
 }>();
 
 function join() {
-  console.log("join game");
   if (props.instanceID != undefined) {
     joinGame(props.instanceID, loginData.username, "MOTORIZED_OBJECT");
     router.push("/game/" + props.instanceID);

@@ -17,7 +17,6 @@ const { loginData } = useLogin();
 
 async function createWorldAndForwardToEditor(name: string) {
   const id = await createWorld(name, "createNewWorld");
-  console.log(id);
   if (worldCreateData.error === "") {
     joinEditor(id, loginData.username);
     router.push(`/editor/${id}`);

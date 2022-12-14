@@ -155,7 +155,6 @@ function computeVector3(orientation: string): THREE.Vector3 {
 
   loadedMap.value= await getGameMap(props.instanceID);
 })
-console.log("fabio:" , loadedMap);
 </script>
 <template>
   <!-- Loop to build the map -->

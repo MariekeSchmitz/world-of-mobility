@@ -54,9 +54,6 @@ export function useMapUpdate(editorId: number): any {
         stompClient.onConnect = frame => {
             console.log("Connected Stompbroker to MapUpdate");
             stompClient.subscribe(DEST, (message) => {
-                
-                
-                console.log(`Stompbroker received message: \n${message.body}`);
                 const mapUpdate: IMapDTO = JSON.parse(message.body);
                 mapState.value.map = mapUpdate;
             });

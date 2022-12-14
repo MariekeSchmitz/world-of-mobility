@@ -32,8 +32,6 @@ async function checkValidation(name: string) {
 
 async function startGame(name: string) {
   await createGameInstance(props.mapName, name);
-  console.log(instanceId.id);
-  console.log(loginData.username);
 
   if (instanceId.id != -1) {
     joinGame(instanceId.id, loginData.username, "MOTORIZED_OBJECT");
