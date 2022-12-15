@@ -200,4 +200,15 @@ public class EditorRestController {
         instanceHandler.getEditorInstanceById(id).addUser(joinEditorRequest.user());
     }
 
+    /**
+     * Post for removing a user from a editor instance
+     * @param leaveEditorRequest Dto with name of leaving user
+     * @param id editor instance that user is joining
+     * @author Astrid Klemmer
+     */
+    @PostMapping(value="/{id}/leave-editor", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void leaveGame(@RequestBody JoinEditorDTO leaveEditorRequest , @PathVariable long id) {
+        instanceHandler.getEditorInstanceById(id).removeUser(leaveEditorRequest.user());
+    }
+
 }

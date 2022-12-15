@@ -1,6 +1,6 @@
 <!-- prettier-ignore -->
 <script setup lang="ts">
-    import { ref, onMounted, reactive, watch } from "vue";
+    import { ref, onMounted, reactive, watch, onUnmounted } from "vue";
 
     import * as THREE from 'three'
     import {
@@ -20,11 +20,13 @@
     import {useMapUpdate} from "@/services/useMapUpdate"
     import {useMap} from "@/services/useMap"
     import { computed } from "vue";
-
+    import { useUserEditor } from "@/services/useUserEditor";
+    import { useLogin } from "@/services/login/useLogin";
     
     
 
 import { number } from "mathjs";
+import { RouterLink } from "vue-router";
 
     const props = defineProps({
       editorID: {
@@ -41,11 +43,18 @@ import { number } from "mathjs";
     const camera = ref();
     const scene = ref();
 
+    const { leaveEditor } = useUserEditor();
+    const { loginData } = useLogin();
+
     onMounted(() => {
       rendererC.value.canvas.addEventListener("click", onDocumentLeftMouseDown)
       rendererC.value.canvas.addEventListener("mousemove", onMouseOver)
       rendererC.value.canvas.addEventListener("contextmenu", onDocumentRightMouseDown)
       loadedMap.then((result) => setLoadedMap(result.tiles))
+    });
+
+    onUnmounted(() => {
+      leaveEditor(props.editorID, loginData.username);
     });
 
     //Texture Loader
