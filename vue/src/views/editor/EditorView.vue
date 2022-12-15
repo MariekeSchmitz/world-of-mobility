@@ -114,11 +114,13 @@
 <template>
   <div class="mapTitle">
     <p>Farmerama Map</p>
-    <button @click="saveMap('testMap2', 1)">save</button>
+    <button @click="saveMap('testMap2', props.editorID)">save</button>
   </div>
   <div id="exitButton">
     <button class="roundButton">
-      <img src="@/buttons/editor/close.png" />
+      <RouterLink to="/worldintro">
+        <img src="@/buttons/editor/close.png" />
+      </RouterLink>
     </button>
   </div>
 

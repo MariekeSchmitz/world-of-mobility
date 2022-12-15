@@ -36,8 +36,6 @@ async function sendConfig(mapName: string, gameName: string) {
 
         valSuccess.validationSuccess = jsonData.validationSuccess
 
-        console.log(valSuccess.validationSuccess)
-
         clearTimeout(id);
 
         if(!response.ok) {

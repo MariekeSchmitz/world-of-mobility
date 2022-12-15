@@ -1,15 +1,9 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
+
 </script>
 
 <template>
-    <!--<nav>
-        <RouterLink to="/login">Login</RouterLink>
-        <RouterLink to="/worldintro">WorldSelect</RouterLink>
-        <RouterLink to="/gameintro">GameSelect</RouterLink>
-        <RouterLink to="/createWorld">CreateWorld</RouterLink>
-        <RouterLink to="/worldSelection">WorldSelection</RouterLink>
-    </nav>-->
   <RouterView></RouterView>
 </template>
 
