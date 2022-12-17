@@ -1,20 +1,29 @@
 <template>
     <div id="spanwpoint-container">
-        <div v-for="tileRow in testObj.tiles" id="tile-row">
-            <div v-for="tile in tileRow" id="tile-column">
-                <SimplifiedTile :tile-type="tile.type"/>
+        <div v-for="(tileRow, y) in testObj.tiles" id="tile-row">
+            <div v-for="(tile, x) in tileRow" id="tile-column">
+                <SimplifiedTile :tile-type="tile.type" :orientation="tile.orientation" :x-index="x" :y-index="y" />
             </div>
         </div>
     </div>
 </template>
 
-
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
 import SimplifiedTile from '../simplifiedTile/SimplifiedTile.vue';
-import { useMiniMapScaling } from '@/components/spawnpoint/useMiniMapScaling';
+import { useSpawnPoint } from '@/components/spawnpoint/useSpawnPoint';
+import { useMap } from '@/services/useMap';
 
-const { miniMapScalingState, addWindowWidthListener, removeWindowWIdthListener } = useMiniMapScaling();
+const { miniMapScalingState, addWindowWidthListener, removeWindowWIdthListener } = useSpawnPoint();
+const { getGameMap } = useMap();
+
+const props = withDefaults(
+    defineProps<{
+        instanceId: number
+    }>(),{
+        instanceId: 1
+    }
+);
 
 const testObj = ref({
     tiles: [
@@ -26,7 +35,7 @@ const testObj = ref({
                     "SOUTH",
                     "WEST"
                 ],
-                orientation: "NORTH",
+                orientation: "SOUTH",
                 placedObjects: [],
                 type: "STREET_CROSS"
             },
@@ -218,7 +227,8 @@ const testObj = ref({
     ]
 });
 
-onMounted(() => {
+onMounted(async () => {
+    // testObj.value = await getGameMap(props.instanceId);
     const numberOfRows = testObj.value.tiles[0].length;
     addWindowWidthListener(numberOfRows);
 });

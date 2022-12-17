@@ -1,30 +1,84 @@
 <template>
-    <div id="simplified-tile" :class="tileType"></div>
+    <div>
+        <div id="simplifiedContainer" :class="{selected: isSelected}" @click="setSpawnPoint(props.xIndex, props.yIndex)"></div>
+        <div id="simplified-tile" :class="[tileType, orientation, {selected: isSelected}]" ></div>
+    </div>
 </template>
 
 
 <script setup lang="ts">
-import { defineProps, onMounted, ref } from 'vue';
-import { useMiniMapScaling } from '../spawnpoint/useMiniMapScaling';
+import { defineProps, onMounted, ref, computed } from 'vue';
+import { useSpawnPoint } from '../spawnpoint/useSpawnPoint';
 
-const props = defineProps<{
-    tileType: string
-}>();
+const { miniMapScalingState, setSpawnPoint, spawnState } = useSpawnPoint();
 
-const { miniMapScalingState } = useMiniMapScaling();
+const props = withDefaults(
+        defineProps<{
+        tileType: string,
+        orientation: string,
+        xIndex: number,
+        yIndex: number
+    }>(),{
+        tileType: "GRASSTILE",
+        orientation: "NORTH",
+        xIndex: 0,
+        yIndex: 0
+    }
+);
+
+const isSelected = computed(() => {
+    return (spawnState.tileNumber == ((props.xIndex + 1) + (props.yIndex * miniMapScalingState.numberOfRows)));
+})
 
 </script>
 
 
 <style scoped>
+#simplifiedContainer {
+    position: absolute;
+    box-sizing: border-box;
+    height: v-bind('miniMapScalingState.boxSizing');
+    width: v-bind('miniMapScalingState.boxSizing');
+    z-index: 1;
+}
 
 #simplified-tile {
     /* background-image: url('@/textures/tiles/GRASSTILE.jpg'); */
+    box-sizing: border-box;
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
     height: v-bind('miniMapScalingState.boxSizing');
     width: v-bind('miniMapScalingState.boxSizing');
+    z-index: -2;
+}
+
+@keyframes innerGlow {
+    from {box-shadow: inset 0 0 5px rgba(29, 29, 29, 0.388);}
+    to {box-shadow: inset 0 0 50px rgba(196, 246, 18, 0.54);}
+}
+
+.selected {
+    animation-name: innerGlow;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-duration: 1s;
+}
+
+.NORTH {
+    transform: rotate(0);
+}
+
+.EAST {
+    transform: rotate(90deg);
+}
+
+.SOUTH {
+    transform: rotate(180deg);
+}
+
+.WEST {
+    transform: rotate(270deg);
 }
 
 .GRASSTILE {
