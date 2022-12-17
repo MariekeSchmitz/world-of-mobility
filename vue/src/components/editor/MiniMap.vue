@@ -1,11 +1,16 @@
 <script setup lang="ts">
 function toggle() {
-  if (document.getElementById("minimap").style.display == "none") {
-    document.getElementById("minimap").style.display = "grid";
-    document.getElementById("showMap").style.display = "none";
-  } else {
-    document.getElementById("minimap").style.display = "none";
-    document.getElementById("showMap").style.display = "block";
+  const minimap = document.getElementById("minimap");
+  const showMap = document.getElementById("showMap");
+
+  if (minimap != null && showMap != null) {
+    if (minimap.style.display == "none") {
+      minimap.style.display = "grid";
+      showMap.style.display = "none";
+    } else {
+      minimap.style.display = "none";
+      showMap.style.display = "block";
+    }
   }
 }
 </script>

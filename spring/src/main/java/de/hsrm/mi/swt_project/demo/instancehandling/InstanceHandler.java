@@ -114,9 +114,10 @@ public class InstanceHandler implements Updateable {
         JSONObject file = new JSONObject(mapFile);
         JSONArray tiles = file.getJSONArray("tiles");
         JSONArray npcs = file.getJSONArray("npcs");
-        GameMap map = new GameMap();
+        GameMap map = new GameMap(tiles.length());
 
         int yPos = 0;
+        
         for (Object rowsObject : tiles) {
             JSONArray rows = (JSONArray) rowsObject;
             int xPos = 0;
