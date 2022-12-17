@@ -120,10 +120,6 @@ const props = withDefaults(
   { instanceID: 1 }
 );
 
-const mapReactive = reactive({
-  value:defaultMap
-})
-
 let loadedMap = ref(defaultMap);
 
 //const mapReactive: I3DMap = defaultMap;
@@ -144,21 +140,21 @@ function computeVector3(orientation: string): THREE.Vector3 {
     case "SOUTH":
       vector3.set(-quarterTurn, 0, 2 * quarterTurn);
       break;
-      case "WEST":
-        vector3.set(-quarterTurn, 0, 3 * quarterTurn);
-        break;
-        default:
-          return vector3;
-        }
-        return vector3;
-}onMounted(async()=>{
-
-  loadedMap.value= await getGameMap(props.instanceID);
-})
+    case "WEST":
+      vector3.set(-quarterTurn, 0, 3 * quarterTurn);
+      break;
+    default:
+      return vector3;
+  }
+  return vector3;
+}
+onMounted(async () => {
+  loadedMap.value = await getGameMap(props.instanceID);
+});
 </script>
 <template>
   <!-- Loop to build the map -->
-  <div v-for="(subTile, row) in loadedMap.tiles" >
+  <div v-for="(subTile, row) in loadedMap.tiles" :key="`${row}`">
     <div v-for="(tile, column) in subTile" :key="`${tile}`">
       <Tile
         :width="squareSize"
