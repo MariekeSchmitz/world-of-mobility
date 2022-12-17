@@ -3,6 +3,9 @@ package de.hsrm.mi.swt_project.demo.messaging;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.instancehandling.GameMap;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;

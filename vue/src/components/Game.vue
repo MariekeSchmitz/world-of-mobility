@@ -53,7 +53,6 @@ const cameraPosition = computed(() => {
   const vecTempTarget = lookAt.clone();
   const vecTempOffset = cameraOffset.clone();
   if (freeCam.value && camera.value && !switchedMode) {
-    console.log(camera.value.camera.position);
     return camera.value.camera.position.add(movementVector);
   } else {
     if (userMovable.value != undefined) {
@@ -68,7 +67,6 @@ const cameraPosition = computed(() => {
 });
 
 const allMoveables = computed(() => {
-  //console.log(mapUpdates.moveableUpdates);
   if (userMovable.value != undefined) {
     const newLookAt = new Vector3(
       userMovable.value.xPos,
@@ -93,7 +91,6 @@ function switchCamMode() {
  */
 function switchPerspective() {
   thirdPerson.value = !thirdPerson.value;
-  console.log(camera.value.camera.position);
   if (thirdPerson.value) {
     cameraOffset.copy(thirdPersonOffset);
     // orbitControls.minAzimuthAngle =
@@ -118,7 +115,6 @@ function onReady(model: any) {
  */
 function handleKeyEvent(e: KeyboardEvent) {
   if (e.code === "KeyW") {
-    console.log("Event W");
     sendCommand(props.instanceID, loginData.username, "SPEED_UP");
   } else if (e.code === "KeyS") {
     sendCommand(props.instanceID, loginData.username, "SPEED_DOWN");
@@ -188,7 +184,7 @@ onUnmounted(() => {
         :position="new Vector3(10, 0, 10)"
       />
       <!-- Map -->
-      <Map></Map>
+      <Map :instanceID="props.instanceID"></Map>
       <!-- "Car" -->
       <Box
         :position="{ x: 1, y: 1, z: 2 }"

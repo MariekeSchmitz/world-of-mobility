@@ -5,11 +5,11 @@ import * as THREE from "three";
 import Tile from "@/components/Tile.vue";
 import type { I3DMap } from "@/services/I3DMap";
 import type { ITile } from "@/interfaces/ITile";
-import { reactive } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { useMap } from "@/services/useMap";
 
 const squareSize = 10;
-const { getMap } = useMap();
+const { getGameMap } = useMap();
 
 const defaultMap: I3DMap = {
   //@ts-ignore
@@ -120,8 +120,9 @@ const props = withDefaults(
   { instanceID: 1 }
 );
 
-//const mapReactive: I3DMap = getMap("", props.instanceID);
-const mapReactive: I3DMap = defaultMap;
+let loadedMap = ref(defaultMap);
+
+//const mapReactive: I3DMap = defaultMap;
 /**
  * translates the orientation as string into an acutal vector.
  * @param orientation the orientation of a tile
@@ -147,11 +148,14 @@ function computeVector3(orientation: string): THREE.Vector3 {
   }
   return vector3;
 }
+onMounted(async () => {
+  loadedMap.value = await getGameMap(props.instanceID);
+});
 </script>
 <template>
   <!-- Loop to build the map -->
-  <div v-for="(subTile, row) in mapReactive.tiles" :key="`${row}`">
-    <div v-for="(tile, column) in subTile" :key="`${column}`">
+  <div v-for="(subTile, row) in loadedMap.tiles" :key="`${row}`">
+    <div v-for="(tile, column) in subTile" :key="`${tile}`">
       <Tile
         :width="squareSize"
         :height="squareSize"

@@ -1,13 +1,13 @@
 import Game from "@/components/Game.vue";
 import WorldIntroView from "@/views/WorldIntroView.vue";
 import GameIntroView from "@/views/GameIntroView.vue";
-import JoinGame from "@/components/joinGame/JoinGame.vue";
+import JoinGame from "@/views/JoinGame.vue";
 import CreateWorld from "@/views/CreateWorld.vue";
 
 import StartPage from "@/views/StartPage.vue";
 import { createRouter, createWebHistory } from "vue-router";
-import WorldSelection from "@/components/worldSelection/WorldSelection.vue";
-import GameConfig from "@/components/gameConfig/GameConfig.vue";
+import WorldSelection from "@/views/WorldSelection.vue";
+import GameConfig from "@/views/GameConfig.vue";
 import EditorView from "@/views/editor/EditorView.vue";
 import { useLogin } from "@/services/login/useLogin";
 
