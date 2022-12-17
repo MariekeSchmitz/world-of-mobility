@@ -39,15 +39,14 @@ class EditorTest {
 
     @Test
     void postMapUpdateGood() throws Exception {
-
         JSONObject body = new JSONObject();
-        body.put("mapName", "Test");
-        body.put("mapId", "0");
         body.put("control", "PLACE");
         body.put("type", "STREET_STRAIGHT");
+        body.put("posX", 0);
+        body.put("posY", 0);
 
         mockMvc.perform(
-            post("/api/editor/mapupdate")
+            post("/api/editor/mapupdate/"+editorId)
             .contentType(MediaType.APPLICATION_JSON)
             .content(body.toString())
             ).andExpect(status().isOk());
@@ -109,6 +108,9 @@ class EditorTest {
         .andExpect(jsonPath("$.instancelist", hasSize(amountEditorItems)));
 
     }
+
+   
+    
 
 
 }

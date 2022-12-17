@@ -2,55 +2,76 @@
 import { TileName } from "../../services/editor/TileNameEnum";
 import { NaturObjectEnum } from "@/services/NaturObjectEnum";
 
-
 function scrollingLeft() {
-  document.getElementById("box-wrapper").scrollLeft -= 200;
+  const boxwrapper = document.getElementById("box-wrapper");
+  if (boxwrapper != null) {
+    boxwrapper.scrollLeft -= 200;
+  }
 }
 
 function scrollingRight() {
-  document.getElementById("box-wrapper").scrollLeft += 200;
+  const boxwrapper = document.getElementById("box-wrapper");
+  if (boxwrapper != null) {
+    boxwrapper.scrollLeft += 200;
+  }
 }
 
 function toggle() {
-  if (document.getElementById("bottomMenu").style.display == "none") {
-    document.getElementById("bottomMenu").style.display = "grid";
-    document.getElementById("showElement").style.display = "none";
-  } else {
-    document.getElementById("bottomMenu").style.display = "none";
-    document.getElementById("showElement").style.display = "block";
+  const bottomMenu = document.getElementById("bottomMenu");
+  const showElement = document.getElementById("showElement");
+
+  if (bottomMenu != null && showElement != null) {
+    if (bottomMenu.style.display == "none") {
+      bottomMenu.style.display = "grid";
+      showElement.style.display = "none";
+    } else {
+      bottomMenu.style.display = "none";
+      showElement.style.display = "block";
+    }
   }
 }
 
 function switchItems(element: string) {
-  switch (element) {
-    case "componentItems":
-      document.getElementById("streetItems").style.display = "none";
-      document.getElementById("componentItems").style.display = "block";
-      document.getElementById("otherItems").style.display = "none";
-      break;
-    case "otherItems":
-      document.getElementById("streetItems").style.display = "none";
-      document.getElementById("componentItems").style.display = "none";
-      document.getElementById("otherItems").style.display = "block";
-      break;
-    default:
-      document.getElementById("streetItems").style.display = "block";
-      document.getElementById("componentItems").style.display = "none";
-      document.getElementById("otherItems").style.display = "none";
-      break;
+  const streetItems = document.getElementById("streetItems");
+  const componentItems = document.getElementById("componentItems");
+  const otherItems = document.getElementById("otherItems");
+
+  if (streetItems != null && componentItems != null && otherItems != null) {
+    switch (element) {
+      case "componentItems":
+        streetItems.style.display = "none";
+        componentItems.style.display = "block";
+        otherItems.style.display = "none";
+        break;
+      case "otherItems":
+        streetItems.style.display = "none";
+        componentItems.style.display = "none";
+        otherItems.style.display = "block";
+        break;
+      default:
+        streetItems.style.display = "block";
+        componentItems.style.display = "none";
+        otherItems.style.display = "none";
+        break;
+    }
   }
 }
 
 function switchContent(element: string) {
-  switch (element) {
-    case "npcMenu":
-      document.getElementById("landscapeMenu").style.display = "none";
-      document.getElementById("npcMenu").style.display = "grid";
-      break;
-    default:
-      document.getElementById("landscapeMenu").style.display = "grid";
-      document.getElementById("npcMenu").style.display = "none";
-      break;
+  const landscapeMenu = document.getElementById("landscapeMenu");
+  const npcMenu = document.getElementById("npcMenu");
+
+  if (landscapeMenu != null && npcMenu != null) {
+    switch (element) {
+      case "npcMenu":
+        landscapeMenu.style.display = "none";
+        npcMenu.style.display = "grid";
+        break;
+      default:
+        landscapeMenu.style.display = "grid";
+        npcMenu.style.display = "none";
+        break;
+    }
   }
 }
 </script>
@@ -135,16 +156,12 @@ function switchContent(element: string) {
           </div>
 
           <div id="componentItems" v-for="naturObject in NaturObjectEnum">
-              <p>{{ naturObject }}</p>
-              <li>
-                <button @click="$emit('', null)">
-                <img
-                  :props="{ src: 'src/textures/editor/' + null + '.jpg' }"
-                />
-                </button>
-              </li>
-                
-            </div>
+            <p>{{ naturObject }}</p>
+            <li>
+              <button @click="$emit('', null)">
+                <img :props="{ src: 'src/textures/editor/' + null + '.jpg' }" />
+              </button>
+            </li>
           </div>
 
           <div id="otherItems"></div>
@@ -217,6 +234,10 @@ function switchContent(element: string) {
 .tileButton > img {
   width: 80px;
   height: 80px;
+}
+
+#componentItems {
+  display: none;
 }
 
 ul {
