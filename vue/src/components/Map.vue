@@ -163,7 +163,7 @@ onMounted(async () => {
           new THREE.Vector3(
             column * squareSize,
             tile.positionY,
-            row * squareSize
+            -row * squareSize
           )
         "
         :rotation="computeVector3(tile.orientation)"
