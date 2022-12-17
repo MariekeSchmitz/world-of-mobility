@@ -11,6 +11,7 @@ const props = defineProps<{
   }>()
   
 const emit = defineEmits(['turnRight'])
+
 </script>
 <template>
     <!--Background-->
@@ -23,7 +24,7 @@ const emit = defineEmits(['turnRight'])
   </Plane>
 
     <!--Right Turn-->
-  <Plane @click="$emit('turnRight',this)" 
+  <Plane @click="$emit('turnRight',this)"
     :width="props.width / 4"
     :height="props.height * (2/3)"
     :position="props.position.clone().add(new Vector3(0.25,0,0.01))"

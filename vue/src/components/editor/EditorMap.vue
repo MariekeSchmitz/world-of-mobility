@@ -1,12 +1,10 @@
 
 <script setup lang="ts">
 //@ts-ignore
-import { Orientation } from "@/services/editor/OrientationEnum";
-
+import { orientations } from "@/services/Orientations";
 import { onMounted, defineProps, ref, watch, computed, toRef } from "vue";
 import {useMapUpdate} from "@/services/useMapUpdate"
 import {useMap} from "@/services/useMap"
-import {usePlaceState} from "@/services/editor/usePlaceState"
 import { number } from "mathjs";
 import EditorTile from "../../components/editor/EditorTile.vue";
 import * as THREE from "three";
@@ -50,7 +48,7 @@ watch(mapUpdates.value,() =>{
 })
 
 onMounted(() => {
-    loadedMap.then((result:Object) => mapReactive.value = {...result})
+    loadedMap.then((result:MapInterface) => mapReactive.value = result)
 });
 
 </script>
@@ -62,8 +60,8 @@ onMounted(() => {
             :width="0.99"
             :height="0.99"
             :position="new THREE.Vector3(row + offsetx + 1, column + offsety + 1, 0.01)"
-            :rotation="new THREE.Vector3(0, 0, tile ? Orientation[tile.orientation] : 0)"
-            :type="tile?tile.type:'Default'"
+            :rotation="new THREE.Vector3(0, 0, - orientations[tile.orientation])"
+            :type="tile.type"
             :editorID="editorID"
             :cmVisible="false"
             >

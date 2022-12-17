@@ -19,12 +19,12 @@
   import {useMap} from "@/services/useMap"
   import { number } from "mathjs";
 
-    const props = defineProps({
-      editorID: {
-       default: 0,
-       type: number
-      } 
-    })
+ 
+  const props = defineProps<{
+    editorID: number;
+  }>();
+
+
 
 
     /**
@@ -33,10 +33,6 @@
     const rendererC = ref();
     const camera = ref();
     const scene = ref();
-
-    onMounted(() => {
-      rendererC.value.canvas.addEventListener("mousemove", onMouseOver)
-    });
 
     //Texture Loader
     const loadManager = new THREE.LoadingManager();
@@ -59,55 +55,6 @@
     function setTileInfo(tileType:string){
       setPlaceState(tileType);
     }
-
-    
-    /**
-     * update mouse position to properly highlight on hover 
-     * @param event to determine mouse Position
-     * 
-     * Author: Timothy Doukhin
-     */
-
-    function onMouseOver(event: MouseEvent){
-      mouse.x = ( event.clientX / rendererC.value.renderer.domElement.clientWidth ) * 2 - 1  ;
-      mouse.y = - ( event.clientY / rendererC.value.renderer.domElement.clientHeight ) * 2 + 1 ;
-      checkHover();
-    }
-
-    
-    let intersected:THREE.Mesh
-    /**
-     * checks if mouse intersects any objects via raycaster.
-     * If yes, Mesh gets highlighted and previous mesh saved, in order to restore old texture/color after leaving hover range.
-     * 
-     * Author: Timothy Doukhin
-     */
-    function checkHover(){
-      raycaster.setFromCamera( mouse, camera.value.camera );
-      var intersects = raycaster.intersectObjects( scene.value.scene.children ); 
-      if (intersects.length > 0){
-        //check if intersected object is the same as the previous
-        if (intersects[0].object != intersected){
-          if ( intersected ) {
-				    intersected.material.color.setHex( intersected.currentHex );
-          }
-			  // store reference to closest object as current intersection object
-			  intersected = intersects[ 0 ].object;
-			  // store color of closest object (for later restoration)
-			  intersected.currentHex = intersected.material.color.getHex();
-			  // set a new color for closest object
-			  intersected.material.color.setHex( 0xdddddd );
-        }
-      }
-      else{
-        if ( intersected ) 
-			intersected.material.color.setHex( intersected.currentHex );
-		// remove previous intersection object reference
-		//by setting current intersection object to "nothing"
-		intersected = null;
-      }
-    }
-
 
 </script>
 

@@ -4,13 +4,12 @@
 import * as THREE from "three";
 import ContextMenu from "../../components/editor/ContextMenu.vue";
 import { Plane, Texture, BasicMaterial } from "troisjs";
-import { withDefaults, defineProps, defineEmits,ref,computed, watch} from "vue";
+import { withDefaults, defineProps, defineEmits,ref,computed, watch, onMounted} from "vue";
 import { usePlaceState } from "@/services/editor/usePlaceState";
 import { useContextMenu } from "@/services/editor/useContextMenu";
 import { useMapUpdate } from "@/services/useMapUpdate";
 import type { ExportTile } from "@/services/editor/ExportTileInterface";
 
-const emit = defineEmits(['tileclick'])
 const props = withDefaults(
   defineProps<{
     width: number;
@@ -25,12 +24,14 @@ const props = withDefaults(
 
   
 );
+
+
 const cmVisible = ref(false)
 let texturePath = "../src/textures/editor/"+props.type+".jpg"
 
 const {readPlaceState} = usePlaceState();
 const {readCMState, setCMState} = useContextMenu();
-const {sendMapUpdates, receiveMapUpdates, mapUpdates} = useMapUpdate(props.editorID);
+const {sendMapUpdates} = useMapUpdate(props.editorID);
 
 const mapWidth = ref(8)
 const mapHeight = ref(8)
@@ -41,6 +42,11 @@ watch(readCMState.value, () => {
   cmVisible.value = false;
 })
 
+function tileHover(event: any){
+  //console.log("tileHover: ",event);
+  event.component.mesh.material.color.set(event.over ? "#dddddd":"#ffffff");
+}
+
 /**
      * If a Tile has been Selected, handles the Placement Logic 
      * @param tileObject Object to be operated on
@@ -48,7 +54,7 @@ watch(readCMState.value, () => {
      * Author: Timothy Doukhin & Astrid Klemmer
      */
 
-function placeTile(callingObject:THREE.Mesh) {
+function placeTile(callingObject:any) {
       
       let posX = callingObject.position.x - offsetx.value -1;
       let posY = callingObject.position.y - offsety.value -1;
@@ -56,16 +62,12 @@ function placeTile(callingObject:THREE.Mesh) {
       setCMState();
       
       
-      if(callingObject.type != "Default"){
+      if(callingObject.type != "GRASSTILE"){
         //make contextMenu visible after removing all ContextMenus from all tiles
         setTimeout(() => {  cmVisible.value = true; }, 10);
-         
-          
       }
-  
-        if (readPlaceState.value.type != "none" && callingObject.type == "Default"){
+      else{
           
-  
           let toSendObj: ExportTile = {
           type: readPlaceState.value.type,
           orientation: "NORTH",
@@ -139,9 +141,9 @@ function turnRight(callingObject:THREE.Mesh){
 
 </script>
 <template>
-  
    
-  <Plane @click="placeTile(this)"
+   
+  <Plane @click="placeTile(this)" @pointer-over="tileHover"
     :width="props.width"
     :height="props.height"
     :rotation="props.rotation"
