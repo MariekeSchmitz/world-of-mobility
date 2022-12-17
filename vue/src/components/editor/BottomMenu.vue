@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { TileName } from "../../services/editor/TileNameEnum";
+import { TileName } from "@/services/editor/TileNameEnum";
 import { NaturObjectEnum } from "@/services/NaturObjectEnum";
+import { ObjectEnum } from "@/services/ObjectEnum";
 
 function scrollingLeft() {
   const boxwrapper = document.getElementById("box-wrapper");
@@ -115,7 +116,7 @@ function switchContent(element: string) {
           <div id="streetItems">
             <li>
               <button
-                class="tileButton"
+                class="itemButton"
                 @click="$emit('selectTile', TileName.STREET_STRAIGHT)"
               >
                 <img src="@/textures/editor/STREET_STRAIGHT.jpg" />
@@ -123,7 +124,7 @@ function switchContent(element: string) {
             </li>
             <li>
               <button
-                class="tileButton"
+                class="itemButton"
                 @click="$emit('selectTile', TileName.STREET_CURVE)"
               >
                 <img src="@/textures/editor/STREET_CURVE.jpg" />
@@ -131,7 +132,7 @@ function switchContent(element: string) {
             </li>
             <li>
               <button
-                class="tileButton"
+                class="itemButton"
                 @click="$emit('selectTile', TileName.STREET_T_CROSS)"
               >
                 <img src="@/textures/editor/STREET_T_CROSS.jpg" />
@@ -139,7 +140,7 @@ function switchContent(element: string) {
             </li>
             <li>
               <button
-                class="tileButton"
+                class="itemButton"
                 @click="$emit('selectTile', TileName.STREET_CROSS)"
               >
                 <img src="@/textures/editor/STREET_CROSS.jpg" />
@@ -147,24 +148,73 @@ function switchContent(element: string) {
             </li>
             <li>
               <button
-                class="tileButton"
+                class="itemButton"
                 @click="$emit('selectTile', TileName.SIDEWAY)"
               >
                 <img src="@/textures/editor/SIDEWAY.jpg" />
               </button>
             </li>
           </div>
-
-          <div id="componentItems" v-for="naturObject in NaturObjectEnum">
-            <p>{{ naturObject }}</p>
+          <!--
+          <div
+            id="componentItems"
+            v-for="(valueEnum, naturEnum) in NaturObjectEnum"
+            :key="`${valueEnum}`"
+          >
             <li>
-              <button @click="$emit('', null)">
-                <img :props="{ src: 'src/textures/editor/' + null + '.jpg' }" />
+              <img
+                :src="'@/assets/objekte/natur/' + valueEnum + '.png'"
+                :alt="'@/assets/objekte/natur/' + valueEnum + '.png'"
+              />
+            </li>
+          </div>
+-->
+
+          <div id="componentItems">
+            <li>
+              <button
+                class="itemButton"
+                @click="$emit('selectObject', NaturObjectEnum.TREE)"
+              >
+                <img src="@/assets/objekte/natur/baum.png" />
+              </button>
+            </li>
+            <li>
+              <button
+                class="itemButton"
+                @click="$emit('selectObject', NaturObjectEnum.BUSH)"
+              >
+                <img src="@/assets/objekte/natur/busch.png" />
+              </button>
+            </li>
+            <li>
+              <button
+                class="itemButton"
+                @click="$emit('selectObject', NaturObjectEnum.HORSE)"
+              >
+                <img src="@/assets/objekte/natur/pferd.png" />
+              </button>
+            </li>
+            <li>
+              <button
+                class="itemButton"
+                @click="$emit('selectObject', NaturObjectEnum.COW)"
+              >
+                <img src="@/assets/objekte/natur/kuh.png" />
               </button>
             </li>
           </div>
 
-          <div id="otherItems"></div>
+          <div id="otherItems">
+            <li>
+              <button
+                class="itemButton"
+                @click="$emit('selectObject', ObjectEnum)"
+              >
+                <img src="@/assets/objekte/gegenstaende/tankstelle.png" />
+              </button>
+            </li>
+          </div>
         </ul>
 
         <button id="scrollRight" @click="scrollingRight">
@@ -231,12 +281,13 @@ function switchContent(element: string) {
   margin: auto 0;
 }
 
-.tileButton > img {
+.itemButton > img {
   width: 80px;
   height: 80px;
 }
 
-#componentItems {
+#componentItems,
+#otherItems {
   display: none;
 }
 
