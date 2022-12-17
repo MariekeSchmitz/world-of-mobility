@@ -1,4 +1,9 @@
 <script setup lang="ts">
+/**
+ * View to select either creating a new World or to continue building an existing world
+ * @author Finn Schindel, Astrid Klemmer
+ */
+
 import GameListItem from "@/components/selectview/GameListItem.vue";
 import { useInstanceList } from "@/services/useInstanceList";
 import { computed, ref } from "@vue/reactivity";
@@ -7,10 +12,14 @@ import { useMapOverview } from "@/services/useMapOverview";
 import { useEditor } from "@/services/useEditor";
 import { RouterLink } from "vue-router";
 import router from "@/router";
+import { useUserEditor } from "@/services/useUserEditor";
+import { useLogin } from "@/services/login/useLogin";
 
 const { instanceState, getInstanceList } = useInstanceList();
 const { mapsOverview, getMaps } = useMapOverview();
 const { createWorld } = useEditor();
+const { joinEditor } = useUserEditor();
+const { loginData } = useLogin();
 
 onMounted(() => {
   getInstanceList("editor");
@@ -29,7 +38,8 @@ function switchScene(mode: string) {
 }
 
 async function getWorldAndForwardToEditor(name: string) {
-  const id = await createWorld(name);
+  const id = await createWorld(name, "createWorldFromMap");
+  joinEditor(id, loginData.username);
   router.push(`/editor/${id}`);
 }
 </script>
@@ -72,20 +82,21 @@ async function getWorldAndForwardToEditor(name: string) {
         <label for="allmode">Alle</label>
       </fieldset>
 
-      <div v-for="ele in instanceState.instancelist.instancelist">
-        <RouterLink :to="{ path: '/editor/' + ele.id }">
-          <GameListItem
-            :gamename="ele.gamename"
-            :worldname="ele.worldname"
-            :people="ele.playeramount"
-          ></GameListItem>
-        </RouterLink>
-      </div>
+      <div class="flexbox">
+        <div class="box" v-for="ele in instanceState.instancelist.instancelist">
+          <RouterLink :to="{ path: '/editor/' + ele.id }">
+            <GameListItem
+              :worldname="ele.worldname"
+              :people="ele.playeramount"
+            ></GameListItem>
+          </RouterLink>
+        </div>
 
-      <div v-if="showAll" v-for="ele in mapsOverview.allMaps">
-        <button @click="getWorldAndForwardToEditor(ele.mapName)">
-          <GameListItem :worldname="ele.mapName"></GameListItem>
-        </button>
+        <div class="box" v-if="showAll" v-for="ele in mapsOverview.allMaps">
+          <button @click="getWorldAndForwardToEditor(ele.mapName)">
+            <GameListItem :worldname="ele.mapName"></GameListItem>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -99,5 +110,13 @@ async function getWorldAndForwardToEditor(name: string) {
 
 button {
   text-align: center;
+}
+
+.flexbox {
+  display: flex;
+}
+
+.box {
+  flex-direction: row;
 }
 </style>

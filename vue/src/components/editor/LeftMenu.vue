@@ -1,11 +1,16 @@
 <script setup lang="ts">
 function toggle() {
-  if (document.getElementById("leftMenu").style.display == "none") {
-    document.getElementById("leftMenu").style.display = "grid";
-    document.getElementById("showSideBar").style.display = "none";
-  } else {
-    document.getElementById("leftMenu").style.display = "none";
-    document.getElementById("showSideBar").style.display = "block";
+  const leftMenu = document.getElementById("leftMenu");
+  const showSideBar = document.getElementById("showSideBar");
+
+  if (leftMenu != null && showSideBar != null) {
+    if (leftMenu.style.display == "none") {
+      leftMenu.style.display = "grid";
+      showSideBar.style.display = "none";
+    } else {
+      leftMenu.style.display = "none";
+      showSideBar.style.display = "block";
+    }
   }
 }
 </script>
