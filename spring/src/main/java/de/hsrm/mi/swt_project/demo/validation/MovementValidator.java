@@ -54,11 +54,7 @@ public class MovementValidator implements Validator {
        
         Tile potentialTile = this.map[tileRow][tileCol];
 
-        if(!canDriveOnTile(potentialTile) || !canWalkOnTile(potentialTile)) {
-            return false;
-        }
-
-        return true;
+        return canDriveOnTile(potentialTile) && canWalkOnTile(potentialTile);
     }
 
     /**
@@ -88,15 +84,10 @@ public class MovementValidator implements Validator {
      */
     protected boolean canDriveOnTile(Tile tile) {
 
-        if (this.moveableCopy instanceof MotorizedObject) {
+        boolean moveableIsNotMotorized = !(this.moveableCopy instanceof MotorizedObject);
+        boolean tileIsDrivable = (tile instanceof DriveableByCar);
 
-            if (!(tile instanceof DriveableByCar)) {
-                return false;
-            }
-            
-        }
-
-        return true;
+        return moveableIsNotMotorized || tileIsDrivable;
     }
 
     /**
@@ -108,15 +99,10 @@ public class MovementValidator implements Validator {
      */
     protected boolean canWalkOnTile(Tile tile) {
 
-        if (this.moveableCopy instanceof Passenger) {
+        boolean moveableIsNotPassenger = !(this.moveableCopy instanceof Passenger);
+        boolean tileIsWalkable = (tile instanceof Walkable);
 
-            if (!(tile instanceof Walkable)) {
-                return false;
-            }
-
-        }
-
-        return true;
+        return moveableIsNotPassenger || tileIsWalkable;
     }
     
 }
