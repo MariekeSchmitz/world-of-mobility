@@ -32,7 +32,7 @@ public class MoveableRequestRestController {
      * @param 
      * @author Kevin Emunds
      */
-    @GetMapping(value = "/MoveableType", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/MovableTypes", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<String> getMoveableTypeRequest(){
         return types;
     }
