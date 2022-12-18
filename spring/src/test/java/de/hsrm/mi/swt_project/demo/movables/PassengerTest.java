@@ -1,6 +1,7 @@
 package de.hsrm.mi.swt_project.demo.movables;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,6 +32,33 @@ class PassengerTest {
             passenger.turn(Direction.RIGHT);
             assertEquals(orientation, passenger.getOrientation());
         }
+    }
+
+    @Test
+    void testMove() {
+
+        float startX = 50;
+        float startY = 50;
+
+        Passenger passenger = new Passenger(Orientation.EAST, startX, startY, 2);
+        passenger.setCurrentVelocity(0.5f);
+
+
+        // Run a circle
+        for (int i = 0; i < Orientation.values().length; i++) {
+
+            passenger.move();
+            passenger.turn(Direction.LEFT);
+
+            // Always away from start position before last step
+            if (i < Orientation.values().length - 1) {
+                assertFalse(startX == passenger.getXPos() && startY == passenger.getYPos());
+            }
+        }
+
+        // Be at start position after full circle
+        assertEquals(startX, passenger.getXPos());
+        assertEquals(startY, passenger.getYPos());
     }
 
     @Test

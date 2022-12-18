@@ -57,6 +57,56 @@ public class Passenger extends MoveableObject {
     }
 
     @Override
+    public void move() {
+
+        float straightMovement = this.currentVelocity * this.maxVelocity;
+        float diagonalMovement = (float) (straightMovement / Math.sqrt(2));
+        
+        switch (this.orientation) {
+
+            case NORTH:
+                this.yPos += straightMovement;
+                break;
+
+            case NORTH_EAST:
+                this.xPos += diagonalMovement;
+                this.yPos += diagonalMovement;
+                break;
+
+            case EAST:
+                this.xPos += straightMovement;
+                break;
+
+            case SOUTH_EAST:
+                this.xPos += diagonalMovement;
+                this.setYPos(this.yPos - diagonalMovement);
+                break;
+
+            case SOUTH:
+                this.setYPos(this.yPos - straightMovement);
+                break;
+
+            case SOUTH_WEST:
+                this.setXPos(this.xPos - diagonalMovement);
+                this.setYPos(this.yPos - diagonalMovement);
+                break;
+
+            case WEST:
+                this.setXPos(this.xPos - straightMovement);
+                break;
+
+            case NORTH_WEST:
+                this.setXPos(this.xPos - diagonalMovement);
+                this.yPos += diagonalMovement;
+                break;
+
+            default:
+                break;
+
+        }
+    }
+
+    @Override
     public void turn(Direction direction) {
         switch (direction) {
             case LEFT:

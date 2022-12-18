@@ -36,6 +36,25 @@ class MotorizedObjectTest {
     }
 
     @Test
+    void testMove() {
+
+        MotorizedObject vehicle = new MotorizedObject(Orientation.EAST, 50, 50, 2);
+        vehicle.setCurrentVelocity(0.5f);
+
+        for (int i = 0; i < 10; i++) {
+            vehicle.move();
+            if (i % 2 == 0) {
+                vehicle.turn(Direction.LEFT);
+            } else {
+                vehicle.turn(Direction.RIGHT);
+            }
+        }
+
+        assertEquals(55, vehicle.getXPos());
+        assertEquals(55, vehicle.getYPos());
+    }
+
+    @Test
     void testCopy() {
 
         MotorizedObject vehicle = new MotorizedObject(Orientation.EAST, 50, 50, 20);
