@@ -108,8 +108,6 @@ public class GameInstance extends Instance {
 
     private void validateAndMove(MoveableObject moveableObject) {
 
-        int mapSize = this.map.getTiles().length;
-
         // predict new X- and Y-Pos
         float currentPosX = moveableObject.getXPos();
         float currentPosY = moveableObject.getYPos();
@@ -164,36 +162,53 @@ public class GameInstance extends Instance {
 
         // check if moveable still on map
 
-        int xTileAfterMovement = (int) newPosX;
-        int yTileAfterMovement = (int) newPosY;
 
-        boolean xTileInvalid = (newPosX >= mapSize) || (newPosX < 0);
-        boolean yTileInvalid = (newPosY >= mapSize) || (newPosY < 0);
-
-        if (xTileInvalid || yTileInvalid) {
+        if (!stillinMap(newPosX, newPosY)) {
             moveableObject.setCurrentVelocity(0);
             return;
         }
+
+        int xTileAfterMovement = (int) newPosX;
+        int yTileAfterMovement = (int) newPosY;
        
         // check if moveable moves on allowed tile 
         Tile potentialTile = this.map.getTiles()[yTileAfterMovement][xTileAfterMovement];
 
-        if (moveableObject instanceof MotorizedObject) {
-            if (!(potentialTile instanceof DriveableByCar)) {
-                moveableObject.setCurrentVelocity(0);
-                return;
-            }
+        if(!canDriveonTile(potentialTile, moveableObject) || !canWalkonTile(potentialTile, moveableObject)) {
+            moveableObject.setCurrentVelocity(0);
+            return;
         }
-
-        if (moveableObject instanceof Passenger) {
-            if (!(potentialTile instanceof Walkable)) {
-                moveableObject.setCurrentVelocity(0);
-                return;
-            }
-        } 
 
         moveableObject.move(newPosX, newPosY);
         
+    }
+
+    private boolean stillinMap(float newPosX, float newPosY){
+
+        int mapSize = this.map.getTiles().length;
+
+        boolean xTileValid = (newPosX < mapSize) || (newPosX >= 0);
+        boolean yTileValid = (newPosY < mapSize) || (newPosY >= 0);
+
+        return xTileValid && yTileValid;
+    }
+
+    private boolean canDriveonTile(Tile potentialTile, MoveableObject moveableObject){
+        if (moveableObject instanceof MotorizedObject) {
+            if (!(potentialTile instanceof DriveableByCar)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean canWalkonTile(Tile potentialTile, MoveableObject moveableObject){
+        if (moveableObject instanceof Passenger) {
+            if (!(potentialTile instanceof Walkable)) {
+                return false;
+            }
+        } 
+        return true;
     }
 
     /**

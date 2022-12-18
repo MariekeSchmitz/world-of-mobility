@@ -19,6 +19,9 @@ import { useGame } from "@/services/useGame";
 import { useLogin } from "@/services/login/useLogin";
 import { orientations } from "@/services/Orientations";
 
+const SIZE = 10
+
+
 const props = withDefaults(
   defineProps<{
     instanceID: number;
@@ -69,9 +72,9 @@ const cameraPosition = computed(() => {
 const allMoveables = computed(() => {
   if (userMovable.value != undefined) {
     const newLookAt = new Vector3(
-      userMovable.value.xPos,
+      userMovable.value.xPos * SIZE,
       2,
-      userMovable.value.yPos
+      userMovable.value.yPos * SIZE
     );
     movementVector = newLookAt.clone().sub(lookAt);
     lookAt.copy(newLookAt);
@@ -196,7 +199,7 @@ onUnmounted(() => {
 
       <div v-for="(moveable, index) in allMoveables" :key="index">
         <Car
-          :pos="new Vector3(moveable.xPos, 0.5, moveable.yPos)"
+          :pos="new Vector3(moveable.xPos * SIZE, 0.5, moveable.yPos * SIZE)"
           :rotation="orientations[moveable.orientation]"
         ></Car>
       </div>
