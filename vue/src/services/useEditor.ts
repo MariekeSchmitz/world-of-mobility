@@ -23,8 +23,8 @@ const newWorldState: INewWorldResponse = reactive({
  * posts a world name and gets a new world instance with a unique id
  * @param name
  */
-async function createWorld(name: string) {
-  const url = "/api/editor/createNewWorld";
+async function createWorld(name: string, path: string) {
+  const url = `/api/editor/${path}`;
 
   const newWorld: ISendNewWorld = {
     name: name,
@@ -41,17 +41,12 @@ async function createWorld(name: string) {
       });
 
       if (!response.ok) {
-        console.log(response.text);
+        newWorldState.error = response.statusText;
       } else {
         const jsondata: INewWorldResponse = await response.json();
-        console.log(jsondata);
-        if (jsondata.error === "") {
-          newWorldState.error = "";
-          newWorldState.id = jsondata.id;
-          console.log("worldId = ", newWorldState.id);
-        } else {
-          newWorldState.error = jsondata.error;
-        }
+
+        newWorldState.error = jsondata.error;
+        newWorldState.id = jsondata.id;
       }
     } catch (reason) {
       console.log(reason);
@@ -59,6 +54,8 @@ async function createWorld(name: string) {
   } else {
     newWorldState.error = "Name too short.";
   }
+
+  return newWorldState.id;
 }
 
 export function useEditor() {

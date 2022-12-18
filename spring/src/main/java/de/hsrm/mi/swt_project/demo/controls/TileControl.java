@@ -5,7 +5,7 @@ package de.hsrm.mi.swt_project.demo.controls;
  * 
  * @author Alexandra Müller
  */
-public enum EditorControl {
+public enum TileControl {
     PLACE,
     REMOVE,
     TURN_RIGHT,

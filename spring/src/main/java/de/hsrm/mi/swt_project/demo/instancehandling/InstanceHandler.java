@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -19,7 +19,6 @@ import de.hsrm.mi.swt_project.demo.controls.Updateable;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;
-import de.hsrm.mi.swt_project.demo.movables.Passenger;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
 /**
@@ -40,28 +39,14 @@ public class InstanceHandler implements Updateable {
 
     // TODO think of another solution because long can reach limit
     protected long idCounter = 1;
-    @Value("${map.savedir:maps}")
-    protected String mapSavePath;
+    // @Value("${map.savedir:maps}")
+    protected String mapSavePath = "maps";
 
     /**
      * Creates a new instance handler.
      */
     public InstanceHandler() {
         instances = new ArrayList<Instance>();
-
-        Passenger p1 = new Passenger(0, 0, 1);
-        Passenger p2 = new Passenger(5, 5, 1);
-
-        GameMap map = new GameMap();
-
-        map.addNpc(p1);
-        map.addNpc(p2);
-
-        Instance instance1 = new EditorInstance(map, 1);
-        Instance instance2 = new GameInstance(map, "test", 1);
-
-        this.instances.add(instance1);
-        this.instances.add(instance2);
     }
 
     /**
@@ -76,14 +61,15 @@ public class InstanceHandler implements Updateable {
             instances.add(new GameInstance(new GameMap(), sessionName, idCounter));
             return idCounter++;
         } else {
+            String fileName = "%s/%s.json".formatted(mapSavePath, mapName);
             try {
-                JSONObject mapFile = new JSONObject(Files.readString(Path.of(mapSavePath +"/"+ mapName + JSON)));
+                Path filePath = Path.of(fileName);
+                String mapFile = Files.readString(filePath);
                 instances.add(new GameInstance(loadMap(mapFile), sessionName, idCounter));
                 return idCounter++;
             } catch (IOException e) {
-                // e.printStackTrace();
-                logger.info("IOException occured on createGameInstance in InstanceHandler: {}", e);
-            return -1;
+                logger.info("IOException occured on createGameInstance in InstanceHandler: {}\nFilename: {}", e, fileName);
+                return -1;
             }
         }
     }
@@ -96,10 +82,14 @@ public class InstanceHandler implements Updateable {
      */
     public long createEditorInstance(String mapName) {
         try {
-            JSONObject mapFile = new JSONObject(Files.readString(Path.of(mapSavePath + mapName + JSON)));
+            String fileName = "%s/%S.json".formatted(mapSavePath, mapName);
+            Path filePath = Path.of(fileName);
+            String mapFile = Files.readString(filePath);
             instances.add(new EditorInstance(loadMap(mapFile), idCounter));
         } catch (IOException e) {
-            instances.add(new EditorInstance(new GameMap(), idCounter));
+            GameMap map = new GameMap();
+            map.setName(mapName);
+            instances.add(new EditorInstance(map, idCounter));
         }
 
         return idCounter++;
@@ -110,33 +100,56 @@ public class InstanceHandler implements Updateable {
      * 
      * @param mapFile the JSON file to load the map from
      * @return the loaded map
+     * @author Felix Ruf, Alexandra Müller
      */
-    private GameMap loadMap(JSONObject mapFile) {
-        JSONArray tiles = mapFile.getJSONArray("Tiles");
-        JSONArray npcs = mapFile.getJSONArray("Npcs");
+    private GameMap loadMap(String mapFile) {
+        JSONObject file = new JSONObject(mapFile);
+        JSONArray tiles = file.getJSONArray("tiles");
+        JSONArray npcs = file.getJSONArray("npcs");
+        GameMap map = new GameMap(tiles.length());
 
-        GameMap map = new GameMap();
-
-        tiles.forEach(tile -> {
-            JSONObject tileObject = (JSONObject) tile;
-            Tiletype tileType = tileObject.getEnum(Tiletype.class, "type");
-            int xPos = tileObject.getInt("xPos");
-            int yPos = tileObject.getInt("yPos");
-            Orientation orientation = tileObject.getEnum(Orientation.class, "orientation");
-            Tile newTile = tileType.createTile();
-            newTile.setOrientation(orientation);
-            map.addTile(newTile, xPos, yPos);
-        });
+        int yPos = 0;
+        
+        for (Object rowsObject : tiles) {
+            JSONArray rows = (JSONArray) rowsObject;
+            int xPos = 0;
+            for (int i = 0; i < rows.length(); i++) {
+                List<Object> ls = rows.toList();
+                if (ls.get(i) != null) {
+                    JSONObject tileObject = rows.getJSONObject(i);
+                    // Functionality of placedObjects unknown because of a lack of Placeable objects
+                    // JSONArray placedObjects = tileObject.getJSONArray("placedObjects");
+                    // List<Placeable> placedObjsToPlace = new ArrayList<>();
+                    // placedObjects.forEach(obj -> {
+                    // Placeable placeable = (Placeable) obj;
+                    // placedObjsToPlace.add(placeable);
+                    // });
+                    Tiletype tileType = tileObject.getEnum(Tiletype.class, "type");
+                    Orientation orientation = tileObject.getEnum(Orientation.class, "orientation");
+                    Tile newTile = tileType.createTile();
+                    newTile.setOrientation(orientation);
+                    map.setTile(newTile, xPos, yPos);
+                }
+                xPos++;
+            }
+            yPos++;
+        }
 
         npcs.forEach(npc -> {
             JSONObject npcObject = (JSONObject) npc;
             MoveableType npcType = npcObject.getEnum(MoveableType.class, "type");
-            int xPos = npcObject.getInt("xPos");
-            int yPos = npcObject.getInt("yPos");
-            int maxVelocity = npcObject.getInt("maxVelocity");
-            MoveableObject newNpc = npcType.createMovable(xPos, yPos, maxVelocity);
+            float xPosition = npcObject.getFloat("xPos");
+            float yPosition = npcObject.getFloat("yPos");
+            float maxVelocity = npcObject.getFloat("maxVelocity");
+            float capacity = npcObject.getFloat("capacity");
+            String script = npcObject.getString("script");
+            MoveableObject newNpc = npcType.createMovable(xPosition, yPosition, maxVelocity);
+            newNpc.setCapacity(capacity);
+            newNpc.loadScript(script);
             map.addNpc(newNpc);
         });
+
+        map.setName(file.getString("name"));
 
         return map;
     }
@@ -158,7 +171,17 @@ public class InstanceHandler implements Updateable {
     public void update() {
         for (Instance instance : instances) {
             instance.update();
-            loopservice.publishInstanceState(instance);
+            if (instance instanceof GameInstance) { // Only publish state of GameInstances periodically
+                loopservice.publishInstanceState(instance);
+            }
+        }
+    }
+
+    public void triggerScript() {
+        for (Instance instance : instances) {
+            if (instance instanceof GameInstance gameinstance) {     
+                gameinstance.updateScript();
+            }
         }
     }
 
@@ -178,7 +201,7 @@ public class InstanceHandler implements Updateable {
      * @return a list form all gameinstances
      * @author Finn Schindel, Astrid Klemmer
      */
-    public List<Instance> getGameInstances(){
+    public List<Instance> getGameInstances() {
         List<Instance> gList = new ArrayList<>();
         for (Instance instance : instances) {
             if (instance instanceof GameInstance) {
@@ -194,7 +217,7 @@ public class InstanceHandler implements Updateable {
      * @return a list form all editorinstances
      * @author Finn Schindel, Astrid Klemmer
      */
-    public List<Instance> getEditorInstances(){
+    public List<Instance> getEditorInstances() {
         List<Instance> eList = new ArrayList<>();
         for (Instance instance : instances) {
             if (instance instanceof EditorInstance) {
@@ -269,6 +292,32 @@ public class InstanceHandler implements Updateable {
                 }
             }
         }
+        return true;
+    }
+
+    /**
+     * Checks if suggested WorldName is available
+     * 
+     * @param worldname name to be checked
+     * @return if suggested World Name is unique or not
+     */
+    public Boolean checkWorldNameAvailable(String worldname) {
+        for (String name : getMaps()) {
+            if (name.equals(worldname)) {
+
+                return false;
+            }
+        }
+
+        for (Instance instance : getEditorInstances()) {
+            String mapName = instance.getMap().getName();
+            System.out.println(mapName);
+
+            if (mapName.equals(worldname)) {
+                return false;
+            }
+        }
+
         return true;
     }
 }

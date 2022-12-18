@@ -85,6 +85,15 @@ public class GameInstance extends Instance {
     }
 
     /**
+     * Trigged Script for NPC
+     */
+    public void updateScript() {
+        for(MoveableObject movableObject : moveableObjects.values()) {
+            movableObject.executeScript();
+        }
+    }
+
+    /**
      * Getter for the name of the instance.
      * 
      * @return the name

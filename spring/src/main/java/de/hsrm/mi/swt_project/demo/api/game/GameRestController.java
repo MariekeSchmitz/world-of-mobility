@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.hsrm.mi.swt_project.demo.instancehandling.GameInstance;
 import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
 import de.hsrm.mi.swt_project.demo.messaging.GameUserListDTO;
@@ -24,6 +25,7 @@ import de.hsrm.mi.swt_project.demo.messaging.GetGameConfigDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetMapOverviewDataDTO;
 import de.hsrm.mi.swt_project.demo.messaging.JoinGameDTO;
 import de.hsrm.mi.swt_project.demo.messaging.SendGameUpdateDTO;
+import de.hsrm.mi.swt_project.demo.messaging.SendMapDTO;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;
 import de.hsrm.mi.swt_project.demo.messaging.ValidationDTO;
 
@@ -123,14 +125,10 @@ public class GameRestController{
         logger.info("GET Request for '/api/game/get-all-maps'");
 
         LinkedList<GetMapOverviewDataDTO> maps = new LinkedList<>();
-        maps.add(new GetMapOverviewDataDTO("Map1"));
-        maps.add(new GetMapOverviewDataDTO("Map2"));
-        maps.add(new GetMapOverviewDataDTO("Map3"));
 
-        // TO DO : unterhalb reinkommentieren + händisches adden (obendrüber) in maps-Liste rausschmeissen (aktuell noch keine richtigen Maps zum testen vorhanden)
-        // for (String mapName : instanceHandler.getMaps()) {
-        //     maps.add(new GetMapOverviewDataDTO("mapName"));
-        // }
+        for (String mapName : instanceHandler.getMaps()) {
+            maps.add(new GetMapOverviewDataDTO(mapName));
+        }
 
         return new GetAllMapsOverviewDTO(maps);
 
@@ -154,5 +152,15 @@ public class GameRestController{
         // return new ValidationDTO(false);
     }
 
-
+    /**
+     * Post for getting the map from Editor Instance
+     * 
+     * @param getMapDTO
+     * @author Fabio Bertels
+     */
+    @GetMapping(value = "/getmap/{instanceID}")
+    public SendMapDTO getMapEditor(@PathVariable Long instanceID) {
+        GameInstance gameInstance = instanceHandler.getGameInstanceById(instanceID);
+        return SendMapDTO.from(gameInstance.getMap());
+    }
 }

@@ -1,6 +1,6 @@
 package de.hsrm.mi.swt_project.demo.messaging;
 
-import de.hsrm.mi.swt_project.demo.controls.EditorControl;
+import de.hsrm.mi.swt_project.demo.controls.TileControl;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 
@@ -11,6 +11,6 @@ import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 public record GetMapUpdateDTO (
     Tiletype type,
     Orientation orientation, 
-    EditorControl control,
+    TileControl control,
     int xPos, 
     int yPos){}

@@ -45,7 +45,7 @@ public enum Tiletype {
             tile.allowedDirections.add(Orientation.SOUTH);
             tile.allowedDirections.add(Orientation.WEST);
             tile.type = this;
-            return new Streetile();
+            return tile;
         }
     },
     RAIL_STRAIGHT() {
@@ -72,6 +72,14 @@ public enum Tiletype {
         @Override
         public Tile createTile() {
             Tile tile = new PassengerTile();
+            tile.type = this;
+            return tile;
+        }
+    },
+    GRASSTILE() {
+        @Override
+        public Tile createTile() {
+            Tile tile = new GrassTile();
             tile.type = this;
             return tile;
         }

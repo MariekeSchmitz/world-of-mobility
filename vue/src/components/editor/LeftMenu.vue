@@ -1,102 +1,114 @@
 <script setup lang="ts">
+function toggle() {
+  const leftMenu = document.getElementById("leftMenu");
+  const showSideBar = document.getElementById("showSideBar");
 
-    function toggle(){
-      if(document.getElementById('leftMenu').style.display == "none"){
-        document.getElementById('leftMenu').style.display = "grid";
-        document.getElementById('showSideBar').style.display = "none";
-        
-      }else{
-        document.getElementById('leftMenu').style.display = "none";
-        document.getElementById('showSideBar').style.display = "block";
-      }
+  if (leftMenu != null && showSideBar != null) {
+    if (leftMenu.style.display == "none") {
+      leftMenu.style.display = "grid";
+      showSideBar.style.display = "none";
+    } else {
+      leftMenu.style.display = "none";
+      showSideBar.style.display = "block";
     }
+  }
+}
 </script>
 
 <template>
   <div id="leftMenu">
     <div class="upperLeftMenu">
-      <button class="roundButton" @click="toggle"><img src="src/buttons/editor/arrow-left.png"/></button>
-      <button class="roundButton"><img src="src/buttons/editor/einstellungen.png"/></button>
-      <button class="roundButton"><img src="src/buttons/editor/frage.png"/></button>
+      <button class="roundButton" @click="toggle">
+        <img src="@/buttons/editor/arrow-left.png" />
+      </button>
+      <button class="roundButton">
+        <img src="@/buttons/editor/einstellungen.png" />
+      </button>
+      <button class="roundButton">
+        <img src="@/buttons/editor/frage.png" />
+      </button>
     </div>
     <div class="bottomLeftMenu">
-      <button id="gridButton"><img src="src/buttons/editor/grid.png"/></button>
+      <button id="gridButton"><img src="@/buttons/editor/grid.png" /></button>
       <div class="firstDoubleButton">
-        <button><img src="src/buttons/editor/minus.png"/></button>
-        <button><img src="src/buttons/editor/plus.png"/></button>
+        <button><img src="@/buttons/editor/minus.png" /></button>
+        <button><img src="@/buttons/editor/plus.png" /></button>
       </div>
       <div class="secondDoubleButton">
-        <button class="singleSecondDoubleButton"><img src="src/buttons/editor/arrow-left.png"/></button>
-        <button class="singleSecondDoubleButton"><img src="src/buttons/editor/arrow-right.png"/></button>
+        <button class="singleSecondDoubleButton">
+          <img src="@/buttons/editor/arrow-left.png" />
+        </button>
+        <button class="singleSecondDoubleButton">
+          <img src="@/buttons/editor/arrow-right.png" />
+        </button>
       </div>
     </div>
   </div>
 
-  <button id="showSideBar" @click="toggle"><img src="src/buttons/editor/arrow-right.png"/></button>
-
+  <button id="showSideBar" @click="toggle">
+    <img src="@/buttons/editor/arrow-right.png" />
+  </button>
 </template>
 
 <style>
+#leftMenu {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  position: fixed;
+  bottom: 20%;
+  left: 0px;
+  height: 60%;
+  width: 60px;
+  background-color: rgb(221, 221, 221);
+  row-gap: 24%;
+}
 
-  #leftMenu{
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(3,1fr);
-    position: fixed;
-    bottom: 20%;
-    left: 0px;
-    height: 60%;
-    width: 60px;
-    background-color: rgb(221, 221, 221);
-    row-gap: 24%;
-  }
+.upperLeftMenu {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  row-gap: 12%;
+  margin: 20%;
+}
 
-  .upperLeftMenu{
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(3,1fr);
-    row-gap: 12%;
-    margin: 20%;
-  }
+.bottomLeftMenu {
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  row-gap: 0%;
+  margin: 20% 4%;
+}
 
-  .bottomLeftMenu{
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(3,1fr);
-    row-gap: 0%;
-    margin: 20% 4%;
-  }
+#gridButton {
+  width: 80%;
+  margin: 10%;
+  aspect-ratio: 1/1;
+  background-color: rgb(221, 221, 221);
+}
 
-  #gridButton{
-    width: 80%;
-    margin: 10%;
-    aspect-ratio: 1/1;
-    background-color: rgb(221, 221, 221);
-  }
+.firstDoubleButton {
+  background-color: white;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 15px;
+}
 
-  .firstDoubleButton{
-    background-color: white;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin-top: 15px;
-  }
+.secondDoubleButton {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 10px;
+}
 
-  .secondDoubleButton{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin-top: 10px;
-  }
+.singleSecondDoubleButton {
+  height: 180%;
+  background-color: rgb(221, 221, 221);
+  border: none;
+}
 
-  .singleSecondDoubleButton{
-    height: 180%;
-    background-color: rgb(221, 221, 221);
-    border: none;
-  }
-
-  #showSideBar{
-      display: none;
-      position: fixed;
-      bottom: 75%;
-      left: 0px;
-  }
-
+#showSideBar {
+  display: none;
+  position: fixed;
+  bottom: 75%;
+  left: 0px;
+}
 </style>
