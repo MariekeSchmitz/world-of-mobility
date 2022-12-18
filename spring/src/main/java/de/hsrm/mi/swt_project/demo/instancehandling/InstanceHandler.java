@@ -47,14 +47,6 @@ public class InstanceHandler implements Updateable {
      */
     public InstanceHandler() {
         instances = new ArrayList<Instance>();
-
-        MoveableObject p1 = MoveableType.PASSENGER.createMovable(0, 0, 1);
-        MoveableObject p2 = MoveableType.PASSENGER.createMovable(5, 5, 1);
-
-        GameMap map = new GameMap();
-
-        map.addNpc(p1);
-        map.addNpc(p2);
     }
 
     /**
@@ -181,6 +173,14 @@ public class InstanceHandler implements Updateable {
             instance.update();
             if (instance instanceof GameInstance) { // Only publish state of GameInstances periodically
                 loopservice.publishInstanceState(instance);
+            }
+        }
+    }
+
+    public void triggerScript() {
+        for (Instance instance : instances) {
+            if (instance instanceof GameInstance gameinstance) {     
+                gameinstance.updateScript();
             }
         }
     }
