@@ -1,6 +1,5 @@
 package de.hsrm.mi.swt_project.demo.api.game;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
