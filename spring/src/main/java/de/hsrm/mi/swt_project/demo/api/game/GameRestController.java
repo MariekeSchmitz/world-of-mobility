@@ -52,7 +52,7 @@ public class GameRestController{
     public void getGameCommand(@RequestBody GetGameCommandDTO gameCommand, @PathVariable long id) {
         logger.info("POST Request for '/api/game/" + id + "/game-command' with body: " + gameCommand);
 
-        instanceHandler.getGameInstanceById(id).moveMovable(gameCommand.user(), gameCommand.control());
+        instanceHandler.getGameInstanceById(id).moveMoveable(gameCommand.user(), gameCommand.control());
     }
 
     /**

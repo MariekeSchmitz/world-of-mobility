@@ -89,6 +89,16 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
         return currentVelocity;
     }
 
+
+    /**
+     * Gets maximum velocity of the moveable object.
+     * 
+     * @return maximum velocity
+     */
+    public float getMaxVelocity() {
+        return maxVelocity;
+    }
+
     /**
      * Sets new x-position of the movable object.
      * @param xPos New x-position
@@ -153,5 +163,7 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
      * @return Copy of the object.
      */
     public abstract MoveableObject copy();
+
+
 
 }
