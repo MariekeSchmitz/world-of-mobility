@@ -25,8 +25,13 @@ const props = withDefaults(
   }>(),
   { instanceID: 1 }
 );
-const { sendCommand, receiveGameUpdate, mapUpdates, getUserMoveable } =
-  useGame();
+const {
+  sendCommand,
+  receiveGameUpdate,
+  mapUpdates,
+  getUserMoveable,
+  leaveGame,
+} = useGame();
 const { loginData } = useLogin();
 
 const renderer = ref();
@@ -136,7 +141,6 @@ function handleKeyEvent(e: KeyboardEvent) {
  * adds the keylisteners to switch views and cam-modes.
  */
 onMounted(() => {
-
   const orbitControls = renderer.value.three.cameraCtrl;
   orbitControls.target = lookAt;
   orbitControls.enablePan = false;
@@ -167,6 +171,7 @@ onMounted(() => {
 });
 onUnmounted(() => {
   document.removeEventListener("keyup", handleKeyEvent);
+  leaveGame(props.instanceID, loginData.username, "MOTORIZED_OBJECT");
 });
 </script>
 

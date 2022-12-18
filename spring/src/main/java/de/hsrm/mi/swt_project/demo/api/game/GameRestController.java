@@ -164,4 +164,17 @@ public class GameRestController{
         GameInstance gameInstance = instanceHandler.getGameInstanceById(instanceID);
         return SendMapDTO.from(gameInstance.getMap());
     }
+
+    /**
+     * Removes a player from an existing game.
+     * 
+     * @param user the user to leave
+     * @param type the type of the movableObject
+     * @param id the id of the game
+     * @author Astrid Klemmer
+     */
+    @PostMapping(value="/{id}/leave-game", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void leaveGame(@RequestBody JoinGameDTO leaveGameRequest , @PathVariable long id) {
+        instanceHandler.getGameInstanceById(id).removePlayer(leaveGameRequest.user());
+    }
 }
