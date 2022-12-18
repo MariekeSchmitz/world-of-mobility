@@ -8,7 +8,7 @@ package de.hsrm.mi.swt_project.demo.controls;
 public interface Moveable {
 
     /**
-     * Moves the object
+     * Moves the object according to properties of the object (e.g. position and velocity)
      * @author Marieke Schmitz
      */
     public void move();
