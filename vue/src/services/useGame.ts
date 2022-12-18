@@ -59,7 +59,6 @@ export function useGame(): any {
             
             clearTimeout(id);
     
-            console.log(response.text());
             if(!response.ok) {
                 return false;
             }
@@ -92,7 +91,6 @@ export function useGame(): any {
             
             const jsonData = await response.json()
             clearTimeout(id);
-            console.log(jsonData)
             instanceIdState.id = jsonData
         } catch(reason) {
             console.log(`ERROR: Sending Command failed: ${reason}`);
@@ -121,7 +119,6 @@ export function useGame(): any {
             
             clearTimeout(id);
     
-            console.log(response.text());
             if(!response.ok) {
                 return false;
             }
@@ -158,12 +155,21 @@ export function useGame(): any {
         stompClient.activate();
     }
 
+    function getUserMoveable(user:string) {
+        for (const moveable of gameState.moveableUpdates) {
+            if (moveable.user === user) {
+                return moveable;        
+            }
+        }
+    }
+
     return {
         mapUpdates: readonly(gameState),
         instanceId: readonly(instanceIdState),
         joinGame,
         receiveGameUpdate,
         sendCommand,
+        getUserMoveable,
         createGameInstance
     }
 }

@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-import json from './useUserTest.json';
 import { reactive, readonly } from "vue";
 export function useUser(): any {
 
@@ -27,7 +26,6 @@ export function useUser(): any {
 
             clearTimeout(id);
     
-            console.log(response.text());
             userListState.users = jsonData.users
             //const jsonData : IUserList = json
             //userListState.users = jsonData.users

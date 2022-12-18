@@ -54,9 +54,6 @@ export function useMapUpdate(editorId: number): any {
         stompClient.onConnect = frame => {
             console.log("Connected Stompbroker to MapUpdate");
             stompClient.subscribe(DEST, (message) => {
-                
-                
-                console.log(`Stompbroker received message: \n${message.body}`);
                 const mapUpdate: IMapDTO = JSON.parse(message.body);
                 mapState.value.map = mapUpdate;
             });
@@ -72,7 +69,7 @@ export function useMapUpdate(editorId: number): any {
     async function sendMapUpdates(mapUpdateObj: IMapUpdate) {
         try {
             const controller = new AbortController();
-            const URL = `/api/editor/mapupdate/editor?editorId=${editorId}`;
+            const URL = `/api/editor/mapupdate/${editorId}`;
 
             const id = setTimeout(() => controller.abort(), 8000);
 

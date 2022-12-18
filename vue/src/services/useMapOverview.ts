@@ -40,8 +40,6 @@ async function getMaps() {
 
         mapsOverview.allMaps = jsonData.allMaps
 
-        console.log(mapsOverview.allMaps)
-
         clearTimeout(id);
 
         if(!response.ok) {

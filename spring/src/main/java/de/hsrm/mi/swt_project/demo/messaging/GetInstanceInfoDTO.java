@@ -22,14 +22,14 @@ public record GetInstanceInfoDTO(long id, String gamename, String worldname, int
         if (instance instanceof GameInstance gameinstance) {
             return new GetInstanceInfoDTO(
                 gameinstance.getId(),
-                "GameName" + gameinstance.getId(),
+                gameinstance.getName(),
                 gameinstance.getMap().getName(),
                 GameUserListDTO.from(gameinstance.getMoveableObjects()).users().size()
                 );
         } else {
             return new GetInstanceInfoDTO(
                 instance.getId(),
-                "GameName" + instance.getId(),
+                "EditorGameName " + instance.getId(),
                 instance.getMap().getName(),
                 ((EditorInstance) instance).getUsers().size()
                 );
