@@ -5,12 +5,9 @@ import java.util.ListIterator;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.GameControl;
-import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
-import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.DriveableByCar;
-import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.Walkable;
-import de.hsrm.mi.swt_project.demo.movables.MotorizedObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
-import de.hsrm.mi.swt_project.demo.movables.Passenger;
+import de.hsrm.mi.swt_project.demo.validation.MovementValidator;
+import de.hsrm.mi.swt_project.demo.validation.Validator;
 
 /**
  * This class represents a single game instance of the game.
@@ -100,115 +97,17 @@ public class GameInstance extends Instance {
      */
     @Override
     public void update() {
-        
+
         for(MoveableObject moveableObject : moveableObjects.values()) {
-            validateAndMove(moveableObject);
-        }
-    }
 
-    private void validateAndMove(MoveableObject moveableObject) {
+            Validator movementValidator = new MovementValidator(this.map.getTiles(), moveableObject);
 
-        // predict new X- and Y-Pos
-        float currentPosX = moveableObject.getXPos();
-        float currentPosY = moveableObject.getYPos();
-
-        float newPosX = currentPosX;
-        float newPosY = currentPosY;
-
-        float straightMovement = moveableObject.getCurrentVelocity() * moveableObject.getMaxVelocity();
-        float diagonalMovement = (float) (straightMovement / Math.sqrt(2));
-        
-        switch (moveableObject.getOrientation()) {
-
-            case NORTH:
-                newPosY += straightMovement;
-                break;
-
-            case NORTH_EAST:
-                newPosX += diagonalMovement;
-                newPosY += diagonalMovement;
-                break;
-
-            case EAST:
-                newPosX += straightMovement;
-                break;
-
-            case SOUTH_EAST:
-                newPosX += diagonalMovement;
-                newPosY -= diagonalMovement;
-                break;
-
-            case SOUTH:
-                newPosY -= straightMovement;
-                break;
-
-            case SOUTH_WEST:
-                newPosX -= diagonalMovement;
-                newPosY -= diagonalMovement;
-                break;
-
-            case WEST:
-                newPosX -= straightMovement;
-                break;
-
-            case NORTH_WEST:
-                newPosX -= diagonalMovement;
-                newPosY += diagonalMovement;
-                break;
-
-            default:
-                break;
-        }
-
-        // check if moveable still on map
-
-
-        if (!stillinMap(newPosX, newPosY)) {
-            moveableObject.setCurrentVelocity(0);
-            return;
-        }
-
-        int xTileAfterMovement = (int) newPosX;
-        int yTileAfterMovement = (int) newPosY;
-       
-        // check if moveable moves on allowed tile 
-        Tile potentialTile = this.map.getTiles()[yTileAfterMovement][xTileAfterMovement];
-
-        if(!canDriveonTile(potentialTile, moveableObject) || !canWalkonTile(potentialTile, moveableObject)) {
-            moveableObject.setCurrentVelocity(0);
-            return;
-        }
-
-        moveableObject.move(newPosX, newPosY);
-        
-    }
-
-    private boolean stillinMap(float newPosX, float newPosY){
-
-        int mapSize = this.map.getTiles().length;
-
-        boolean xTileValid = (newPosX < mapSize) || (newPosX >= 0);
-        boolean yTileValid = (newPosY < mapSize) || (newPosY >= 0);
-
-        return xTileValid && yTileValid;
-    }
-
-    private boolean canDriveonTile(Tile potentialTile, MoveableObject moveableObject){
-        if (moveableObject instanceof MotorizedObject) {
-            if (!(potentialTile instanceof DriveableByCar)) {
-                return false;
+            if (movementValidator.validate()) {
+                moveableObject.move();
+            } else {
+                moveableObject.setCurrentVelocity(0);
             }
         }
-        return true;
-    }
-
-    private boolean canWalkonTile(Tile potentialTile, MoveableObject moveableObject){
-        if (moveableObject instanceof Passenger) {
-            if (!(potentialTile instanceof Walkable)) {
-                return false;
-            }
-        } 
-        return true;
     }
 
     /**

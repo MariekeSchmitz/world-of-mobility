@@ -29,11 +29,11 @@ class GameInstanceTest {
      * Sets up following scenario
      * 
      *  ------------- -------------
-     * |   SIDEWAY   |   SIDEWAY   |
-     * | Passenger v |             |
-     *  ------------- -------------
      * |    STREET   |   STREET    |
-     * |             |    Car ^    |
+     * |             |    Car v    |
+     *  ------------- -------------
+     * |   SIDEWAY   |   SIDEWAY   |
+     * | Passenger ^ |             |
      *  ------------- -------------
      * 
      * IMPORTANT: To test position change of MoveableObjects,
@@ -45,8 +45,8 @@ class GameInstanceTest {
 
         GameMap map = new GameMap();
 
-        passenger = new Passenger(Orientation.SOUTH, 0.5f, 0.5f, 1);
-        car = new MotorizedObject(Orientation.NORTH, 1.5f, 1.5f, 1);
+        passenger = new Passenger(Orientation.NORTH, 0.5f, 0.5f, 1);
+        car = new MotorizedObject(Orientation.SOUTH, 1.5f, 1.5f, 1);
 
         Tile street = Tiletype.STREET_CROSS.createTile();
         Tile sideway = Tiletype.SIDEWAY.createTile();

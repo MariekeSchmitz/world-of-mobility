@@ -157,14 +157,6 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
         }
     }
 
-    @Override
-    public void move(float posX, float posY) {
-
-        this.setXPos(posX);
-        this.setYPos(posY);
-
-    }
-
     /**
      * Creates a copy of the instance.
      * 

@@ -8,9 +8,9 @@ package de.hsrm.mi.swt_project.demo.controls;
 public interface Moveable {
 
     /**
-     * Moves the object according to the given x- and y-position
+     * Moves the object according to properties of the object (e.g. position and velocity)
      * @author Marieke Schmitz
      */
-    public void move(float posX, float posY);
+    public void move();
 
 }
