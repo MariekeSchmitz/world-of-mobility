@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 import de.hsrm.mi.swt_project.demo.util.ArrayHelpers;
 
@@ -22,6 +23,13 @@ public class GameMap {
     private List<MoveableObject> npcs = new ArrayList<>();
 
     public GameMap() {
+        for (int i = 0; i < DEFAULT_SIZE; i++) {
+            for (int j = 0; j < DEFAULT_SIZE; j++) {
+                // TODO: change STREET_CROSS to DEFAULT as soon as it is implemented
+                this.tiles[i][j] = Tiletype.STREET_CROSS.createTile();
+            }
+        }
+        
     }
 
     /** adds a moveable Object to the map. e.g. a scripted car
@@ -85,6 +93,18 @@ public class GameMap {
 
     public void setTiles(Tile[][] tiles) {
         this.tiles = tiles;
+    }
+
+    public void setTile(Tile tile, int xPos, int yPos) throws IllegalArgumentException {
+        if (tile == null) {
+            throw new IllegalArgumentException("tile is not allowed to be null.");
+        }
+
+        if (yPos < 0 || xPos < 0 || yPos >= this.tiles.length || xPos >= this.tiles[yPos].length) {
+            throw new IllegalArgumentException("tile must be placed from position (0, 0) to (%d, %d), was (%d, %d)".formatted(this.tiles.length -1, this.tiles[0].length -1, xPos, yPos));
+        }
+
+        this.tiles[yPos][xPos] = tile;
     }
 
 
