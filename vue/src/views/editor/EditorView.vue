@@ -1,6 +1,6 @@
 <!-- prettier-ignore -->
 <script setup lang="ts">
-  import { ref, onMounted, reactive, watch } from "vue";
+  import { ref, onMounted, reactive, watch, onUnmounted } from "vue";
 
   import * as THREE from 'three'
   import {
@@ -18,14 +18,20 @@
   import { usePlaceState } from "@/services/editor/usePlaceState";
   import {useMap} from "@/services/useMap"
   import { number } from "mathjs";
+  import { useUserEditor } from "@/services/useUserEditor";
+  import { useLogin } from "@/services/login/useLogin";
 
  
   const props = defineProps<{
     editorID: number;
   }>();
 
+  const { loginData } = useLogin();
+  const { leaveEditor } = useUserEditor();
 
-
+  onUnmounted(() => {
+      leaveEditor(props.editorID, loginData.username);
+  });
 
     /**
      * in order to Execute THREE code in script tag, create a reactive item and add :ref="name" to the Vue Element
@@ -71,7 +77,6 @@
     </button>
   </div>
 
-
   <div class="buttonMenuRight">
     <button><img src="@/buttons/editor/plus.png" /><br />Starte Spiel</button>
     <button><img src="@/buttons/editor/plus.png" /><br />Welt testen</button>
@@ -100,7 +105,6 @@
       <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
 
       <EditorMap :editorID="editorID"></EditorMap>
-
     </Scene>
   </Renderer>
 </template>

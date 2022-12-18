@@ -86,15 +86,11 @@ public class EditorInstance extends Instance {
 
         switch(placeableControl) {
             case ADD:
-                if(map.getTiles()[yPos][xPos] == null) {
-                    Tile tile = map.getTiles()[yPos][xPos];
-                    return map.validateAndAddPlaceableObject(tile, xPos, yPos, placeableObjectType.createPlaceableObject());
-                }
-                break;
+                Tile tile = map.getTiles()[yPos][xPos];
+                return map.validateAndAddPlaceableObject(tile, xPos, yPos, placeableObjectType.createPlaceableObject());
             case REMOVE: 
                 break;
         }
-
         return false;
     }
 

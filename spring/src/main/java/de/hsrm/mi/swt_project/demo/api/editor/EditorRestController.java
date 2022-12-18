@@ -4,8 +4,6 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import javax.websocket.server.PathParam;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -198,6 +196,17 @@ public class EditorRestController {
     @PostMapping(value="/{id}/join-editor", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void joinGame(@RequestBody JoinEditorDTO joinEditorRequest , @PathVariable long id) {
         instanceHandler.getEditorInstanceById(id).addUser(joinEditorRequest.user());
+    }
+
+    /**
+     * Post for removing a user from a editor instance
+     * @param leaveEditorRequest Dto with name of leaving user
+     * @param id editor instance that user is joining
+     * @author Astrid Klemmer
+     */
+    @PostMapping(value="/{id}/leave-editor", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void leaveGame(@RequestBody JoinEditorDTO leaveEditorRequest , @PathVariable long id) {
+        instanceHandler.getEditorInstanceById(id).removeUser(leaveEditorRequest.user());
     }
 
 }

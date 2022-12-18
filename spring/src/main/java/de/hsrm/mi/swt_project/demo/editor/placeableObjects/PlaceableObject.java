@@ -1,7 +1,5 @@
 package de.hsrm.mi.swt_project.demo.editor.placeableObjects;
 
-import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
-
 public class PlaceableObject implements Placeable {
 
     protected PlaceableObjectType type;

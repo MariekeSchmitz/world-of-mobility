@@ -53,7 +53,7 @@ public class GameMap {
      */
     public void addNpc(MoveableObject moveable){
         try {
-            Resource resource = new ClassPathResource("DefaultNPCScript.py");
+            Resource resource = new ClassPathResource("defaultNPCScript.py");
             File scriptfile = resource.getFile();
             String script = Files.readString(scriptfile.toPath());
             moveable.loadScript(script);
