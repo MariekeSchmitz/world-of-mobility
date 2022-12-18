@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive, onUnmounted } from "vue";
+import { ref, computed, onMounted, reactive, onUnmounted, watch } from "vue";
 import {
   AmbientLight,
   Box,
@@ -34,8 +34,8 @@ const model = ref(null);
 const camera = ref();
 const car = ref();
 
-let thirdPerson = reactive({ value: true });
-let freeCam = reactive({ value: true });
+let thirdPerson = ref(true);
+let freeCam = ref(true);
 let switchedMode = false;
 const thirdPersonOffset = new Vector3(0, 8, -15);
 const firstPersonOffset = new Vector3(0, 0, -2);
@@ -93,16 +93,8 @@ function switchPerspective() {
   thirdPerson.value = !thirdPerson.value;
   if (thirdPerson.value) {
     cameraOffset.copy(thirdPersonOffset);
-    // orbitControls.minAzimuthAngle =
-    //   orientations[userMovable.value.orientation];
-    // orbitControls.maxAzimuthAngle =
-    //   orientations[userMovable.value.orientation] + 1.99 * Math.PI;
   } else {
     cameraOffset.copy(firstPersonOffset);
-    // orbitControls.minAzimuthAngle =
-    //   orientations[userMovable.value.orientation] + Math.PI / 2;
-    // orbitControls.maxAzimuthAngle =
-    //   orientations[userMovable.value.orientation] - Math.PI / 2;
   }
   switchedMode = true;
 }
@@ -136,7 +128,6 @@ function handleKeyEvent(e: KeyboardEvent) {
  * adds the keylisteners to switch views and cam-modes.
  */
 onMounted(() => {
-
   const orbitControls = renderer.value.three.cameraCtrl;
   orbitControls.target = lookAt;
   orbitControls.enablePan = false;
@@ -144,22 +135,19 @@ onMounted(() => {
   orbitControls.screenSpacePanning = false;
   orbitControls.maxPolarAngle = Math.PI / 2;
 
-  orbitControls.minAzimuthAngle = computed(() => {
+  function updateAzimuth() {
     if (freeCam.value && !thirdPerson.value) {
-      const o = userMovable.value.orientation;
-      return orientations[o] + Math.PI / 2;
+      orbitControls.minAzimuthAngle =
+        orientations[userMovable.value.orientation] + Math.PI / 2;
+      orbitControls.maxAzimuthAngle =
+        orientations[userMovable.value.orientation] - Math.PI / 2;
     } else {
-      return 0;
+      orbitControls.minAzimuthAngle = 0;
+      orbitControls.minAzimuthAngle = 1.99 * Math.PI;
     }
-  });
+  }
 
-  orbitControls.maxAzimuthAngle = computed(() => {
-    if (freeCam.value && !thirdPerson.value) {
-      return orientations[userMovable.value.orientation] - Math.PI / 2;
-    } else {
-      return 1.99 * Math.PI;
-    }
-  });
+  watch(userMovable.value, updateAzimuth);
 
   receiveGameUpdate(props.instanceID);
 
