@@ -12,9 +12,14 @@ interface ISpawnPoint {
     tileNumber: number
 }
 
+/**
+ * this changes the size of the displayed minimap
+ */
+const SCALING_FACTOR = 5;
+
 const windowState: IState = reactive({
     boxSizing: '0px',
-    windowWidth: `${window.innerWidth / 2}px`,
+    windowWidth: `${window.innerWidth / SCALING_FACTOR}px`,
     numberOfRows: 1
 });
 
@@ -26,8 +31,6 @@ const spawnState: ISpawnPoint = reactive({
     yPos: -1,
     tileNumber: -1
 })
-
-const SCALING_FACTOR = 2;
 
 /**
  * got this number from map.vue, might change in the future
