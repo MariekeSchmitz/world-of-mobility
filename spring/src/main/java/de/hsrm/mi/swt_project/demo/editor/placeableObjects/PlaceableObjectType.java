@@ -5,7 +5,8 @@ public enum PlaceableObjectType {
     TREE() {
         @Override
         public PlaceableObject createPlaceableObject() {
-            Tree tree = new Tree();
+            PlaceableObject tree = new Tree();
+            tree.type = this;
             return tree;
         }
     };
