@@ -75,6 +75,14 @@ public enum Tiletype {
             tile.type = this;
             return tile;
         }
+    },
+    GRASSTILE() {
+        @Override
+        public Tile createTile() {
+            Tile tile = new GrassTile();
+            tile.type = this;
+            return tile;
+        }
     };
 
     public abstract Tile createTile();

@@ -8,7 +8,7 @@ import de.hsrm.mi.swt_project.demo.controls.Orientation;
 public class MotorizedObject extends MoveableObject {
 
     public MotorizedObject() {
-        this(0, 0, 1);
+        this(0, 0);
     }
 
     /**
@@ -18,8 +18,8 @@ public class MotorizedObject extends MoveableObject {
      * @param yPos y-position of the object on the map
      * @param maxVelocity Maximum velocity of the object.
      */
-    public MotorizedObject(float xPos, float yPos, float maxVelocity) {
-        this(Orientation.NORTH, xPos, yPos, maxVelocity);
+    public MotorizedObject(float xPos, float yPos) {
+        this(Orientation.NORTH, xPos, yPos, 1);
     }
 
     /**
@@ -78,7 +78,7 @@ public class MotorizedObject extends MoveableObject {
 
             default:
                 break;
-            
+                       
         }
     }
 

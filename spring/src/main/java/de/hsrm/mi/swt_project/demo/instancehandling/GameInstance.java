@@ -1,10 +1,13 @@
 package de.hsrm.mi.swt_project.demo.instancehandling;
 
 import java.util.HashMap;
+import java.util.ListIterator;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.GameControl;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
+import de.hsrm.mi.swt_project.demo.validation.MovementValidator;
+import de.hsrm.mi.swt_project.demo.validation.Validator;
 
 /**
  * This class represents a single game instance of the game.
@@ -12,23 +15,36 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
  * @author Alexandra Müller
  */
 public class GameInstance extends Instance {
-    private HashMap<String, MoveableObject> moveableObjects;
+
+    private HashMap<String, MoveableObject> moveableObjects = new HashMap<>();
     private String name;
     
     /**
      * Creates a new instance of the game.
+     * 
+     * NPCs that are placed on the map are deep-copied into
+     * the game instance to avoid cross-instance changes when
+     * creating multiple instances using the same map.
      * 
      * @param map the map to use for the instance
      * @param name the name of the instance
      * @param id the id of the instance
      */
     public GameInstance(GameMap map, String name, long id) {
+
         super(map, id);
-        this.moveableObjects = new HashMap<String, MoveableObject>();
-        for (MoveableObject npc : map.getNpcs()) {
-            moveableObjects.put(("NPC" + map.getNpcs().indexOf(npc)), npc.copy());
-        }
         this.name = name;
+
+        ListIterator<MoveableObject> iterator = map.getNpcs().listIterator();
+
+        while (iterator.hasNext()) {
+
+            int index = iterator.nextIndex();
+            MoveableObject npc = iterator.next().copy();
+
+            String npcName = "NPC%d".formatted(index);
+            moveableObjects.put(npcName, npc);
+        }
     }
 
     /**
@@ -37,7 +53,8 @@ public class GameInstance extends Instance {
      * @param user the user that is associated with the moveable object
      * @param control the control type that is used to move the moveable object
      */
-    public void moveMovable(String user, GameControl control) {
+    public void moveMoveable(String user, GameControl control) {
+        
         switch (control) {
             case LEFT:
                 moveableObjects.get(user).turn(Direction.LEFT);
@@ -52,17 +69,18 @@ public class GameInstance extends Instance {
                 moveableObjects.get(user).setCurrentVelocity(moveableObjects.get(user).getCurrentVelocity() - 0.1F);
                 break;
         };
-        // TODO check if move is legal
+
     }
 
+   
     /**
      * Adds a new user to the instance.
      * 
      * @param user the user to add
-     * @param movableObject the movableObject of the user
+     * @param moveableObject the moveableObject of the user
      */
-    public void addPlayer(String user, MoveableObject movableObject) {
-        moveableObjects.put(user, movableObject);
+    public void addPlayer(String user, MoveableObject moveableObject) {
+        moveableObjects.put(user, moveableObject);
     }
 
     /**
@@ -79,8 +97,25 @@ public class GameInstance extends Instance {
      */
     @Override
     public void update() {
+
+        for(MoveableObject moveableObject : moveableObjects.values()) {
+
+            Validator movementValidator = new MovementValidator(this.map.getTiles(), moveableObject);
+
+            if (movementValidator.validate()) {
+                moveableObject.move();
+            } else {
+                moveableObject.setCurrentVelocity(0);
+            }
+        }
+    }
+
+    /**
+     * Trigged Script for NPC
+     */
+    public void updateScript() {
         for(MoveableObject movableObject : moveableObjects.values()) {
-            movableObject.move();
+            movableObject.executeScript();
         }
     }
 

@@ -27,28 +27,25 @@ export function useMap(): any {
     //     NPCS: []
     // });
 
-    async function getMap(mapName: string, mapId: number) {
+    async function getGameMap(instanceID: number) {
         try {
             const controller = new AbortController();
-            const URL = '/api/editor/getmap';
+            const URL = `/api/game/getmap/${instanceID}`;
             
-            const data = {mapName, mapId};
     
             const id = setTimeout(() => controller.abort(), 8000);
     
             const response = await fetch(URL, {
-                method: 'POST',
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 signal: controller.signal,
-                body: JSON.stringify(data)
             });
             
             const jsonData: IMapDTO = await response.json();
 
             clearTimeout(id);
-
             return jsonData;
         } catch(reason) {
             console.log(`ERROR: Fetching Map failed: ${reason}`);
@@ -82,7 +79,7 @@ export function useMap(): any {
             const URL = '/api/editor/savemap';
             
             const data = {mapName, mapId};
-    
+            console.log(data)
             const id = setTimeout(() => controller.abort(), 8000);
     
             const response = await fetch(URL, {
@@ -108,7 +105,7 @@ export function useMap(): any {
     }
 
     return {
-        getMap,
+        getGameMap,
         saveMap,
         getMapEditor
     }
