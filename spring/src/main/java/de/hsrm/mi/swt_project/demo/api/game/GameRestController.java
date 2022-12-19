@@ -108,11 +108,13 @@ public class GameRestController{
      * @param user the user to join
      * @param type the type of the movableObject
      * @param id the id of the game
+     * @param xPos the x position the player wants to spawn at
+     * @param yPos the y position the player wants to spawn at
      */
     @PostMapping(value="/{id}/join-game", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void joinGame(@RequestBody JoinGameDTO joinGameRequest , @PathVariable long id) {
-        logger.info("POST Request for '/api/game/" + id + "/join-game' with body: " + joinGameRequest.user(), " and " + joinGameRequest.type());
-        instanceHandler.getGameInstanceById(id).addPlayer(joinGameRequest.user(), MoveableType.valueOf(joinGameRequest.type()).createMovable());
+        logger.info("POST Request for '/api/game/" + id + "/join-game' with body: " + joinGameRequest.user(), " and " + joinGameRequest.type() + " and " + joinGameRequest.xPos() + " and " + joinGameRequest.yPos());
+        instanceHandler.getGameInstanceById(id).addPlayer(joinGameRequest.user(), MoveableType.valueOf(joinGameRequest.type()).createMovable(joinGameRequest.xPos(), joinGameRequest.yPos()));
     }
 
     /**
@@ -131,9 +133,7 @@ public class GameRestController{
         }
 
         return new GetAllMapsOverviewDTO(maps);
-
     }
-
 
     /**
      * Validates sessionName

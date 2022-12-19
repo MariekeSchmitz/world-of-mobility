@@ -730,7 +730,7 @@
       "maxVelocity": 1.0,
       "capacity": 1.0,
       "currentVelocity": 0.0,
-      "script": "",
+      "script": "npc \u003d NPC()\r\n\r\nnpc.setSpeed(0.1)\r\n\r\nnpc.accelerate()\r\nnpc.turnLeft()\r\nnpc.brake()\r\n",
       "type": "PASSENGER"
     },
     {
@@ -740,7 +740,7 @@
       "maxVelocity": 1.0,
       "capacity": 1.0,
       "currentVelocity": 0.0,
-      "script": "",
+      "script": "npc \u003d NPC()\r\n\r\nnpc.setSpeed(0.1)\r\n\r\nnpc.accelerate()\r\nnpc.turnLeft()\r\nnpc.brake()\r\n",
       "type": "PASSENGER"
     }
   ]
