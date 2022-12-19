@@ -2,7 +2,7 @@
 <script setup lang="ts">
 //@ts-ignore
 import { Vector3 } from "three";
-import { Plane, Texture, ToonMaterial, GltfModel } from "troisjs";
+import { GltfModel } from "troisjs";
 import { withDefaults, defineProps } from "vue";
 
 const props = withDefaults(
@@ -19,7 +19,7 @@ const props = withDefaults(
 <template>
   <GltfModel
     ref="model"
-    src="/src/assets/models/GRASS_TILE.glb"
+    src="/src/assets/models/SIDEWAY.glb"
     :position="props.position"
     :rotation="props.rotation"
   />
