@@ -1,7 +1,7 @@
 <script setup lang="ts">
 //@ts-ignore
 import { orientations } from "@/services/Orientations";
-import { onMounted, defineProps, ref, watch, computed, toRef } from "vue";
+import { onMounted, ref, watch, computed, toRef } from "vue";
 import { useMapUpdate } from "@/services/useMapUpdate";
 import { useMap } from "@/services/useMap";
 import { number } from "mathjs";
@@ -35,7 +35,7 @@ const mapDefault: MapInterface = {
       {
         type: "Default",
         orientation: "NORTH",
-        placedObjects: "none",
+        placedObject: { type: "TREE" },
       },
     ],
   ],
@@ -56,19 +56,36 @@ onMounted(() => {
 <template>
   <template v-for="(subTile, column) in mapReactive.tiles">
     <template v-for="(tile, row) in subTile" :key="tile">
-      <EditorTile
-        :width="0.99"
-        :height="0.99"
-        :position="
-          new THREE.Vector3(row + offsetx + 1, column + offsety + 1, 0.01)
-        "
-        :rotation="new THREE.Vector3(0, 0, -orientations[tile.orientation])"
-        :type="tile.type"
-        :placedObject="tile.placedObjects"
-        :editorID="editorID"
-        :cmVisible="false"
-      >
-      </EditorTile>
+      <div v-if="tile.placedObject.type !== null">
+        <EditorTile
+          :width="0.99"
+          :height="0.99"
+          :position="
+            new THREE.Vector3(row + offsetx + 1, column + offsety + 1, 0.01)
+          "
+          :rotation="new THREE.Vector3(0, 0, -orientations[tile.orientation])"
+          :type="tile.type"
+          :placedObject="tile.placedObject.type"
+          :editorID="editorID"
+          :cmVisible="false"
+        >
+        </EditorTile>
+      </div>
+      <div v-else>
+        <EditorTile
+          :width="0.99"
+          :height="0.99"
+          :position="
+            new THREE.Vector3(row + offsetx + 1, column + offsety + 1, 0.01)
+          "
+          :rotation="new THREE.Vector3(0, 0, -orientations[tile.orientation])"
+          :type="tile.type"
+          placedObject="none"
+          :editorID="editorID"
+          :cmVisible="false"
+        >
+        </EditorTile>
+      </div>
     </template>
   </template>
 </template>

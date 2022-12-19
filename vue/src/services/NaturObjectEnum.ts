@@ -1,7 +1,6 @@
 export enum NaturObjectEnum {
-  TREE = "baum",
-  BUSH = "busch",
-  POND = "teich",
-  COW = "kuh",
-  HORSE = "pferd",
+  TREE = "TREE",
+  PIG = "PIG",
+  SHEEP = "SHEEP",
+  FARM = "FARM",
 }

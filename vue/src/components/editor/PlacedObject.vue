@@ -2,7 +2,6 @@
 //@ts-ignore
 import * as THREE from "three";
 import { Plane, Texture, BasicMaterial } from "troisjs";
-import { defineProps } from "vue";
 
 const props = defineProps<{
   type: string;
@@ -12,7 +11,7 @@ const props = defineProps<{
   rotation: THREE.Vector3;
 }>();
 
-let objectPath = "../src/assets/objekte/natur/" + props.type + ".png";
+let objectPath = "../src/assets/objects/" + props.type + ".png";
 </script>
 <template>
   <Plane

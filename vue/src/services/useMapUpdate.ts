@@ -20,7 +20,11 @@ export function useMapUpdate(editorId: number): any {
   interface ITile {
     type: string;
     orientation: string;
-    placedObjects: string;
+    placedObject: IPlacedObject;
+  }
+
+  interface IPlacedObject {
+    type: string;
   }
 
   interface INpc {

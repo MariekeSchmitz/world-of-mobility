@@ -1,7 +1,3 @@
 export enum ObjectEnum {
-  GASSTATION = "tankstelle",
-  BENCH = "bank",
-  FENCE = "zaun",
-  SLIDE = "rutsche",
-  SEESAW = "wippe",
+  GAS_STATION = "GAS_STATION",
 }

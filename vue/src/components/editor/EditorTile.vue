@@ -5,15 +5,7 @@ import * as THREE from "three";
 import ContextMenu from "../../components/editor/ContextMenu.vue";
 import PlacedObject from "../../components/editor/PlacedObject.vue";
 import { Plane, Texture, BasicMaterial } from "troisjs";
-import {
-  withDefaults,
-  defineProps,
-  defineEmits,
-  ref,
-  computed,
-  watch,
-  onMounted,
-} from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { usePlaceState } from "@/services/editor/usePlaceState";
 import { useContextMenu } from "@/services/editor/useContextMenu";
 import { useMapUpdate } from "@/services/useMapUpdate";
@@ -34,6 +26,7 @@ const props = withDefaults(
   { width: 0.99, height: 0.99, cmVisible: false }
 );
 
+console.log(props.placedObject);
 const cmVisible = ref(false);
 let texturePath = "../src/textures/editor/" + props.type + ".jpg";
 
@@ -182,7 +175,6 @@ function removeTile(callingObject: THREE.Mesh) {
     :position="props.position.clone().add(new THREE.Vector3(0, 0.4, 0.03))"
   ></ContextMenu>
 
-  <!--
   <PlacedObject
     v-if="props.placedObject != 'none'"
     :type="props.placedObject"
@@ -191,5 +183,4 @@ function removeTile(callingObject: THREE.Mesh) {
     :rotation="props.rotation"
     :position="props.position.clone().add(new THREE.Vector3(0, 0, 0.02))"
   ></PlacedObject>
-  -->
 </template>

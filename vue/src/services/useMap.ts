@@ -3,10 +3,14 @@
 import { reactive } from "vue";
 
 export function useMap(): any {
+  interface IPlacedObject {
+    type: string;
+  }
+
   interface ITile {
     type: string;
     orientation: string;
-    placedObjects: string;
+    placedObject: IPlacedObject;
   }
 
   interface INpc {

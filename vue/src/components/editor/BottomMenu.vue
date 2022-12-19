@@ -179,31 +179,31 @@ function switchContent(element: string) {
                 class="itemButton"
                 @click="setPlaceState(NaturObjectEnum.TREE, false)"
               >
-                <img src="@/assets/objekte/natur/baum.png" />
+                <img src="@/assets/objects/TREE.png" />
               </button>
             </li>
             <li>
               <button
                 class="itemButton"
-                @click="setPlaceState(NaturObjectEnum.BUSH, false)"
+                @click="setPlaceState(NaturObjectEnum.FARM, false)"
               >
-                <img src="@/assets/objekte/natur/busch.png" />
+                <img src="@/assets/objects/FARM.png" />
               </button>
             </li>
             <li>
               <button
                 class="itemButton"
-                @click="setPlaceState(NaturObjectEnum.COW, false)"
+                @click="setPlaceState(NaturObjectEnum.SHEEP, false)"
               >
-                <img src="@/assets/objekte/natur/kuh.png" />
+                <img src="@/assets/objects/SHEEP.png" />
               </button>
             </li>
             <li>
               <button
                 class="itemButton"
-                @click="setPlaceState(NaturObjectEnum.HORSE, false)"
+                @click="setPlaceState(NaturObjectEnum.PIG, false)"
               >
-                <img src="@/assets/objekte/natur/pferd.png" />
+                <img src="@/assets/objects/PIG.png" />
               </button>
             </li>
           </div>
@@ -212,9 +212,9 @@ function switchContent(element: string) {
             <li>
               <button
                 class="itemButton"
-                @click="setPlaceState(ObjectEnum.GASSTATION, false)"
+                @click="setPlaceState(ObjectEnum.GAS_STATION, false)"
               >
-                <img src="@/assets/objekte/gegenstaende/tankstelle.png" />
+                <img src="@/assets/objects/GAS_STATION.png" />
               </button>
             </li>
           </div>
