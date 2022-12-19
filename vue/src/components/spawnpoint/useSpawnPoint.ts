@@ -35,7 +35,7 @@ const spawnState: ISpawnPoint = reactive({
 /**
  * got this number from map.vue, might change in the future
  */
-const SQUARE_SIZE = 10;
+const SQUARE_SIZE = 1;
 
 export function useSpawnPoint() {
 

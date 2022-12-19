@@ -95,12 +95,12 @@ export function useGame(): any {
     }
   }
 
-  async function joinGame(instanceId: number, user: string, type: string) {
+  async function joinGame(instanceId: number, user: string, type: string, xPos:number, yPos:number) {
     try {
       const controller = new AbortController();
       const URL = "/api/game/" + instanceId + "/join-game";
 
-      const data = { user: user, type: type };
+      const data = { user: user, type: type, xPos:xPos, yPos:yPos};
 
       const id = setTimeout(() => controller.abort(), 8000);
 

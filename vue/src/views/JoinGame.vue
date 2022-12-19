@@ -7,7 +7,9 @@ import { useGame } from "@/services/useGame";
 import { useLogin } from "@/services/login/useLogin";
 import router from "@/router";
 import SpawnPoint from "@/components/spawnpoint/SpawnPoint.vue";
-const { receiveGameUpdate, joinGame } = useGame();
+import { useSpawnPoint } from '@/components/spawnpoint/useSpawnPoint';
+const { spawnState } = useSpawnPoint();
+const { joinGame } = useGame();
 const { userList, getUserList } = useUser();
 const { loginData } = useLogin();
 
@@ -19,7 +21,7 @@ let moveableType = "";
 
 function join() {
   if (props.instanceID != undefined) {
-    joinGame(props.instanceID, loginData.username, moveableType);
+    joinGame(props.instanceID, loginData.username, moveableType, spawnState.xPos, spawnState.yPos);
     router.push("/game/" + props.instanceID);
   }
 }
