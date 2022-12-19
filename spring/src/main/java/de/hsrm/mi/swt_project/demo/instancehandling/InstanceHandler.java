@@ -82,7 +82,7 @@ public class InstanceHandler implements Updateable {
      */
     public long createEditorInstance(String mapName) {
         try {
-            String fileName = "%s/%S.json".formatted(mapSavePath, mapName);
+            String fileName = "%s/%s.json".formatted(mapSavePath, mapName);
             Path filePath = Path.of(fileName);
             String mapFile = Files.readString(filePath);
             instances.add(new EditorInstance(loadMap(mapFile), idCounter, mapSavePath));
