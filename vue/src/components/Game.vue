@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive, onUnmounted } from "vue";
+import { ref, computed, onMounted, reactive, onUnmounted, watch } from "vue";
 import {
   AmbientLight,
   Box,
@@ -19,14 +19,22 @@ import { useGame } from "@/services/useGame";
 import { useLogin } from "@/services/login/useLogin";
 import { orientations } from "@/services/Orientations";
 
+const SIZE = 10
+
+
 const props = withDefaults(
   defineProps<{
     instanceID: number;
   }>(),
   { instanceID: 1 }
 );
-const { sendCommand, receiveGameUpdate, mapUpdates, getUserMoveable } =
-  useGame();
+const {
+  sendCommand,
+  receiveGameUpdate,
+  mapUpdates,
+  getUserMoveable,
+  leaveGame,
+} = useGame();
 const { loginData } = useLogin();
 
 const renderer = ref();
@@ -41,7 +49,7 @@ const thirdPersonOffset = new Vector3(0, 8, -15);
 const firstPersonOffset = new Vector3(0, 0, -2);
 const cameraOffset = reactive(new Vector3(0, 8, -15));
 const upVector = new Vector3(0, 1, 0);
-let movementVector = new Vector3(0, 0, 0);
+let movementVector = new Vector3(0, 0, 0);   
 
 const userMovable = computed(() => {
   return getUserMoveable(loginData.username);
@@ -69,9 +77,9 @@ const cameraPosition = computed(() => {
 const allMoveables = computed(() => {
   if (userMovable.value != undefined) {
     const newLookAt = new Vector3(
-      userMovable.value.xPos,
+      userMovable.value.xPos * SIZE,
       2,
-      userMovable.value.yPos
+      userMovable.value.yPos * SIZE
     );
     movementVector = newLookAt.clone().sub(lookAt);
     lookAt.copy(newLookAt);
@@ -93,16 +101,8 @@ function switchPerspective() {
   thirdPerson.value = !thirdPerson.value;
   if (thirdPerson.value) {
     cameraOffset.copy(thirdPersonOffset);
-    // orbitControls.minAzimuthAngle =
-    //   orientations[userMovable.value.orientation];
-    // orbitControls.maxAzimuthAngle =
-    //   orientations[userMovable.value.orientation] + 1.99 * Math.PI;
   } else {
     cameraOffset.copy(firstPersonOffset);
-    // orbitControls.minAzimuthAngle =
-    //   orientations[userMovable.value.orientation] + Math.PI / 2;
-    // orbitControls.maxAzimuthAngle =
-    //   orientations[userMovable.value.orientation] - Math.PI / 2;
   }
   switchedMode = true;
 }
@@ -136,7 +136,6 @@ function handleKeyEvent(e: KeyboardEvent) {
  * adds the keylisteners to switch views and cam-modes.
  */
 onMounted(() => {
-
   const orbitControls = renderer.value.three.cameraCtrl;
   orbitControls.target = lookAt;
   orbitControls.enablePan = false;
@@ -144,29 +143,26 @@ onMounted(() => {
   orbitControls.screenSpacePanning = false;
   orbitControls.maxPolarAngle = Math.PI / 2;
 
-  orbitControls.minAzimuthAngle = computed(() => {
+  function setAzimuthAngle(){
+    console.log("hallo");
     if (freeCam.value && !thirdPerson.value) {
-      const o = userMovable.value.orientation;
-      return orientations[o] + Math.PI / 2;
+      orbitControls.minAzimuthAngle = orientations[userMovable.value.orientation] - Math.PI / 2;
+      orbitControls.minAzimuthAngle = orientations[userMovable.value.orientation] + Math.PI / 2;
     } else {
-      return 0;
+      orbitControls.minAzimuthAngle =
+      orientations[userMovable.value.orientation];
+      orbitControls.maxAzimuthAngle =
+      orientations[userMovable.value.orientation] + 1.99 * Math.PI;
     }
-  });
-
-  orbitControls.maxAzimuthAngle = computed(() => {
-    if (freeCam.value && !thirdPerson.value) {
-      return orientations[userMovable.value.orientation] - Math.PI / 2;
-    } else {
-      return 1.99 * Math.PI;
-    }
-  });
-
+  }
+  
   receiveGameUpdate(props.instanceID);
-
   document.addEventListener("keyup", handleKeyEvent);
+  watch(userMovable.value,()=>setAzimuthAngle());
 });
 onUnmounted(() => {
   document.removeEventListener("keyup", handleKeyEvent);
+  leaveGame(props.instanceID, loginData.username, "MOTORIZED_OBJECT");
 });
 </script>
 
@@ -196,7 +192,7 @@ onUnmounted(() => {
 
       <div v-for="(moveable, index) in allMoveables" :key="index">
         <Car
-          :pos="new Vector3(moveable.xPos, 0.5, moveable.yPos)"
+          :pos="new Vector3(moveable.xPos * SIZE, 0.5, moveable.yPos * SIZE)"
           :rotation="orientations[moveable.orientation]"
         ></Car>
       </div>

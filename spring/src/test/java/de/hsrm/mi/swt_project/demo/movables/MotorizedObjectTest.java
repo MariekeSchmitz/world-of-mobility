@@ -33,7 +33,6 @@ class MotorizedObjectTest {
             vehicle.turn(Direction.RIGHT);
             assertEquals(orientation, vehicle.getOrientation());
         }
-
     }
 
     @Test

@@ -1,6 +1,5 @@
 package de.hsrm.mi.swt_project.demo.api.game;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class GameRestController{
     public void getGameCommand(@RequestBody GetGameCommandDTO gameCommand, @PathVariable long id) {
         logger.info("POST Request for '/api/game/" + id + "/game-command' with body: " + gameCommand);
 
-        instanceHandler.getGameInstanceById(id).moveMovable(gameCommand.user(), gameCommand.control());
+        instanceHandler.getGameInstanceById(id).moveMoveable(gameCommand.user(), gameCommand.control());
     }
 
     /**
@@ -163,5 +162,18 @@ public class GameRestController{
     public SendMapDTO getMapEditor(@PathVariable Long instanceID) {
         GameInstance gameInstance = instanceHandler.getGameInstanceById(instanceID);
         return SendMapDTO.from(gameInstance.getMap());
+    }
+
+    /**
+     * Removes a player from an existing game.
+     * 
+     * @param user the user to leave
+     * @param type the type of the movableObject
+     * @param id the id of the game
+     * @author Astrid Klemmer
+     */
+    @PostMapping(value="/{id}/leave-game", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void leaveGame(@RequestBody JoinGameDTO leaveGameRequest , @PathVariable long id) {
+        instanceHandler.getGameInstanceById(id).removePlayer(leaveGameRequest.user());
     }
 }
