@@ -24,7 +24,7 @@ const emit = defineEmits(['turnRight'])
   </Plane>
 
     <!--Right Turn-->
-  <Plane @click="$emit('turnRight',this)"
+  <Plane @click="$emit('turnRight')"
     :width="props.width / 4"
     :height="props.height * (2/3)"
     :position="props.position.clone().add(new Vector3(0.25,0,0.01))"
@@ -33,7 +33,7 @@ const emit = defineEmits(['turnRight'])
   </Plane>
 
   <!--Left Turn-->
-  <Plane @click="$emit('turnLeft',this)" 
+  <Plane @click="$emit('turnLeft')" 
     :width="props.width / 4"
     :height="props.height * (2/3)"
     :position="props.position.clone().add(new Vector3(-0.25,0,0.01))"
@@ -42,7 +42,7 @@ const emit = defineEmits(['turnRight'])
   </Plane>
 
   <!--Remove-->
-  <Plane @click="$emit('removeTile',this)" 
+  <Plane @click="$emit('removeTile')" 
     :width="props.width / 4" 
     :height="props.height * (2/3)"
     :position="props.position.clone().add(new Vector3(0,0,0.01))"
