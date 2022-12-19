@@ -26,17 +26,15 @@ async function checkValidation(name: string) {
   validationChecked.value = true;
 
   if (valSuccess.validationSuccess) {
-    validationPassed.value = true;
+    await createGameInstance(props.mapName, name);
+    if (instanceId.id != -1) {
+      router.push("/joingame/" + instanceId.id);
+    }
   }
 }
 
 async function startGame(name: string) {
-  await createGameInstance(props.mapName, name);
 
-  if (instanceId.id != -1) {
-    joinGame(instanceId.id, loginData.username, "MOTORIZED_OBJECT");
-    router.push("/game/" + instanceId.id);
-  }
 }
 </script>
 
@@ -73,13 +71,6 @@ async function startGame(name: string) {
     >
       Erstellen
     </button>
-    <button
-      v-if="validationChecked && validationPassed"
-      @click="startGame(name)"
-    >
-      Start
-    </button>
-
     <p v-if="validationChecked && !validationPassed">
       Der Name {{ name }} wurde schon vergeben.
     </p>
