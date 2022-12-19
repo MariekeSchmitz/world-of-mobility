@@ -1,24 +1,23 @@
 import { readonly, ref } from "vue";
 
 interface Place {
-    type: string;
+  type: string;
+  isTile: boolean;
 }
 
-const placeState = ref<Place> ({
-    type: "none"
-})
+const placeState = ref<Place>({
+  type: "none",
+  isTile: true,
+});
 
-
-
-function setPlaceState(state:string){
-    placeState.value.type = state
-    //console.log(placeState.value)
+function setPlaceState(type: string, isTile: boolean) {
+  placeState.value.type = type;
+  placeState.value.isTile = isTile;
 }
 
-
-export function usePlaceState(){
-    return{
-        readPlaceState: readonly(placeState),
-        setPlaceState
-    }
+export function usePlaceState() {
+  return {
+    readPlaceState: readonly(placeState),
+    setPlaceState,
+  };
 }

@@ -15,7 +15,6 @@
   import LeftMenu from "../../components/editor/LeftMenu.vue";
   import EditorMap from "../../components/editor/EditorMap.vue";
   import MiniMap from "../../components/editor/MiniMap.vue";
-  import { usePlaceState } from "@/services/editor/usePlaceState";
   import {useMap} from "@/services/useMap"
   import { number } from "mathjs";
   import { useUserEditor } from "@/services/useUserEditor";
@@ -49,18 +48,6 @@
     var mouse = new THREE.Vector2();
 
     const {saveMap} = useMap();
-    const {setPlaceState} = usePlaceState();
-   
-    /**
-     * Sets Tile to be placed when selected from Bottom Menu
-     * @param tileType name of Tiletype
-     * 
-     * Author: Astrid Klemmer
-     */
-    //PASS REACTIVE COMPONENT TO BOTTOM MENU AND EDITORMAP, SO PLACEMENT LOGIC CAN BE IMPLEMENTED IN EDITORMAP
-    function setTileInfo(tileType:string){
-      setPlaceState(tileType);
-    }
 
 </script>
 
@@ -84,7 +71,7 @@
 
   <LeftMenu />
 
-  <BottomMenu v-on:selectTile="setTileInfo($event)"></BottomMenu>
+  <BottomMenu></BottomMenu>
 
   <MiniMap />
 

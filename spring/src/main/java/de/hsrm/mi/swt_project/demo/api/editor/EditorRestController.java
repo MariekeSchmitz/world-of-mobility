@@ -69,7 +69,9 @@ public class EditorRestController {
 
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(editorId);
         Boolean placed = editorInstance.editPlaceablesOnMap(getPlaceableObjectUpdateDTO.xPos(), getPlaceableObjectUpdateDTO.yPos(), getPlaceableObjectUpdateDTO.control(), getPlaceableObjectUpdateDTO.type());
-
+        if(placed){
+            //loopService.publishInstanceState(editorInstance);
+        }
         return new ValidationDTO(placed);
     }
 

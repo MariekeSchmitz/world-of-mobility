@@ -35,7 +35,7 @@ const mapDefault: MapInterface = {
       {
         type: "Default",
         orientation: "NORTH",
-        placedObjects: [],
+        placedObjects: "none",
       },
     ],
   ],
@@ -64,6 +64,7 @@ onMounted(() => {
         "
         :rotation="new THREE.Vector3(0, 0, -orientations[tile.orientation])"
         :type="tile.type"
+        :placedObject="tile.placedObjects"
         :editorID="editorID"
         :cmVisible="false"
       >

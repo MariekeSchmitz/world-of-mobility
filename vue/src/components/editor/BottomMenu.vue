@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { TileName } from "@/services/editor/TileNameEnum";
+import { usePlaceState } from "@/services/editor/usePlaceState";
 import { NaturObjectEnum } from "@/services/NaturObjectEnum";
 import { ObjectEnum } from "@/services/ObjectEnum";
+
+const { setPlaceState } = usePlaceState();
 
 function scrollingLeft() {
   const boxwrapper = document.getElementById("box-wrapper");
@@ -117,7 +120,7 @@ function switchContent(element: string) {
             <li>
               <button
                 class="itemButton"
-                @click="$emit('selectTile', TileName.STREET_STRAIGHT)"
+                @click="setPlaceState(TileName.STREET_STRAIGHT, true)"
               >
                 <img src="@/textures/editor/STREET_STRAIGHT.jpg" />
               </button>
@@ -125,7 +128,7 @@ function switchContent(element: string) {
             <li>
               <button
                 class="itemButton"
-                @click="$emit('selectTile', TileName.STREET_CURVE)"
+                @click="setPlaceState(TileName.STREET_CURVE, true)"
               >
                 <img src="@/textures/editor/STREET_CURVE.jpg" />
               </button>
@@ -133,7 +136,7 @@ function switchContent(element: string) {
             <li>
               <button
                 class="itemButton"
-                @click="$emit('selectTile', TileName.STREET_T_CROSS)"
+                @click="setPlaceState(TileName.STREET_T_CROSS, true)"
               >
                 <img src="@/textures/editor/STREET_T_CROSS.jpg" />
               </button>
@@ -141,7 +144,7 @@ function switchContent(element: string) {
             <li>
               <button
                 class="itemButton"
-                @click="$emit('selectTile', TileName.STREET_CROSS)"
+                @click="setPlaceState(TileName.STREET_CROSS, true)"
               >
                 <img src="@/textures/editor/STREET_CROSS.jpg" />
               </button>
@@ -149,7 +152,7 @@ function switchContent(element: string) {
             <li>
               <button
                 class="itemButton"
-                @click="$emit('selectTile', TileName.SIDEWAY)"
+                @click="setPlaceState(TileName.SIDEWAY, true)"
               >
                 <img src="@/textures/editor/SIDEWAY.jpg" />
               </button>
@@ -174,7 +177,7 @@ function switchContent(element: string) {
             <li>
               <button
                 class="itemButton"
-                @click="$emit('selectObject', NaturObjectEnum.TREE)"
+                @click="setPlaceState(NaturObjectEnum.TREE, false)"
               >
                 <img src="@/assets/objekte/natur/baum.png" />
               </button>
@@ -182,7 +185,7 @@ function switchContent(element: string) {
             <li>
               <button
                 class="itemButton"
-                @click="$emit('selectObject', NaturObjectEnum.BUSH)"
+                @click="setPlaceState(NaturObjectEnum.BUSH, false)"
               >
                 <img src="@/assets/objekte/natur/busch.png" />
               </button>
@@ -190,17 +193,17 @@ function switchContent(element: string) {
             <li>
               <button
                 class="itemButton"
-                @click="$emit('selectObject', NaturObjectEnum.HORSE)"
+                @click="setPlaceState(NaturObjectEnum.COW, false)"
               >
-                <img src="@/assets/objekte/natur/pferd.png" />
+                <img src="@/assets/objekte/natur/kuh.png" />
               </button>
             </li>
             <li>
               <button
                 class="itemButton"
-                @click="$emit('selectObject', NaturObjectEnum.COW)"
+                @click="setPlaceState(NaturObjectEnum.HORSE, false)"
               >
-                <img src="@/assets/objekte/natur/kuh.png" />
+                <img src="@/assets/objekte/natur/pferd.png" />
               </button>
             </li>
           </div>
@@ -209,7 +212,7 @@ function switchContent(element: string) {
             <li>
               <button
                 class="itemButton"
-                @click="$emit('selectObject', ObjectEnum)"
+                @click="setPlaceState(ObjectEnum.GASSTATION, false)"
               >
                 <img src="@/assets/objekte/gegenstaende/tankstelle.png" />
               </button>

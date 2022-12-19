@@ -18,8 +18,8 @@ public class Streetile extends TrafficTile implements DriveableByBike, Driveable
         return super.getOrientation();
     }
 
-    public List<Placeable> getPlacedObjects() {
-        return super.getPlacedObjects();
+    public Placeable getPlacedObject() {
+        return super.getPlacedObject();
     }
 
 
