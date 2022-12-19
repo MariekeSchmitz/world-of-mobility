@@ -35,7 +35,7 @@ public class InstanceHandler implements Updateable {
     Logger logger = LoggerFactory.getLogger(InstanceHandler.class);
     private final String JSON = ".json";
 
-    protected List<Instance> instances;
+    protected List<Instance> instances = new ArrayList<Instance>();
 
     // TODO think of another solution because long can reach limit
     protected long idCounter = 1;
@@ -140,10 +140,9 @@ public class InstanceHandler implements Updateable {
             MoveableType npcType = npcObject.getEnum(MoveableType.class, "type");
             float xPosition = npcObject.getFloat("xPos");
             float yPosition = npcObject.getFloat("yPos");
-            float maxVelocity = npcObject.getFloat("maxVelocity");
             float capacity = npcObject.getFloat("capacity");
             String script = npcObject.getString("script");
-            MoveableObject newNpc = npcType.createMovable(xPosition, yPosition, maxVelocity);
+            MoveableObject newNpc = npcType.createMovable(xPosition, yPosition);
             newNpc.setCapacity(capacity);
             newNpc.loadScript(script);
             map.addNpc(newNpc);

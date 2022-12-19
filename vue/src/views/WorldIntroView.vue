@@ -37,6 +37,11 @@ function switchScene(mode: string) {
   }
 }
 
+async function addUserAndJoin(id: number) {
+  joinEditor(id, loginData.username);
+  router.push(`/editor/${id}`);
+}
+
 async function getWorldAndForwardToEditor(name: string) {
   const id = await createWorld(name, "createWorldFromMap");
   joinEditor(id, loginData.username);
@@ -84,12 +89,12 @@ async function getWorldAndForwardToEditor(name: string) {
 
       <div class="flexbox">
         <div class="box" v-for="ele in instanceState.instancelist.instancelist">
-          <RouterLink :to="{ path: '/editor/' + ele.id }">
+          <button @click="addUserAndJoin(ele.id)">
             <GameListItem
               :worldname="ele.worldname"
               :people="ele.playeramount"
             ></GameListItem>
-          </RouterLink>
+          </button>
         </div>
 
         <div class="box" v-if="showAll" v-for="ele in mapsOverview.allMaps">

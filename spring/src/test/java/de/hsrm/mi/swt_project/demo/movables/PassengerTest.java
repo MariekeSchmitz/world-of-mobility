@@ -76,8 +76,8 @@ class PassengerTest {
     
     @Test
     void testEquals() {
-        Passenger p1 = new Passenger(50, 50, 100);
-        Passenger p2 = new Passenger(50, 50, 100);
+        Passenger p1 = new Passenger(50, 50);
+        Passenger p2 = new Passenger(50, 50);
 
         assertNotSame(p1, p2);
         assertEquals(p1, p2);
@@ -86,8 +86,8 @@ class PassengerTest {
 
     @Test
     void testHashcode() {
-        Passenger p1 = new Passenger(10, 20, 30);
-        Passenger p2 = new Passenger(10, 20, 30);
+        Passenger p1 = new Passenger(10, 20);
+        Passenger p2 = new Passenger(10, 20);
 
         assertNotSame(p1, p2);
         assertEquals(p1.hashCode(), p2.hashCode());
@@ -95,8 +95,8 @@ class PassengerTest {
 
     @Test
     void testToString() {
-        Passenger p = new Passenger(1, 2, 3);
-        assertEquals("Passenger[xPos=1.00,yPos=2.00,curV=0.00,maxV=3.00,cap=1.00,orientation=NORTH]", p.toString());
+        Passenger p = new Passenger(1, 2);
+        assertEquals("Passenger[xPos=1.00,yPos=2.00,curV=0.00,maxV=1.00,cap=1.00,orientation=NORTH]", p.toString());
     }
     
 }

@@ -154,16 +154,16 @@ onMounted(async () => {
 </script>
 <template>
   <!-- Loop to build the map -->
-  <div v-for="(subTile, row) in loadedMap.tiles" :key="`${row}`">
+  <div v-for="(subTile, row) in loadedMap.tiles.slice().reverse()" :key="`${row}`">
     <div v-for="(tile, column) in subTile" :key="`${tile}`">
       <Tile
         :width="squareSize"
         :height="squareSize"
         :position="
           new THREE.Vector3(
-            column * squareSize,
+            column * squareSize + (0.5 * squareSize) ,
             tile.positionY,
-            row * squareSize
+            row * squareSize + (0.5 * squareSize) 
           )
         "
         :rotation="computeVector3(tile.orientation)"
