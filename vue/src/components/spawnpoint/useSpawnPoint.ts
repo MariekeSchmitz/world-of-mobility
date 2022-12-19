@@ -51,6 +51,11 @@ export function useSpawnPoint() {
         windowState.boxSizing = `${window.innerWidth / (SCALING_FACTOR * windowState.numberOfRows)}px`
     }
 
+    /**
+     * TODO offset still needs to be implemented
+     * @param xPos 
+     * @param yPos 
+     */
     function setSpawnPoint(xPos: number, yPos: number) {
         spawnState.xPos = xPos * SQUARE_SIZE;
         spawnState.yPos = yPos * SQUARE_SIZE;
