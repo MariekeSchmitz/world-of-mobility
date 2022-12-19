@@ -89,7 +89,7 @@ public class InstanceHandler implements Updateable {
         } catch (IOException e) {
             GameMap map = new GameMap();
             map.setName(mapName);
-            instances.add(new EditorInstance(map, idCounter));
+            instances.add(new EditorInstance(map, idCounter, mapSavePath));
         }
 
         return idCounter++;
