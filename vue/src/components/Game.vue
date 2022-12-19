@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive } from "vue";
+import { ref, computed, onMounted, reactive, onUnmounted, watch } from "vue";
 import {
   AmbientLight,
   Box,
@@ -10,13 +10,17 @@ import {
   Renderer,
   ToonMaterial,
   Texture,
+  GltfModel,
 } from "troisjs";
 import Map from "@/components/Map.vue";
 import Car from "@/components/objects/Car.vue";
-import { MathUtils, Vector3 } from "three";
+import { Vector3 } from "three";
 import { useGame } from "@/services/useGame";
-import { Orientation } from "@/services/editor/OrientationEnum";
 import { useLogin } from "@/services/login/useLogin";
+import { orientations } from "@/services/Orientations";
+
+const SIZE = 10
+
 
 const props = withDefaults(
   defineProps<{
@@ -24,121 +28,142 @@ const props = withDefaults(
   }>(),
   { instanceID: 1 }
 );
-const { sendCommand, receiveGameUpdate, mapUpdates } = useGame();
+const {
+  sendCommand,
+  receiveGameUpdate,
+  mapUpdates,
+  getUserMoveable,
+  leaveGame,
+} = useGame();
 const { loginData } = useLogin();
 
 const renderer = ref();
+const model = ref(null);
 const camera = ref();
 const car = ref();
-let playerOrientation = reactive({ o: Orientation.NORTH });
 
-
-//TODO: could be an interface
-const gameControl = "";
-const degree = Math.PI / 4;
-
-const restPath = `/${props.instanceID}/game-command`;
-
-let thirdPerson = true;
+let thirdPerson = reactive({ value: true });
+let freeCam = reactive({ value: true });
+let switchedMode = false;
 const thirdPersonOffset = new Vector3(0, 8, -15);
-const firstPersonOffset = new Vector3(0, 1, -3);
+const firstPersonOffset = new Vector3(0, 0, -2);
 const cameraOffset = reactive(new Vector3(0, 8, -15));
 const upVector = new Vector3(0, 1, 0);
+let movementVector = new Vector3(0, 0, 0);   
 
-const positionTemp = reactive(new Vector3(15, 1, 15));
+const userMovable = computed(() => {
+  return getUserMoveable(loginData.username);
+});
+
+const lookAt = reactive(new Vector3(15, 1, 15));
 
 const cameraPosition = computed(() => {
-  const vecTempTarget = positionTemp.clone();
+  const vecTempTarget = lookAt.clone();
   const vecTempOffset = cameraOffset.clone();
-  vecTempOffset.applyAxisAngle(upVector, playerOrientation.o);
-  return vecTempTarget.add(vecTempOffset);
+  if (freeCam.value && camera.value && !switchedMode) {
+    return camera.value.camera.position.add(movementVector);
+  } else {
+    if (userMovable.value != undefined) {
+      vecTempOffset.applyAxisAngle(
+        upVector,
+        orientations[userMovable.value.orientation]
+      );
+    }
+    switchedMode = false;
+    return vecTempTarget.add(vecTempOffset);
+  }
 });
 
 const allMoveables = computed(() => {
-  //console.log(mapUpdates.moveableUpdates);
+  if (userMovable.value != undefined) {
+    const newLookAt = new Vector3(
+      userMovable.value.xPos * SIZE,
+      2,
+      userMovable.value.yPos * SIZE
+    );
+    movementVector = newLookAt.clone().sub(lookAt);
+    lookAt.copy(newLookAt);
+  }
   return mapUpdates.moveableUpdates;
 });
-/**
- * In this method we set the KeyListner for the Gameview
- * and setup the cam to work as intended.
- */
-onMounted(() => {
-  const orbitControls = renderer.value.three.cameraCtrl;
-  const cameraControls = camera.value.camera;
-  orbitControls.target = positionTemp;
-  orbitControls.enablePan = false;
-
-  orbitControls.screenSpacePanning = false;
-  //orbitControls.minPolarAngle = Math.PI/2;
-  orbitControls.maxPolarAngle = Math.PI / 2;
-  //orbitControls.maxAzimuthAngle = 0;
-  //orbitControls.minAzimuthAngle = 0;
-  document.addEventListener("keyup", (e) => {
-    if (e.code === "KeyW") {
-      playerOrientation.o = Orientation.NORTH;
-      sendCommand(props.instanceID, loginData.username, "SPEED_UP");
-    } else if (e.code === "KeyS") {
-      playerOrientation.o = Orientation.SOUTH;
-      sendCommand(props.instanceID, loginData.username, "SPEED_DOWN");
-    } else if (e.code === "KeyA") {
-      sendCommand(props.instanceID, loginData.username, "RIGHT");
-      playerOrientation.o = Orientation.WEST;
-    } else if (e.code === "KeyD") {
-      sendCommand(props.instanceID, loginData.username, "LEFT");
-      playerOrientation.o = Orientation.EAST;
-    } else if (e.code === "KeyV") {
-      switchPerspective();
-    }
-  });
-
-  receiveGameUpdate(props.instanceID);
-});
-
-const pi = MathUtils.degToRad(180);
 
 /**
- * returns the radiant value of a passed amount of steps - value.
- * @param value each step represents 1/8 of an 360* turn.
+ * switches from the Follower Cam to the Freecam and vica versa.
  */
-function rotation(value: number) {
-  return (value * pi) / 4;
-}
-/**
- * returns the rotation value as radiant based of our orientation.
- * calls the rotation method for that.
- * @param orientation the orientation of an object as string.
- */
-function orientation2angle(orientation: string) {
-  switch (orientation) {
-    case "NORTH":
-      return rotation(0);
-    case "NORTH_EAST":
-      return rotation(1);
-    case "EAST":
-      return rotation(2);
-    case "SOUTH_EAST":
-      return rotation(3);
-    case "SOUTH":
-      return rotation(4);
-    case "SOUTH_WEST":
-      return rotation(5);
-    case "WEST":
-      return rotation(6);
-    case "NORTH_WEST":
-      return rotation(7);
-    default:
-      return rotation(0);
-  }
+function switchCamMode() {
+  freeCam.value = !freeCam.value;
 }
 
+/**
+ * switches from the third Person View to the Firstperson view and vica versa.
+ */
 function switchPerspective() {
-  thirdPerson = !thirdPerson;
-  if (thirdPerson) {
+  thirdPerson.value = !thirdPerson.value;
+  if (thirdPerson.value) {
     cameraOffset.copy(thirdPersonOffset);
   } else {
     cameraOffset.copy(firstPersonOffset);
   }
+  switchedMode = true;
 }
+function onReady(model: any) {
+  console.log("model Ready", model);
+}
+/**
+ * An Eventhandler for the Keyboardevents.
+ * @param e a KeyboardEvent, pressed button etc.
+ */
+function handleKeyEvent(e: KeyboardEvent) {
+  if (e.code === "KeyW") {
+    sendCommand(props.instanceID, loginData.username, "SPEED_UP");
+  } else if (e.code === "KeyS") {
+    sendCommand(props.instanceID, loginData.username, "SPEED_DOWN");
+  } else if (e.code === "KeyA") {
+    sendCommand(props.instanceID, loginData.username, "RIGHT");
+  } else if (e.code === "KeyD") {
+    sendCommand(props.instanceID, loginData.username, "LEFT");
+  } else if (e.code === "KeyV") {
+    switchPerspective();
+  } else if (e.code === "KeyF") {
+    switchCamMode();
+  }
+}
+
+/**
+ * sets up a big chunk of the functionality for the gamewindow.
+ * prepares the camera functionality.
+ * adds the keylistener to submit the commands to the backend.
+ * adds the keylisteners to switch views and cam-modes.
+ */
+onMounted(() => {
+  const orbitControls = renderer.value.three.cameraCtrl;
+  orbitControls.target = lookAt;
+  orbitControls.enablePan = false;
+  orbitControls.enableRotate = true;
+  orbitControls.screenSpacePanning = false;
+  orbitControls.maxPolarAngle = Math.PI / 2;
+
+  function setAzimuthAngle(){
+    console.log("hallo");
+    if (freeCam.value && !thirdPerson.value) {
+      orbitControls.minAzimuthAngle = orientations[userMovable.value.orientation] - Math.PI / 2;
+      orbitControls.minAzimuthAngle = orientations[userMovable.value.orientation] + Math.PI / 2;
+    } else {
+      orbitControls.minAzimuthAngle =
+      orientations[userMovable.value.orientation];
+      orbitControls.maxAzimuthAngle =
+      orientations[userMovable.value.orientation] + 1.99 * Math.PI;
+    }
+  }
+  
+  receiveGameUpdate(props.instanceID);
+  document.addEventListener("keyup", handleKeyEvent);
+  watch(userMovable.value,()=>setAzimuthAngle());
+});
+onUnmounted(() => {
+  document.removeEventListener("keyup", handleKeyEvent);
+  leaveGame(props.instanceID, loginData.username, "MOTORIZED_OBJECT");
+});
 </script>
 
 <template>
@@ -148,20 +173,27 @@ function switchPerspective() {
       <!-- Light -->
       <PointLight :position="{ x: 0, y: 0, z: 10 }" />
       <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
+      <GltfModel
+        ref="model"
+        src="/src/assets/models/Qube.glb"
+        @load="onReady"
+        :position="new Vector3(10, 0, 10)"
+      />
       <!-- Map -->
-      <Map></Map>
+      <Map :instanceID="props.instanceID"></Map>
       <!-- "Car" -->
-      <Box :position="positionTemp" :scale="{ x: 1, y: 1, z: 2 }" ref="car"
+      <Box
+        :position="{ x: 1, y: 1, z: 2 }"
+        :scale="{ x: 1, y: 1, z: 2 }"
+        ref="car"
         ><ToonMaterial>
-          <Texture src="src\textures\Obsidian.jpg" /> </ToonMaterial
+          <Texture src="/src/textures/Obsidian.jpg" /> </ToonMaterial
       ></Box>
-      <Car :pos="positionTemp" :rotation="orientation2angle('NORTH')"> </Car>
 
       <div v-for="(moveable, index) in allMoveables" :key="index">
         <Car
-          v-if="moveable.classname === 'Passenger'"
-          :pos="new Vector3(moveable.xPos, 1, moveable.yPos)"
-          :rotation="orientation2angle(moveable.orientation)"
+          :pos="new Vector3(moveable.xPos * SIZE, 0.5, moveable.yPos * SIZE)"
+          :rotation="orientations[moveable.orientation]"
         ></Car>
       </div>
     </Scene>

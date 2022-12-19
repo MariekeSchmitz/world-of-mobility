@@ -6,7 +6,7 @@ import java.util.List;
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.controls.Turnable;
-import de.hsrm.mi.swt_project.demo.editor.placeable_objects.Placeable;
+import de.hsrm.mi.swt_project.demo.editor.placeableObjects.Placeable;
 
 
  /** 
@@ -66,5 +66,12 @@ public abstract class Tile implements Turnable{
     public String toString() {
         return "Tile [orientation=" + orientation + ", placedObjects=" + placedObjects + ", type=" + type + "]";
     }
+
+    public Tiletype getType() {
+        return this.type;
+    }
+
+
+    
 
 }

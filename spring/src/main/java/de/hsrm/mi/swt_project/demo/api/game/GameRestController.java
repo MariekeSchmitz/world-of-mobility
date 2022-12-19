@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.hsrm.mi.swt_project.demo.instancehandling.GameInstance;
 import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
 import de.hsrm.mi.swt_project.demo.messaging.GameUserListDTO;
@@ -24,6 +25,7 @@ import de.hsrm.mi.swt_project.demo.messaging.GetGameConfigDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetMapOverviewDataDTO;
 import de.hsrm.mi.swt_project.demo.messaging.JoinGameDTO;
 import de.hsrm.mi.swt_project.demo.messaging.SendGameUpdateDTO;
+import de.hsrm.mi.swt_project.demo.messaging.SendMapDTO;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;
 import de.hsrm.mi.swt_project.demo.messaging.ValidationDTO;
 
@@ -50,7 +52,7 @@ public class GameRestController{
     public void getGameCommand(@RequestBody GetGameCommandDTO gameCommand, @PathVariable long id) {
         logger.info("POST Request for '/api/game/" + id + "/game-command' with body: " + gameCommand);
 
-        instanceHandler.getGameInstanceById(id).moveMovable(gameCommand.user(), gameCommand.control());
+        instanceHandler.getGameInstanceById(id).moveMoveable(gameCommand.user(), gameCommand.control());
     }
 
     /**
@@ -106,10 +108,12 @@ public class GameRestController{
      * @param user the user to join
      * @param type the type of the movableObject
      * @param id the id of the game
+     * @param xPos the x position the player wants to spawn at
+     * @param yPos the y position the player wants to spawn at
      */
     @PostMapping(value="/{id}/join-game", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void joinGame(@RequestBody JoinGameDTO joinGameRequest , @PathVariable long id) {
-        logger.info("POST Request for '/api/game/" + id + "/join-game' with body: " + joinGameRequest.user(), " and " + joinGameRequest.type());
+        logger.info("POST Request for '/api/game/" + id + "/join-game' with body: " + joinGameRequest.user(), " and " + joinGameRequest.type() + " and " + joinGameRequest.xPos() + " and " + joinGameRequest.yPos());
         instanceHandler.getGameInstanceById(id).addPlayer(joinGameRequest.user(), MoveableType.valueOf(joinGameRequest.type()).createMovable(joinGameRequest.xPos(), joinGameRequest.yPos()));
     }
 
@@ -123,14 +127,10 @@ public class GameRestController{
         logger.info("GET Request for '/api/game/get-all-maps'");
 
         LinkedList<GetMapOverviewDataDTO> maps = new LinkedList<>();
-        maps.add(new GetMapOverviewDataDTO("Map1"));
-        maps.add(new GetMapOverviewDataDTO("Map2"));
-        maps.add(new GetMapOverviewDataDTO("Map3"));
 
-        // TODO : unterhalb reinkommentieren + händisches adden (obendrüber) in maps-Liste rausschmeissen (aktuell noch keine richtigen Maps zum testen vorhanden)
-        // for (String mapName : instanceHandler.getMaps()) {
-        //     maps.add(new GetMapOverviewDataDTO("mapName"));
-        // }
+        for (String mapName : instanceHandler.getMaps()) {
+            maps.add(new GetMapOverviewDataDTO(mapName));
+        }
 
         return new GetAllMapsOverviewDTO(maps);
     }
@@ -152,4 +152,28 @@ public class GameRestController{
         // return new ValidationDTO(false);
     }
 
+    /**
+     * Post for getting the map from Editor Instance
+     * 
+     * @param getMapDTO
+     * @author Fabio Bertels
+     */
+    @GetMapping(value = "/getmap/{instanceID}")
+    public SendMapDTO getMapEditor(@PathVariable Long instanceID) {
+        GameInstance gameInstance = instanceHandler.getGameInstanceById(instanceID);
+        return SendMapDTO.from(gameInstance.getMap());
+    }
+
+    /**
+     * Removes a player from an existing game.
+     * 
+     * @param user the user to leave
+     * @param type the type of the movableObject
+     * @param id the id of the game
+     * @author Astrid Klemmer
+     */
+    @PostMapping(value="/{id}/leave-game", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void leaveGame(@RequestBody JoinGameDTO leaveGameRequest , @PathVariable long id) {
+        instanceHandler.getGameInstanceById(id).removePlayer(leaveGameRequest.user());
+    }
 }

@@ -78,7 +78,7 @@ public class MotorizedObject extends MoveableObject {
 
             default:
                 break;
-            
+                       
         }
     }
 

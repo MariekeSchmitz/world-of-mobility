@@ -33,7 +33,6 @@ class MotorizedObjectTest {
             vehicle.turn(Direction.RIGHT);
             assertEquals(orientation, vehicle.getOrientation());
         }
-
     }
 
     @Test
@@ -66,6 +65,14 @@ class MotorizedObjectTest {
         assertNotSame(vehicle, copy);
         assertEquals(vehicle, copy);
 
+    }
+
+    @Test
+    void testExecuteScript() {
+        MotorizedObject vehicle = new MotorizedObject(Orientation.NORTH, 50, 50, 1);
+        vehicle.loadScript("moveable.turn(Direction.LEFT)");
+        vehicle.executeScript();
+        assertEquals(Orientation.WEST, vehicle.getOrientation());
     }
     
     @Test
