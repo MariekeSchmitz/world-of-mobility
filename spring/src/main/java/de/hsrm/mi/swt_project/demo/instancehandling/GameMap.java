@@ -212,6 +212,5 @@ public class GameMap {
                 newTiles[i][j] = Tiletype.GRASSTILE.createTile();
             }
         }
-        logger.info("" + newTiles[0][0]);
     }
 }
