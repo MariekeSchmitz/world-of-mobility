@@ -196,6 +196,31 @@ export function useGame(): any {
     }
   }
 
+  async function isSpawnPointValid(instanceId: number, moveableObject: string, xPos: number, yPos: number) {
+    try {
+      const controller = new AbortController();
+
+      const URL = `/api/game/${instanceId}/validate-spawnpoint?moveableObject=${moveableObject}&xPos=${xPos}&yPos=${yPos}`;
+
+      const id = setTimeout(() => controller.abort(), 8000);
+
+      const response = await fetch(URL, {
+        method: "GET",
+        signal: controller.signal
+      });
+
+      clearTimeout(id);
+
+      if (!response.ok) {
+        return false;
+      }
+      return true;
+    } catch (reason) {
+      console.log(`ERROR: Something went wrong: ${reason}`);
+      return false;
+    }
+  }
+
   return {
     mapUpdates: readonly(gameState),
     instanceId: readonly(instanceIdState),
@@ -205,5 +230,6 @@ export function useGame(): any {
     getUserMoveable,
     createGameInstance,
     leaveGame,
+    isSpawnPointValid
   };
 }

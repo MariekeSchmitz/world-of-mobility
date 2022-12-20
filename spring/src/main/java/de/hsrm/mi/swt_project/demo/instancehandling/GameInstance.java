@@ -7,6 +7,7 @@ import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.GameControl;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 import de.hsrm.mi.swt_project.demo.validation.MovementValidator;
+import de.hsrm.mi.swt_project.demo.validation.SpawnpointValidator;
 import de.hsrm.mi.swt_project.demo.validation.Validator;
 
 /**
@@ -135,5 +136,18 @@ public class GameInstance extends Instance {
      */
     public HashMap<String, MoveableObject> getMoveableObjects() {
         return moveableObjects;
+    }
+
+    /**
+     * Cheacks wether the MoveableObject can spawn at the given location
+     * 
+     * @param moveableObject the Moveable Object to check for
+     * @param xPos x-Position the Object will be spawned at
+     * @param yPos y-Position the Object will be spawned at
+     * @return boolean value that indicates wether the Object can Spawn at the given location
+     */
+    public boolean validateSpawnpoint(MoveableObject moveableObject, int xPos, int yPos) {
+        SpawnpointValidator spawnpointValidator = new SpawnpointValidator(this.map.getTiles(), moveableObject, xPos, yPos);
+        return spawnpointValidator.validate();
     }
 }

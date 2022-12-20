@@ -8,7 +8,7 @@ import { useLogin } from "@/services/login/useLogin";
 import router from "@/router";
 import SpawnPoint from "@/components/spawnpoint/SpawnPoint.vue";
 import { useSpawnPoint } from '@/components/spawnpoint/useSpawnPoint';
-const { spawnState } = useSpawnPoint();
+const { spawnState, setMoveableObject, setInstanceId } = useSpawnPoint();
 const { joinGame } = useGame();
 const { userList, getUserList } = useUser();
 const { loginData } = useLogin();
@@ -28,10 +28,12 @@ function join() {
 
 function updateMoveable(type:string) {
   moveableType = type;
+  setMoveableObject(type);
 }
 
 onMounted(() => {
   getUserList(props.instanceID);
+  setInstanceId(props.instanceID);
 });
 </script>
 

@@ -1,4 +1,7 @@
 import { readonly, reactive } from "vue";
+import { useGame } from "@/services/useGame";
+
+const { isSpawnPointValid } = useGame();
 
 interface IState {
     boxSizing: string,
@@ -9,7 +12,9 @@ interface IState {
 interface ISpawnPoint {
     xPos: number,
     yPos: number,
-    tileNumber: number
+    tileNumber: number,
+    moveableObject: string,
+    instanceId: number
 }
 
 /**
@@ -29,7 +34,9 @@ const windowState: IState = reactive({
 const spawnState: ISpawnPoint = reactive({
     xPos: -1,
     yPos: -1,
-    tileNumber: -1
+    tileNumber: -1,
+    moveableObject: "MOTORIZED_OBJECT",
+    instanceId: 1
 })
 
 /**
@@ -54,16 +61,29 @@ export function useSpawnPoint() {
         windowState.boxSizing = `${window.innerWidth / (SCALING_FACTOR * windowState.numberOfRows)}px`
     }
 
+    function setMoveableObject(newMoveableObject: string) {
+        spawnState.moveableObject = newMoveableObject;
+    }
+
+    function setInstanceId(newInstanceId: number) {
+        spawnState.instanceId = newInstanceId;
+    }
+
     /**
      * TODO offset still needs to be implemented
      * @param xPos 
      * @param yPos 
      */
-    function setSpawnPoint(xPos: number, yPos: number) {
-        spawnState.xPos = xPos * SQUARE_SIZE;
-        spawnState.yPos = yPos * SQUARE_SIZE;
-        spawnState.tileNumber = (xPos + 1) + (yPos * windowState.numberOfRows);
-        console.log(`x: ${xPos}, y: ${yPos}, ${spawnState.tileNumber}`);
+    async function setSpawnPoint(xPos: number, yPos: number) {
+        const isValid = await isSpawnPointValid(spawnState.instanceId, spawnState.moveableObject, xPos, yPos);
+        if(isValid) {
+            spawnState.xPos = xPos * SQUARE_SIZE;
+            spawnState.yPos = yPos * SQUARE_SIZE;
+            spawnState.tileNumber = (xPos + 1) + (yPos * windowState.numberOfRows);
+            console.log(`x: ${xPos}, y: ${yPos}, ${spawnState.tileNumber}`);
+        } else {
+            console.log('Invalid Spawnpoint');
+        }
     }
 
     return {
@@ -71,6 +91,8 @@ export function useSpawnPoint() {
         addWindowWidthListener,
         removeWindowWIdthListener,
         setSpawnPoint,
+        setMoveableObject,
+        setInstanceId,
         spawnState: readonly(spawnState)
     }
 }
