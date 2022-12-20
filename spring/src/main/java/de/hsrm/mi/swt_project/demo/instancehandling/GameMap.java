@@ -179,7 +179,7 @@ public class GameMap {
         for (Tile[] tArr : tiles) {
             for (Tile t : tArr) {
                 String toAppend = (t == null) ? "Null" : t.toString();
-                builder.append(toAppend.toString());
+                builder.append(toAppend);
                 builder.append(";");
             }
         }
