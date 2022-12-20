@@ -228,7 +228,7 @@ const testObj = ref({
 });
 
 onMounted(async () => {
-    // testObj.value = await getGameMap(props.instanceId);
+    testObj.value = await getGameMap(props.instanceId);
     const numberOfRows = testObj.value.tiles[0].length;
     addWindowWidthListener(numberOfRows);
 });
