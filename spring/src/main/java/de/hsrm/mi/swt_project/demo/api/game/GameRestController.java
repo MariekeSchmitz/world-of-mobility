@@ -144,7 +144,7 @@ public class GameRestController{
     public GetAllMapsOverviewDTO getMaps() {
         logger.info("GET Request for '/api/game/get-all-maps'");
 
-        LinkedList<GetMapOverviewDataDTO> maps = new LinkedList<>();
+        List<GetMapOverviewDataDTO> maps = new LinkedList<>();
 
         for (String mapName : instanceHandler.getMaps()) {
             maps.add(new GetMapOverviewDataDTO(mapName));

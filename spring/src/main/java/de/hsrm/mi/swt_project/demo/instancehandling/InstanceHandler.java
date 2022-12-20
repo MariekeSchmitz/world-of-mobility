@@ -265,6 +265,7 @@ public class InstanceHandler implements Updateable {
     }
 
     public List<String> getMaps() {
+        
         File[] directoryListing = new File(mapSavePath).listFiles();
         List<String> mapNames = new ArrayList<>();
 
@@ -272,10 +273,9 @@ public class InstanceHandler implements Updateable {
             for (File child : directoryListing) {
                 mapNames.add(child.getName().replace(JSON, ""));
             }
-            return mapNames;
-        } else {
-            return null;
         }
+
+        return mapNames;
     }
 
     /**
