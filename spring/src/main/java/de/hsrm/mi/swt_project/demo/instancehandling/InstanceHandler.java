@@ -29,11 +29,12 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
  */
 public class InstanceHandler implements Updateable {
 
+    private static final String JSON = ".json";
+
     @Autowired
     protected UpdateloopService loopservice;
 
-    Logger logger = LoggerFactory.getLogger(InstanceHandler.class);
-    private final String JSON = ".json";
+    protected Logger logger = LoggerFactory.getLogger(InstanceHandler.class);
 
     protected List<Instance> instances = new ArrayList<>();
 
