@@ -146,7 +146,7 @@ public class GameRestController{
 
         logger.info("GET Request for '/api/game/game-config' with body: " + gameConfig.mapName() + " and " + gameConfig.sessionName());
 
-        Boolean validationSuccess = instanceHandler.checkSessionNameAvailable(gameConfig.sessionName());
+        boolean validationSuccess = instanceHandler.checkSessionNameAvailable(gameConfig.sessionName());
 
         return new ValidationDTO(validationSuccess);
         // return new ValidationDTO(false);

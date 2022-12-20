@@ -104,7 +104,7 @@ public class GameMap {
         this.tiles[yPos][xPos] = Tiletype.GRASSTILE.createTile();
     }
 
-    public Boolean validateAndAddPlaceableObject(Tile tile, int xPos, int yPos, PlaceableObject placeableObject) {
+    public boolean validateAndAddPlaceableObject(Tile tile, int xPos, int yPos, PlaceableObject placeableObject) {
 
         if (placeableObject instanceof Tree) {
             if (!(tile instanceof CanHoldTree)) {
@@ -121,7 +121,7 @@ public class GameMap {
         return true;
     }
 
-    private Boolean isExpansionNeeded(int xPos, int yPos) {
+    private boolean isExpansionNeeded(int xPos, int yPos) {
 
         boolean placedOnLeftEdge = (xPos == 0);
         boolean placedOnTopEdge = (yPos == 0);

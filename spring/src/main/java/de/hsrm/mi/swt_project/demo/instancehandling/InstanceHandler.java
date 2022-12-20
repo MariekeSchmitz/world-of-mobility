@@ -282,7 +282,7 @@ public class InstanceHandler implements Updateable {
      * @param sessionName suggested gamename by gameconfiguration
      * @return if suggested gamename can be used
      */
-    public Boolean checkSessionNameAvailable(String sessionName) {
+    public boolean checkSessionNameAvailable(String sessionName) {
 
         for (Instance instance : instances) {
             if (instance instanceof GameInstance) {
@@ -301,7 +301,7 @@ public class InstanceHandler implements Updateable {
      * @param worldname name to be checked
      * @return if suggested World Name is unique or not
      */
-    public Boolean checkWorldNameAvailable(String worldname) {
+    public boolean checkWorldNameAvailable(String worldname) {
         for (String name : getMaps()) {
             if (name.equals(worldname)) {
 

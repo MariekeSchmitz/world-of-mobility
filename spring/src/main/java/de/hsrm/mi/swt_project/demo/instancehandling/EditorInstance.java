@@ -82,7 +82,7 @@ public class EditorInstance extends Instance {
      * @param placeableObjectType
      * @return edit on map valid
      */
-    public Boolean editPlaceablesOnMap(int xPos, int yPos, PlaceableControl placeableControl, PlaceableObjectType placeableObjectType) {
+    public boolean editPlaceablesOnMap(int xPos, int yPos, PlaceableControl placeableControl, PlaceableObjectType placeableObjectType) {
 
         switch(placeableControl) {
             case ADD:
