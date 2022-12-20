@@ -68,7 +68,7 @@ public class GameInstance extends Instance {
             case SPEED_DOWN:
                 moveableObjects.get(user).setCurrentVelocity(moveableObjects.get(user).getCurrentVelocity() - 0.1F);
                 break;
-        };
+        }
 
     }
 
