@@ -3,7 +3,7 @@ package de.hsrm.mi.swt_project.demo.editor.tiles;
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.controls.Turnable;
-import de.hsrm.mi.swt_project.demo.editor.placeableObjects.Placeable;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.Placeable;
 
  /** 
   * Classes that inherit this class are Tiles. A tile represents a single part of a Map.

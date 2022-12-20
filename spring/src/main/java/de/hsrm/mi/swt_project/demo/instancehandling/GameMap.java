@@ -10,13 +10,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-import de.hsrm.mi.swt_project.demo.editor.placeableObjects.Farm;
-import de.hsrm.mi.swt_project.demo.editor.placeableObjects.GasStation;
-import de.hsrm.mi.swt_project.demo.editor.placeableObjects.Pig;
-import de.hsrm.mi.swt_project.demo.editor.placeableObjects.PlaceableObject;
-import de.hsrm.mi.swt_project.demo.editor.placeableObjects.Sheep;
-import de.hsrm.mi.swt_project.demo.editor.placeableObjects.TrafficLight;
-import de.hsrm.mi.swt_project.demo.editor.placeableObjects.Tree;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.Farm;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.GasStation;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.Pig;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObject;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.Sheep;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.TrafficLight;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.Tree;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.CanHoldNatureObject;
@@ -110,7 +110,7 @@ public class GameMap {
         this.tiles[yPos][xPos] = Tiletype.GRASSTILE.createTile();
     }
 
-    public Boolean validateAndAddPlaceableObject(Tile tile, int xPos, int yPos, PlaceableObject placeableObject) {
+    public boolean validateAndAddPlaceableObject(Tile tile, int xPos, int yPos, PlaceableObject placeableObject) {
 
         boolean validate = false;
 
@@ -137,7 +137,7 @@ public class GameMap {
         return false;
     }
 
-    private Boolean isExpansionNeeded(int xPos, int yPos) {
+    private boolean isExpansionNeeded(int xPos, int yPos) {
 
         boolean placedOnLeftEdge = (xPos == 0);
         boolean placedOnTopEdge = (yPos == 0);
@@ -187,18 +187,26 @@ public class GameMap {
 
     @Override
     public String toString() {
-        String tileNames = "";
+
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("GameMap [tiles=");
+
         for (Tile[] tArr : tiles) {
             for (Tile t : tArr) {
-                if (t != null) {
-                    tileNames += t.toString() + "; ";
-                } else {
-                    tileNames += "Null; ";
-                }
+                String toAppend = (t == null) ? "Null" : t.toString();
+                builder.append(toAppend);
+                builder.append(";");
             }
         }
 
-        return "GameMap [tiles=" + tileNames + ", name=" + name + ", npcs=" + npcs + "]";
+        builder.append("name=");
+        builder.append(name);
+        builder.append("npcs=");
+        builder.append(npcs);
+        builder.append("]");
+
+        return builder.toString();
     }
 
     /**
@@ -228,6 +236,5 @@ public class GameMap {
                 newTiles[i][j] = Tiletype.GRASSTILE.createTile();
             }
         }
-        logger.info("" + newTiles[0][0]);
     }
 }

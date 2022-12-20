@@ -16,8 +16,8 @@ import org.slf4j.LoggerFactory;
 
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.controls.Updateable;
-import de.hsrm.mi.swt_project.demo.editor.placeableObjects.PlaceableObject;
-import de.hsrm.mi.swt_project.demo.editor.placeableObjects.PlaceableObjectType;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObject;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObjectType;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;

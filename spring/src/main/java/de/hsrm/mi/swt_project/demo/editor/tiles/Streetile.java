@@ -4,7 +4,7 @@ import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.CanHoldStreetObject;
 import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.DriveableByBike;
 import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.DriveableByCar;
-import de.hsrm.mi.swt_project.demo.editor.placeableObjects.Placeable;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.Placeable;
 
 
 /**

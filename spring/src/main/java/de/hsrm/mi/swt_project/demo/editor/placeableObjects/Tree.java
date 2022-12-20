@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.demo.editor.placeableObjects;
+package de.hsrm.mi.swt_project.demo.editor.placeableobjects;
 
 public class Tree extends PlaceableObject{
 
