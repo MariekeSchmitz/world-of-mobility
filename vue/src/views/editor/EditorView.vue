@@ -11,10 +11,10 @@
     Scene,
   } from "troisjs";
 
-  import BottomMenu from "../../components/editor/BottomMenu.vue";
-  import LeftMenu from "../../components/editor/LeftMenu.vue";
-  import EditorMap from "../../components/editor/EditorMap.vue";
-  import MiniMap from "../../components/editor/MiniMap.vue";
+  import BottomMenu from "@/components/editor/BottomMenu.vue";
+  import LeftMenu from "@/components/editor/LeftMenu.vue";
+  import EditorMap from "@/components/editor/EditorMap.vue";
+  import MiniMap from "@/components/editor/MiniMap.vue";
   import {useMap} from "@/services/useMap"
   import { number } from "mathjs";
   import { useUserEditor } from "@/services/useUserEditor";

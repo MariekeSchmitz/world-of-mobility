@@ -2,8 +2,8 @@
 <script setup lang="ts">
 //@ts-ignore
 import * as THREE from "three";
-import ContextMenu from "../../components/editor/ContextMenu.vue";
-import PlacedObject from "../../components/editor/PlacedObject.vue";
+import ContextMenu from "@/components/editor/ContextMenu.vue";
+import PlacedObject from "@/components/editor/PlacedObject.vue";
 import { Plane, Texture, BasicMaterial } from "troisjs";
 import { ref, computed, watch, onMounted } from "vue";
 import { usePlaceState } from "@/services/editor/usePlaceState";
@@ -11,6 +11,7 @@ import { useContextMenu } from "@/services/editor/useContextMenu";
 import { useMapUpdate } from "@/services/useMapUpdate";
 import type { ExportTile } from "@/services/editor/ExportTileInterface";
 import { usePlaceObject } from "@/services/usePlaceObject";
+import { ControlEnum } from "@/services/ControlEnum";
 
 const props = withDefaults(
   defineProps<{
@@ -26,7 +27,6 @@ const props = withDefaults(
   { width: 0.99, height: 0.99, cmVisible: false }
 );
 
-console.log(props.placedObject);
 const cmVisible = ref(false);
 let texturePath = "../src/textures/editor/" + props.type + ".jpg";
 
@@ -50,7 +50,7 @@ function tileHover(event: any) {
 }
 
 /**
- * If a Tile has been Selected, handles the Placement Logic
+ * If a Tile/Object has been Selected, handles the Placement Logic
  * @param tileObject Object to be operated on
  *
  * Author: Timothy Doukhin & Astrid Klemmer
@@ -59,7 +59,6 @@ function tileHover(event: any) {
 function placeItem(callingObject: any) {
   let posX = callingObject.position.x - offsetx.value - 1;
   let posY = callingObject.position.y - offsety.value - 1;
-
   setCMState();
 
   if (readPlaceState.value.isTile) {
@@ -68,7 +67,7 @@ function placeItem(callingObject: any) {
       setTimeout(() => {
         cmVisible.value = true;
       }, 10);
-    } else {
+    } else if (callingObject.placedObject == "none") {
       let toSendObj: ExportTile = {
         type: readPlaceState.value.type,
         orientation: "NORTH",
@@ -80,18 +79,40 @@ function placeItem(callingObject: any) {
       sendMapUpdates(toSendObj);
     }
   } else if (!readPlaceState.value.isTile) {
-    sendPlaceObject(posX, posY);
+    sendPlaceObject(posX, posY, callingObject.placedObject);
   }
 }
 
-async function sendPlaceObject(posX: number, posY: number) {
-  const isPlaced: boolean = await placeObject(
-    props.editorID,
-    readPlaceState.value.type,
-    "ADD",
-    posX,
-    posY
-  );
+/**
+ * Object Placement Logic to add or remove it
+ * @param posX X position of tile that object is placed on
+ * @param posY Y position of tile that object is placed on
+ * @param placedObject object that is or isnt placed on tile
+ * @author Astrid Klemmer
+ */
+async function sendPlaceObject(
+  posX: number,
+  posY: number,
+  placedObject: string
+) {
+  let isPlaced: boolean;
+  if (readPlaceState.value.type == "REMOVE" && placedObject != "none") {
+    isPlaced = await placeObject(
+      props.editorID,
+      placedObject,
+      ControlEnum.REMOVE,
+      posX,
+      posY
+    );
+  } else if (readPlaceState.value.type != "REMOVE") {
+    isPlaced = await placeObject(
+      props.editorID,
+      readPlaceState.value.type,
+      ControlEnum.ADD,
+      posX,
+      posY
+    );
+  }
 }
 
 /**
@@ -181,6 +202,6 @@ function removeTile(callingObject: THREE.Mesh) {
     :width="props.width"
     :height="props.height"
     :rotation="props.rotation"
-    :position="props.position.clone().add(new THREE.Vector3(0, 0, 0.02))"
+    :position="props.position.clone().add(new THREE.Vector3(0.1, -0.1, 0.02))"
   ></PlacedObject>
 </template>

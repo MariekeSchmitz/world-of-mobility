@@ -3,6 +3,7 @@ import { TileName } from "@/services/editor/TileNameEnum";
 import { usePlaceState } from "@/services/editor/usePlaceState";
 import { NaturObjectEnum } from "@/services/NaturObjectEnum";
 import { ObjectEnum } from "@/services/ObjectEnum";
+import { ControlEnum } from "@/services/ControlEnum";
 
 const { setPlaceState } = usePlaceState();
 
@@ -177,6 +178,14 @@ function switchContent(element: string) {
             <li>
               <button
                 class="itemButton"
+                @click="setPlaceState(ControlEnum.REMOVE, false)"
+              >
+                <img src="@/assets/objects/REMOVE.png" />
+              </button>
+            </li>
+            <li>
+              <button
+                class="itemButton"
                 @click="setPlaceState(NaturObjectEnum.TREE, false)"
               >
                 <img src="@/assets/objects/TREE.png" />
@@ -212,9 +221,25 @@ function switchContent(element: string) {
             <li>
               <button
                 class="itemButton"
+                @click="setPlaceState(ControlEnum.REMOVE, false)"
+              >
+                <img src="@/assets/objects/REMOVE.png" />
+              </button>
+            </li>
+            <li>
+              <button
+                class="itemButton"
                 @click="setPlaceState(ObjectEnum.GAS_STATION, false)"
               >
                 <img src="@/assets/objects/GAS_STATION.png" />
+              </button>
+            </li>
+            <li>
+              <button
+                class="itemButton"
+                @click="setPlaceState(ObjectEnum.TRAFFIC_LIGHT, false)"
+              >
+                <img src="@/assets/objects/TRAFFIC_LIGHT.png" />
               </button>
             </li>
           </div>

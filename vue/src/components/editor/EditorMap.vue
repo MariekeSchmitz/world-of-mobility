@@ -5,7 +5,7 @@ import { onMounted, ref, watch, computed, toRef } from "vue";
 import { useMapUpdate } from "@/services/useMapUpdate";
 import { useMap } from "@/services/useMap";
 import { number } from "mathjs";
-import EditorTile from "../../components/editor/EditorTile.vue";
+import EditorTile from "@/components/editor/EditorTile.vue";
 import * as THREE from "three";
 import type { MapInterface } from "@/services/editor/MapInterface";
 
@@ -46,6 +46,7 @@ const mapReactive = ref(mapDefault);
 
 watch(mapUpdates.value, () => {
   mapReactive.value = mapUpdates.value.map;
+  console.log(mapReactive.value);
 });
 
 onMounted(() => {
@@ -56,7 +57,7 @@ onMounted(() => {
 <template>
   <template v-for="(subTile, column) in mapReactive.tiles">
     <template v-for="(tile, row) in subTile" :key="tile">
-      <div v-if="tile.placedObject.type !== null">
+      <div v-if="tile.placedObject !== null">
         <EditorTile
           :width="0.99"
           :height="0.99"

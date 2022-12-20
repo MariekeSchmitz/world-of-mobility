@@ -24,6 +24,10 @@ public abstract class Tile implements Turnable{
         this.placedObject = placeable;
     }
 
+    public void deletePlaceable() {
+        this.placedObject = null;
+    }
+
     /**
      * Turns tile by 90° to left or right
      */

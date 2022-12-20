@@ -11,14 +11,50 @@ public enum PlaceableObjectType {
         }
     },
 
-    NONE() {
+    FARM() {
         @Override
         public PlaceableObject createPlaceableObject() {
-            PlaceableObject none = new PlaceableObject();
-            none.type = this;
-            return none;
+            PlaceableObject farm = new Farm();
+            farm.type = this;
+            return farm;
         }
-    };
+    },
+    
+    PIG() {
+        @Override
+        public PlaceableObject createPlaceableObject() {
+            PlaceableObject pig = new Pig();
+            pig.type = this;
+            return pig;
+        }
+    },
+    
+    SHEEP() {
+        @Override
+        public PlaceableObject createPlaceableObject() {
+            PlaceableObject sheep = new Sheep();
+            sheep.type = this;
+            return sheep;
+        }
+    },
+    
+    GAS_STATION() {
+        @Override
+        public PlaceableObject createPlaceableObject() {
+            PlaceableObject gasStation = new GasStation();
+            gasStation.type = this;
+            return gasStation;
+        }
+    },
+    
+    TRAFFIC_LIGHT() {
+        @Override
+        public PlaceableObject createPlaceableObject() {
+            PlaceableObject trafficLight = new TrafficLight();
+            trafficLight.type = this;
+            return trafficLight;
+        }
+    };;
 
     public abstract PlaceableObject createPlaceableObject();
 }

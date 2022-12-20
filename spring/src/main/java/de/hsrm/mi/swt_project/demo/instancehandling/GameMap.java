@@ -10,11 +10,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
+import de.hsrm.mi.swt_project.demo.editor.placeableObjects.Farm;
+import de.hsrm.mi.swt_project.demo.editor.placeableObjects.GasStation;
+import de.hsrm.mi.swt_project.demo.editor.placeableObjects.Pig;
 import de.hsrm.mi.swt_project.demo.editor.placeableObjects.PlaceableObject;
+import de.hsrm.mi.swt_project.demo.editor.placeableObjects.Sheep;
+import de.hsrm.mi.swt_project.demo.editor.placeableObjects.TrafficLight;
 import de.hsrm.mi.swt_project.demo.editor.placeableObjects.Tree;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
-import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.CanHoldTree;
+import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.CanHoldNatureObject;
+import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.CanHoldStreetObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 import de.hsrm.mi.swt_project.demo.util.ArrayHelpers;
 
@@ -106,19 +112,29 @@ public class GameMap {
 
     public Boolean validateAndAddPlaceableObject(Tile tile, int xPos, int yPos, PlaceableObject placeableObject) {
 
-        if (placeableObject instanceof Tree) {
-            if (!(tile instanceof CanHoldTree)) {
-                return false;
+        boolean validate = false;
+
+        if (tile instanceof CanHoldNatureObject) {
+            if (placeableObject instanceof Tree || placeableObject instanceof Farm ||placeableObject instanceof Pig ||placeableObject instanceof Sheep ||placeableObject instanceof GasStation) {
+                validate = true;
+            }
+        }else if(tile instanceof CanHoldStreetObject){
+            if (placeableObject instanceof TrafficLight) {
+                validate = true;
             }
         }
 
-        tile.addPlaceable(placeableObject);
+        if(validate){
+            tile.addPlaceable(placeableObject);
 
-        if (isExpansionNeeded(xPos, yPos)) {
-            this.expandMap();
+                if (isExpansionNeeded(xPos, yPos)) {
+                    this.expandMap();
+                }
+        
+                return true;
         }
 
-        return true;
+        return false;
     }
 
     private Boolean isExpansionNeeded(int xPos, int yPos) {

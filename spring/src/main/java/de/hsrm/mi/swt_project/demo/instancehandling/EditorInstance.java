@@ -84,12 +84,14 @@ public class EditorInstance extends Instance {
      */
     public Boolean editPlaceablesOnMap(int xPos, int yPos, PlaceableControl placeableControl, PlaceableObjectType placeableObjectType) {
 
+        Tile tile = map.getTiles()[yPos][xPos];
+
         switch(placeableControl) {
             case ADD:
-                Tile tile = map.getTiles()[yPos][xPos];
                 return map.validateAndAddPlaceableObject(tile, xPos, yPos, placeableObjectType.createPlaceableObject());
             case REMOVE: 
-                break;
+                tile.deletePlaceable();
+                return true;
         }
         return false;
     }
