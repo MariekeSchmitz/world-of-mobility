@@ -14,10 +14,12 @@ import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.DriveableByCar;
  */
 public class Streetile extends TrafficTile implements DriveableByBike, DriveableByCar{
 
+    @Override
     public Orientation getOrientation() {
         return super.getOrientation();
     }
 
+    @Override
     public List<Placeable> getPlacedObjects() {
         return super.getPlacedObjects();
     }
