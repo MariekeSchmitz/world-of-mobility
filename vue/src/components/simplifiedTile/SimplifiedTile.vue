@@ -1,6 +1,7 @@
 <template>
     <div>
         <div id="simplifiedContainer" :class="{selected: isSelected}" @click="setSpawnPoint(props.xIndex, props.yIndex)"></div>
+        <div :class="[{rotateSelected: isSelected}, {marker: isSelected}]"></div>
         <div id="simplified-tile" :class="[tileType, orientation, {selected: isSelected}]" ></div>
     </div>
 </template>
@@ -53,9 +54,31 @@ const isSelected = computed(() => {
     z-index: -2;
 }
 
+.marker {
+    height: v-bind('miniMapScalingState.boxSizing');
+    width: v-bind('miniMapScalingState.boxSizing');
+    border: none;
+    position: absolute;
+    background-color: rgb(105, 105, 105);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    z-index: 2;
+}
+
 @keyframes innerGlow {
     from {box-shadow: inset 0 0 5px rgba(29, 29, 29, 0.388);}
     to {box-shadow: inset 0 0 50px rgba(196, 246, 18, 0.54);}
+}
+
+@keyframes rotateMarker {
+    from {transform: rotate(180deg) scale(50%) rotateY(0deg) translateY(calc(v-bind('miniMapScalingState.boxSizing')));}
+    to {transform: rotate(180deg) scale(50%) rotateY(180deg) translateY(calc(v-bind('miniMapScalingState.boxSizing') / 2));}
+}
+
+.rotateSelected {
+    animation-name: rotateMarker;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-duration: 1s;
 }
 
 .selected {
