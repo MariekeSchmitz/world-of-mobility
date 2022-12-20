@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-import de.hsrm.mi.swt_project.demo.editor.placeableObjects.PlaceableObject;
-import de.hsrm.mi.swt_project.demo.editor.placeableObjects.Tree;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObject;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.Tree;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.CanHoldTree;

@@ -16,7 +16,7 @@ import com.google.gson.GsonBuilder;
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.PlaceableControl;
 import de.hsrm.mi.swt_project.demo.controls.TileControl;
-import de.hsrm.mi.swt_project.demo.editor.placeableObjects.PlaceableObjectType;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObjectType;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 

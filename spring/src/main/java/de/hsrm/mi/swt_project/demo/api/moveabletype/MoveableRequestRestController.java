@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.demo.api.MoveableType;
+package de.hsrm.mi.swt_project.demo.api.moveabletype;
 
 import java.util.ArrayList;
 import java.util.List;
