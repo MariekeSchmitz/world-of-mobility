@@ -1,11 +1,11 @@
 <script setup lang="ts">
 //@ts-ignore
 import { orientations } from "@/services/Orientations";
-import { onMounted, defineProps, ref, watch, computed, toRef } from "vue";
+import { onMounted, ref, watch, computed, toRef } from "vue";
 import { useMapUpdate } from "@/services/useMapUpdate";
 import { useMap } from "@/services/useMap";
 import { number } from "mathjs";
-import EditorTile from "../../components/editor/EditorTile.vue";
+import EditorTile from "@/components/editor/EditorTile.vue";
 import * as THREE from "three";
 import type { MapInterface } from "@/services/editor/MapInterface";
 
@@ -35,7 +35,7 @@ const mapDefault: MapInterface = {
       {
         type: "Default",
         orientation: "NORTH",
-        placedObjects: [],
+        placedObject: { type: "TREE" },
       },
     ],
   ],
@@ -46,6 +46,7 @@ const mapReactive = ref(mapDefault);
 
 watch(mapUpdates.value, () => {
   mapReactive.value = mapUpdates.value.map;
+  console.log(mapReactive.value);
 });
 
 onMounted(() => {
@@ -56,18 +57,36 @@ onMounted(() => {
 <template>
   <template v-for="(subTile, column) in mapReactive.tiles">
     <template v-for="(tile, row) in subTile" :key="tile">
-      <EditorTile
-        :width="0.99"
-        :height="0.99"
-        :position="
-          new THREE.Vector3(row + offsetx + 1, column + offsety + 1, 0.01)
-        "
-        :rotation="new THREE.Vector3(0, 0, -orientations[tile.orientation])"
-        :type="tile.type"
-        :editorID="editorID"
-        :cmVisible="false"
-      >
-      </EditorTile>
+      <div v-if="tile.placedObject !== null">
+        <EditorTile
+          :width="0.99"
+          :height="0.99"
+          :position="
+            new THREE.Vector3(row + offsetx + 1, column + offsety + 1, 0.01)
+          "
+          :rotation="new THREE.Vector3(0, 0, -orientations[tile.orientation])"
+          :type="tile.type"
+          :placedObject="tile.placedObject.type"
+          :editorID="editorID"
+          :cmVisible="false"
+        >
+        </EditorTile>
+      </div>
+      <div v-else>
+        <EditorTile
+          :width="0.99"
+          :height="0.99"
+          :position="
+            new THREE.Vector3(row + offsetx + 1, column + offsety + 1, 0.01)
+          "
+          :rotation="new THREE.Vector3(0, 0, -orientations[tile.orientation])"
+          :type="tile.type"
+          placedObject="none"
+          :editorID="editorID"
+          :cmVisible="false"
+        >
+        </EditorTile>
+      </div>
     </template>
   </template>
 </template>
