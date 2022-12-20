@@ -80,7 +80,6 @@ export function useSpawnPoint() {
             spawnState.xPos = xPos * SQUARE_SIZE;
             spawnState.yPos = yPos * SQUARE_SIZE;
             spawnState.tileNumber = (xPos + 1) + (yPos * windowState.numberOfRows);
-            console.log(`x: ${xPos}, y: ${yPos}, ${spawnState.tileNumber}`);
         } else {
             console.log('Invalid Spawnpoint');
         }

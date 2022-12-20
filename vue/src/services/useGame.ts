@@ -214,7 +214,8 @@ export function useGame(): any {
       if (!response.ok) {
         return false;
       }
-      return true;
+
+      return await response.json();
     } catch (reason) {
       console.log(`ERROR: Something went wrong: ${reason}`);
       return false;
