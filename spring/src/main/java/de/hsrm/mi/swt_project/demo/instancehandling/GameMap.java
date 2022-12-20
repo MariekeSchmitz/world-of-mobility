@@ -171,18 +171,26 @@ public class GameMap {
 
     @Override
     public String toString() {
-        String tileNames = "";
+
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("GameMap [tiles=");
+
         for (Tile[] tArr : tiles) {
             for (Tile t : tArr) {
-                if (t != null) {
-                    tileNames += t.toString() + "; ";
-                } else {
-                    tileNames += "Null; ";
-                }
+                String toAppend = (t == null) ? "Null" : t.toString();
+                builder.append(toAppend.toString());
+                builder.append(";");
             }
         }
 
-        return "GameMap [tiles=" + tileNames + ", name=" + name + ", npcs=" + npcs + "]";
+        builder.append("name=");
+        builder.append(name);
+        builder.append("npcs=");
+        builder.append(npcs);
+        builder.append("]");
+
+        return builder.toString();
     }
 
     /**
