@@ -16,19 +16,19 @@ public abstract class TrafficTile extends Tile {
 
     @Override
     public void turn(Direction direction) {
+
         if (direction == Direction.LEFT) {
+
             this.orientation = orientation.prev().prev();
-             for (Orientation orientation : allowedDirections) {
-                orientation = orientation.prev().prev();
-             }
+            allowedDirections = allowedDirections.stream().map(current -> current.prev().prev()).toList();
+
         } else {
+
             this.orientation = orientation.next().next();
-            for (Orientation orientation : allowedDirections) {
-                orientation = orientation.next().next();
-             }
+            allowedDirections = allowedDirections.stream().map(current -> current.next().next()).toList();
+            
         }
 
-        
     }
     
 }

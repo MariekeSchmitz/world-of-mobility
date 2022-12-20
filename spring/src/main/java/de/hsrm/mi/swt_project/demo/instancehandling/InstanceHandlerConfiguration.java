@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 public class InstanceHandlerConfiguration {
     @Bean
     public InstanceHandler instanceHandler() {
-        InstanceHandler instanceHandler = new InstanceHandler();
-        return instanceHandler;
+        return new InstanceHandler();
     }
 }

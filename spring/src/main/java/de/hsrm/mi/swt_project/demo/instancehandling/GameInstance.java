@@ -2,6 +2,7 @@ package de.hsrm.mi.swt_project.demo.instancehandling;
 
 import java.util.HashMap;
 import java.util.ListIterator;
+import java.util.Map;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.GameControl;
@@ -17,7 +18,7 @@ import de.hsrm.mi.swt_project.demo.validation.Validator;
  */
 public class GameInstance extends Instance {
 
-    private HashMap<String, MoveableObject> moveableObjects = new HashMap<>();
+    private Map<String, MoveableObject> moveableObjects = new HashMap<>();
     private String name;
     
     /**
@@ -69,7 +70,7 @@ public class GameInstance extends Instance {
             case SPEED_DOWN:
                 moveableObjects.get(user).setCurrentVelocity(moveableObjects.get(user).getCurrentVelocity() - 0.1F);
                 break;
-        };
+        }
 
     }
 
@@ -134,7 +135,7 @@ public class GameInstance extends Instance {
      * 
      * @return the moveableObjects
      */
-    public HashMap<String, MoveableObject> getMoveableObjects() {
+    public Map<String, MoveableObject> getMoveableObjects() {
         return moveableObjects;
     }
 

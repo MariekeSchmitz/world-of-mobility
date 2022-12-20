@@ -16,7 +16,7 @@ import com.google.gson.GsonBuilder;
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.PlaceableControl;
 import de.hsrm.mi.swt_project.demo.controls.TileControl;
-import de.hsrm.mi.swt_project.demo.editor.placeableObjects.PlaceableObjectType;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObjectType;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 
@@ -82,7 +82,7 @@ public class EditorInstance extends Instance {
      * @param placeableObjectType
      * @return edit on map valid
      */
-    public Boolean editPlaceablesOnMap(int xPos, int yPos, PlaceableControl placeableControl, PlaceableObjectType placeableObjectType) {
+    public boolean editPlaceablesOnMap(int xPos, int yPos, PlaceableControl placeableControl, PlaceableObjectType placeableObjectType) {
 
         switch(placeableControl) {
             case ADD:

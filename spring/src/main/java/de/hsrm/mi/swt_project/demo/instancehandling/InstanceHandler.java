@@ -29,13 +29,14 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
  */
 public class InstanceHandler implements Updateable {
 
+    private static final String JSON = ".json";
+
     @Autowired
     protected UpdateloopService loopservice;
 
-    Logger logger = LoggerFactory.getLogger(InstanceHandler.class);
-    private final String JSON = ".json";
+    protected Logger logger = LoggerFactory.getLogger(InstanceHandler.class);
 
-    protected List<Instance> instances = new ArrayList<Instance>();
+    protected List<Instance> instances = new ArrayList<>();
 
     // TODO think of another solution because long can reach limit
     protected long idCounter = 1;
@@ -46,7 +47,7 @@ public class InstanceHandler implements Updateable {
      * Creates a new instance handler.
      */
     public InstanceHandler() {
-        instances = new ArrayList<Instance>();
+        instances = new ArrayList<>();
     }
 
     /**
@@ -233,13 +234,15 @@ public class InstanceHandler implements Updateable {
      * @return the instance with the given id
      */
     public GameInstance getGameInstanceById(long id) {
+
         for (Instance instance : instances) {
-            if (instance.getId() == id) {
-                if (instance instanceof GameInstance) {
-                    return (GameInstance) instance;
-                }
+
+            if (instance.getId() == id && instance instanceof GameInstance gameInstance) {
+                return gameInstance;
             }
+
         }
+
         return null;
     }
 
@@ -250,17 +253,20 @@ public class InstanceHandler implements Updateable {
      * @return the instance with the given id
      */
     public EditorInstance getEditorInstanceById(long id) {
+
         for (Instance instance : instances) {
-            if (instance.getId() == id) {
-                if (instance instanceof EditorInstance) {
-                    return (EditorInstance) instance;
-                }
+
+            if (instance.getId() == id && instance instanceof EditorInstance editorInstance) {
+                return editorInstance;
             }
+
         }
+
         return null;
     }
 
     public List<String> getMaps() {
+        
         File[] directoryListing = new File(mapSavePath).listFiles();
         List<String> mapNames = new ArrayList<>();
 
@@ -268,11 +274,9 @@ public class InstanceHandler implements Updateable {
             for (File child : directoryListing) {
                 mapNames.add(child.getName().replace(JSON, ""));
             }
-            return mapNames;
-        } else {
-            System.out.println("No maps found");
-            return null;
         }
+
+        return mapNames;
     }
 
     /**
@@ -281,16 +285,20 @@ public class InstanceHandler implements Updateable {
      * @param sessionName suggested gamename by gameconfiguration
      * @return if suggested gamename can be used
      */
-    public Boolean checkSessionNameAvailable(String sessionName) {
+    public boolean checkSessionNameAvailable(String sessionName) {
 
         for (Instance instance : instances) {
-            if (instance instanceof GameInstance) {
-                String name = ((GameInstance) instance).getName();
+
+            if (instance instanceof GameInstance gameInstance) {
+
+                String name = gameInstance.getName();
                 if (name.equals(sessionName)) {
                     return false;
                 }
+
             }
         }
+        
         return true;
     }
 
@@ -300,7 +308,7 @@ public class InstanceHandler implements Updateable {
      * @param worldname name to be checked
      * @return if suggested World Name is unique or not
      */
-    public Boolean checkWorldNameAvailable(String worldname) {
+    public boolean checkWorldNameAvailable(String worldname) {
         for (String name : getMaps()) {
             if (name.equals(worldname)) {
 
@@ -310,7 +318,6 @@ public class InstanceHandler implements Updateable {
 
         for (Instance instance : getEditorInstances()) {
             String mapName = instance.getMap().getName();
-            System.out.println(mapName);
 
             if (mapName.equals(worldname)) {
                 return false;

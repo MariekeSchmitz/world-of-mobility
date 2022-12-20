@@ -26,11 +26,6 @@ public abstract class Instance implements Updateable {
     }
 
     /**
-     * Pushes updates of the instance.
-     */
-    public abstract void update();
-
-    /**
      * Returns the map of the instance.
      * 
      * @return the map of the instance
