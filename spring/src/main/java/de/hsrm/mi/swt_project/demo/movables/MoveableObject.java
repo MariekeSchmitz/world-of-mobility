@@ -38,7 +38,7 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
 
     protected MoveableType type;
 
-    Logger logger = LoggerFactory.getLogger(getClass());
+    transient Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * Gets orientation of the movable object.

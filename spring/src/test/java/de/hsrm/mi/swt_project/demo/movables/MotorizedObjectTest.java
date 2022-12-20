@@ -77,8 +77,8 @@ class MotorizedObjectTest {
     
     @Test
     void testEquals() {
-        MotorizedObject mo1 = new MotorizedObject(50, 50, 100);
-        MotorizedObject mo2 = new MotorizedObject(50, 50, 100);
+        MotorizedObject mo1 = new MotorizedObject(50, 50);
+        MotorizedObject mo2 = new MotorizedObject(50, 50);
 
         assertNotSame(mo1, mo2);
         assertEquals(mo1, mo2);
@@ -87,8 +87,8 @@ class MotorizedObjectTest {
 
     @Test
     void testHashcode() {
-        MotorizedObject mo1 = new MotorizedObject(10, 20, 30);
-        MotorizedObject mo2 = new MotorizedObject(10, 20, 30);
+        MotorizedObject mo1 = new MotorizedObject(10, 20);
+        MotorizedObject mo2 = new MotorizedObject(10, 20);
 
         assertNotSame(mo1, mo2);
         assertEquals(mo1.hashCode(), mo2.hashCode());
@@ -96,8 +96,8 @@ class MotorizedObjectTest {
 
     @Test
     void testToString() {
-        MotorizedObject p = new MotorizedObject(1, 2, 3);
-        assertEquals("MotorizedObject[xPos=1.00,yPos=2.00,curV=0.00,maxV=3.00,cap=1.00,orientation=NORTH]", p.toString());
+        MotorizedObject p = new MotorizedObject(1, 2);
+        assertEquals("MotorizedObject[xPos=1.00,yPos=2.00,curV=0.00,maxV=1.00,cap=1.00,orientation=NORTH]", p.toString());
     }
 
 }
