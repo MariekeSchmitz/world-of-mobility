@@ -1,8 +1,8 @@
 package de.hsrm.mi.swt_project.demo.messaging;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
@@ -12,7 +12,7 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
  */
 public record SendGameUpdateDTO(List<SendMoveableUpdateDTO> moveableUpdates) {
     
-    public static SendGameUpdateDTO from(HashMap<String,MoveableObject> moveableObjects) {
+    public static SendGameUpdateDTO from(Map<String,MoveableObject> moveableObjects) {
 
         List<SendMoveableUpdateDTO> moveableUpdates = new LinkedList<>();
 

@@ -46,7 +46,7 @@ public class InstanceHandler implements Updateable {
      * Creates a new instance handler.
      */
     public InstanceHandler() {
-        instances = new ArrayList<Instance>();
+        instances = new ArrayList<>();
     }
 
     /**

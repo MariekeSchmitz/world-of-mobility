@@ -39,7 +39,7 @@ public class EditorInstance extends Instance {
      */
     public EditorInstance(GameMap map, long id) {
         super(map, id);
-        this.users = new ArrayList<String>();
+        this.users = new ArrayList<>();
     }
 
     /**
