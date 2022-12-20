@@ -52,7 +52,6 @@ class InstanceHandlerTest {
 
         GameInstance gameInstance = instanceHandler.getGameInstanceById(id);
         GameMap gameMap = gameInstance.getMap();
-        System.out.println(gameMap);
         assertTrue(gameMap != null, "GameMap is not null");
 
     }

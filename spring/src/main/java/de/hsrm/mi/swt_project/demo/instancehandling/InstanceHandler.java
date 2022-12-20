@@ -271,7 +271,6 @@ public class InstanceHandler implements Updateable {
             }
             return mapNames;
         } else {
-            System.out.println("No maps found");
             return null;
         }
     }
@@ -311,7 +310,6 @@ public class InstanceHandler implements Updateable {
 
         for (Instance instance : getEditorInstances()) {
             String mapName = instance.getMap().getName();
-            System.out.println(mapName);
 
             if (mapName.equals(worldname)) {
                 return false;
