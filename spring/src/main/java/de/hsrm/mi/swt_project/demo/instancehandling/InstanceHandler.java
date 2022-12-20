@@ -233,13 +233,15 @@ public class InstanceHandler implements Updateable {
      * @return the instance with the given id
      */
     public GameInstance getGameInstanceById(long id) {
+
         for (Instance instance : instances) {
-            if (instance.getId() == id) {
-                if (instance instanceof GameInstance) {
-                    return (GameInstance) instance;
-                }
+
+            if (instance.getId() == id && instance instanceof GameInstance gameInstance) {
+                return gameInstance;
             }
+
         }
+
         return null;
     }
 
@@ -250,13 +252,15 @@ public class InstanceHandler implements Updateable {
      * @return the instance with the given id
      */
     public EditorInstance getEditorInstanceById(long id) {
+
         for (Instance instance : instances) {
-            if (instance.getId() == id) {
-                if (instance instanceof EditorInstance) {
-                    return (EditorInstance) instance;
-                }
+
+            if (instance.getId() == id && instance instanceof EditorInstance editorInstance) {
+                return editorInstance;
             }
+
         }
+
         return null;
     }
 
@@ -283,13 +287,17 @@ public class InstanceHandler implements Updateable {
     public boolean checkSessionNameAvailable(String sessionName) {
 
         for (Instance instance : instances) {
-            if (instance instanceof GameInstance) {
-                String name = ((GameInstance) instance).getName();
+
+            if (instance instanceof GameInstance gameInstance) {
+
+                String name = gameInstance.getName();
                 if (name.equals(sessionName)) {
                     return false;
                 }
+
             }
         }
+        
         return true;
     }
 
