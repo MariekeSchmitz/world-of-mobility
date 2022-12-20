@@ -19,15 +19,10 @@ public abstract class Instance implements Updateable {
      * 
      * @param map the map to use for the instance
      */
-    public Instance(GameMap map, long id) {
+    protected Instance(GameMap map, long id) {
         this.map = map;
         this.id = id;
     }
-
-    /**
-     * Pushes updates of the instance.
-     */
-    public abstract void update();
 
     /**
      * Returns the map of the instance.

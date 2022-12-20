@@ -13,6 +13,7 @@ import de.hsrm.mi.swt_project.demo.editor.placeableobjects.Placeable;
  */
 public class Streetile extends TrafficTile implements DriveableByBike, DriveableByCar, CanHoldStreetObject{
 
+    @Override
     public Orientation getOrientation() {
         return super.getOrientation();
     }

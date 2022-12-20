@@ -39,7 +39,7 @@ public class EditorInstance extends Instance {
      */
     public EditorInstance(GameMap map, long id) {
         super(map, id);
-        this.users = new ArrayList<String>();
+        this.users = new ArrayList<>();
     }
 
     /**
@@ -82,7 +82,7 @@ public class EditorInstance extends Instance {
      * @param placeableObjectType
      * @return edit on map valid
      */
-    public Boolean editPlaceablesOnMap(int xPos, int yPos, PlaceableControl placeableControl, PlaceableObjectType placeableObjectType) {
+    public boolean editPlaceablesOnMap(int xPos, int yPos, PlaceableControl placeableControl, PlaceableObjectType placeableObjectType) {
 
         Tile tile = map.getTiles()[yPos][xPos];
 

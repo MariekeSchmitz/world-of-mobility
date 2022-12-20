@@ -56,18 +56,18 @@ function tileHover(event: any) {
  * Author: Timothy Doukhin & Astrid Klemmer
  */
 
-function placeItem(callingObject: any) {
-  let posX = callingObject.position.x - offsetx.value - 1;
-  let posY = callingObject.position.y - offsety.value - 1;
+function placeItem() {
+  let posX = props.position.x - offsetx.value - 1;
+  let posY = props.position.y - offsety.value - 1;
   setCMState();
 
   if (readPlaceState.value.isTile) {
-    if (callingObject.type != "GRASSTILE") {
+    if (props.type != "GRASSTILE") {
       //make contextMenu visible after removing all ContextMenus from all tiles
       setTimeout(() => {
         cmVisible.value = true;
       }, 10);
-    } else if (callingObject.placedObject == "none") {
+    } else if (props.placedObject == "none") {
       let toSendObj: ExportTile = {
         type: readPlaceState.value.type,
         orientation: "NORTH",
@@ -79,7 +79,7 @@ function placeItem(callingObject: any) {
       sendMapUpdates(toSendObj);
     }
   } else if (!readPlaceState.value.isTile) {
-    sendPlaceObject(posX, posY, callingObject.placedObject);
+    sendPlaceObject(posX, posY, props.placedObject);
   }
 }
 
@@ -121,9 +121,9 @@ async function sendPlaceObject(
  *
  * Author: Timothy Doukhin
  */
-function turnLeft(callingObject: THREE.Mesh) {
-  let posX = callingObject.position.x - offsetx.value - 1;
-  let posY = callingObject.position.y - offsety.value - 1 - 0.4;
+function turnLeft() {
+  let posX = props.position.x - offsetx.value - 1;
+  let posY = props.position.y - offsety.value - 1;
   let turnleftDTO: ExportTile = {
     type: "SIDEWAY",
     orientation: "NORTH",
@@ -140,9 +140,10 @@ function turnLeft(callingObject: THREE.Mesh) {
  *
  * Author: Timothy Doukhin
  */
-function turnRight(callingObject: THREE.Mesh) {
-  let posX = callingObject.position.x - offsetx.value - 1;
-  let posY = callingObject.position.y - offsety.value - 1 - 0.4;
+function turnRight() {
+  let posX = props.position.x - offsetx.value - 1;
+  let posY = props.position.y - offsety.value - 1;
+  console.log("POSX=", posX, " POSY=", posY);
   let turnrightDTO: ExportTile = {
     type: "SIDEWAY",
     orientation: "NORTH",
@@ -159,9 +160,9 @@ function turnRight(callingObject: THREE.Mesh) {
  *
  * Author: Timothy Doukhin
  */
-function removeTile(callingObject: THREE.Mesh) {
-  let posX = callingObject.position.x - offsetx.value - 1;
-  let posY = callingObject.position.y - offsety.value - 1 - 0.4;
+function removeTile() {
+  let posX = props.position.x - offsetx.value - 1;
+  let posY = props.position.y - offsety.value - 1;
   let removeDTO: ExportTile = {
     type: "SIDEWAY",
     orientation: "NORTH",
@@ -174,7 +175,7 @@ function removeTile(callingObject: THREE.Mesh) {
 </script>
 <template>
   <Plane
-    @click="placeItem(this)"
+    @click="placeItem"
     @pointer-over="tileHover"
     :width="props.width"
     :height="props.height"
@@ -188,9 +189,9 @@ function removeTile(callingObject: THREE.Mesh) {
 
   <ContextMenu
     v-if="cmVisible"
-    v-on:turnRight="turnRight($event)"
-    v-on:turnLeft="turnLeft($event)"
-    v-on:removeTile="removeTile($event)"
+    v-on:turnRight="turnRight()"
+    v-on:turnLeft="turnLeft()"
+    v-on:removeTile="removeTile()"
     :width="0.8"
     :height="0.3"
     :position="props.position.clone().add(new THREE.Vector3(0, 0.4, 0.03))"

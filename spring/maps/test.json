@@ -2,32 +2,17 @@
   "tiles": [
     [
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
@@ -40,136 +25,71 @@
         "type": "GRASSTILE"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       }
     ],
     [
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       }
     ],
     [
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
@@ -196,34 +116,19 @@
         "type": "GRASSTILE"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       }
     ],
     [
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
@@ -246,12 +151,7 @@
         "type": "GRASSTILE"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
@@ -263,64 +163,34 @@
         "type": "GRASSTILE"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       }
     ],
     [
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
@@ -332,64 +202,34 @@
         "type": "GRASSTILE"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       }
     ],
     [
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "placedObject": {
           "type": "TRAFFIC_LIGHT"
@@ -397,216 +237,111 @@
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       }
     ],
     [
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       }
     ],
     [
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
         "type": "STREET_CROSS"
       }
@@ -622,10 +357,7 @@
       "capacity": 1.0,
       "currentVelocity": 0.0,
       "script": "npc \u003d NPC()\r\n\r\nnpc.setSpeed(0.1)\r\n\r\nnpc.accelerate()\r\nnpc.turnLeft()\r\nnpc.brake()\r\n",
-      "type": "PASSENGER",
-      "logger": {
-        "name": "de.hsrm.mi.swt_project.demo.movables.Passenger"
-      }
+      "type": "PASSENGER"
     },
     {
       "orientation": "NORTH",
@@ -635,10 +367,7 @@
       "capacity": 1.0,
       "currentVelocity": 0.0,
       "script": "npc \u003d NPC()\r\n\r\nnpc.setSpeed(0.1)\r\n\r\nnpc.accelerate()\r\nnpc.turnLeft()\r\nnpc.brake()\r\n",
-      "type": "PASSENGER",
-      "logger": {
-        "name": "de.hsrm.mi.swt_project.demo.movables.Passenger"
-      }
+      "type": "PASSENGER"
     }
   ]
 }
