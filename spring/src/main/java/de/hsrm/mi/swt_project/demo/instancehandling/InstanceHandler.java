@@ -35,7 +35,7 @@ public class InstanceHandler implements Updateable {
     Logger logger = LoggerFactory.getLogger(InstanceHandler.class);
     private final String JSON = ".json";
 
-    protected List<Instance> instances = new ArrayList<Instance>();
+    protected List<Instance> instances = new ArrayList<>();
 
     // TODO think of another solution because long can reach limit
     protected long idCounter = 1;
