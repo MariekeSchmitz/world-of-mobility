@@ -26,6 +26,7 @@ import de.hsrm.mi.swt_project.demo.messaging.GetMapOverviewDataDTO;
 import de.hsrm.mi.swt_project.demo.messaging.JoinGameDTO;
 import de.hsrm.mi.swt_project.demo.messaging.SendGameUpdateDTO;
 import de.hsrm.mi.swt_project.demo.messaging.SendMapDTO;
+import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;
 import de.hsrm.mi.swt_project.demo.messaging.ValidationDTO;
 
@@ -97,9 +98,13 @@ public class GameRestController{
     
     @PostMapping(value="/create-game", consumes = MediaType.APPLICATION_JSON_VALUE)
     public long createGame(@RequestBody GetGameConfigDTO gameConfig) {
-        logger.info("POST Request for '/api/game/create-game' with body: {} and {}", gameConfig.mapName(), gameConfig.sessionName());
 
-        return instanceHandler.createGameInstance(gameConfig.mapName(), gameConfig.sessionName());
+        String mapName = gameConfig.mapName();
+        String sessionName = gameConfig.sessionName();
+
+        logger.info("POST Request for '/api/game/create-game' with body: {} and {}", mapName, sessionName);
+
+        return instanceHandler.createGameInstance(mapName, sessionName);
     }
 
     /**
@@ -113,8 +118,21 @@ public class GameRestController{
      */
     @PostMapping(value="/{id}/join-game", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void joinGame(@RequestBody JoinGameDTO joinGameRequest , @PathVariable long id) {
-        logger.info("POST Request for '/api/game/{}/join-game' with body: {} and {} and {} and {}", id, joinGameRequest.user(), joinGameRequest.type(), joinGameRequest.xPos(), joinGameRequest.yPos());
-        instanceHandler.getGameInstanceById(id).addPlayer(joinGameRequest.user(), MoveableType.valueOf(joinGameRequest.type()).createMovable(joinGameRequest.xPos(), joinGameRequest.yPos()));
+
+        String user = joinGameRequest.user();
+        String type = joinGameRequest.type();
+
+        int xPos = joinGameRequest.xPos();
+        int yPos = joinGameRequest.yPos();
+
+        logger.info("POST Request for '/api/game/{}/join-game' with body: {} and {} and {} and {}", id, user, type, xPos, yPos);
+
+        GameInstance instance = instanceHandler.getGameInstanceById(id);
+
+        if (instance != null) {
+            MoveableObject moveable = MoveableType.valueOf(type).createMovable(xPos, yPos);
+            instance.addPlayer(user, moveable);
+        }
     }
 
     /**
@@ -144,12 +162,14 @@ public class GameRestController{
     @PostMapping(value="/game-config", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ValidationDTO getGameConfig(@RequestBody GetGameConfigDTO gameConfig) {
 
-        logger.info("GET Request for '/api/game/game-config' with body: {} and {}", gameConfig.mapName(), gameConfig.sessionName());
+        String mapName = gameConfig.mapName();
+        String sessionName = gameConfig.sessionName();
 
-        boolean validationSuccess = instanceHandler.checkSessionNameAvailable(gameConfig.sessionName());
+        logger.info("GET Request for '/api/game/game-config' with body: {} and {}", mapName, sessionName);
+
+        boolean validationSuccess = instanceHandler.checkSessionNameAvailable(sessionName);
 
         return new ValidationDTO(validationSuccess);
-        // return new ValidationDTO(false);
     }
 
     /**
