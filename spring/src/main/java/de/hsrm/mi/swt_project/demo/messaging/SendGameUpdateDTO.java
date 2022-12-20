@@ -3,6 +3,7 @@ package de.hsrm.mi.swt_project.demo.messaging;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
@@ -16,9 +17,12 @@ public record SendGameUpdateDTO(List<SendMoveableUpdateDTO> moveableUpdates) {
 
         List<SendMoveableUpdateDTO> moveableUpdates = new LinkedList<>();
 
-        for (String key: moveableObjects.keySet()) {
+        for (Entry<String, MoveableObject> entry: moveableObjects.entrySet()) {
+
+            String name = entry.getKey();
+            MoveableObject moveable = entry.getValue();
             
-            SendMoveableUpdateDTO sendMoveableUpdateDTO = SendMoveableUpdateDTO.from(key,moveableObjects.get(key));
+            SendMoveableUpdateDTO sendMoveableUpdateDTO = SendMoveableUpdateDTO.from(name, moveable);
             moveableUpdates.add(sendMoveableUpdateDTO);
 
         }
