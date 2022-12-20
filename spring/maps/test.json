@@ -2,721 +2,347 @@
   "tiles": [
     [
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
         "orientation": "NORTH",
-        "placedObjects": [],
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
+        "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
-        "type": "STREET_CROSS"
-      },
-      {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
-        "orientation": "NORTH",
-        "placedObjects": [],
-        "type": "STREET_CROSS"
-      },
-      {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
-        "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       }
     ],
     [
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       }
     ],
     [
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
         "orientation": "NORTH",
-        "placedObjects": [],
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "placedObject": {
+          "type": "TREE"
+        },
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "placedObject": {
+          "type": "GAS_STATION"
+        },
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
+        "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
-        "type": "STREET_CROSS"
-      },
-      {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
-        "orientation": "NORTH",
-        "placedObjects": [],
-        "type": "STREET_CROSS"
-      },
-      {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
-        "orientation": "NORTH",
-        "placedObjects": [],
-        "type": "STREET_CROSS"
-      },
-      {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
-        "orientation": "NORTH",
-        "placedObjects": [],
-        "type": "STREET_CROSS"
-      },
-      {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
-        "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       }
     ],
     [
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
         "orientation": "NORTH",
-        "placedObjects": [],
+        "placedObject": {
+          "type": "SHEEP"
+        },
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "placedObject": {
+          "type": "FARM"
+        },
+        "type": "GRASSTILE"
+      },
+      {
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
+        "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
         "orientation": "NORTH",
-        "placedObjects": [],
+        "placedObject": {
+          "type": "PIG"
+        },
+        "type": "GRASSTILE"
+      },
+      {
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
+        "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
-        "type": "STREET_CROSS"
-      },
-      {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
-        "orientation": "NORTH",
-        "placedObjects": [],
-        "type": "STREET_CROSS"
-      },
-      {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
-        "orientation": "NORTH",
-        "placedObjects": [],
-        "type": "STREET_CROSS"
-      },
-      {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
-        "orientation": "NORTH",
-        "placedObjects": [],
-        "type": "STREET_CROSS"
-      },
-      {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
-        "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       }
     ],
     [
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
         "orientation": "NORTH",
-        "placedObjects": [],
+        "placedObject": {
+          "type": "SHEEP"
+        },
+        "type": "GRASSTILE"
+      },
+      {
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
+        "orientation": "NORTH",
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
-        "type": "STREET_CROSS"
-      },
-      {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
-        "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       }
     ],
     [
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
+        "placedObject": {
+          "type": "TRAFFIC_LIGHT"
+        },
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       }
     ],
     [
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       }
     ],
     [
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "EAST",
-          "SOUTH",
-          "WEST"
-        ],
+        "allowedDirections": ["NORTH", "EAST", "SOUTH", "WEST"],
         "orientation": "NORTH",
-        "placedObjects": [],
         "type": "STREET_CROSS"
       }
     ]

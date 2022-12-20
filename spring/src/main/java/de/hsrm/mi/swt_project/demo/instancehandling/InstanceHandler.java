@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.controls.Updateable;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObject;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObjectType;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;
@@ -118,17 +120,16 @@ public class InstanceHandler implements Updateable {
                 List<Object> ls = rows.toList();
                 if (ls.get(i) != null) {
                     JSONObject tileObject = rows.getJSONObject(i);
-                    // Functionality of placedObjects unknown because of a lack of Placeable objects
-                    // JSONArray placedObjects = tileObject.getJSONArray("placedObjects");
-                    // List<Placeable> placedObjsToPlace = new ArrayList<>();
-                    // placedObjects.forEach(obj -> {
-                    // Placeable placeable = (Placeable) obj;
-                    // placedObjsToPlace.add(placeable);
-                    // });
                     Tiletype tileType = tileObject.getEnum(Tiletype.class, "type");
                     Orientation orientation = tileObject.getEnum(Orientation.class, "orientation");
                     Tile newTile = tileType.createTile();
                     newTile.setOrientation(orientation);
+                    if(tileObject.has("placedObject")) {
+                        JSONObject placedObject = tileObject.getJSONObject("placedObject");
+                        PlaceableObjectType placeableType = placedObject.getEnum(PlaceableObjectType.class, "type");
+                        PlaceableObject placeableObject = placeableType.createPlaceableObject();
+                        newTile.addPlaceable(placeableObject);
+                    }
                     map.setTile(newTile, xPos, yPos);
                 }
                 xPos++;

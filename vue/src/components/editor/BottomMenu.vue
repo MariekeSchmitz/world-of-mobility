@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { TileName } from "../../services/editor/TileNameEnum";
+import { TileName } from "@/services/editor/TileNameEnum";
+import { usePlaceState } from "@/services/editor/usePlaceState";
+import { NaturObjectEnum } from "@/services/NaturObjectEnum";
+import { ObjectEnum } from "@/services/ObjectEnum";
+import { ControlEnum } from "@/services/ControlEnum";
+
+const { setPlaceState } = usePlaceState();
 
 function scrollingLeft() {
   const boxwrapper = document.getElementById("box-wrapper");
@@ -114,49 +120,129 @@ function switchContent(element: string) {
           <div id="streetItems">
             <li>
               <button
-                class="tileButton"
-                @click="$emit('selectTile', TileName.STREET_STRAIGHT)"
+                class="itemButton"
+                @click="setPlaceState(TileName.STREET_STRAIGHT, true)"
               >
                 <img src="@/textures/editor/STREET_STRAIGHT.jpg" />
               </button>
             </li>
             <li>
               <button
-                class="tileButton"
-                @click="$emit('selectTile', TileName.STREET_CURVE)"
+                class="itemButton"
+                @click="setPlaceState(TileName.STREET_CURVE, true)"
               >
                 <img src="@/textures/editor/STREET_CURVE.jpg" />
               </button>
             </li>
             <li>
               <button
-                class="tileButton"
-                @click="$emit('selectTile', TileName.STREET_T_CROSS)"
+                class="itemButton"
+                @click="setPlaceState(TileName.STREET_T_CROSS, true)"
               >
                 <img src="@/textures/editor/STREET_T_CROSS.jpg" />
               </button>
             </li>
             <li>
               <button
-                class="tileButton"
-                @click="$emit('selectTile', TileName.STREET_CROSS)"
+                class="itemButton"
+                @click="setPlaceState(TileName.STREET_CROSS, true)"
               >
                 <img src="@/textures/editor/STREET_CROSS.jpg" />
               </button>
             </li>
             <li>
               <button
-                class="tileButton"
-                @click="$emit('selectTile', TileName.SIDEWAY)"
+                class="itemButton"
+                @click="setPlaceState(TileName.SIDEWAY, true)"
               >
                 <img src="@/textures/editor/SIDEWAY.jpg" />
               </button>
             </li>
           </div>
+          <!--
+          <div
+            id="componentItems"
+            v-for="(valueEnum, naturEnum) in NaturObjectEnum"
+            :key="`${valueEnum}`"
+          >
+            <li>
+              <img
+                :src="'@/assets/objekte/natur/' + valueEnum + '.png'"
+                :alt="'@/assets/objekte/natur/' + valueEnum + '.png'"
+              />
+            </li>
+          </div>
+-->
 
-          <div id="componentItems"></div>
+          <div id="componentItems">
+            <li>
+              <button
+                class="itemButton"
+                @click="setPlaceState(ControlEnum.REMOVE, false)"
+              >
+                <img src="@/assets/objects/REMOVE.png" />
+              </button>
+            </li>
+            <li>
+              <button
+                class="itemButton"
+                @click="setPlaceState(NaturObjectEnum.TREE, false)"
+              >
+                <img src="@/assets/objects/TREE.png" />
+              </button>
+            </li>
+            <li>
+              <button
+                class="itemButton"
+                @click="setPlaceState(NaturObjectEnum.FARM, false)"
+              >
+                <img src="@/assets/objects/FARM.png" />
+              </button>
+            </li>
+            <li>
+              <button
+                class="itemButton"
+                @click="setPlaceState(NaturObjectEnum.SHEEP, false)"
+              >
+                <img src="@/assets/objects/SHEEP.png" />
+              </button>
+            </li>
+            <li>
+              <button
+                class="itemButton"
+                @click="setPlaceState(NaturObjectEnum.PIG, false)"
+              >
+                <img src="@/assets/objects/PIG.png" />
+              </button>
+            </li>
+          </div>
 
-          <div id="otherItems"></div>
+          <div id="otherItems">
+            <li>
+              <button
+                class="itemButton"
+                @click="setPlaceState(ControlEnum.REMOVE, false)"
+              >
+                <img src="@/assets/objects/REMOVE.png" />
+              </button>
+            </li>
+            <li>
+              <button
+                class="itemButton"
+                @click="setPlaceState(ObjectEnum.GAS_STATION, false)"
+              >
+                <img src="@/assets/objects/GAS_STATION.png" />
+              </button>
+            </li>
+            <li>
+              <button
+                class="itemButton"
+                @click="setPlaceState(ObjectEnum.TRAFFIC_LIGHT, false)"
+              >
+                <img src="@/assets/objects/TRAFFIC_LIGHT.png" />
+              </button>
+            </li>
+          </div>
         </ul>
 
         <button id="scrollRight" @click="scrollingRight">
@@ -223,12 +309,13 @@ function switchContent(element: string) {
   margin: auto 0;
 }
 
-.tileButton > img {
+.itemButton > img {
   width: 80px;
   height: 80px;
 }
 
-#componentItems {
+#componentItems,
+#otherItems {
   display: none;
 }
 

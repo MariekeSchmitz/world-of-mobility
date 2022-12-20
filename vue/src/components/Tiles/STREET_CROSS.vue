@@ -3,7 +3,6 @@
 //@ts-ignore
 import type * as THREE from "three";
 import { Plane, Texture, ToonMaterial } from "troisjs";
-import { withDefaults, defineProps } from "vue";
 
 const props = withDefaults(
   defineProps<{
