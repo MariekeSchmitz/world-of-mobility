@@ -9,6 +9,7 @@ import EditorTile from "@/components/editor/EditorTile.vue";
 import * as THREE from "three";
 import type { MapInterface } from "@/services/editor/MapInterface";
 
+
 const props = defineProps({
   editorID: {
     default: 0,
@@ -30,6 +31,7 @@ const offsetx = computed(() => -(mapWidth.value + 1) / 2);
 const offsety = computed(() => -(mapHeight.value + 1) / 2);
 
 const mapDefault: MapInterface = {
+  name: "Default",
   tiles: [
     [
       {

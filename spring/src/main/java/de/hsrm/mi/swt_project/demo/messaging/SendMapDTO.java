@@ -13,10 +13,10 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
  * 
  * @author Tom Gouthier
  */
-public record SendMapDTO(Tile[][] tiles, List<MoveableObject> npcs) {
+public record SendMapDTO(String name,Tile[][] tiles, List<MoveableObject> npcs) {
 
     public static SendMapDTO from(GameMap map) {
-        return new SendMapDTO(map.getTiles(), map.getNpcs());
+        return new SendMapDTO(map.getName(),map.getTiles(), map.getNpcs());
     }
 
     @Override

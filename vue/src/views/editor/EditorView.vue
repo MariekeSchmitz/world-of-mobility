@@ -16,9 +16,10 @@
   import EditorMap from "@/components/editor/EditorMap.vue";
   import MiniMap from "@/components/editor/MiniMap.vue";
   import {useMap} from "@/services/useMap"
-  import { number } from "mathjs";
   import { useUserEditor } from "@/services/useUserEditor";
   import { useLogin } from "@/services/login/useLogin";
+  import type { MapInterface } from "@/services/editor/MapInterface";
+  import router from "@/router";
 
  
   const props = defineProps<{
@@ -27,6 +28,12 @@
 
   const { loginData } = useLogin();
   const { leaveEditor } = useUserEditor();
+  const { getMapEditor } = useMap();
+  const loadedMap = getMapEditor(props.editorID);
+  const name = ref();
+  onMounted(() => {
+  loadedMap.then((result: MapInterface) => (name.value = result.name));
+});
 
   onUnmounted(() => {
       leaveEditor(props.editorID, loginData.username);
@@ -49,12 +56,17 @@
 
     const {saveMap} = useMap();
 
+function startGame(){
+  saveMap(props.editorID)
+  router.push("/gameConfig/" + name.value);
+}
+
 </script>
 
 <template>
   <div class="mapTitle">
-    <p>Farmerama Map</p>
-    <button @click="saveMap('testMap2', props.editorID)">save</button>
+    <p>{{name}}</p>
+    <button @click="saveMap(props.editorID)">save</button>
   </div>
   <div id="exitButton">
     <button class="roundButton">
@@ -65,7 +77,7 @@
   </div>
 
   <div class="buttonMenuRight">
-    <button><img src="@/buttons/editor/plus.png" /><br />Starte Spiel</button>
+    <button @click="startGame()"><img src="@/buttons/editor/plus.png" /><br />Starte Spiel</button>
     <button><img src="@/buttons/editor/plus.png" /><br />Welt testen</button>
   </div>
 
