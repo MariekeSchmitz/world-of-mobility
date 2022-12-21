@@ -83,8 +83,8 @@ export function useSpawnPoint() {
     async function setSpawnPoint(xPos: number, yPos: number) {
         const isValid = await isSpawnPointValid(spawnState.instanceId, spawnState.moveableObject, xPos, yPos);
         if(isValid) {
-            spawnState.xPos = xPos * SQUARE_SIZE;
-            spawnState.yPos = yPos * SQUARE_SIZE;
+            spawnState.xPos = xPos * SQUARE_SIZE + SQUARE_SIZE / 2;
+            spawnState.yPos = yPos * SQUARE_SIZE + SQUARE_SIZE / 2;
             spawnState.tileNumber = (xPos + 1) + (yPos * windowState.numberOfRows);
         } else {
             console.log('Invalid Spawnpoint');
