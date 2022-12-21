@@ -61,8 +61,14 @@ export function useSpawnPoint() {
         windowState.boxSizing = `${window.innerWidth / (SCALING_FACTOR * windowState.numberOfRows)}px`
     }
 
-    function setMoveableObject(newMoveableObject: string) {
+    async function setMoveableObject(newMoveableObject: string) {
         spawnState.moveableObject = newMoveableObject;
+        const isValid = await isSpawnPointValid(spawnState.instanceId, spawnState.moveableObject, spawnState.xPos, spawnState.yPos);
+        if(!isValid) {
+            spawnState.xPos = -1;
+            spawnState.yPos = -1;
+            spawnState.tileNumber = -1;
+        }
     }
 
     function setInstanceId(newInstanceId: number) {

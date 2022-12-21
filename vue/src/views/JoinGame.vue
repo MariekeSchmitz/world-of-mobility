@@ -20,7 +20,7 @@ const props = defineProps<{
 let moveableType = "";
 
 function join() {
-  if (props.instanceID != undefined) {
+  if (props.instanceID != undefined && spawnState.xPos != -1 && spawnState.yPos != -1 && spawnState.tileNumber != -1) {
     joinGame(props.instanceID, loginData.username, moveableType, spawnState.xPos, spawnState.yPos);
     router.push("/game/" + props.instanceID);
   }
