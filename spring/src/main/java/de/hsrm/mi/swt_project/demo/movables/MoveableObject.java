@@ -19,7 +19,7 @@ import de.hsrm.mi.swt_project.demo.util.JythonFactory;
 public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
 
 
-    protected static final float MIN_VELOCITY = 0.0f;
+    protected static final float MIN_VELOCITY = -0.5f;
     protected static final float MAX_VELOCITY = 1.0f;
 
     protected static final float MIN_CAPACITY = 0.0f;
