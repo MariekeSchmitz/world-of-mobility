@@ -13,104 +13,8 @@ const { getGameMap } = useMap();
 
 const defaultMap: I3DMap = {
   //@ts-ignore
-  tiles: [
-    [
-      {
-        type: "SIDEWAY",
-        orientation: "NORTH",
-        placedObjects: [],
-      },
-      {
-        type: "SIDEWAY",
-        orientation: "NORTH",
-        placedObjects: [],
-      },
-      {
-        type: "SIDEWAY",
-        orientation: "NORTH",
-        placedObjects: [],
-      },
-      {
-        type: "SIDEWAY",
-        orientation: "NORTH",
-        placedObjects: [],
-      },
-    ],
-    [
-      {
-        type: "SIDEWAY",
-        orientation: "NORTH",
-        placedObjects: [],
-      },
-      {
-        type: "STREET_CURVE",
-        orientation: "EAST",
-        placedObjects: [],
-      },
-      {
-        type: "STREET_CURVE",
-        orientation: "NORTH",
-        placedObjects: [],
-      },
-      {
-        type: "SIDEWAY",
-        orientation: "NORTH",
-        placedObjects: [],
-      },
-    ],
-    [
-      {
-        type: "SIDEWAY",
-        orientation: "NORTH",
-        placedObjects: [],
-      },
-      {
-        type: "STREET_CURVE",
-        orientation: "SOUTH",
-        placedObjects: [],
-      },
-      {
-        type: "STREET_CURVE",
-        orientation: "WEST",
-        placedObjects: [],
-      },
-      {
-        type: "SIDEWAY",
-        orientation: "NORTH",
-        placedObjects: [],
-      },
-    ],
-    [
-      {
-        type: "SIDEWAY",
-        orientation: "NORTH",
-        placedObjects: [],
-      },
-      {
-        type: "SIDEWAY",
-        orientation: "NORTH",
-        placedObjects: [],
-      },
-      {
-        type: "SIDEWAY",
-        orientation: "NORTH",
-        placedObjects: [],
-      },
-      {
-        type: "SIDEWAY",
-        orientation: "NORTH",
-        placedObjects: [],
-      },
-    ],
-  ],
-  NPCs: [
-    {
-      user: "NPC1",
-      xPos: 0,
-      yPos: 0,
-      classname: "car",
-    },
-  ],
+  tiles: [[]],
+  NPCS: undefined,
 };
 
 const props = withDefaults(
@@ -165,7 +69,7 @@ onMounted(async () => {
         :position="
           new THREE.Vector3(
             column * squareSize + 0.5 * squareSize,
-            tile.positionY,
+            0,
             row * squareSize + 0.5 * squareSize
           )
         "

@@ -1,30 +1,30 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 //@ts-ignore
-import type * as THREE from "three";
-import { Plane, Texture, ToonMaterial } from "troisjs";
+import { Vector3 } from "three";
+import { GltfModel } from "troisjs";
 import { withDefaults, defineProps } from "vue";
 
+/**
+ * Class for Grass Components
+ * @author Beate Arnold, Victoria Thee
+ */
 const props = withDefaults(
   defineProps<{
     width: number;
     height: number;
-    position: THREE.Vector3;
-    rotation: THREE.Vector3;
+    position: Vector3;
+    rotation: Vector3;
     type: string;
   }>(),
   { width: 10, height: 10 }
 );
 </script>
 <template>
-  <Plane
-    :width="props.width"
-    :height="props.height"
-    :rotation="props.rotation"
+  <GltfModel
+    ref="model"
+    src="/src/assets/models/GRASSTILE.glb"
     :position="props.position"
-  >
-    <ToonMaterial>
-      <Texture src="/src/textures/tiles/GRASSTILE.jpg"
-    /></ToonMaterial>
-  </Plane>
+    :rotation="props.rotation"
+  />
 </template>

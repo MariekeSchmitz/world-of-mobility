@@ -13,7 +13,7 @@ import {
   GltfModel,
 } from "troisjs";
 import Map from "@/components/Map.vue";
-import Car from "@/components/objects/Car.vue";
+import CAR1 from "@/components/objects/CAR1.vue";
 import { Vector3 } from "three";
 import { useGame } from "@/services/useGame";
 import { useLogin } from "@/services/login/useLogin";
@@ -186,10 +186,13 @@ onUnmounted(() => {
       ></Box> -->
 
       <div v-for="(moveable, index) in allMoveables" :key="index">
-        <Car
-          :pos="new Vector3(moveable.xPos * SIZE, 0.5, moveable.yPos * SIZE)"
+        <CAR1
+          :scale="1"
+          :position="
+            new Vector3(moveable.xPos * SIZE, 0.5, moveable.yPos * SIZE)
+          "
           :rotation="orientations[moveable.orientation]"
-        ></Car>
+        ></CAR1>
       </div>
     </Scene>
   </Renderer>

@@ -13,8 +13,7 @@ const props = withDefaults(
   defineProps<{
     scale: any;
     position: Vector3;
-    rotation: Vector3;
-    type: string;
+    rotation: number;
   }>(),
   { scale: new Vector3(1, 1, 1) }
 );
@@ -24,7 +23,7 @@ const props = withDefaults(
     ref="model"
     src="/src/assets/models/CAR1.glb"
     :position="props.position"
-    :rotation="props.rotation"
+    :rotation="new Vector3(0, props.rotation, 0)"
     :scale="props.scale"
   />
 </template>
