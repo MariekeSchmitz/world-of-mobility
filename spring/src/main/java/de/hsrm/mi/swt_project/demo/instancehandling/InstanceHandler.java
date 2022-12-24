@@ -64,23 +64,29 @@ public class InstanceHandler implements Updateable {
      */
     public long createGameInstance(String mapName, String sessionName) {
 
-        if (mapName == null || mapName.isEmpty()) {
-            logger.error("Could not create game instance because no mapName was given.");
-            return -1;
+        GameMap map;
+
+        if (mapName == null) {
+
+            map = new GameMap();
+
+        } else {
+
+            String fileName = "%s/%s.json".formatted(mapSavePath, mapName);
+            Path filePath = Path.of(fileName);
+            String mapFile;
+    
+            try {
+                mapFile = Files.readString(filePath);
+            } catch (IOException e) {
+                logger.error("IOException occured on createGameInstance in InstanceHandler: {}\nFilename: {}", e, fileName);
+                return -1;
+            }
+    
+            map = loadMap(mapFile);
+
         }
 
-        String fileName = "%s/%s.json".formatted(mapSavePath, mapName);
-        Path filePath = Path.of(fileName);
-        String mapFile;
-
-        try {
-            mapFile = Files.readString(filePath);
-        } catch (IOException e) {
-            logger.error("IOException occured on createGameInstance in InstanceHandler: {}\nFilename: {}", e, fileName);
-            return -1;
-        }
-
-        GameMap map = loadMap(mapFile);
         Instance instance = new GameInstance(map, sessionName, idCounter);
 
         instance.setLifetime(instanceLifetimeCycles);
@@ -99,7 +105,7 @@ public class InstanceHandler implements Updateable {
      */
     public long createEditorInstance(String mapName) {
 
-        if (mapName == null || mapName.isEmpty()) {
+        if (mapName == null) {
             logger.error("Could not create game instance because no mapName was given.");
             return -1;
         }
