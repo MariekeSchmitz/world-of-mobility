@@ -28,15 +28,31 @@ public abstract class Instance implements Updateable {
         this.id = id;
     }
 
+    /**
+     * Gets remaining server ticks until the lifetime of
+     * the instance ends.
+     * 
+     * @return Remaining server ticks
+     */
     public long getRemainingLifetime() {
         return remainingLifetime;
     }
 
+    /**
+     * Sets maximum amount of server ticks until the
+     * lifetime of the instance ends.
+     * 
+     * @param loopCount Maximum amount of server ticks
+     */
     public void setLifetime(long loopCount) {
         this.lifetime = loopCount;
         this.remainingLifetime = loopCount;
     }
 
+    /**
+     * Resets remaining instance lifetime to the
+     * maximum amount of server ticks.
+     */
     public void resetRemainingLifetime() {
         this.remainingLifetime = this.lifetime;
     }
@@ -59,6 +75,10 @@ public abstract class Instance implements Updateable {
         return id;
     }
 
+    /**
+     * Updates state of the instance and reduces
+     * its remaining lifetime by 1.
+     */
     @Override
     public void update() {
         this.remainingLifetime--;
