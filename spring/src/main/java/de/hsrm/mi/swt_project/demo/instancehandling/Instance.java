@@ -8,6 +8,10 @@ import de.hsrm.mi.swt_project.demo.controls.Updateable;
  * @author Alexandra Müller
  */
 public abstract class Instance implements Updateable {
+
+    protected long lifetime = 1200;
+    protected long remainingLifetime = lifetime;
+
     // @Value("${map.savedir:maps}")
     protected String mapSavePath = "maps";
 
@@ -22,6 +26,19 @@ public abstract class Instance implements Updateable {
     protected Instance(GameMap map, long id) {
         this.map = map;
         this.id = id;
+    }
+
+    public long getRemainingLifetime() {
+        return remainingLifetime;
+    }
+
+    public void setLifetime(long loopCount) {
+        this.lifetime = loopCount;
+        this.remainingLifetime = loopCount;
+    }
+
+    public void resetRemainingLifetime() {
+        this.remainingLifetime = this.lifetime;
     }
 
     /**
@@ -40,5 +57,10 @@ public abstract class Instance implements Updateable {
      */
     public long getId() {
         return id;
+    }
+
+    @Override
+    public void update() {
+        this.remainingLifetime--;
     }
 }
