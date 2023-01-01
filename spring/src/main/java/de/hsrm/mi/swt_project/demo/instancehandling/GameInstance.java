@@ -71,6 +71,7 @@ public class GameInstance extends Instance {
                 break;
         }
 
+        resetRemainingLifetime();
     }
 
    
@@ -82,6 +83,7 @@ public class GameInstance extends Instance {
      */
     public void addPlayer(String user, MoveableObject moveableObject) {
         moveableObjects.put(user, moveableObject);
+        resetRemainingLifetime();
     }
 
     /**
@@ -98,6 +100,8 @@ public class GameInstance extends Instance {
      */
     @Override
     public void update() {
+
+        super.update();
 
         for(MoveableObject moveableObject : moveableObjects.values()) {
 
