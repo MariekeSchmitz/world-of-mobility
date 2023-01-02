@@ -64,11 +64,14 @@ public class EditorRestController {
     }
 
     @PostMapping(value = "/placeableObjectUpdate/{editorId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ValidationDTO postPlaceableObjectUpdate(@RequestBody GetPlaceableObjectUpdateDTO getPlaceableObjectUpdateDTO, @PathVariable int editorId) {
-        
+    public ValidationDTO postPlaceableObjectUpdate(@RequestBody GetPlaceableObjectUpdateDTO getPlaceableObjectUpdateDTO,
+            @PathVariable int editorId) {
+
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(editorId);
-        boolean placed = editorInstance.editPlaceablesOnMap(getPlaceableObjectUpdateDTO.xPos(), getPlaceableObjectUpdateDTO.yPos(), getPlaceableObjectUpdateDTO.control(), getPlaceableObjectUpdateDTO.type());
-        if(placed){
+        boolean placed = editorInstance.editPlaceablesOnMap(getPlaceableObjectUpdateDTO.xPos(),
+                getPlaceableObjectUpdateDTO.yPos(), getPlaceableObjectUpdateDTO.control(),
+                getPlaceableObjectUpdateDTO.type());
+        if (placed) {
             loopService.publishInstanceState(editorInstance);
         }
         return new ValidationDTO(placed);
@@ -180,34 +183,40 @@ public class EditorRestController {
      */
     @PostMapping("/createWorldFromMap")
     public SendNewWorldDTO postWorldFromMap(@RequestBody GetNewWorldDTO newWorldDTO) {
-        
+
         String name = newWorldDTO.name();
         long id = instanceHandler.createEditorInstance(name);
-        
+
         return SendNewWorldDTO.from(id, "");
 
     }
 
     /**
      * Post for adding a user to a editor instance
+     * 
      * @param joinEditorRequest Dto with name of new joining user
-     * @param id editor instance that user is joining
+     * @param id                editor instance that user is joining
      * @author Astrid Klemmer
      */
-    @PostMapping(value="/{id}/join-editor", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void joinGame(@RequestBody JoinEditorDTO joinEditorRequest , @PathVariable long id) {
+    @PostMapping(value = "/{id}/join-editor", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void joinGame(@RequestBody JoinEditorDTO joinEditorRequest, @PathVariable long id) {
         instanceHandler.getEditorInstanceById(id).addUser(joinEditorRequest.user());
     }
 
     /**
      * Post for removing a user from a editor instance
+     * 
      * @param leaveEditorRequest Dto with name of leaving user
-     * @param id editor instance that user is joining
+     * @param id                 editor instance that user is joining
      * @author Astrid Klemmer
      */
-    @PostMapping(value="/{id}/leave-editor", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void leaveGame(@RequestBody JoinEditorDTO leaveEditorRequest , @PathVariable long id) {
+    @PostMapping(value = "/{id}/leave-editor", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void leaveGame(@RequestBody JoinEditorDTO leaveEditorRequest, @PathVariable long id) {
         instanceHandler.getEditorInstanceById(id).removeUser(leaveEditorRequest.user());
     }
 
+    @PostMapping("/{id}/placeNpc")
+    public void placeNpc(@PathVariable long id, @RequestBody PlaceNpcDTO npc) {
+        instanceHandler.getEditorInstanceById(id).placeNPC(npc.x(), npc.y(), npc.type());
+    }
 }

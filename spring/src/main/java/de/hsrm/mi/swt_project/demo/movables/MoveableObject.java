@@ -18,7 +18,6 @@ import de.hsrm.mi.swt_project.demo.util.JythonFactory;
  */
 public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
 
-
     protected static final float MIN_VELOCITY = -0.5f;
     protected static final float MAX_VELOCITY = 1.0f;
 
@@ -34,7 +33,6 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
     protected float capacity = 1;
     protected float currentVelocity = 0;
     protected String script = "";
-    
 
     protected MoveableType type;
 
@@ -68,6 +66,14 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
     }
 
     /**
+     * 
+     * @return type
+     */
+    public MoveableType getType() {
+        return type;
+    }
+
+    /**
      * Gets capacity of the object. Capacity indicates
      * currently available resource for performing movements.
      * 
@@ -89,7 +95,6 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
         return currentVelocity;
     }
 
-
     /**
      * Gets maximum velocity of the moveable object.
      * 
@@ -101,6 +106,7 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
 
     /**
      * Sets new x-position of the movable object.
+     * 
      * @param xPos New x-position
      */
     public void setXPos(float xPos) {
@@ -109,6 +115,7 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
 
     /**
      * Sets new y-position of the movable object.
+     * 
      * @param yPos New y-position
      */
     public void setYPos(float yPos) {
@@ -120,7 +127,7 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
      * 
      * Since capacity is relative to maxVelocity,
      * given value will be clipped to interval [0, 1].
-     *  
+     * 
      * @param capacity New capacity.
      */
     public void setCapacity(float capacity) {
@@ -133,7 +140,7 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
      * 
      * Since currentVelocity is relative to maxVelocity,
      * given value will be clipped to interval [0, 1].
-     *  
+     * 
      * @param velocity New velocity.
      */
     public void setCurrentVelocity(float velocity) {
@@ -143,16 +150,16 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
 
     @Override
     public void loadScript(String script) {
-        this.script = script;    
+        this.script = script;
     }
 
     @Override
     public void executeScript() {
 
         if (this.script != null && !this.script.isEmpty()) {
-                PythonInterpreter interpreter = JythonFactory.getInterpreter();
-                interpreter.set("moveable", this);   
-                interpreter.exec(this.script);
+            PythonInterpreter interpreter = JythonFactory.getInterpreter();
+            interpreter.set("moveable", this);
+            interpreter.exec(this.script);
 
         }
     }
@@ -163,7 +170,5 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
      * @return Copy of the object.
      */
     public abstract MoveableObject copy();
-
-
 
 }

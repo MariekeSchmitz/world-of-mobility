@@ -4,6 +4,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import org.json.JSONObject;
@@ -17,100 +19,115 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import de.hsrm.mi.swt_project.demo.instancehandling.EditorInstance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
+import de.hsrm.mi.swt_project.demo.movables.MoveableType;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class EditorTest {
-    
-    @Autowired 
-    private MockMvc mockMvc;
 
-    @Autowired
-    private InstanceHandler instanceHandler;
+        @Autowired
+        private MockMvc mockMvc;
 
-    EditorInstance editorInstance;
+        @Autowired
+        private InstanceHandler instanceHandler;
 
-    long editorId;
+        EditorInstance editorInstance;
 
-    @BeforeEach
-    void setUp() {
-        editorId = instanceHandler.createEditorInstance("test");
-    }
+        long editorId;
 
-    @Test
-    void postMapUpdateGood() throws Exception {
-        JSONObject body = new JSONObject();
-        body.put("control", "PLACE");
-        body.put("type", "STREET_STRAIGHT");
-        body.put("posX", 0);
-        body.put("posY", 0);
+        @BeforeEach
+        void setUp() {
+                editorId = instanceHandler.createEditorInstance("test2");
+                editorInstance = instanceHandler.getEditorInstanceById(editorId);
+        }
 
-        mockMvc.perform(
-            post("/api/editor/mapupdate/"+editorId)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(body.toString())
-            ).andExpect(status().isOk());
-    }
+        @Test
+        void postMapUpdateGood() throws Exception {
+                JSONObject body = new JSONObject();
+                body.put("control", "PLACE");
+                body.put("type", "STREET_STRAIGHT");
+                body.put("posX", 0);
+                body.put("posY", 0);
 
-    @Test
-    void postGetMapGood() throws Exception {
+                mockMvc.perform(
+                                post("/api/editor/mapupdate/" + editorId)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(body.toString()))
+                                .andExpect(status().isOk());
+        }
 
-        JSONObject body = new JSONObject();
-        body.put("name", "test");
-        body.put("mapId", editorId);
+        @Test
+        void postGetMapGood() throws Exception {
 
-        mockMvc.perform(
-            post("/api/editor/getmap")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(body.toString())
-            .accept(MediaType.APPLICATION_JSON)
-            ).andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("tiles").exists())
-            .andExpect(jsonPath("npcs").exists());
-    }
+                JSONObject body = new JSONObject();
+                body.put("name", "test");
+                body.put("mapId", editorId);
 
-    @Test
-    void postMapsaveGood() throws Exception {
+                mockMvc.perform(
+                                post("/api/editor/getmap")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(body.toString())
+                                                .accept(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(jsonPath("tiles").exists())
+                                .andExpect(jsonPath("npcs").exists());
+        }
 
-        JSONObject body = new JSONObject();
-        body.put("mapName", "test");
-        body.put("mapId", editorId);
+        @Test
+        void postMapsaveGood() throws Exception {
 
-        mockMvc.perform(
-            post("/api/editor/savemap")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(body.toString())
-        ).andExpect(status().isOk());
-    }
+                JSONObject body = new JSONObject();
+                body.put("mapName", "test");
+                body.put("mapId", editorId);
 
-    @Test
-    void postServerMessageGood() throws Exception {
-        
-        JSONObject body = new JSONObject();
-        body.put("usrId", 1);
-        body.put("txt", "Dies ist ein Test");
+                mockMvc.perform(
+                                post("/api/editor/savemap")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(body.toString()))
+                                .andExpect(status().isOk());
+        }
 
-        mockMvc.perform(
-            post("/api/editor/servermessage")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(body.toString())
-        ).andExpect(status().isOk());
-    }
+        @Test
+        void postServerMessageGood() throws Exception {
 
-    @Test
-    void post_instancelist_good() throws Exception {
-        int amountEditorItems = instanceHandler.getEditorInstances().size();
+                JSONObject body = new JSONObject();
+                body.put("usrId", 1);
+                body.put("txt", "Dies ist ein Test");
 
-        mockMvc.perform(
-            post("/api/editor/instancelist")
-        ).andExpect(status().isOk())
-        .andExpect(jsonPath("$.instancelist", hasSize(amountEditorItems)));
+                mockMvc.perform(
+                                post("/api/editor/servermessage")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(body.toString()))
+                                .andExpect(status().isOk());
+        }
 
-    }
+        @Test
+        void post_instancelist_good() throws Exception {
+                int amountEditorItems = instanceHandler.getEditorInstances().size();
 
-   
-    
+                mockMvc.perform(
+                                post("/api/editor/instancelist")).andExpect(status().isOk())
+                                .andExpect(jsonPath("$.instancelist", hasSize(amountEditorItems)));
 
+        }
+
+        @Test
+        void post_placeNpc_good() throws Exception {
+                JSONObject body = new JSONObject();
+                body.put("x", 1);
+                body.put("y", 2);
+                body.put("type", "PASSENGER");
+                mockMvc.perform(post("/api/editor/" + editorId + "/placeNpc")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(body.toString()))
+                                .andExpect(status().isOk());
+
+                assertTrue(!editorInstance.getMap().getNpcs().isEmpty(), "npc was added");
+                assertEquals(1.0f, editorInstance.getMap().getNpcs().get(0).getXPos(), "x post is correct");
+                assertEquals(2.0f, editorInstance.getMap().getNpcs().get(0).getYPos(), "y pos is correct");
+                assertEquals(editorInstance.getMap().getNpcs().get(0).getType(), MoveableType.PASSENGER,
+                                "type is correct");
+        }
 
 }
