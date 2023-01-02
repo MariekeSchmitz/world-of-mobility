@@ -5,10 +5,10 @@ import { ref } from 'vue';
 
 const postScript = useScript()
 
-const props = defineProps({
+const props = defineProps<{
      id: number,
      npcId: number
-})
+}>()
     
 const script = ref("")
 </script>
