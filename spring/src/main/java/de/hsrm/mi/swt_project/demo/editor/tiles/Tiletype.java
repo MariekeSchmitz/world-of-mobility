@@ -48,6 +48,16 @@ public enum Tiletype {
             return tile;
         }
     },
+    PEDESTRIAN_CROSSING() {
+        @Override
+        public Tile createTile() {
+            TrafficTile tile = new PedestrianCrossingTile();
+            tile.allowedDirections.add(Orientation.EAST);
+            tile.allowedDirections.add(Orientation.WEST);
+            tile.type = this;
+            return tile;
+        }
+    },
     RAIL_STRAIGHT() {
         @Override
         public Tile createTile() {
