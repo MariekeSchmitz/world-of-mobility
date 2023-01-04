@@ -158,6 +158,14 @@ function switchContent(element: string) {
                 <img src="@/textures/editor/SIDEWAY.jpg" />
               </button>
             </li>
+            <li>
+              <button
+                class="itemButton"
+                @click="setPlaceState(TileName.FARM, true)"
+              >
+                <img src="@/textures/editor/FARM.jpg" />
+              </button>
+            </li>
           </div>
           <!--
           <div
