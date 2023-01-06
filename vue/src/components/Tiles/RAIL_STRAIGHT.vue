@@ -12,6 +12,7 @@ const props = withDefaults(
     position: Vector3;
     rotation: Vector3;
     type: string;
+    placedObject: any;
   }>(),
   { width: 10, height: 10 }
 );

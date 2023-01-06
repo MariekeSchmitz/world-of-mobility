@@ -184,10 +184,9 @@ onUnmounted(() => {
         ><ToonMaterial>
           <Texture src="/src/textures/Obsidian.jpg" /> </ToonMaterial
       ></Box> -->
-
       <div v-for="(moveable, index) in allMoveables" :key="index">
         <CAR1
-          :scale="1"
+          :scale="new Vector3(1, 1, 1)"
           :position="
             new Vector3(moveable.xPos * SIZE, 0.5, moveable.yPos * SIZE)
           "

@@ -54,6 +54,7 @@ function computeVector3(orientation: string): THREE.Vector3 {
 }
 onMounted(async () => {
   loadedMap.value = await getGameMap(props.instanceID);
+  console.log(loadedMap.value);
 });
 </script>
 <template>
@@ -75,7 +76,23 @@ onMounted(async () => {
         "
         :rotation="computeVector3(tile.orientation)"
         :type="tile.type"
-        v-if="tile != null"
+        v-if="tile.placedObject !== null"
+        :placed-object="tile.placedObject.type"
+      >
+      </Tile>
+      <Tile
+        v-if="tile.placedObject === null"
+        :width="squareSize"
+        :height="squareSize"
+        :position="
+          new THREE.Vector3(
+            column * squareSize + 0.5 * squareSize,
+            0,
+            row * squareSize + 0.5 * squareSize
+          )
+        "
+        :rotation="computeVector3(tile.orientation)"
+        :type="tile.type"
       >
       </Tile>
     </div>

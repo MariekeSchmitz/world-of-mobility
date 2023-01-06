@@ -19,6 +19,7 @@ const props = withDefaults(
     position: THREE.Vector3;
     rotation: THREE.Vector3;
     type: string;
+    placedObject?: any;
   }>(),
   { width: 10, height: 10 }
 );
@@ -31,6 +32,7 @@ const props = withDefaults(
     :rotation="props.rotation"
     :position="props.position"
     :type="props.type"
+    :placedObject="props.placedObject"
   >
   </SIDEWAY>
 
@@ -41,6 +43,7 @@ const props = withDefaults(
     :rotation="props.rotation"
     :position="props.position"
     :type="props.type"
+    :placedObject="props.placedObject"
   >
   </STREET_CURVE>
 
@@ -51,6 +54,7 @@ const props = withDefaults(
     :rotation="props.rotation"
     :position="props.position"
     :type="props.type"
+    :placedObject="props.placedObject"
   >
   </STREET_STRAIGHT>
 
@@ -61,6 +65,7 @@ const props = withDefaults(
     :rotation="props.rotation"
     :position="props.position"
     :type="props.type"
+    :placedObject="props.placedObject"
   >
   </STREET_CROSS>
 
@@ -71,6 +76,7 @@ const props = withDefaults(
     :rotation="props.rotation"
     :position="props.position"
     :type="props.type"
+    :placedObject="props.placedObject"
   >
   </STREET_T_CROSS>
 
@@ -81,6 +87,7 @@ const props = withDefaults(
     :rotation="props.rotation"
     :position="props.position"
     :type="props.type"
+    :placedObject="props.placedObject"
   >
   </RAIL_CURVE>
 
@@ -91,6 +98,7 @@ const props = withDefaults(
     :rotation="props.rotation"
     :position="props.position"
     :type="props.type"
+    :placedObject="props.placedObject"
   >
   </RAIL_STRAIGHT>
   <GRASSTILE
@@ -100,6 +108,7 @@ const props = withDefaults(
     :rotation="props.rotation"
     :position="props.position"
     :type="props.type"
+    :placedObject="props.placedObject"
   >
   </GRASSTILE>
 </template>

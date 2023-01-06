@@ -11,6 +11,7 @@ const props = withDefaults(
     position: THREE.Vector3;
     rotation: THREE.Vector3;
     type: string;
+    placedObject: any;
   }>(),
   { width: 10, height: 10 }
 );

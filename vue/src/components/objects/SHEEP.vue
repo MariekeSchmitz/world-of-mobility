@@ -11,7 +11,7 @@ import { withDefaults, defineProps } from "vue";
  */
 const props = withDefaults(
   defineProps<{
-    scale: any;
+    scale?: any;
     position: Vector3;
     rotation: Vector3;
     type: string;
