@@ -19,8 +19,7 @@ import { useGame } from "@/services/useGame";
 import { useLogin } from "@/services/login/useLogin";
 import { orientations } from "@/services/Orientations";
 
-const SIZE = 10
-
+const SIZE = 10;
 
 const props = withDefaults(
   defineProps<{
@@ -49,7 +48,7 @@ const thirdPersonOffset = new Vector3(0, 8, -15);
 const firstPersonOffset = new Vector3(0, 0, -2);
 const cameraOffset = reactive(new Vector3(0, 8, -15));
 const upVector = new Vector3(0, 1, 0);
-let movementVector = new Vector3(0, 0, 0);   
+let movementVector = new Vector3(0, 0, 0);
 
 const userMovable = computed(() => {
   return getUserMoveable(loginData.username);
@@ -143,26 +142,27 @@ onMounted(() => {
   orbitControls.screenSpacePanning = false;
   orbitControls.maxPolarAngle = Math.PI / 2;
 
-  function setAzimuthAngle(){
+  function setAzimuthAngle() {
     console.log("hallo");
     if (freeCam.value && !thirdPerson.value) {
-      orbitControls.minAzimuthAngle = orientations[userMovable.value.orientation] - Math.PI / 2;
-      orbitControls.minAzimuthAngle = orientations[userMovable.value.orientation] + Math.PI / 2;
+      orbitControls.minAzimuthAngle =
+        orientations[userMovable.value.orientation] - Math.PI / 2;
+      orbitControls.minAzimuthAngle =
+        orientations[userMovable.value.orientation] + Math.PI / 2;
     } else {
       orbitControls.minAzimuthAngle =
-      orientations[userMovable.value.orientation];
+        orientations[userMovable.value.orientation];
       orbitControls.maxAzimuthAngle =
-      orientations[userMovable.value.orientation] + 1.99 * Math.PI;
+        orientations[userMovable.value.orientation] + 1.99 * Math.PI;
     }
   }
-  
+
   receiveGameUpdate(props.instanceID);
   document.addEventListener("keyup", handleKeyEvent);
-  watch(userMovable.value,()=>setAzimuthAngle());
+  watch(userMovable.value, () => setAzimuthAngle());
 });
 onUnmounted(() => {
   document.removeEventListener("keyup", handleKeyEvent);
-  leaveGame(props.instanceID, loginData.username, "MOTORIZED_OBJECT");
 });
 </script>
 
