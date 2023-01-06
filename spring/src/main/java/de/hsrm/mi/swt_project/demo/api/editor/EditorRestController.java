@@ -58,7 +58,6 @@ public class EditorRestController {
     @PostMapping(value = "/mapupdate/{editorId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void postMapUpdate(@RequestBody GetMapUpdateDTO getMapUpdateDTO, @PathVariable int editorId) {
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(editorId);
-
         editorInstance.editMap(getMapUpdateDTO.xPos(), getMapUpdateDTO.yPos(), getMapUpdateDTO.control(),
                 getMapUpdateDTO.type());
         loopService.publishInstanceState(editorInstance);
@@ -66,10 +65,12 @@ public class EditorRestController {
 
     @PostMapping(value = "/placeableObjectUpdate/{editorId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ValidationDTO postPlaceableObjectUpdate(@RequestBody GetPlaceableObjectUpdateDTO getPlaceableObjectUpdateDTO, @PathVariable int editorId) {
-
+        
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(editorId);
-        Boolean placed = editorInstance.editPlaceablesOnMap(getPlaceableObjectUpdateDTO.xPos(), getPlaceableObjectUpdateDTO.yPos(), getPlaceableObjectUpdateDTO.control(), getPlaceableObjectUpdateDTO.type());
-
+        boolean placed = editorInstance.editPlaceablesOnMap(getPlaceableObjectUpdateDTO.xPos(), getPlaceableObjectUpdateDTO.yPos(), getPlaceableObjectUpdateDTO.control(), getPlaceableObjectUpdateDTO.type());
+        if(placed){
+            loopService.publishInstanceState(editorInstance);
+        }
         return new ValidationDTO(placed);
     }
 
