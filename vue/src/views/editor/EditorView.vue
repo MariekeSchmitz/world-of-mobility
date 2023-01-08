@@ -29,7 +29,7 @@
   const { leaveEditor } = useUserEditor();
 
   onUnmounted(() => {
-      leaveEditor(props.editorID, loginData.username);
+      leaveEditor(props.editorID, loginData.username); 
   });
 
     /**

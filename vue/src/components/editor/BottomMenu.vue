@@ -4,6 +4,7 @@ import { usePlaceState } from "@/services/editor/usePlaceState";
 import { NaturObjectEnum } from "@/services/NaturObjectEnum";
 import { ObjectEnum } from "@/services/ObjectEnum";
 import { ControlEnum } from "@/services/ControlEnum";
+import { NpcType } from "@/services/editor/NpcType";
 
 const { setPlaceState } = usePlaceState();
 
@@ -40,23 +41,39 @@ function switchItems(element: string) {
   const streetItems = document.getElementById("streetItems");
   const componentItems = document.getElementById("componentItems");
   const otherItems = document.getElementById("otherItems");
+  const passengerItems = document.getElementById("passenger")
+  const motorizedItems = document.getElementById("motorized")
 
-  if (streetItems != null && componentItems != null && otherItems != null) {
+  if (streetItems != null && componentItems != null && otherItems != null &&passengerItems != null  && motorizedItems != null) {
     switch (element) {
       case "componentItems":
         streetItems.style.display = "none";
         componentItems.style.display = "block";
         otherItems.style.display = "none";
+        passengerItems.style.display="none"
+        motorizedItems.style.display="none"
         break;
       case "otherItems":
         streetItems.style.display = "none";
         componentItems.style.display = "none";
         otherItems.style.display = "block";
+        passengerItems.style.display="none"
+        motorizedItems.style.display="none"
+        break;
+      case "passenger":
+        motorizedItems.style.display="none"
+        passengerItems.style.display="block"
+        break;
+      case "motorized":
+        motorizedItems.style.display="block"
+        passengerItems.style.display="none"
         break;
       default:
         streetItems.style.display = "block";
         componentItems.style.display = "none";
         otherItems.style.display = "none";
+        passengerItems.style.display="none"
+        motorizedItems.style.display="none"
         break;
     }
   }
@@ -119,42 +136,27 @@ function switchContent(element: string) {
         <ul id="box-wrapper">
           <div id="streetItems">
             <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(TileName.STREET_STRAIGHT, true)"
-              >
+              <button class="itemButton" @click="setPlaceState(TileName.STREET_STRAIGHT, true)">
                 <img src="@/textures/editor/STREET_STRAIGHT.jpg" />
               </button>
             </li>
             <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(TileName.STREET_CURVE, true)"
-              >
+              <button class="itemButton" @click="setPlaceState(TileName.STREET_CURVE, true)">
                 <img src="@/textures/editor/STREET_CURVE.jpg" />
               </button>
             </li>
             <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(TileName.STREET_T_CROSS, true)"
-              >
+              <button class="itemButton" @click="setPlaceState(TileName.STREET_T_CROSS, true)">
                 <img src="@/textures/editor/STREET_T_CROSS.jpg" />
               </button>
             </li>
             <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(TileName.STREET_CROSS, true)"
-              >
+              <button class="itemButton" @click="setPlaceState(TileName.STREET_CROSS, true)">
                 <img src="@/textures/editor/STREET_CROSS.jpg" />
               </button>
             </li>
             <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(TileName.SIDEWAY, true)"
-              >
+              <button class="itemButton" @click="setPlaceState(TileName.SIDEWAY, true)">
                 <img src="@/textures/editor/SIDEWAY.jpg" />
               </button>
             </li>
@@ -176,42 +178,27 @@ function switchContent(element: string) {
 
           <div id="componentItems">
             <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(ControlEnum.REMOVE, false)"
-              >
+              <button class="itemButton" @click="setPlaceState(ControlEnum.REMOVE, false)">
                 <img src="@/assets/objects/REMOVE.png" />
               </button>
             </li>
             <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(NaturObjectEnum.TREE, false)"
-              >
+              <button class="itemButton" @click="setPlaceState(NaturObjectEnum.TREE, false)">
                 <img src="@/assets/objects/TREE.png" />
               </button>
             </li>
             <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(NaturObjectEnum.FARM, false)"
-              >
+              <button class="itemButton" @click="setPlaceState(NaturObjectEnum.FARM, false)">
                 <img src="@/assets/objects/FARM.png" />
               </button>
             </li>
             <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(NaturObjectEnum.SHEEP, false)"
-              >
+              <button class="itemButton" @click="setPlaceState(NaturObjectEnum.SHEEP, false)">
                 <img src="@/assets/objects/SHEEP.png" />
               </button>
             </li>
             <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(NaturObjectEnum.PIG, false)"
-              >
+              <button class="itemButton" @click="setPlaceState(NaturObjectEnum.PIG, false)">
                 <img src="@/assets/objects/PIG.png" />
               </button>
             </li>
@@ -219,30 +206,22 @@ function switchContent(element: string) {
 
           <div id="otherItems">
             <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(ControlEnum.REMOVE, false)"
-              >
+              <button class="itemButton" @click="setPlaceState(ControlEnum.REMOVE, false)">
                 <img src="@/assets/objects/REMOVE.png" />
               </button>
             </li>
             <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(ObjectEnum.GAS_STATION, false)"
-              >
+              <button class="itemButton" @click="setPlaceState(ObjectEnum.GAS_STATION, false)">
                 <img src="@/assets/objects/GAS_STATION.png" />
               </button>
             </li>
             <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(ObjectEnum.TRAFFIC_LIGHT, false)"
-              >
+              <button class="itemButton" @click="setPlaceState(ObjectEnum.TRAFFIC_LIGHT, false)">
                 <img src="@/assets/objects/TRAFFIC_LIGHT.png" />
               </button>
             </li>
           </div>
+
         </ul>
 
         <button id="scrollRight" @click="scrollingRight">
@@ -251,12 +230,57 @@ function switchContent(element: string) {
       </div>
     </div>
 
-    <button id="hideElement" @click="toggle">
-      <img src="@/buttons/editor/arrow-down.png" />
-    </button>
+    <div id="npcMenu">
+      <div class="itemSelector">
+        <button @click="switchItems('motorized')">
+          Fahrzeuge
+        </button>
+        <button @click="switchItems('passenger')">
+          Fußgeher
+        </button>
+      </div>
 
-    <div id="npcMenu"></div>
+      <div id="itemList">
+        <button id="scrollLeft" @mousedown="scrollingLeft">
+          <img src="@/buttons/editor/arrow-left.png" />
+        </button>
+
+        <ul id="box-wrapper">
+
+          <div id="passenger">
+            <li>
+              <button class="itemButton" @click="setPlaceState(NpcType.PASSENGER, false)">
+                <img src="@/assets/objects/FARM.png" />
+              </button>
+            </li>
+          </div>
+
+          <div id="motorized">
+            <li>
+              <button class="itemButton" @click="setPlaceState(NpcType.MOTORIZED, false)">
+                <img src="@/assets/objects/GAS_STATION.png" />
+              </button>
+            </li>
+
+          </div>
+
+        </ul>
+
+        <button id="scrollRight" @click="scrollingRight">
+          <img src="@/buttons/editor/arrow-right.png" />
+        </button>
+      </div>
+    </div>
+
   </div>
+
+
+
+  <button id="hideElement" @click="toggle">
+    <img src="@/buttons/editor/arrow-down.png" />
+  </button>
+
+
   <button id="showElement" @click="toggle">
     <img src="@/buttons/editor/arrow-up.png" />
   </button>
@@ -281,8 +305,7 @@ function switchContent(element: string) {
 }
 
 #npcMenu {
-  display: grid;
-  display: grid;
+  display: none;
   grid-template-columns: 20% 80%;
 }
 
@@ -309,13 +332,13 @@ function switchContent(element: string) {
   margin: auto 0;
 }
 
-.itemButton > img {
+.itemButton>img {
   width: 80px;
   height: 80px;
 }
 
 #componentItems,
-#otherItems {
+#otherItems, #passenger {
   display: none;
 }
 

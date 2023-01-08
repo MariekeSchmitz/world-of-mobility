@@ -8,6 +8,7 @@ import { number } from "mathjs";
 import EditorTile from "@/components/editor/EditorTile.vue";
 import * as THREE from "three";
 import type { MapInterface } from "@/services/editor/MapInterface";
+import type { INpc } from "@/interfaces/INpc";
 
 const props = defineProps({
   editorID: {
@@ -24,6 +25,8 @@ const { getMapEditor } = useMap();
 receiveMapUpdates(props.editorID);
 const loadedMap = getMapEditor(props.editorID);
 
+
+
 const mapWidth = ref(8);
 const mapHeight = ref(8);
 const offsetx = computed(() => -(mapWidth.value + 1) / 2);
@@ -39,10 +42,20 @@ const mapDefault: MapInterface = {
       },
     ],
   ],
-  NPCS: [],
+  npcs: [],
 };
 
+
+
 const mapReactive = ref(mapDefault);
+
+function filterNpc(x:number,y:number,map:MapInterface):INpc[] {
+  console.log(mapReactive.value.npcs)
+  if (!map.npcs) return []
+  return map.npcs.filter((npc:INpc)=> {
+    (npc.xPos === x && npc.yPos===y)
+  })
+}
 
 watch(mapUpdates.value, () => {
   mapReactive.value = mapUpdates.value.map;
@@ -52,6 +65,8 @@ watch(mapUpdates.value, () => {
 onMounted(() => {
   loadedMap.then((result: MapInterface) => (mapReactive.value = result));
 });
+
+
 </script>
 
 <template>
@@ -69,6 +84,8 @@ onMounted(() => {
           :placedObject="tile.placedObject.type"
           :editorID="editorID"
           :cmVisible="false"
+          :placedNpc="filterNpc(column, row,mapReactive)"
+ 
         >
         </EditorTile>
       </div>
@@ -84,6 +101,7 @@ onMounted(() => {
           placedObject="none"
           :editorID="editorID"
           :cmVisible="false"
+          :placedNpc="filterNpc(column, row,mapReactive)"
         >
         </EditorTile>
       </div>

@@ -14,7 +14,7 @@ interface IPlaceNPC {
  * @param type type of npc
  * @param id id of editor-instance
  */
-export async function usePlaceNpc(x:number,y:number,type:NpcType,id:number){
+async function placeNpc(x:number,y:number,type:NpcType,id:number){
     const npc:IPlaceNPC = {
         x:x,
         y:y,
@@ -23,15 +23,29 @@ export async function usePlaceNpc(x:number,y:number,type:NpcType,id:number){
 
     const url = `/api/editor/${id}/placeNpc`
 
-    const response=await fetch(url,{
-         method:"POST",
-         headers: {
-            "Content-Type":"application/json"
-         },
-         body:JSON.stringify(npc)  
-    })
+    try{
+        console.log("Placing npc with coordinates",x,y)
+        const response=await fetch(url,{
+            method:"POST",
+            headers: {
+               "Content-Type":"application/json"
+            },
+            body:JSON.stringify(npc)  
+       })
+   
+       if(!response.ok){
+           throw new Error(response.statusText)
+       } 
 
-
-
-
+    } catch(error){
+        console.log("Error: " + error)
+    }
+  
 }
+export function usePlaceNpc() {
+    return {
+        placeNpc
+    }
+}
+
+

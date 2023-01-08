@@ -11,6 +11,7 @@ const placeState = ref<Place>({
 });
 
 function setPlaceState(type: string, isTile: boolean) {
+  console.log(type)
   placeState.value.type = type;
   placeState.value.isTile = isTile;
 }
