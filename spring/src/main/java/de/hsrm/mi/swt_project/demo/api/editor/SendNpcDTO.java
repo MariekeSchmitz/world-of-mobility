@@ -4,6 +4,11 @@ import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;
 
+/**
+ * DTO that represents npc data that is sent to client
+ * 
+ * @author Tom Gouthier
+ */
 public record SendNpcDTO(Orientation orientation, float xPos, float yPos, float maxVelocity, float capacity,
         float currentVelocity, String script, MoveableType type) {
 

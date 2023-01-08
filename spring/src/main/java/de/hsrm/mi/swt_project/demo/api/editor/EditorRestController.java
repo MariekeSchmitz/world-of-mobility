@@ -215,6 +215,13 @@ public class EditorRestController {
         instanceHandler.getEditorInstanceById(id).removeUser(leaveEditorRequest.user());
     }
 
+    /**
+     * POST Endpoint to place npcs
+     * 
+     * @param id  editor instance id
+     * @param npc DTO with data needed to place a npc on a certain location
+     * @author Marie Bohnert, Tom Gouthier
+     */
     @PostMapping("/{id}/placeNpc")
     public void placeNpc(@PathVariable long id, @RequestBody PlaceNpcDTO npc) {
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(id);

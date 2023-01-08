@@ -1,5 +1,8 @@
 import type { NpcType } from "./NpcType";
 
+/**
+ * interface that represents a npc that is supposed to be placed
+ */
 interface IPlaceNPC {
   x: number;
   y: number;
@@ -7,7 +10,7 @@ interface IPlaceNPC {
 }
 
 /**
- * places Npc on specific tile
+ * places Npc on specific coordinates
  * @param x x coordinate of npc
  * @param y y coordinate of npc
  * @param type type of npc
