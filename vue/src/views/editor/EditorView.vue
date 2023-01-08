@@ -22,7 +22,7 @@
 
  
   const props = defineProps<{
-    editorID: number;
+    editorID: string;
   }>();
 
   const { loginData } = useLogin();

@@ -217,6 +217,8 @@ public class EditorRestController {
 
     @PostMapping("/{id}/placeNpc")
     public void placeNpc(@PathVariable long id, @RequestBody PlaceNpcDTO npc) {
-        instanceHandler.getEditorInstanceById(id).placeNPC(npc.x(), npc.y(), npc.type());
+        EditorInstance editorInstance = instanceHandler.getEditorInstanceById(id);
+        editorInstance.placeNPC(npc.x(), npc.y(), npc.type());
+        loopService.publishInstanceState(editorInstance);
     }
 }

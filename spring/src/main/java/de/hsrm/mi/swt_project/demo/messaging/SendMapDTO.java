@@ -1,8 +1,10 @@
 package de.hsrm.mi.swt_project.demo.messaging;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import de.hsrm.mi.swt_project.demo.api.editor.SendNpcDTO;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.instancehandling.GameMap;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
@@ -13,10 +15,15 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
  * 
  * @author Tom Gouthier
  */
-public record SendMapDTO(Tile[][] tiles, List<MoveableObject> npcs) {
+public record SendMapDTO(Tile[][] tiles, List<SendNpcDTO> npcs) {
 
     public static SendMapDTO from(GameMap map) {
-        return new SendMapDTO(map.getTiles(), map.getNpcs());
+
+        List<SendNpcDTO> l = new ArrayList<>();
+        for (MoveableObject m : map.getNpcs()) {
+            l.add(SendNpcDTO.from(m));
+        }
+        return new SendMapDTO(map.getTiles(), l);
     }
 
     @Override

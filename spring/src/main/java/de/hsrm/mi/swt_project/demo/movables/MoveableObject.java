@@ -52,7 +52,7 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
      * 
      * @return x-Position
      */
-    public float getXPos() {
+    public float getxPos() {
         return xPos;
     }
 
@@ -61,8 +61,17 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
      * 
      * @return x-Position
      */
-    public float getYPos() {
+    public float getyPos() {
         return yPos;
+    }
+
+    /**
+     * Gets script of moveable object
+     * 
+     * @return script
+     */
+    public String getScript() {
+        return script;
     }
 
     /**

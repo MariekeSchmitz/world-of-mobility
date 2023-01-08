@@ -26,11 +26,10 @@ const props = withDefaults(
     placedObject: string;
     editorID: number;
     cmVisible: boolean;
-    placedNpc:INpc[]
+    placedNpc: INpc[];
   }>(),
   { width: 0.99, height: 0.99, cmVisible: false }
 );
-
 
 const cmVisible = ref(false);
 let texturePath = "../src/textures/editor/" + props.type + ".jpg";
@@ -39,7 +38,7 @@ const { readPlaceState } = usePlaceState();
 const { readCMState, setCMState } = useContextMenu();
 const { sendMapUpdates } = useMapUpdate(props.editorID);
 const { placeObject } = usePlaceObject();
-const {placeNpc} = usePlaceNpc()
+const { placeNpc } = usePlaceNpc();
 
 const mapWidth = ref(8);
 const mapHeight = ref(8);
@@ -85,12 +84,14 @@ function placeItem() {
       sendMapUpdates(toSendObj);
     }
   } else if (!readPlaceState.value.isTile) {
-    if (readPlaceState.value.type === NpcType.PASSENGER || readPlaceState.value.type === NpcType.MOTORIZED)  {
-      placeNpc(posX,posY, readPlaceState.value.type, props.editorID)
+    if (
+      readPlaceState.value.type === NpcType.PASSENGER ||
+      readPlaceState.value.type === NpcType.MOTORIZED
+    ) {
+      placeNpc(posY, posX, readPlaceState.value.type, props.editorID);
     } else {
       sendPlaceObject(posX, posY, props.placedObject);
     }
-    
   }
 }
 
@@ -217,7 +218,12 @@ function removeTile() {
     :position="props.position.clone().add(new THREE.Vector3(0.1, -0.1, 0.02))"
   ></PlacedObject>
 
-  
-
-   
+  <PlacedObject
+    v-if="props.placedNpc[0]"
+    :type="'TREE'"
+    :width="props.width"
+    :height="props.height"
+    :rotation="props.rotation"
+    :position="props.position.clone().add(new THREE.Vector3(0.1, -0.1, 0.02))"
+  ></PlacedObject>
 </template>

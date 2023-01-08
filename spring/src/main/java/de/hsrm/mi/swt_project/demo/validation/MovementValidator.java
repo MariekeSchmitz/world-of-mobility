@@ -11,7 +11,7 @@ import de.hsrm.mi.swt_project.demo.movables.Passenger;
  * This class validates the movement of a moveable object.
  * 
  * To do so, it simulates the move with a deep copy of
- * the moveable object. After that it checks if it will 
+ * the moveable object. After that it checks if it will
  * still be inside the map area and if it is allowed to
  * be positioned on the tile it reaches.
  * 
@@ -27,7 +27,7 @@ public class MovementValidator implements Validator {
     /**
      * Creates a new MovementValidator.
      * 
-     * @param tiles 2D-Array of tiles describing the map
+     * @param tiles    2D-Array of tiles describing the map
      * @param moveable Object of which the movement will be validated.
      *                 A deep copy of the object will be used for validation checks
      *                 to avoid messing the state of the object!
@@ -41,9 +41,9 @@ public class MovementValidator implements Validator {
     public boolean validate() {
 
         moveableCopy.move();
-        
-        float newPosX = this.moveableCopy.getXPos();
-        float newPosY = this.moveableCopy.getYPos();
+
+        float newPosX = this.moveableCopy.getxPos();
+        float newPosY = this.moveableCopy.getyPos();
 
         if (!insideMap(newPosX, newPosY)) {
             return false;
@@ -51,7 +51,7 @@ public class MovementValidator implements Validator {
 
         int tileCol = (int) newPosX;
         int tileRow = (int) newPosY;
-       
+
         Tile potentialTile = this.map[tileRow][tileCol];
 
         return canDriveOnTile(potentialTile) && canWalkOnTile(potentialTile);
@@ -64,7 +64,7 @@ public class MovementValidator implements Validator {
      * @param yPos y-position that equals the row to check
      * @return true if position is inside the map, else false
      */
-    protected boolean insideMap(float xPos, float yPos){
+    protected boolean insideMap(float xPos, float yPos) {
 
         int mapSize = this.map.length;
 
@@ -104,5 +104,5 @@ public class MovementValidator implements Validator {
 
         return moveableIsNotPassenger || tileIsWalkable;
     }
-    
+
 }
