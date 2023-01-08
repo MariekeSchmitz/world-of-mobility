@@ -1,5 +1,7 @@
 package de.hsrm.mi.swt_project.demo.validation;
 
+import de.hsrm.mi.swt_project.demo.controls.Orientation;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Streetile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.DriveableByCar;
 import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.Walkable;
@@ -54,7 +56,7 @@ public class MovementValidator implements Validator {
        
         Tile potentialTile = this.map[tileRow][tileCol];
 
-        return canDriveOnTile(potentialTile) && canWalkOnTile(potentialTile);
+        return tileAllowsMovmentFromPostion(potentialTile) && canDriveOnTile(potentialTile) && canWalkOnTile(potentialTile);
     }
 
     /**
@@ -103,6 +105,47 @@ public class MovementValidator implements Validator {
         boolean tileIsWalkable = (tile instanceof Walkable);
 
         return moveableIsNotPassenger || tileIsWalkable;
+    }
+
+    protected boolean tileAllowsMovmentFromPostion(Tile tile){
+
+        if (tile instanceof Streetile streetile) {
+
+            for (Orientation orientation: streetile.getAllowedDirections()) {
+                switch (moveableCopy.getOrientation()) {
+                    case NORTH:
+                        if(orientation.equals(Orientation.SOUTH)){
+                            return true;
+                        };
+                        break;
+
+                    case SOUTH:
+                        if(orientation.equals(Orientation.NORTH)){
+                            return true;
+                        };                        
+                        break;
+
+                    case EAST:
+                        if(orientation.equals(Orientation.WEST)){
+                            return true;
+                        };
+                        break;
+
+                    case WEST:
+                        if(orientation.equals(Orientation.EAST)){
+                            return true;
+                        };                        
+                        break;
+
+                    default:
+                        break;
+                }
+            }    
+        } else {
+            return true;
+        }
+
+        return false;
     }
     
 }
