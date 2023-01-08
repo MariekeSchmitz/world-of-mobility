@@ -45,15 +45,16 @@ const mapDefault: MapInterface = {
 const mapReactive = ref(mapDefault);
 
 /**
- * checks whether there are npcs on a tile
+ * checks whether there is a npc on specific tile position
  * @param x x coordinate of tile
  * @param y y coordinate of tile
- * @returns array of npcs (empty if none are found)
+ * @returns npc (undefined if none is found)
  */
 function findNpc(x: number, y: number): INpc | undefined {
   const npc: INpc | undefined = mapReactive.value.npcs.find((npc: INpc) => {
     return npc.xPos === x && npc.yPos === y;
   });
+
   return npc;
 }
 
