@@ -163,7 +163,6 @@ onMounted(() => {
 });
 onUnmounted(() => {
   document.removeEventListener("keyup", handleKeyEvent);
-  leaveGame(props.instanceID, loginData.username, "MOTORIZED_OBJECT");
 });
 </script>
 

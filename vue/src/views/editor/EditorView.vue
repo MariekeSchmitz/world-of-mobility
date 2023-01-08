@@ -131,7 +131,10 @@ button:hover {
   position: fixed;
   left: 10px;
   top: 20px;
-  width: 60px;
+  width: 30px;
+  aspect-ratio: 1/1;
+  border: none;
+  border-radius: 100%;
 }
 
 .mapTitle > p {
