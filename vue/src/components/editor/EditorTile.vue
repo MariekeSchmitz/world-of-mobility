@@ -26,7 +26,7 @@ const props = withDefaults(
     placedObject: string;
     editorID: number;
     cmVisible: boolean;
-    placedNpc: INpc[];
+    placedNpc?: INpc;
   }>(),
   { width: 0.99, height: 0.99, cmVisible: false }
 );
@@ -219,7 +219,7 @@ function removeTile() {
   ></PlacedObject>
 
   <PlacedObject
-    v-if="props.placedNpc[0]"
+    v-if="props.placedNpc"
     :type="'TREE'"
     :width="props.width"
     :height="props.height"

@@ -50,11 +50,11 @@ const mapReactive = ref(mapDefault);
  * @param y y coordinate of tile
  * @returns array of npcs (empty if none are found)
  */
-function filterNpc(x: number, y: number): INpc[] {
-  const filteredNpcs: INpc[] = mapReactive.value.npcs.filter((npc: INpc) => {
+function findNpc(x: number, y: number): INpc | undefined {
+  const npc: INpc | undefined = mapReactive.value.npcs.find((npc: INpc) => {
     return npc.xPos === x && npc.yPos === y;
   });
-  return filteredNpcs;
+  return npc;
 }
 
 watch(mapUpdates.value, () => {
@@ -82,7 +82,7 @@ onMounted(() => {
           :placedObject="tile.placedObject.type"
           :editorID="editorID"
           :cmVisible="false"
-          :placedNpc="filterNpc(column, row)"
+          :placedNpc="findNpc(column, row)"
         >
         </EditorTile>
       </div>
@@ -98,7 +98,7 @@ onMounted(() => {
           placedObject="none"
           :editorID="editorID"
           :cmVisible="false"
-          :placedNpc="filterNpc(column, row)"
+          :placedNpc="findNpc(column, row)"
         >
         </EditorTile>
       </div>
