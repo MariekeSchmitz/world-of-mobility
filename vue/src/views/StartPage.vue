@@ -27,14 +27,18 @@ async function loginAndRedirect(url:string) {
 
 
 <template>
-  <div class="wrapper">
-    <!-- big Avatar -->
+  <div class="grid grid-cols-12 gap-4 bg-orange-light w-full h-screen">
+    
+    <div class="col-start-4 col-end-9">
+      <h1 class="text-green-dark font-fredoka text-transform: uppercase text-4xl">World of E-Mobility</h1>
+    </div>
+    <!-- big Avatar
     <div>
       <Avatar :avatarPicture="loginData.avatar" :size="'l'"></Avatar>
-    </div>
+    </div> -->
 
     <!-- small Avatar with change function -->
-    <div>
+    <div class="col-start-4 col-end-9">
       <Avatar :avatarPicture="loginData.avatar" :size="'s'"></Avatar>
       <button @click="toggleAvatarSelection">change avatar</button>
       <!-- input for username -->
@@ -42,9 +46,9 @@ async function loginAndRedirect(url:string) {
       <p v-if="loginData.error !== ''">{{ loginData.error }}</p>
     </div>
 
-    <button @click="loginAndRedirect('/gameintro')">Spielen</button>
-    <button @click="loginAndRedirect('/worldintro')">Baumodus</button>
-    <button @click="logout()">Logout</button>
+    <button class="col-start-4 col-end-9" @click="loginAndRedirect('/gameintro') ">Spielen</button>
+    <button class="col-start-4 col-end-9" @click="loginAndRedirect('/worldintro')">Baumodus</button>
+    <button class="col-start-4 col-end-9" @click="logout()">Logout</button>
 
     <!-- Avatar Selection Mode -->
     <Avatar_Selection v-if="choosingAvatar"></Avatar_Selection>
@@ -52,7 +56,7 @@ async function loginAndRedirect(url:string) {
 </template>
 
 <style scoped>
-.wrapper {
+/* .wrapper {
   display: grid;
   place-items: center;
 }
@@ -63,5 +67,5 @@ button {
   background-color: antiquewhite;
   width: 10rem;
   margin: 10px;
-}
+} */
 </style>

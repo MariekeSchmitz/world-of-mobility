@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Open+Sans:wght@300&display=swap" rel="stylesheet"');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+@layer base {
+    .headline {
+        @apply "bg-orange";
+    }
+} */
