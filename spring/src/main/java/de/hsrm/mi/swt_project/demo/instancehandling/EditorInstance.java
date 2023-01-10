@@ -175,9 +175,17 @@ public class EditorInstance extends Instance {
      * @param y    y coordinate of moveable
      * @param type type of moveable
      */
-    public void placeNPC(float x, float y, MoveableType type) {
+    public void placeNPC(float x, float y, MoveableType type) throws NpcNotPlaceableException {
 
         MoveableObject obj = type.createMovable(x, y);
-        this.map.addNpc(obj);
+        logger.info("Trying to place npc with data: {}",obj);
+        if(this.map.validateNpcPlacement(obj)){
+            this.map.addNpc(obj);
+            logger.info("placed following npc: {}", obj);  
+        } else{
+            logger.error("Npc can't be placed");
+            throw new NpcNotPlaceableException();
+        }
+       
     }
 }

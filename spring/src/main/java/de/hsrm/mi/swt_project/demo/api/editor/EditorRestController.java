@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import de.hsrm.mi.swt_project.demo.instancehandling.EditorInstance;
 import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
+import de.hsrm.mi.swt_project.demo.instancehandling.NpcNotPlaceableException;
 import de.hsrm.mi.swt_project.demo.instancehandling.UpdateloopService;
 import de.hsrm.mi.swt_project.demo.messaging.GetListInstanceDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetMapUpdateDTO;
@@ -225,7 +226,13 @@ public class EditorRestController {
     @PostMapping("/{id}/placeNpc")
     public void placeNpc(@PathVariable long id, @RequestBody PlaceNpcDTO npc) {
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(id);
-        editorInstance.placeNPC(npc.x(), npc.y(), npc.type());
-        loopService.publishInstanceState(editorInstance);
+        try{
+            editorInstance.placeNPC(npc.x(), npc.y(), npc.type());
+            loopService.publishInstanceState(editorInstance);
+
+        } catch(NpcNotPlaceableException error){
+            throw error;
+        }
+        
     }
 }

@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
+import de.hsrm.mi.swt_project.demo.controls.Moveable;
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.Farm;
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.GasStation;
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.Pig;
@@ -17,11 +18,16 @@ import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObject;
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.Sheep;
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.TrafficLight;
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.Tree;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Streetile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.CanHoldNatureObject;
 import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.CanHoldStreetObject;
+import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.DriveableByBike;
+import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.DriveableByCar;
+import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.Walkable;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
+import de.hsrm.mi.swt_project.demo.movables.MoveableType;
 import de.hsrm.mi.swt_project.demo.util.ArrayHelpers;
 
 /**
@@ -57,7 +63,7 @@ public class GameMap {
      * @param moveable
      * 
      */
-    public void addNpc(MoveableObject moveable){
+    public void addNpc(MoveableObject moveable) {
         try {
             Resource resource = new ClassPathResource("defaultNPCScript.py");
             File scriptfile = resource.getFile();
@@ -115,23 +121,24 @@ public class GameMap {
         boolean validate = false;
 
         if (tile instanceof CanHoldNatureObject) {
-            if (placeableObject instanceof Tree || placeableObject instanceof Farm ||placeableObject instanceof Pig ||placeableObject instanceof Sheep ||placeableObject instanceof GasStation) {
+            if (placeableObject instanceof Tree || placeableObject instanceof Farm || placeableObject instanceof Pig
+                    || placeableObject instanceof Sheep || placeableObject instanceof GasStation) {
                 validate = true;
             }
-        }else if(tile instanceof CanHoldStreetObject){
+        } else if (tile instanceof CanHoldStreetObject) {
             if (placeableObject instanceof TrafficLight) {
                 validate = true;
             }
         }
 
-        if(validate){
+        if (validate) {
             tile.addPlaceable(placeableObject);
 
-                if (isExpansionNeeded(xPos, yPos)) {
-                    this.expandMap();
-                }
-        
-                return true;
+            if (isExpansionNeeded(xPos, yPos)) {
+                this.expandMap();
+            }
+
+            return true;
         }
 
         return false;
@@ -237,4 +244,39 @@ public class GameMap {
             }
         }
     }
+
+    /**
+     *  validates if npc can be placed
+     * @param moveableObject
+     * @return boolean can be placed or not
+     * @author Tom Gouthier, Marie Bohnert
+     */
+    public boolean validateNpcPlacement(MoveableObject moveableObject) {
+
+        int xPos = (int) moveableObject.getxPos();
+        int yPos = (int) moveableObject.getyPos();
+
+        if (moveableObject.getType() == MoveableType.PASSENGER) {
+
+            if (!(tiles[xPos][yPos] instanceof Walkable)) {
+                return false;
+            }
+
+        } else if (moveableObject.getType() == MoveableType.MOTORIZED_OBJECT) {
+
+            if (!(tiles[xPos][yPos] instanceof DriveableByCar)) {
+                return false;
+            }
+
+        }
+
+        for (MoveableObject npc : npcs) {
+
+            if (xPos == npc.getxPos() && yPos == npc.getyPos()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
