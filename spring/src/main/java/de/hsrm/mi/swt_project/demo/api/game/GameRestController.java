@@ -66,7 +66,7 @@ public class GameRestController{
     public SendGameUpdateDTO getGameUpdate(@PathVariable long id) {
         logger.info("GET Request for '/api/game/{}/game-update'", id);
 
-        return SendGameUpdateDTO.from(instanceHandler.getGameInstanceById(id).getMoveableObjects());
+        return SendGameUpdateDTO.from(instanceHandler.getGameInstanceById(id).getMoveableObjects(), instanceHandler.getTrafficLightState());
     }
 
     /**

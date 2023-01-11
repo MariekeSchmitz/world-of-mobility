@@ -20,6 +20,7 @@ export function useGame(): any {
 
   interface IGameUpdate {
     moveableUpdates: Array<IMoveable>;
+    trafficLightState: String;
   }
 
   interface IGameState {
@@ -28,6 +29,7 @@ export function useGame(): any {
 
   const gameState = reactive<IGameUpdate>({
     moveableUpdates: [],
+    trafficLightState: "NORTHSOUTH"
   });
 
   interface IInstanceId {
@@ -178,6 +180,8 @@ export function useGame(): any {
       stompClient.subscribe(DEST, (message: { body: string }) => {
         const gameUpdate: IGameUpdate = JSON.parse(message.body);
         gameState.moveableUpdates = gameUpdate.moveableUpdates;
+        gameState.trafficLightState = gameUpdate.trafficLightState;
+        console.log(gameState.trafficLightState);
       });
     };
 
@@ -187,6 +191,9 @@ export function useGame(): any {
 
     stompClient.activate();
   }
+
+
+
 
   function getUserMoveable(user: string) {
     for (const moveable of gameState.moveableUpdates) {
