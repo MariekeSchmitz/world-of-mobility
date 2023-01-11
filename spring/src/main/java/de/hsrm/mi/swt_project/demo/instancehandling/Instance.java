@@ -8,6 +8,10 @@ import de.hsrm.mi.swt_project.demo.controls.Updateable;
  * @author Alexandra Müller
  */
 public abstract class Instance implements Updateable {
+
+    protected long lifetime = 1200;
+    protected long remainingLifetime = lifetime;
+
     // @Value("${map.savedir:maps}")
     protected String mapSavePath = "maps";
 
@@ -26,6 +30,35 @@ public abstract class Instance implements Updateable {
     }
 
     /**
+     * Gets remaining server ticks until the lifetime of
+     * the instance ends.
+     * 
+     * @return Remaining server ticks
+     */
+    public long getRemainingLifetime() {
+        return remainingLifetime;
+    }
+
+    /**
+     * Sets maximum amount of server ticks until the
+     * lifetime of the instance ends.
+     * 
+     * @param loopCount Maximum amount of server ticks
+     */
+    public void setLifetime(long loopCount) {
+        this.lifetime = loopCount;
+        this.remainingLifetime = loopCount;
+    }
+
+    /**
+     * Resets remaining instance lifetime to the
+     * maximum amount of server ticks.
+     */
+    public void resetRemainingLifetime() {
+        this.remainingLifetime = this.lifetime;
+    }
+
+    /**
      * Returns the map of the instance.
      * 
      * @return the map of the instance
@@ -41,5 +74,14 @@ public abstract class Instance implements Updateable {
      */
     public long getId() {
         return id;
+    }
+
+    /**
+     * Updates state of the instance and reduces
+     * its remaining lifetime by 1.
+     */
+    @Override
+    public void update() {
+        this.remainingLifetime--;
     }
 }

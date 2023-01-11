@@ -26,7 +26,7 @@ function join() {
   }
 }
 
-function updateMoveable(type:string) {
+function updateMoveable(type: string) {
   moveableType = type;
   setMoveableObject(type);
 }
@@ -40,7 +40,9 @@ onMounted(() => {
 <template>
   <div class="wrapper">
     <RouterLink to="/gameintro">
-      <img src="../buttons/editor/arrow-left.png" alt="" />
+      <button>
+        <img src="../buttons/editor/arrow-left.png" alt="" />
+      </button>
     </RouterLink>
     <div id="personal-config-container">
       <div id="car-select">

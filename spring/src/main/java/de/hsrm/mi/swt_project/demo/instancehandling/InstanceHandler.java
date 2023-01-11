@@ -36,6 +36,9 @@ public class InstanceHandler implements Updateable {
     @Autowired
     protected UpdateloopService loopservice;
 
+    @Value("${instance.lifetime:1200}")
+    protected long instanceLifetimeCycles;
+
     protected Logger logger = LoggerFactory.getLogger(InstanceHandler.class);
 
     protected List<Instance> instances = new ArrayList<>();
@@ -60,21 +63,38 @@ public class InstanceHandler implements Updateable {
      * @return the id of the new instance
      */
     public long createGameInstance(String mapName, String sessionName) {
+
+        GameMap map;
+
         if (mapName == null) {
-            instances.add(new GameInstance(new GameMap(), sessionName, idCounter, mapSavePath));
-            return idCounter++;
+
+            map = new GameMap();
+
         } else {
+
             String fileName = "%s/%s.json".formatted(mapSavePath, mapName);
+            Path filePath = Path.of(fileName);
+            String mapFile;
+    
             try {
-                Path filePath = Path.of(fileName);
-                String mapFile = Files.readString(filePath);
-                instances.add(new GameInstance(loadMap(mapFile), sessionName, idCounter, mapSavePath));
-                return idCounter++;
+                mapFile = Files.readString(filePath);
             } catch (IOException e) {
-                logger.info("IOException occured on createGameInstance in InstanceHandler: {}\nFilename: {}", e, fileName);
+                logger.error("IOException occured on createGameInstance in InstanceHandler: {}\nFilename: {}", e, fileName);
                 return -1;
             }
+    
+            map = loadMap(mapFile);
+
         }
+
+        Instance instance = new GameInstance(map, sessionName, idCounter, mapSavePath);
+
+        instance.setLifetime(instanceLifetimeCycles);
+        instances.add(instance);
+
+        idCounter++;
+
+        return instance.getId();
     }
 
     /**
@@ -84,18 +104,32 @@ public class InstanceHandler implements Updateable {
      * @return idCounter
      */
     public long createEditorInstance(String mapName) {
-        try {
-            String fileName = "%s/%s.json".formatted(mapSavePath, mapName);
-            Path filePath = Path.of(fileName);
-            String mapFile = Files.readString(filePath);
-            instances.add(new EditorInstance(loadMap(mapFile), idCounter, mapSavePath));
-        } catch (IOException e) {
-            GameMap map = new GameMap();
-            map.setName(mapName);
-            instances.add(new EditorInstance(map, idCounter, mapSavePath));
+
+        if (mapName == null) {
+            logger.error("Could not create game instance because no mapName was given.");
+            return -1;
         }
 
-        return idCounter++;
+        GameMap map;
+
+        String fileName = "%s/%S.json".formatted(mapSavePath, mapName);
+        Path filePath = Path.of(fileName);
+
+        try {
+            String mapFile = Files.readString(filePath);
+            map = loadMap(mapFile);
+        } catch (IOException e) {
+            map = new GameMap();
+            map.setName(mapName);
+        }
+
+        Instance instance = new EditorInstance(map, idCounter, mapSavePath);
+        instance.setLifetime(instanceLifetimeCycles);
+        instances.add(instance);
+
+        idCounter++;
+
+        return instance.getId();
     }
 
     /**
@@ -170,12 +204,28 @@ public class InstanceHandler implements Updateable {
      * the new state of an instance will be published.
      */
     public void update() {
+
+        List<Instance> toDelete = new ArrayList<>();
+
         for (Instance instance : instances) {
+
+            if (instance.getRemainingLifetime() <= 0) {
+                logger.info("Lifetime of instance {} ended.", instance);
+                toDelete.add(instance);
+                continue;
+            }
+
             instance.update();
+
             if (instance instanceof GameInstance) { // Only publish state of GameInstances periodically
                 loopservice.publishInstanceState(instance);
             }
         }
+
+        for (Instance instance : toDelete) {
+            this.instances.remove(instance);
+        }
+
     }
 
     public void triggerScript() {

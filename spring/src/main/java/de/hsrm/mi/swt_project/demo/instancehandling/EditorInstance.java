@@ -71,6 +71,7 @@ public class EditorInstance extends Instance {
                 }
                 break;
         }
+        resetRemainingLifetime();
     }
 
     /**
@@ -85,6 +86,8 @@ public class EditorInstance extends Instance {
     public boolean editPlaceablesOnMap(int xPos, int yPos, PlaceableControl placeableControl, PlaceableObjectType placeableObjectType) {
 
         Tile tile = map.getTiles()[yPos][xPos];
+
+        resetRemainingLifetime();
 
         switch(placeableControl) {
             case ADD:
@@ -103,6 +106,7 @@ public class EditorInstance extends Instance {
      */
     public void addUser(String user) {
         users.add(user);
+        resetRemainingLifetime();
     }
 
     /**
@@ -112,14 +116,6 @@ public class EditorInstance extends Instance {
      */
     public void removeUser(String user) {
         users.remove(user);
-    }
-
-    /**
-     * Pushes updates of the instance.
-     */
-    @Override
-    public void update() {
-        // TODO Auto-generated method stub
     }
 
     /**

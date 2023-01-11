@@ -15,16 +15,13 @@ const toggleAvatarSelection = () => {
   choosingAvatar.value = !choosingAvatar.value;
 };
 
-async function loginAndRedirect(url:string) {
-  await login(name.value)
+async function loginAndRedirect(url: string) {
+  await login(name.value);
   if (loginData.loggedIn) {
-    router.push(url)
+    router.push(url);
   }
 }
-
 </script>
-
-
 
 <template>
   <div class="wrapper">
@@ -37,8 +34,9 @@ async function loginAndRedirect(url:string) {
     <div>
       <Avatar :avatarPicture="loginData.avatar" :size="'s'"></Avatar>
       <button @click="toggleAvatarSelection">change avatar</button>
+      <div v-if="loginData.loggedIn">Logged in as {{ loginData.username }}</div>
       <!-- input for username -->
-      <input type="text" v-model="name" />
+      <input v-if="!loginData.loggedIn" type="text" v-model="name" />
       <p v-if="loginData.error !== ''">{{ loginData.error }}</p>
     </div>
 
