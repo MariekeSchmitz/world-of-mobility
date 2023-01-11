@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-import de.hsrm.mi.swt_project.demo.editor.placeableobjects.Farm;
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.GasStation;
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.Pig;
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObject;
