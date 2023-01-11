@@ -249,6 +249,11 @@ function switchContent(element: string) {
 
           <div id="passenger">
             <li>
+              <button class="itemButton" @click="setPlaceState(ControlEnum.REMOVE_NPC, false)">
+                <img src="@/assets/objects/REMOVE.png" />
+              </button>
+            </li>
+            <li>
               <button class="itemButton" @click="setPlaceState(NpcType.PASSENGER, false)">
                 <img src="@/assets/objects/FARM.png" />
               </button>
@@ -256,6 +261,11 @@ function switchContent(element: string) {
           </div>
 
           <div id="motorized">
+            <li>
+              <button class="itemButton" @click="setPlaceState(ControlEnum.REMOVE_NPC, false)">
+                <img src="@/assets/objects/REMOVE.png" />
+              </button>
+            </li>
             <li>
               <button class="itemButton" @click="setPlaceState(NpcType.MOTORIZED, false)">
                 <img src="@/assets/objects/GAS_STATION.png" />

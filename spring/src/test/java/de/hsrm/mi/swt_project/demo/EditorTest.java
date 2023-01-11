@@ -21,7 +21,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import de.hsrm.mi.swt_project.demo.editor.tiles.Streetile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.instancehandling.EditorInstance;
@@ -174,7 +173,7 @@ class EditorTest {
         }
 
         @Test
-        void removeNpc() throws Exception{
+        void removeNpc_good() throws Exception{
                 JSONObject body = new JSONObject();
                 body.put("x", 2);
                 body.put("y", 3);
@@ -184,12 +183,25 @@ class EditorTest {
                                 .content(body.toString()))
                                 .andExpect(status().isOk());
                 assertTrue(!editorInstance.getMap().getNpcs().isEmpty(), "npc was added");
+                body.remove("type");
                 mockMvc.perform(delete("/api/editor/" + editorId + "/removeNpc")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(body.toString()))
                                 .andExpect(status().isOk());
                 assertTrue(editorInstance.getMap().getNpcs().isEmpty(), "npc was removed");
 
+                
+        }
+
+        @Test
+        void removeNpc_bad() throws Exception{
+                JSONObject body = new JSONObject();
+                body.put("x", 2);
+                body.put("y", 3);
+                mockMvc.perform(delete("/api/editor/" + editorId + "/removeNpc")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(body.toString()))
+                                .andExpect(status().isForbidden());
                 
         }
 

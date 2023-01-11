@@ -8,6 +8,10 @@ interface IPlaceNPC {
   y: number;
   type: NpcType;
 }
+interface IRemoveNPC{
+  x:number,
+  y:number
+}
 
 /**
  * places Npc on specific coordinates
@@ -42,8 +46,42 @@ async function placeNpc(x: number, y: number, type: NpcType, id: number) {
     console.log("Error: " + error);
   }
 }
+
+async function removeNpc(x: number, y: number, id: number){
+
+  const npc: IRemoveNPC = {
+    x: x,
+    y: y,
+  };
+
+  const url = `/api/editor/${id}/removeNpc`;
+
+  try {
+    console.log("Delete npc with coordinates", x, y);
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(npc),
+    });
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+  } catch (error) {
+    console.log("Error: " + error);
+  }
+
+
+
+
+} 
+
 export function usePlaceNpc() {
   return {
     placeNpc,
+    removeNpc
   };
 }
+

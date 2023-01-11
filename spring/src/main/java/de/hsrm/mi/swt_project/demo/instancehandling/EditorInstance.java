@@ -189,7 +189,11 @@ public class EditorInstance extends Instance {
        
     }
 
-    public void deleteNPC(float x, float y){
+    public void deleteNPC(float x, float y) throws NoNpcToRemoveException{
+       try{
         map.deleteNPC(x, y);
+       } catch(NoNpcToRemoveException e){
+        throw e;
+       }
     }
 }

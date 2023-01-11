@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import de.hsrm.mi.swt_project.demo.instancehandling.EditorInstance;
 import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
+import de.hsrm.mi.swt_project.demo.instancehandling.NoNpcToRemoveException;
 import de.hsrm.mi.swt_project.demo.instancehandling.NpcNotPlaceableException;
 import de.hsrm.mi.swt_project.demo.instancehandling.UpdateloopService;
 import de.hsrm.mi.swt_project.demo.messaging.GetListInstanceDTO;
@@ -238,12 +239,16 @@ public class EditorRestController {
     }
 
     @DeleteMapping("/{id}/removeNpc")
-    public void removeNpc(@PathVariable long id, @RequestBody PlaceNpcDTO npc){
+    public void removeNpc(@PathVariable long id, @RequestBody RemoveNpcDTO npc){
 
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(id);
-
-        editorInstance.deleteNPC(npc.x(), npc.y());
-        loopService.publishInstanceState(editorInstance);
+        try{
+            editorInstance.deleteNPC(npc.x(), npc.y());
+            loopService.publishInstanceState(editorInstance);
+        } catch(NoNpcToRemoveException e){
+            throw e;
+        }
+       
 
     }
 }

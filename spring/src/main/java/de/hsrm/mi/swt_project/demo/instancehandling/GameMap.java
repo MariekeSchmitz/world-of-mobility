@@ -81,7 +81,7 @@ public class GameMap {
      * @param y
      * @author Tom Gouthier, Marie Bohnert
      */
-    public void deleteNPC(float x, float y){
+    public void deleteNPC(float x, float y) throws NoNpcToRemoveException{
 
         logger.info("trying to remove npc with coordinates: {} {}", x, y);
 
@@ -92,8 +92,8 @@ public class GameMap {
                 return;
             }
         }
-
         logger.info("npc doesn't exist");
+        throw new NoNpcToRemoveException();
 
     }
 

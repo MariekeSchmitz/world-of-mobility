@@ -38,7 +38,7 @@ const { readPlaceState } = usePlaceState();
 const { readCMState, setCMState } = useContextMenu();
 const { sendMapUpdates } = useMapUpdate(props.editorID);
 const { placeObject } = usePlaceObject();
-const { placeNpc } = usePlaceNpc();
+const { placeNpc, removeNpc } = usePlaceNpc();
 
 const mapWidth = ref(8);
 const mapHeight = ref(8);
@@ -72,7 +72,7 @@ function placeItem() {
       setTimeout(() => {
         cmVisible.value = true;
       }, 10);
-    } else if (props.placedObject == "none") {
+    } else if (props.placedObject == "none" && !props.placedNpc) {
       let toSendObj: ExportTile = {
         type: readPlaceState.value.type,
         orientation: "NORTH",
@@ -89,9 +89,11 @@ function placeItem() {
       readPlaceState.value.type === NpcType.MOTORIZED
     ) {
       placeNpc(posX, posY, readPlaceState.value.type, props.editorID);
-    } else {
+    } else if (readPlaceState.value.type === ControlEnum.REMOVE_NPC) {
+      removeNpc(posX, posY, props.editorID)
+    } else 
       sendPlaceObject(posX, posY, props.placedObject);
-    }
+    
   }
 }
 
@@ -182,48 +184,26 @@ function removeTile() {
     yPos: posY,
     control: "REMOVE",
   };
+  removeNpc(posX,posY,props.editorID);
   sendMapUpdates(removeDTO);
 }
 </script>
 <template>
-  <Plane
-    @click="placeItem"
-    @pointer-over="tileHover"
-    :width="props.width"
-    :height="props.height"
-    :rotation="props.rotation"
-    :position="props.position"
-  >
+  <Plane @click="placeItem" @pointer-over="tileHover" :width="props.width" :height="props.height"
+    :rotation="props.rotation" :position="props.position">
     <BasicMaterial>
       <Texture v-bind:src="texturePath" />
     </BasicMaterial>
   </Plane>
 
-  <ContextMenu
-    v-if="cmVisible"
-    v-on:turnRight="turnRight()"
-    v-on:turnLeft="turnLeft()"
-    v-on:removeTile="removeTile()"
-    :width="0.8"
-    :height="0.3"
-    :position="props.position.clone().add(new THREE.Vector3(0, 0.4, 0.03))"
-  ></ContextMenu>
+  <ContextMenu v-if="cmVisible" v-on:turnRight="turnRight()" v-on:turnLeft="turnLeft()" v-on:removeTile="removeTile()"
+    :width="0.8" :height="0.3" :position="props.position.clone().add(new THREE.Vector3(0, 0.4, 0.03))"></ContextMenu>
 
-  <PlacedObject
-    v-if="props.placedObject != 'none'"
-    :type="props.placedObject"
-    :width="props.width"
-    :height="props.height"
-    :rotation="props.rotation"
-    :position="props.position.clone().add(new THREE.Vector3(0.1, -0.1, 0.02))"
-  ></PlacedObject>
+  <PlacedObject v-if="props.placedObject != 'none'" :type="props.placedObject" :width="props.width"
+    :height="props.height" :rotation="props.rotation"
+    :position="props.position.clone().add(new THREE.Vector3(0.1, -0.1, 0.02))"></PlacedObject>
 
-  <PlacedObject
-    v-if="props.placedNpc"
-    :type="'TREE'"
-    :width="props.width"
-    :height="props.height"
-    :rotation="props.rotation"
-    :position="props.position.clone().add(new THREE.Vector3(0.1, -0.1, 0.02))"
-  ></PlacedObject>
+  <PlacedObject v-if="props.placedNpc" :type="'TREE'" :width="props.width" :height="props.height"
+    :rotation="props.rotation" :position="props.position.clone().add(new THREE.Vector3(0.1, -0.1, 0.02))">
+  </PlacedObject>
 </template>
