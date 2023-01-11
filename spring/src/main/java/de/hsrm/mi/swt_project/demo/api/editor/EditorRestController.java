@@ -21,6 +21,7 @@ import de.hsrm.mi.swt_project.demo.instancehandling.EditorInstance;
 import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
 import de.hsrm.mi.swt_project.demo.instancehandling.UpdateloopService;
+import de.hsrm.mi.swt_project.demo.messaging.EditorUserListDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetListInstanceDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetMapUpdateDTO;
 import de.hsrm.mi.swt_project.demo.messaging.JoinEditorDTO;
@@ -208,6 +209,18 @@ public class EditorRestController {
     @PostMapping(value="/{id}/leave-editor", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void leaveGame(@RequestBody JoinEditorDTO leaveEditorRequest , @PathVariable long id) {
         instanceHandler.getEditorInstanceById(id).removeUser(leaveEditorRequest.user());
+    }
+
+    /**
+     * Get for getting userlist from a editor instance
+     * @param id editor instance that user is joining
+     * @return EditorUserList DTO with all users
+     * @author Astrid Klemmer & Marieke Schmitz
+     */
+    @GetMapping(value="/userlist/{id}")
+    public EditorUserListDTO userlistEditor(@PathVariable long id) {
+        List<String> userlist = instanceHandler.getEditorInstanceById(id).getUsers();
+        return EditorUserListDTO.from(userlist);
     }
 
 }
