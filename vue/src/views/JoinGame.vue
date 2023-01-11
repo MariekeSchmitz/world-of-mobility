@@ -41,7 +41,7 @@ onMounted(() => {
   <div class="wrapper">
     <RouterLink to="/gameintro">
       <button>
-        <img src="../buttons/editor/arrow-left.png" alt="" />
+        <img src="@/buttons/editor/arrow-left.png" alt="" />
       </button>
     </RouterLink>
     <div id="personal-config-container">
