@@ -119,7 +119,7 @@ public class GameMap {
                 validate = true;
             }
         }else if(tile instanceof CanHoldStreetObject){
-            if (placeableObject instanceof TrafficLight) {
+            if (!(tile.getType() == Tiletype.STREET_CURVE) && placeableObject instanceof TrafficLight) {
                 validate = true;
             }
         }
