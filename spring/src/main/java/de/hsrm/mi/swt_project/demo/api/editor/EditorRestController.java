@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.hsrm.mi.swt_project.demo.instancehandling.EditorInstance;
+import de.hsrm.mi.swt_project.demo.instancehandling.GameMap;
 import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
 import de.hsrm.mi.swt_project.demo.instancehandling.NoNpcToRemoveException;
@@ -31,6 +32,7 @@ import de.hsrm.mi.swt_project.demo.messaging.GetPlaceableObjectUpdateDTO;
 import de.hsrm.mi.swt_project.demo.messaging.SendMapDTO;
 import de.hsrm.mi.swt_project.demo.messaging.ServerMessageDTO;
 import de.hsrm.mi.swt_project.demo.messaging.ValidationDTO;
+import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
 @RestController
 @RequestMapping("/api/editor")
@@ -251,4 +253,22 @@ public class EditorRestController {
        
 
     }
+    /**
+     * 
+     * 
+     * @param id editor instance identifier
+     * @param scriptDTO sent from client
+     * @author Tom Gouthier, Marie Bohnert
+     */
+    @PostMapping("/{id}/loadScript")
+    public void postNPCScript(@PathVariable long id, @RequestBody GetScriptDTO scriptDTO){
+
+        Instance instance = instanceHandler.getEditorInstanceById(id);
+        GameMap map = instance.getMap();
+        List<MoveableObject> list = map.getNpcs();
+
+        list.get(scriptDTO.npcId()).loadScript(scriptDTO.script());
+
+    }
+
 }
