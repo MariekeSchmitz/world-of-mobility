@@ -166,6 +166,14 @@ function switchContent(element: string) {
                 <img src="@/textures/editor/SIDEWAY.jpg" />
               </button>
             </li>
+            <li>
+              <button
+                class="itemButton"
+                @click="setPlaceState(TileName.FARM, true)"
+              >
+                <img src="@/textures/editor/FARM.jpg" />
+              </button>
+            </li>
           </div>
           <!--
           <div
@@ -197,14 +205,6 @@ function switchContent(element: string) {
                 @click="setPlaceState(NaturObjectEnum.TREE, false)"
               >
                 <img src="@/assets/objects/TREE.png" />
-              </button>
-            </li>
-            <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(NaturObjectEnum.FARM, false)"
-              >
-                <img src="@/assets/objects/FARM.png" />
               </button>
             </li>
             <li>

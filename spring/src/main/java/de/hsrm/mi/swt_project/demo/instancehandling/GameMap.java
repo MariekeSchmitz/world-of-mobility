@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-import de.hsrm.mi.swt_project.demo.editor.placeableobjects.Farm;
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.GasStation;
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.Pig;
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObject;
@@ -115,13 +114,15 @@ public class GameMap {
         boolean validate = false;
 
         if (tile instanceof CanHoldNatureObject) {
-            if (placeableObject instanceof Tree || placeableObject instanceof Farm ||placeableObject instanceof Pig ||placeableObject instanceof Sheep ||placeableObject instanceof GasStation) {
+            if (placeableObject instanceof Tree || placeableObject instanceof Pig ||placeableObject instanceof Sheep) {
                 validate = true;
             }
         }else if(tile instanceof CanHoldStreetObject){
-            if (!(tile.getType() == Tiletype.STREET_CURVE) && placeableObject instanceof TrafficLight) {
+            if ((!(tile.getType() == Tiletype.STREET_CURVE) && placeableObject instanceof TrafficLight) ||
+                (tile.getType() == Tiletype.STREET_STRAIGHT && placeableObject instanceof GasStation)){
                 validate = true;
             }
+            
         }
 
         if(validate){

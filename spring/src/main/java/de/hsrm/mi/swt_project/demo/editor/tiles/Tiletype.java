@@ -86,6 +86,14 @@ public enum Tiletype {
             return tile;
         }
     },
+    FARM() {
+        @Override
+        public Tile createTile() {
+            Tile tile = new FarmTile();
+            tile.type = this;
+            return tile;
+        }
+    },
     GRASSTILE() {
         @Override
         public Tile createTile() {
