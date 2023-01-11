@@ -16,7 +16,7 @@ import com.google.gson.GsonBuilder;
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.PlaceableControl;
 import de.hsrm.mi.swt_project.demo.controls.TileControl;
-import de.hsrm.mi.swt_project.demo.editor.placeableObjects.PlaceableObjectType;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObjectType;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 
@@ -39,7 +39,7 @@ public class EditorInstance extends Instance {
      */
     public EditorInstance(GameMap map, long id) {
         super(map, id);
-        this.users = new ArrayList<String>();
+        this.users = new ArrayList<>();
     }
 
     /**
@@ -71,6 +71,7 @@ public class EditorInstance extends Instance {
                 }
                 break;
         }
+        resetRemainingLifetime();
     }
 
     /**
@@ -82,19 +83,19 @@ public class EditorInstance extends Instance {
      * @param placeableObjectType
      * @return edit on map valid
      */
-    public Boolean editPlaceablesOnMap(int xPos, int yPos, PlaceableControl placeableControl, PlaceableObjectType placeableObjectType) {
+    public boolean editPlaceablesOnMap(int xPos, int yPos, PlaceableControl placeableControl, PlaceableObjectType placeableObjectType) {
+
+        Tile tile = map.getTiles()[yPos][xPos];
+
+        resetRemainingLifetime();
 
         switch(placeableControl) {
             case ADD:
-                if(map.getTiles()[yPos][xPos] == null) {
-                    Tile tile = map.getTiles()[yPos][xPos];
-                    return map.validateAndAddPlaceableObject(tile, xPos, yPos, placeableObjectType.createPlaceableObject());
-                }
-                break;
+                return map.validateAndAddPlaceableObject(tile, xPos, yPos, placeableObjectType.createPlaceableObject());
             case REMOVE: 
-                break;
+                tile.deletePlaceable();
+                return true;
         }
-
         return false;
     }
 
@@ -105,6 +106,7 @@ public class EditorInstance extends Instance {
      */
     public void addUser(String user) {
         users.add(user);
+        resetRemainingLifetime();
     }
 
     /**
@@ -114,14 +116,6 @@ public class EditorInstance extends Instance {
      */
     public void removeUser(String user) {
         users.remove(user);
-    }
-
-    /**
-     * Pushes updates of the instance.
-     */
-    @Override
-    public void update() {
-        // TODO Auto-generated method stub
     }
 
     /**

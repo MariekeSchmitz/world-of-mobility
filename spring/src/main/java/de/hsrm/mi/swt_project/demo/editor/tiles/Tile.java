@@ -1,13 +1,9 @@
 package de.hsrm.mi.swt_project.demo.editor.tiles;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.controls.Turnable;
-import de.hsrm.mi.swt_project.demo.editor.placeableObjects.Placeable;
-
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.Placeable;
 
  /** 
   * Classes that inherit this class are Tiles. A tile represents a single part of a Map.
@@ -17,7 +13,7 @@ import de.hsrm.mi.swt_project.demo.editor.placeableObjects.Placeable;
 public abstract class Tile implements Turnable{
     
     protected Orientation orientation = Orientation.NORTH;
-    protected List<Placeable> placedObjects = new ArrayList<>();
+    protected Placeable placedObject;
     protected Tiletype type;
     
     /** adds a placeable Object on itself
@@ -25,7 +21,11 @@ public abstract class Tile implements Turnable{
      * @author Tom Gouthier
      */
     public void addPlaceable(Placeable placeable) {
-        this.placedObjects.add(placeable);
+        this.placedObject = placeable;
+    }
+
+    public void deletePlaceable() {
+        this.placedObject = null;
     }
 
     /**
@@ -54,17 +54,17 @@ public abstract class Tile implements Turnable{
 
 
 
-    public List<Placeable> getPlacedObjects() {
-        return placedObjects;
+    public Placeable getPlacedObject() {
+        return placedObject;
     }
 
-    public void setPlacedObjects(List<Placeable> placedObjects) {
-        this.placedObjects = placedObjects;
+    public void setPlacedObject(Placeable placedObject) {
+        this.placedObject = placedObject;
     }
 
     @Override
     public String toString() {
-        return "Tile [orientation=" + orientation + ", placedObjects=" + placedObjects + ", type=" + type + "]";
+        return "Tile [orientation=" + orientation + ", placedObjects=" + placedObject + ", type=" + type + "]";
     }
 
     public Tiletype getType() {

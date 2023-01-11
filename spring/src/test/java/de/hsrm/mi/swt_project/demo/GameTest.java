@@ -32,7 +32,7 @@ class GameTest {
     }
 
     @Test
-    void post_instancelist_good() throws Exception {
+    void postInstancelistGood() throws Exception {
         int amountGameItems = instanceHandler.getGameInstances().size();
 
         mockMvc.perform(
@@ -43,4 +43,6 @@ class GameTest {
         //.andExpect(jsonPath("$.beschreibung", is(a.getBeschreibung())));
         
     }
+
+
 }

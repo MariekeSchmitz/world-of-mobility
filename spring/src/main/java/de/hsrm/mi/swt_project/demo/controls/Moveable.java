@@ -12,4 +12,5 @@ public interface Moveable {
      * @author Marieke Schmitz
      */
     public void move();
+
 }

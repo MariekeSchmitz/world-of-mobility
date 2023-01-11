@@ -1,6 +1,5 @@
 package de.hsrm.mi.swt_project.demo.api.game;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,6 +26,7 @@ import de.hsrm.mi.swt_project.demo.messaging.GetMapOverviewDataDTO;
 import de.hsrm.mi.swt_project.demo.messaging.JoinGameDTO;
 import de.hsrm.mi.swt_project.demo.messaging.SendGameUpdateDTO;
 import de.hsrm.mi.swt_project.demo.messaging.SendMapDTO;
+import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;
 import de.hsrm.mi.swt_project.demo.messaging.ValidationDTO;
 
@@ -51,9 +51,9 @@ public class GameRestController{
      */
     @PostMapping(value="/{id}/game-command", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void getGameCommand(@RequestBody GetGameCommandDTO gameCommand, @PathVariable long id) {
-        logger.info("POST Request for '/api/game/" + id + "/game-command' with body: " + gameCommand);
+        logger.info("POST Request for '/api/game/{}/game-command' with body: {}", id, gameCommand);
 
-        instanceHandler.getGameInstanceById(id).moveMovable(gameCommand.user(), gameCommand.control());
+        instanceHandler.getGameInstanceById(id).moveMoveable(gameCommand.user(), gameCommand.control());
     }
 
     /**
@@ -64,7 +64,7 @@ public class GameRestController{
      */
     @GetMapping(value="/{id}/game-update", produces = MediaType.APPLICATION_JSON_VALUE)
     public SendGameUpdateDTO getGameUpdate(@PathVariable long id) {
-        logger.info("GET Request for '/api/game/" + id + "/game-update'");
+        logger.info("GET Request for '/api/game/{}/game-update'", id);
 
         return SendGameUpdateDTO.from(instanceHandler.getGameInstanceById(id).getMoveableObjects());
     }
@@ -84,7 +84,7 @@ public class GameRestController{
 
     @GetMapping(value="/{id}/players", produces = MediaType.APPLICATION_JSON_VALUE)
     public GameUserListDTO getGamePlayers(@PathVariable long id) {
-        logger.info(String.format("GET Request for '/api/game/%d/players'",id));
+        logger.info("GET Request for '/api/game/{}/players'", id);
         return GameUserListDTO.from(instanceHandler.getGameInstanceById(id).getMoveableObjects());
     }
 
@@ -98,9 +98,13 @@ public class GameRestController{
     
     @PostMapping(value="/create-game", consumes = MediaType.APPLICATION_JSON_VALUE)
     public long createGame(@RequestBody GetGameConfigDTO gameConfig) {
-        logger.info("POST Request for '/api/game/create-game' with body: " + gameConfig.mapName() + " and " + gameConfig.sessionName());
 
-        return instanceHandler.createGameInstance(gameConfig.mapName(), gameConfig.sessionName());
+        String mapName = gameConfig.mapName();
+        String sessionName = gameConfig.sessionName();
+
+        logger.info("POST Request for '/api/game/create-game' with body: {} and {}", mapName, sessionName);
+
+        return instanceHandler.createGameInstance(mapName, sessionName);
     }
 
     /**
@@ -109,11 +113,26 @@ public class GameRestController{
      * @param user the user to join
      * @param type the type of the movableObject
      * @param id the id of the game
+     * @param xPos the x position the player wants to spawn at
+     * @param yPos the y position the player wants to spawn at
      */
     @PostMapping(value="/{id}/join-game", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void joinGame(@RequestBody JoinGameDTO joinGameRequest , @PathVariable long id) {
-        logger.info("POST Request for '/api/game/" + id + "/join-game' with body: " + joinGameRequest.user(), " and " + joinGameRequest.type());
-        instanceHandler.getGameInstanceById(id).addPlayer(joinGameRequest.user(), MoveableType.valueOf(joinGameRequest.type()).createMovable());
+
+        String user = joinGameRequest.user();
+        String type = joinGameRequest.type();
+
+        int xPos = joinGameRequest.xPos();
+        int yPos = joinGameRequest.yPos();
+
+        logger.info("POST Request for '/api/game/{}/join-game' with body: {} and {} and {} and {}", id, user, type, xPos, yPos);
+
+        GameInstance instance = instanceHandler.getGameInstanceById(id);
+
+        if (instance != null) {
+            MoveableObject moveable = MoveableType.valueOf(type).createMovable(xPos, yPos);
+            instance.addPlayer(user, moveable);
+        }
     }
 
     /**
@@ -125,16 +144,14 @@ public class GameRestController{
     public GetAllMapsOverviewDTO getMaps() {
         logger.info("GET Request for '/api/game/get-all-maps'");
 
-        LinkedList<GetMapOverviewDataDTO> maps = new LinkedList<>();
+        List<GetMapOverviewDataDTO> maps = new LinkedList<>();
 
         for (String mapName : instanceHandler.getMaps()) {
             maps.add(new GetMapOverviewDataDTO(mapName));
         }
 
         return new GetAllMapsOverviewDTO(maps);
-
     }
-
 
     /**
      * Validates sessionName
@@ -145,12 +162,14 @@ public class GameRestController{
     @PostMapping(value="/game-config", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ValidationDTO getGameConfig(@RequestBody GetGameConfigDTO gameConfig) {
 
-        logger.info("GET Request for '/api/game/game-config' with body: " + gameConfig.mapName() + " and " + gameConfig.sessionName());
+        String mapName = gameConfig.mapName();
+        String sessionName = gameConfig.sessionName();
 
-        Boolean validationSuccess = instanceHandler.checkSessionNameAvailable(gameConfig.sessionName());
+        logger.info("GET Request for '/api/game/game-config' with body: {} and {}", mapName, sessionName);
+
+        boolean validationSuccess = instanceHandler.checkSessionNameAvailable(sessionName);
 
         return new ValidationDTO(validationSuccess);
-        // return new ValidationDTO(false);
     }
 
     /**
@@ -163,5 +182,18 @@ public class GameRestController{
     public SendMapDTO getMapEditor(@PathVariable Long instanceID) {
         GameInstance gameInstance = instanceHandler.getGameInstanceById(instanceID);
         return SendMapDTO.from(gameInstance.getMap());
+    }
+
+    /**
+     * Removes a player from an existing game.
+     * 
+     * @param user the user to leave
+     * @param type the type of the movableObject
+     * @param id the id of the game
+     * @author Astrid Klemmer
+     */
+    @PostMapping(value="/{id}/leave-game", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void leaveGame(@RequestBody JoinGameDTO leaveGameRequest , @PathVariable long id) {
+        instanceHandler.getGameInstanceById(id).removePlayer(leaveGameRequest.user());
     }
 }

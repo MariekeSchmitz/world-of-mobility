@@ -1,6 +1,6 @@
 <!-- prettier-ignore -->
 <script setup lang="ts">
-  import { ref, onMounted, reactive, watch } from "vue";
+  import { ref, onMounted, reactive, watch, onUnmounted } from "vue";
 
   import * as THREE from 'three'
   import {
@@ -11,21 +11,26 @@
     Scene,
   } from "troisjs";
 
-  import BottomMenu from "../../components/editor/BottomMenu.vue";
-  import LeftMenu from "../../components/editor/LeftMenu.vue";
-  import EditorMap from "../../components/editor/EditorMap.vue";
-  import MiniMap from "../../components/editor/MiniMap.vue";
-  import { usePlaceState } from "@/services/editor/usePlaceState";
+  import BottomMenu from "@/components/editor/BottomMenu.vue";
+  import LeftMenu from "@/components/editor/LeftMenu.vue";
+  import EditorMap from "@/components/editor/EditorMap.vue";
+  import MiniMap from "@/components/editor/MiniMap.vue";
   import {useMap} from "@/services/useMap"
   import { number } from "mathjs";
+  import { useUserEditor } from "@/services/useUserEditor";
+  import { useLogin } from "@/services/login/useLogin";
 
  
   const props = defineProps<{
     editorID: number;
   }>();
 
+  const { loginData } = useLogin();
+  const { leaveEditor } = useUserEditor();
 
-
+  onUnmounted(() => {
+      leaveEditor(props.editorID, loginData.username);
+  });
 
     /**
      * in order to Execute THREE code in script tag, create a reactive item and add :ref="name" to the Vue Element
@@ -43,18 +48,6 @@
     var mouse = new THREE.Vector2();
 
     const {saveMap} = useMap();
-    const {setPlaceState} = usePlaceState();
-   
-    /**
-     * Sets Tile to be placed when selected from Bottom Menu
-     * @param tileType name of Tiletype
-     * 
-     * Author: Astrid Klemmer
-     */
-    //PASS REACTIVE COMPONENT TO BOTTOM MENU AND EDITORMAP, SO PLACEMENT LOGIC CAN BE IMPLEMENTED IN EDITORMAP
-    function setTileInfo(tileType:string){
-      setPlaceState(tileType);
-    }
 
 </script>
 
@@ -71,7 +64,6 @@
     </button>
   </div>
 
-
   <div class="buttonMenuRight">
     <button><img src="@/buttons/editor/plus.png" /><br />Starte Spiel</button>
     <button><img src="@/buttons/editor/plus.png" /><br />Welt testen</button>
@@ -79,7 +71,7 @@
 
   <LeftMenu />
 
-  <BottomMenu v-on:selectTile="setTileInfo($event)"></BottomMenu>
+  <BottomMenu></BottomMenu>
 
   <MiniMap />
 
@@ -100,7 +92,6 @@
       <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
 
       <EditorMap :editorID="editorID"></EditorMap>
-
     </Scene>
   </Renderer>
 </template>
@@ -140,7 +131,10 @@ button:hover {
   position: fixed;
   left: 10px;
   top: 20px;
-  width: 60px;
+  width: 30px;
+  aspect-ratio: 1/1;
+  border: none;
+  border-radius: 100%;
 }
 
 .mapTitle > p {
