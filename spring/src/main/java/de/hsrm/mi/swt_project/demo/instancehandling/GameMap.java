@@ -115,11 +115,11 @@ public class GameMap {
         boolean validate = false;
 
         if (tile instanceof CanHoldNatureObject) {
-            if (placeableObject instanceof Tree || placeableObject instanceof Farm ||placeableObject instanceof Pig ||placeableObject instanceof Sheep ||placeableObject instanceof GasStation) {
+            if (placeableObject instanceof Tree || placeableObject instanceof Pig ||placeableObject instanceof Sheep) {
                 validate = true;
             }
         }else if(tile instanceof CanHoldStreetObject){
-            if (placeableObject instanceof TrafficLight) {
+            if (placeableObject instanceof TrafficLight || placeableObject instanceof GasStation) {
                 validate = true;
             }
         }

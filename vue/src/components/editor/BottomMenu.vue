@@ -202,14 +202,6 @@ function switchContent(element: string) {
             <li>
               <button
                 class="itemButton"
-                @click="setPlaceState(NaturObjectEnum.FARM, false)"
-              >
-                <img src="@/assets/objects/FARM.png" />
-              </button>
-            </li>
-            <li>
-              <button
-                class="itemButton"
                 @click="setPlaceState(NaturObjectEnum.SHEEP, false)"
               >
                 <img src="@/assets/objects/SHEEP.png" />
