@@ -164,7 +164,8 @@ export function useGame(): any {
   }
 
   async function receiveGameUpdate(instanceid: number) {
-    const wsurl = `ws://${window.location.host}/stompbroker`;
+    const proto = location.protocol == 'https:' ? "wss" : "ws";
+    const wsurl = `${proto}://${window.location.host}/stompbroker`;
     const DEST = `/topic/game/${instanceid}`;
 
     const stompClient = new Client({ brokerURL: wsurl });
