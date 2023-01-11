@@ -3,6 +3,7 @@ import { reactive, onMounted } from "vue";
 import { useJoinGame } from "@/services/useJoinGame";
 import { forEach } from "mathjs";
 import { moveableImages } from "./MoveableImages"
+import grassTileUrl from "@/textures/tiles/GRASSTILE.jpg"
 
 const { getMoveableTypes } = useJoinGame();
 
@@ -31,7 +32,7 @@ onMounted(async () => {
 
 let moveable = reactive({
   type: "MOTORIZED_OBJECT",
-  src: "/src/textures/tiles/GRASSTILE.jpg",
+  src: grassTileUrl
 });
 
 function prevMoveable() {
