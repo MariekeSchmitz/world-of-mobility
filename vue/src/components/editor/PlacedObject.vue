@@ -31,8 +31,8 @@ const objectPath = editorTileURLs[props.type];
     :rotation="props.rotation"
     :position="props.position"
   >
-    <BasicMaterial>
+    <BasicMaterial :props="{ transparent: true}" >
       <Texture v-bind:src="objectPath" />
-    </BasicMaterial>
+    </BasicMaterial >
   </Plane>
 </template>

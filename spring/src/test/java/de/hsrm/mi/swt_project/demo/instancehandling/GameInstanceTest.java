@@ -56,7 +56,7 @@ class GameInstanceTest {
         map.getTiles()[1][0] = street;
         map.getTiles()[1][1] = street;
 
-        gameInstance = new GameInstance(map, "TestGame", 1);
+        gameInstance = new GameInstance(map, "TestGame", 1, "maps");
 
     }
 
@@ -68,7 +68,7 @@ class GameInstanceTest {
 
         map.addNpc(original);
 
-        GameInstance instance = new GameInstance(map, "Test", 1);
+        GameInstance instance = new GameInstance(map, "Test", 1, "maps");
 
         MoveableObject copy = instance.getMoveableObjects().get("NPC0");
 
