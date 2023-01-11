@@ -1,12 +1,16 @@
 package de.hsrm.mi.swt_project.demo.instancehandling;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.GameControl;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
+import de.hsrm.mi.swt_project.demo.scripting.ScriptContext;
+import de.hsrm.mi.swt_project.demo.scripting.ScriptContextCache;
 import de.hsrm.mi.swt_project.demo.validation.MovementValidator;
 import de.hsrm.mi.swt_project.demo.validation.SpawnpointValidator;
 import de.hsrm.mi.swt_project.demo.validation.Validator;
@@ -19,6 +23,8 @@ import de.hsrm.mi.swt_project.demo.validation.Validator;
 public class GameInstance extends Instance {
 
     private Map<String, MoveableObject> moveableObjects = new HashMap<>();
+
+    private ScriptContextCache contextCache = new ScriptContextCache();
     private String name;
     
     /**
@@ -120,8 +126,13 @@ public class GameInstance extends Instance {
      * Trigged Script for NPC
      */
     public void updateScript() {
-        for(MoveableObject movableObject : moveableObjects.values()) {
-            movableObject.executeScript();
+
+        List<MoveableObject> allMoveables = this.moveableObjects.values().stream().toList();
+        Tile[][] mapTiles = this.map.getTiles();
+
+        for (MoveableObject movableObject : allMoveables) {
+            ScriptContext context = contextCache.getContextFor(movableObject, mapTiles, allMoveables);
+            movableObject.executeScript(context);
         }
     }
 
