@@ -9,6 +9,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import WorldSelection from "@/views/WorldSelection.vue";
 import GameConfig from "@/views/GameConfig.vue";
 import EditorView from "@/views/editor/EditorView.vue";
+import GameView from "@/views/GameView.vue";
 import { useLogin } from "@/services/login/useLogin";
 
 const { loginData } = useLogin();
@@ -18,8 +19,14 @@ const router = createRouter({
   routes: [
     {
       path: "/game/:instanceID",
-      name: "GameView",
+      name: "Game",
       component: Game,
+      props: true,
+    },
+    {
+      path: "/gameview/:instanceID",
+      name: "GameView",
+      component: GameView,
       props: true,
     },
     {

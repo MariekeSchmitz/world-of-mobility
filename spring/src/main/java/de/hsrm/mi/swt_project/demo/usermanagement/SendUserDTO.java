@@ -5,14 +5,14 @@ package de.hsrm.mi.swt_project.demo.usermanagement;
  * 
  * @author Tom Gouthier
  */
-public record SendUserDTO(String username, String error) {
+public record SendUserDTO(String username) {
 
     /**
      * creates DTO instance
      * 
      * @author Tom Gouthier
      */
-    public static SendUserDTO from(String username, String error) {
-        return new SendUserDTO(username, error);
+    public static SendUserDTO from(String username) {
+        return new SendUserDTO(username);
     }
 }

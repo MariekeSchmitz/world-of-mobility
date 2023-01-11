@@ -19,11 +19,11 @@ let moveableType = "";
 function join() {
   if (props.instanceID != undefined) {
     joinGame(props.instanceID, loginData.username, moveableType);
-    router.push("/game/" + props.instanceID);
+    router.push("/gameview/" + props.instanceID);
   }
 }
 
-function updateMoveable(type:string) {
+function updateMoveable(type: string) {
   moveableType = type;
 }
 
@@ -35,7 +35,9 @@ onMounted(() => {
 <template>
   <div class="wrapper">
     <RouterLink to="/gameintro">
-      <img src="../buttons/editor/arrow-left.png" alt="" />
+      <button>
+        <img src="../buttons/editor/arrow-left.png" alt="" />
+      </button>
     </RouterLink>
     <h1>Fortbewegungsmittel wählen</h1>
     <CarSelection @change-moveable="updateMoveable"></CarSelection>
