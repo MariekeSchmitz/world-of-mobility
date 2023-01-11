@@ -88,7 +88,7 @@ function placeItem() {
       readPlaceState.value.type === NpcType.PASSENGER ||
       readPlaceState.value.type === NpcType.MOTORIZED
     ) {
-      placeNpc(posY, posX, readPlaceState.value.type, props.editorID);
+      placeNpc(posX, posY, readPlaceState.value.type, props.editorID);
     } else {
       sendPlaceObject(posX, posY, props.placedObject);
     }

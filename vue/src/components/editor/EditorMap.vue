@@ -83,7 +83,7 @@ onMounted(() => {
           :placedObject="tile.placedObject.type"
           :editorID="editorID"
           :cmVisible="false"
-          :placedNpc="findNpc(column, row)"
+          :placedNpc="findNpc(row, column)"
         >
         </EditorTile>
       </div>
@@ -99,7 +99,7 @@ onMounted(() => {
           placedObject="none"
           :editorID="editorID"
           :cmVisible="false"
-          :placedNpc="findNpc(column, row)"
+          :placedNpc="findNpc(row, column)"
         >
         </EditorTile>
       </div>

@@ -17,6 +17,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import de.hsrm.mi.swt_project.demo.editor.tiles.Streetile;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.instancehandling.EditorInstance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;
@@ -128,6 +131,42 @@ class EditorTest {
                 assertEquals(2.0f, editorInstance.getMap().getNpcs().get(0).getyPos(), "y pos is correct");
                 assertEquals(editorInstance.getMap().getNpcs().get(0).getType(), MoveableType.PASSENGER,
                                 "type is correct");
+        }
+
+        @Test
+        void post_placeNpc_samePlacement() throws Exception {
+                JSONObject body = new JSONObject();
+                body.put("x", 2);
+                body.put("y", 3);
+                body.put("type", "PASSENGER");
+                mockMvc.perform(post("/api/editor/" + editorId + "/placeNpc")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(body.toString()))
+                                .andExpect(status().isOk());
+                mockMvc.perform(post("/api/editor/" + editorId + "/placeNpc")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(body.toString()))
+                                .andExpect(status().isForbidden());
+                
+        }
+
+        @Test
+        void post_placeNpc_ForbiddenTile() throws Exception{
+                Tile tile = Tiletype.STREET_CURVE.createTile();       
+                if (editorInstance.getMap().getTiles()[3][2]!=null) {
+                        editorInstance.getMap().removeTile(2, 3);     
+                }      
+                editorInstance.getMap().addTile(tile, 2, 3);
+                JSONObject body = new JSONObject();
+                body.put("x", 2);
+                body.put("y", 3);
+                body.put("type", "PASSENGER");
+                mockMvc.perform(post("/api/editor/" + editorId + "/placeNpc")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(body.toString()))
+                                .andExpect(status().isForbidden());
+
+
         }
 
 }

@@ -258,13 +258,13 @@ public class GameMap {
 
         if (moveableObject.getType() == MoveableType.PASSENGER) {
 
-            if (!(tiles[xPos][yPos] instanceof Walkable)) {
+            if (!(tiles[yPos][xPos] instanceof Walkable)) {
                 return false;
             }
 
         } else if (moveableObject.getType() == MoveableType.MOTORIZED_OBJECT) {
 
-            if (!(tiles[xPos][yPos] instanceof DriveableByCar)) {
+            if (!(tiles[yPos][xPos] instanceof DriveableByCar)) {
                 return false;
             }
 
