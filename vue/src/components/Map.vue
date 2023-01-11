@@ -36,13 +36,13 @@ function computeVector3(orientation: string): THREE.Vector3 {
   let vector3 = new THREE.Vector3(0, 0, 0);
   switch (orientation) {
     case "NORTH":
-      vector3.set(0, 0 * quarterTurn, 0);
+      vector3.set(0, 2 * quarterTurn, 0);
       break;
     case "EAST":
       vector3.set(0, 1 * quarterTurn, 0);
       break;
     case "SOUTH":
-      vector3.set(0, 2 * quarterTurn, 0);
+      vector3.set(0, 0 * quarterTurn, 0);
       break;
     case "WEST":
       vector3.set(0, 3 * quarterTurn, 0);
@@ -73,6 +73,7 @@ onMounted(async () => {
         "
         :rotation="computeVector3(tile.orientation)"
         :type="tile.type"
+        :orientation="tile.orientation"
         v-if="tile.placedObject !== null"
         :placed-object="tile.placedObject.type"
       >
@@ -90,6 +91,7 @@ onMounted(async () => {
         "
         :rotation="computeVector3(tile.orientation)"
         :type="tile.type"
+        :orientation="tile.orientation"
       >
       </Tile>
     </div>

@@ -15,13 +15,21 @@ const props = withDefaults(
     rotation: Vector3;
     type: string;
     placedObject: any;
+    orientation: string;
   }>(),
   { width: 10, height: 10 }
 );
+let trafficLightLeftOffset = new Vector3(0, 0, 0);
+let trafficLightRightOffset = new Vector3(0, 0, 0);
+let trafficLightStraightOffset = new Vector3(0, 0, 0);
 
-const trafficLightLeftOffset = new Vector3(3, 0, 2);
-const trafficLightRightOffset = new Vector3(1, 0, -3);
-const trafficLightStraightOffset = new Vector3(-1, 0, 4.5);
+function setPosition(orientation: String) {
+  if (orientation === "WEST") {
+    trafficLightLeftOffset = new Vector3(7, 0, 2);
+    trafficLightRightOffset = new Vector3(1, 0, -3);
+    trafficLightStraightOffset = new Vector3(-1, 0, 4.5);
+  }
+}
 </script>
 <template>
   <GltfModel

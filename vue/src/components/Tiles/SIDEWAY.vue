@@ -13,6 +13,7 @@ const props = withDefaults(
     rotation: Vector3;
     type: string;
     placedObject: any;
+    orientation: string;
   }>(),
   { width: 10, height: 10 }
 );

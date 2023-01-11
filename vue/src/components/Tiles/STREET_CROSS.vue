@@ -15,14 +15,15 @@ const props = withDefaults(
     rotation: Vector3;
     type: string;
     placedObject: any;
+    orientation: string;
   }>(),
   { width: 10, height: 10 }
 );
 
-const trafficLightLeftOffset = new Vector3(-2.5, 0, 2);
-const trafficLightRightOffset = new Vector3(3, 0, 1.5);
-const trafficLightStraightOffset = new Vector3(-3.5, 0, -1.5);
-const trafficLightBackOffset = new Vector3(1.5, 0, -3.5);
+const trafficLightPair1aOffset = new Vector3(-2, 0, 3);
+const trafficLightPair2bOffset = new Vector3(3, 0, 2);
+const trafficLightPair2aOffset = new Vector3(-3, 0, -2);
+const trafficLightPair1bOffset = new Vector3(2, 0, -3);
 </script>
 <template>
   <GltfModel
@@ -33,26 +34,26 @@ const trafficLightBackOffset = new Vector3(1.5, 0, -3.5);
   />
   <TRAFFIC_LIGHT
     v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
-    :position="props.position.clone().add(trafficLightLeftOffset)"
-    :rotation="new Vector3(0, 5, 0)"
+    :position="props.position.clone().add(trafficLightPair1aOffset)"
+    :rotation="new Vector3(0, 4.71, 0)"
     :type="ObjectEnum.TRAFFIC_LIGHT"
   />
   <TRAFFIC_LIGHT
     v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
-    :position="props.position.clone().add(trafficLightRightOffset)"
+    :position="props.position.clone().add(trafficLightPair2bOffset)"
     :rotation="new Vector3(0, 0, 0)"
     :type="ObjectEnum.TRAFFIC_LIGHT"
   />
   <TRAFFIC_LIGHT
     v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
-    :position="props.position.clone().add(trafficLightStraightOffset)"
-    :rotation="new Vector3(0, 3, 0)"
+    :position="props.position.clone().add(trafficLightPair2aOffset)"
+    :rotation="new Vector3(0, 3.14, 0)"
     :type="ObjectEnum.TRAFFIC_LIGHT"
   />
   <TRAFFIC_LIGHT
     v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
-    :position="props.position.clone().add(trafficLightBackOffset)"
-    :rotation="new Vector3(0, 1.5, 0)"
+    :position="props.position.clone().add(trafficLightPair1bOffset)"
+    :rotation="new Vector3(0, 1.57, 0)"
     :type="ObjectEnum.TRAFFIC_LIGHT"
   />
 </template>
