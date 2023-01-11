@@ -6,7 +6,7 @@ import {
   Box,
   Camera,
   Scene,
-  PointLight,
+  HemisphereLight,
   Renderer,
   ToonMaterial,
   Texture,
@@ -19,7 +19,7 @@ import { useGame } from "@/services/useGame";
 import { useLogin } from "@/services/login/useLogin";
 import { orientations } from "@/services/Orientations";
 
-const SIZE = 10;
+const SIZE = 16;
 
 const props = withDefaults(
   defineProps<{
@@ -171,8 +171,12 @@ onUnmounted(() => {
     <Camera :position="cameraPosition" ref="camera" />
     <Scene background="#97FFFF">
       <!-- Light -->
-      <PointLight :position="{ x: 0, y: 0, z: 10 }" />
-      <AmbientLight :intensity="0.75" color="#ffffff"></AmbientLight>
+      <HemisphereLight
+        :position="new Vector3(1, 1, 1)"
+        :intensity="2"
+        color="#ffffff"
+      />
+      <!-- <AmbientLight :intensity="0.85" color="#ffffff"></AmbientLight> -->
       <!-- Map -->
       <Map :instanceID="props.instanceID"></Map>
       <!-- "Car" -->
@@ -187,7 +191,7 @@ onUnmounted(() => {
         <CAR1
           :scale="new Vector3(1, 1, 1)"
           :position="
-            new Vector3(moveable.xPos * SIZE, 0.5, -moveable.yPos * SIZE)
+            new Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
           "
           :rotation="-orientations[moveable.orientation]"
         ></CAR1>
