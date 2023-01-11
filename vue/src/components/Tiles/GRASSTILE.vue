@@ -8,6 +8,8 @@ import { GltfModel } from "troisjs";
 import { withDefaults, defineProps } from "vue";
 import SHEEP from "../objects/SHEEP.vue";
 import PIG from "../objects/PIG.vue";
+import { Texture, ToonMaterial } from "troisjs";
+import grassTileUrl from "@/textures/tiles/GRASSTILE.jpg";
 
 /**
  * Class for Grass Components

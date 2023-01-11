@@ -12,6 +12,7 @@ import { useMapUpdate } from "@/services/useMapUpdate";
 import type { ExportTile } from "@/services/editor/ExportTileInterface";
 import { usePlaceObject } from "@/services/usePlaceObject";
 import { ControlEnum } from "@/services/ControlEnum";
+import { editorTileURLs } from "@/components/editor/EditorTileURLDict"
 
 const props = withDefaults(
   defineProps<{
@@ -28,7 +29,7 @@ const props = withDefaults(
 );
 
 const cmVisible = ref(false);
-let texturePath = "../src/textures/editor/" + props.type + ".jpg";
+let texturePath = editorTileURLs[props.type];
 
 const { readPlaceState } = usePlaceState();
 const { readCMState, setCMState } = useContextMenu();
