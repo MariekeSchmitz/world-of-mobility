@@ -27,32 +27,42 @@ async function loginAndRedirect(url:string) {
 
 
 <template>
-  <div class="grid grid-cols-12 gap-4 bg-orange-light w-full h-screen">
+
+  <div class="grid grid-cols-3 grid-rows-3">
+
+    <div class="text-center col-start-2 col-end-2 row-start-2 row-end-2">
+      
+      <div class="">
+        <h1 class="text-greenDark font-fredoka text-transform: uppercase">World of E-Mobility</h1>
+      </div>
     
-    <div class="col-start-4 col-end-9">
-      <h1 class="text-green-dark font-fredoka text-transform: uppercase text-4xl">World of E-Mobility</h1>
+      <!-- big Avatar
+      <div>
+        <Avatar :avatarPicture="loginData.avatar" :size="'l'"></Avatar>
+      </div> -->
+
+      <!-- small Avatar with change function -->
+      <div class="grid grid-cols-2">
+        <div>
+          <Avatar :avatarPicture="loginData.avatar" :size="'s'"></Avatar>
+          <button @click="toggleAvatarSelection">change avatar</button>
+        </div>
+        <!-- input for username -->
+        <input type="text" v-model="name" />
+        <p v-if="loginData.error !== ''">{{ loginData.error }}</p>
+      </div>
+
+      <button class="" @click="loginAndRedirect('/gameintro') ">Spielen</button>
+      <button class="" @click="loginAndRedirect('/worldintro')">Baumodus</button>
+      <button class="" @click="logout()">Logout</button>
+
+      <!-- Avatar Selection Mode -->
+      <Avatar_Selection v-if="choosingAvatar"></Avatar_Selection>
     </div>
-    <!-- big Avatar
-    <div>
-      <Avatar :avatarPicture="loginData.avatar" :size="'l'"></Avatar>
-    </div> -->
 
-    <!-- small Avatar with change function -->
-    <div class="col-start-4 col-end-9">
-      <Avatar :avatarPicture="loginData.avatar" :size="'s'"></Avatar>
-      <button @click="toggleAvatarSelection">change avatar</button>
-      <!-- input for username -->
-      <input type="text" v-model="name" />
-      <p v-if="loginData.error !== ''">{{ loginData.error }}</p>
-    </div>
-
-    <button class="col-start-4 col-end-9" @click="loginAndRedirect('/gameintro') ">Spielen</button>
-    <button class="col-start-4 col-end-9" @click="loginAndRedirect('/worldintro')">Baumodus</button>
-    <button class="col-start-4 col-end-9" @click="logout()">Logout</button>
-
-    <!-- Avatar Selection Mode -->
-    <Avatar_Selection v-if="choosingAvatar"></Avatar_Selection>
   </div>
+
+
 </template>
 
 <style scoped>

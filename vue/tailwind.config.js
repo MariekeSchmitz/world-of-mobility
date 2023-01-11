@@ -3,10 +3,10 @@ module.exports = {
   content: ["./src/**/*.html", "./src/**/*.vue"],
   theme: {
     colors: {
-      'green-dark': '#2F8265',
-      'green-light': '#2F826520',
-      'orange': '#FFB72E',
-      'orange-light': '#FFB72E20',
+      greenDark: '#2F8265',
+      greenLight: '#2F826520',
+      orange: '#FFB72E',
+      orangeLight: '#FFB72E20',
     },
     fontFamily: {
       sans : ['Poppins', 'sans-serif'],

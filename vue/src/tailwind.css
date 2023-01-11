@@ -3,9 +3,16 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 
+
 @layer base {
-    .headline {
-        @apply "bg-orange";
+    h1 {
+        @apply decoration-greenDark text-4xl;
     }
-} */
+
+    div {
+        @apply border-solid border-2;
+    }
+
+
+   
+}
