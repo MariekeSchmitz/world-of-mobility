@@ -44,9 +44,9 @@ const car = ref();
 let thirdPerson = reactive({ value: true });
 let freeCam = reactive({ value: true });
 let switchedMode = false;
-const thirdPersonOffset = new Vector3(0, 8, -15);
-const firstPersonOffset = new Vector3(0, 0, -2);
-const cameraOffset = reactive(new Vector3(0, 8, -15));
+const thirdPersonOffset = new Vector3(0, 8, 15);
+const firstPersonOffset = new Vector3(0, 0, 2);
+const cameraOffset = reactive(new Vector3(0, 8, 15));
 const upVector = new Vector3(0, 1, 0);
 let movementVector = new Vector3(0, 0, 0);
 
@@ -78,7 +78,7 @@ const allMoveables = computed(() => {
     const newLookAt = new Vector3(
       userMovable.value.xPos * SIZE,
       2,
-      userMovable.value.yPos * SIZE
+      -userMovable.value.yPos * SIZE
     );
     movementVector = newLookAt.clone().sub(lookAt);
     lookAt.copy(newLookAt);
@@ -118,9 +118,9 @@ function handleKeyEvent(e: KeyboardEvent) {
   } else if (e.code === "KeyS") {
     sendCommand(props.instanceID, loginData.username, "SPEED_DOWN");
   } else if (e.code === "KeyA") {
-    sendCommand(props.instanceID, loginData.username, "RIGHT");
-  } else if (e.code === "KeyD") {
     sendCommand(props.instanceID, loginData.username, "LEFT");
+  } else if (e.code === "KeyD") {
+    sendCommand(props.instanceID, loginData.username, "RIGHT");
   } else if (e.code === "KeyV") {
     switchPerspective();
   } else if (e.code === "KeyF") {
@@ -187,9 +187,9 @@ onUnmounted(() => {
         <CAR1
           :scale="new Vector3(1, 1, 1)"
           :position="
-            new Vector3(moveable.xPos * SIZE, 0.5, moveable.yPos * SIZE)
+            new Vector3(moveable.xPos * SIZE, 0.5, -moveable.yPos * SIZE)
           "
-          :rotation="orientations[moveable.orientation]"
+          :rotation="-orientations[moveable.orientation]"
         ></CAR1>
       </div>
     </Scene>

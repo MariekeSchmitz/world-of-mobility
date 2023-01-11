@@ -36,16 +36,16 @@ function computeVector3(orientation: string): THREE.Vector3 {
   let vector3 = new THREE.Vector3(0, 0, 0);
   switch (orientation) {
     case "NORTH":
-      vector3.set(0, 2 * quarterTurn, 0);
-      break;
-    case "EAST":
-      vector3.set(0, 3 * quarterTurn, 0);
-      break;
-    case "SOUTH":
       vector3.set(0, 0 * quarterTurn, 0);
       break;
-    case "WEST":
+    case "EAST":
       vector3.set(0, 1 * quarterTurn, 0);
+      break;
+    case "SOUTH":
+      vector3.set(0, 2 * quarterTurn, 0);
+      break;
+    case "WEST":
+      vector3.set(0, 3 * quarterTurn, 0);
       break;
     default:
       return vector3;
@@ -59,10 +59,7 @@ onMounted(async () => {
 </script>
 <template>
   <!-- Loop to build the map -->
-  <div
-    v-for="(subTile, row) in loadedMap.tiles.slice().reverse()"
-    :key="`${row}`"
-  >
+  <div v-for="(subTile, row) in loadedMap.tiles" :key="`${row}`">
     <div v-for="(tile, column) in subTile" :key="`${tile}`">
       <Tile
         :width="squareSize"
@@ -70,8 +67,8 @@ onMounted(async () => {
         :position="
           new THREE.Vector3(
             column * squareSize + 0.5 * squareSize,
-            0,
-            row * squareSize + 0.5 * squareSize
+            tile.positionY,
+            -row * squareSize - 0.5 * squareSize
           )
         "
         :rotation="computeVector3(tile.orientation)"
@@ -87,8 +84,8 @@ onMounted(async () => {
         :position="
           new THREE.Vector3(
             column * squareSize + 0.5 * squareSize,
-            0,
-            row * squareSize + 0.5 * squareSize
+            tile.positionY,
+            -row * squareSize - 0.5 * squareSize
           )
         "
         :rotation="computeVector3(tile.orientation)"
