@@ -19,16 +19,82 @@ const props = withDefaults(
   }>(),
   { width: 10, height: 10 }
 );
-let trafficLightLeftOffset = new Vector3(0, 0, 0);
-let trafficLightRightOffset = new Vector3(0, 0, 0);
-let trafficLightStraightOffset = new Vector3(0, 0, 0);
+const trafficLightLeft = "trafficLightLeft";
+const trafficLightRight = "trafficLightRight";
+const trafficLightStraight = "trafficLightStraight";
 
-function setPosition(orientation: String) {
-  if (orientation === "WEST") {
-    trafficLightLeftOffset = new Vector3(7, 0, 2);
-    trafficLightRightOffset = new Vector3(1, 0, -3);
-    trafficLightStraightOffset = new Vector3(-1, 0, 4.5);
+function setPosition(orientation: string, name: string): Vector3 {
+  if (orientation == "WEST") {
+    if (name == "trafficLightLeft") {
+      return new Vector3(3, 0, 2);
+    } else if (name == "trafficLightRight") {
+      return new Vector3(2, 0, -3);
+    } else if (name == "trafficLightStraight") {
+      return new Vector3(-3, 0, -1);
+    }
+  } else if (orientation == "NORTH") {
+    if (name == "trafficLightLeft") {
+      return new Vector3(3, 0, 2);
+    } else if (name == "trafficLightRight") {
+      return new Vector3(1, 0, -3);
+    } else if (name == "trafficLightStraight") {
+      return new Vector3(-2, 0, 3);
+    }
+  } else if (orientation == "SOUTH") {
+    if (name == "trafficLightLeft") {
+      return new Vector3(0, 0, 3);
+    } else if (name == "trafficLightRight") {
+      return new Vector3(-3, 0, -2);
+    } else if (name == "trafficLightStraight") {
+      return new Vector3(3, 0, -2);
+    }
+  } else if (orientation == "EAST") {
+    if (name == "trafficLightLeft") {
+      return new Vector3(3, 0, 1);
+    } else if (name == "trafficLightRight") {
+      return new Vector3(-3, 0, -2);
+    } else if (name == "trafficLightStraight") {
+      return new Vector3(-2, 0, 3);
+    }
   }
+  return new Vector3(0, 0, 0);
+}
+
+function setRotation(orientation: string, name: string): Vector3 {
+  if (orientation == "WEST") {
+    if (name == "trafficLightLeft") {
+      return new Vector3(0, 0, 0);
+    } else if (name == "trafficLightRight") {
+      return new Vector3(0, 1.57, 0);
+    } else if (name == "trafficLightStraight") {
+      return new Vector3(0, 3.14, 0);
+    }
+  } else if (orientation == "NORTH") {
+    if (name == "trafficLightLeft") {
+      return new Vector3(0, 0, 0);
+    } else if (name == "trafficLightRight") {
+      return new Vector3(0, 1.57, 0);
+    } else if (name == "trafficLightStraight") {
+      return new Vector3(0, 4.71, 0);
+    }
+  } else if (orientation == "SOUTH") {
+    if (name == "trafficLightLeft") {
+      return new Vector3(0, 4.71, 0);
+    } else if (name == "trafficLightRight") {
+      return new Vector3(0, 3.14, 0);
+    } else if (name == "trafficLightStraight") {
+      return new Vector3(0, 1.75, 0);
+    }
+  } else if (orientation == "EAST") {
+    if (name == "trafficLightLeft") {
+      return new Vector3(0, 0, 0);
+    } else if (name == "trafficLightRight") {
+      return new Vector3(0, 3.14, 0);
+    } else if (name == "trafficLightStraight") {
+      return new Vector3(0, 4.71, 0);
+    }
+  }
+  return new Vector3(0, 0, 0);
 }
 </script>
 <template>
@@ -40,20 +106,32 @@ function setPosition(orientation: String) {
   />
   <TRAFFIC_LIGHT
     v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
-    :position="props.position.clone().add(trafficLightLeftOffset)"
-    :rotation="new Vector3(0, 0, 0)"
+    :position="
+      props.position
+        .clone()
+        .add(setPosition(props.orientation, trafficLightLeft))
+    "
+    :rotation="setRotation(props.orientation, trafficLightLeft)"
     :type="ObjectEnum.TRAFFIC_LIGHT"
   />
   <TRAFFIC_LIGHT
     v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
-    :position="props.position.clone().add(trafficLightRightOffset)"
-    :rotation="new Vector3(0, 1.5, 0)"
+    :position="
+      props.position
+        .clone()
+        .add(setPosition(props.orientation, trafficLightRight))
+    "
+    :rotation="setRotation(props.orientation, trafficLightRight)"
     :type="ObjectEnum.TRAFFIC_LIGHT"
   />
   <TRAFFIC_LIGHT
     v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
-    :position="props.position.clone().add(trafficLightStraightOffset)"
-    :rotation="new Vector3(0, 4.5, 0)"
+    :position="
+      props.position
+        .clone()
+        .add(setPosition(props.orientation, trafficLightStraight))
+    "
+    :rotation="setRotation(props.orientation, trafficLightStraight)"
     :type="ObjectEnum.TRAFFIC_LIGHT"
   />
 </template>
