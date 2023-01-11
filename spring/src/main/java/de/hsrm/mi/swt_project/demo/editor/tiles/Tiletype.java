@@ -52,8 +52,8 @@ public enum Tiletype {
         @Override
         public Tile createTile() {
             TrafficTile tile = new PedestrianCrossingTile();
-            tile.allowedDirections.add(Orientation.EAST);
-            tile.allowedDirections.add(Orientation.WEST);
+            tile.allowedDirections.add(Orientation.NORTH);
+            tile.allowedDirections.add(Orientation.SOUTH);
             tile.type = this;
             return tile;
         }
