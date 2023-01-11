@@ -14,9 +14,9 @@ public interface Scriptable {
     public void loadScript(String script);
 
      /**
-     * Execute script of the object to use it as behaviour 
+     * Returns the script that was loaded for the scriptable object.
      * @author Marieke Schmitz
      */
-    public void executeScript();
+    public String getScript();
     
 }

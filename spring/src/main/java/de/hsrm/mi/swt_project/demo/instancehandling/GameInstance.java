@@ -4,9 +4,12 @@ import java.util.HashMap;
 import java.util.ListIterator;
 import java.util.Map;
 
+import org.python.util.PythonInterpreter;
+
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.GameControl;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
+import de.hsrm.mi.swt_project.demo.util.JythonFactory;
 import de.hsrm.mi.swt_project.demo.validation.MovementValidator;
 import de.hsrm.mi.swt_project.demo.validation.Validator;
 
@@ -103,7 +106,19 @@ public class GameInstance extends Instance {
 
         super.update();
 
+        PythonInterpreter interpreter = JythonFactory.getInterpreter();
+
+        interpreter.set("tiles", this.map.getTiles());
+        interpreter.set("moveables", this.moveableObjects);
+
         for(MoveableObject moveableObject : moveableObjects.values()) {
+
+            String script = moveableObject.getScript();
+
+            if (script != null && !script.isEmpty()) {
+                interpreter.set("moveable", moveableObject);
+                interpreter.exec(script);
+            }
 
             Validator movementValidator = new MovementValidator(this.map.getTiles(), moveableObject);
 
@@ -119,9 +134,7 @@ public class GameInstance extends Instance {
      * Trigged Script for NPC
      */
     public void updateScript() {
-        for(MoveableObject movableObject : moveableObjects.values()) {
-            movableObject.executeScript();
-        }
+
     }
 
     /**

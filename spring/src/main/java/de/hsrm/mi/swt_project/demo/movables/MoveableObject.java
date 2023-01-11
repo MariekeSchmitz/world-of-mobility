@@ -1,6 +1,5 @@
 package de.hsrm.mi.swt_project.demo.movables;
 
-import org.python.util.PythonInterpreter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,7 +7,6 @@ import de.hsrm.mi.swt_project.demo.controls.Moveable;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.controls.Scriptable;
 import de.hsrm.mi.swt_project.demo.controls.Turnable;
-import de.hsrm.mi.swt_project.demo.util.JythonFactory;
 
 /**
  * This class represents objects that can change their position
@@ -147,14 +145,8 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
     }
 
     @Override
-    public void executeScript() {
-
-        if (this.script != null && !this.script.isEmpty()) {
-                PythonInterpreter interpreter = JythonFactory.getInterpreter();
-                interpreter.set("moveable", this);   
-                interpreter.exec(this.script);
-
-        }
+    public String getScript() {
+        return this.script;
     }
 
     /**
