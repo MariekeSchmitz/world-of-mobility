@@ -1,5 +1,4 @@
-npc = NPC()
+import random
 
-npc.setSpeed(0.1)
-
-print(npc.frontLeftTile())
+npc.accelerate() if random.randint(0, 1) else npc.brake()
+npc.turnLeft()

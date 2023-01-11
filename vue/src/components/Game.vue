@@ -173,12 +173,6 @@ onUnmounted(() => {
       <!-- Light -->
       <PointLight :position="{ x: 0, y: 0, z: 10 }" />
       <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
-      <GltfModel
-        ref="model"
-        src="/src/assets/models/Qube.glb"
-        @load="onReady"
-        :position="new Vector3(10, 0, 10)"
-      />
       <!-- Map -->
       <Map :instanceID="props.instanceID"></Map>
       <!-- "Car" -->

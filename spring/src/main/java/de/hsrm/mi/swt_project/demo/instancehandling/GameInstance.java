@@ -1,6 +1,7 @@
 package de.hsrm.mi.swt_project.demo.instancehandling;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
@@ -8,9 +9,13 @@ import org.python.util.PythonInterpreter;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.GameControl;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
-import de.hsrm.mi.swt_project.demo.util.JythonFactory;
+import de.hsrm.mi.swt_project.demo.scripting.JythonFactory;
+import de.hsrm.mi.swt_project.demo.scripting.ScriptContext;
+import de.hsrm.mi.swt_project.demo.scripting.ScriptContextCache;
 import de.hsrm.mi.swt_project.demo.validation.MovementValidator;
+import de.hsrm.mi.swt_project.demo.validation.SpawnpointValidator;
 import de.hsrm.mi.swt_project.demo.validation.Validator;
 
 /**
@@ -21,6 +26,8 @@ import de.hsrm.mi.swt_project.demo.validation.Validator;
 public class GameInstance extends Instance {
 
     private Map<String, MoveableObject> moveableObjects = new HashMap<>();
+
+    private ScriptContextCache contextCache = new ScriptContextCache();
     private String name;
     
     /**
@@ -34,9 +41,9 @@ public class GameInstance extends Instance {
      * @param name the name of the instance
      * @param id the id of the instance
      */
-    public GameInstance(GameMap map, String name, long id) {
+    public GameInstance(GameMap map, String name, long id, String mapSavePath) {
 
-        super(map, id);
+        super(map, id, mapSavePath);
         this.name = name;
 
         ListIterator<MoveableObject> iterator = map.getNpcs().listIterator();
@@ -113,13 +120,6 @@ public class GameInstance extends Instance {
 
         for(MoveableObject moveableObject : moveableObjects.values()) {
 
-            String script = moveableObject.getScript();
-
-            if (script != null && !script.isEmpty()) {
-                interpreter.set("moveable", moveableObject);
-                interpreter.exec(script);
-            }
-
             Validator movementValidator = new MovementValidator(this.map.getTiles(), moveableObject);
 
             if (movementValidator.validate()) {
@@ -135,6 +135,13 @@ public class GameInstance extends Instance {
      */
     public void updateScript() {
 
+        List<MoveableObject> allMoveables = this.moveableObjects.values().stream().toList();
+        Tile[][] mapTiles = this.map.getTiles();
+
+        for (MoveableObject movableObject : allMoveables) {
+            ScriptContext context = contextCache.getContextFor(movableObject, mapTiles, allMoveables);
+            movableObject.executeScript(context);
+        }
     }
 
     /**
@@ -153,5 +160,18 @@ public class GameInstance extends Instance {
      */
     public Map<String, MoveableObject> getMoveableObjects() {
         return moveableObjects;
+    }
+
+    /**
+     * Cheacks wether the MoveableObject can spawn at the given location
+     * 
+     * @param moveableObject the Moveable Object to check for
+     * @param xPos x-Position the Object will be spawned at
+     * @param yPos y-Position the Object will be spawned at
+     * @return boolean value that indicates wether the Object can Spawn at the given location
+     */
+    public boolean validateSpawnpoint(MoveableObject moveableObject, int xPos, int yPos) {
+        SpawnpointValidator spawnpointValidator = new SpawnpointValidator(this.map.getTiles(), moveableObject, xPos, yPos);
+        return spawnpointValidator.validate();
     }
 }

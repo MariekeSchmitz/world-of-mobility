@@ -10,15 +10,6 @@ public enum PlaceableObjectType {
             return tree;
         }
     },
-
-    FARM() {
-        @Override
-        public PlaceableObject createPlaceableObject() {
-            PlaceableObject farm = new Farm();
-            farm.type = this;
-            return farm;
-        }
-    },
     
     PIG() {
         @Override

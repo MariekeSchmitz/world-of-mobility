@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.demo.controls;
+package de.hsrm.mi.swt_project.demo.scripting;
 
 /**
  * Classes that implement this interface represent objects whose behaviour can be customized by a script. 
@@ -15,8 +15,10 @@ public interface Scriptable {
 
      /**
      * Returns the script that was loaded for the scriptable object.
+     * 
+     * @param context Context of the object that will be scripted
      * @author Marieke Schmitz
      */
-    public String getScript();
+    public void executeScript(ScriptContext context);
     
 }
