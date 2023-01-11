@@ -76,6 +76,28 @@ public class GameMap {
     }
 
     /**
+     * deletes npc if found in npc-list
+     * @param x
+     * @param y
+     * @author Tom Gouthier, Marie Bohnert
+     */
+    public void deleteNPC(float x, float y){
+
+        logger.info("trying to remove npc with coordinates: {} {}", x, y);
+
+        for(MoveableObject npc : npcs){
+            if(npc.getxPos() == x && npc.getyPos() == y){
+                npcs.remove(npc);
+                logger.info("removed following npc: {}", npc);
+                return;
+            }
+        }
+
+        logger.info("npc doesn't exist");
+
+    }
+
+    /**
      * Adds a Tile to the game map at a certain position.
      * 
      * If the tile is placed on the edge of the current map,

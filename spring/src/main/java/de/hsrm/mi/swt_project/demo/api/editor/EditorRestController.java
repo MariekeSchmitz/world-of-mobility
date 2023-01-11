@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -234,5 +235,15 @@ public class EditorRestController {
             throw error;
         }
         
+    }
+
+    @DeleteMapping("/{id}/removeNpc")
+    public void removeNpc(@PathVariable long id, @RequestBody PlaceNpcDTO npc){
+
+        EditorInstance editorInstance = instanceHandler.getEditorInstanceById(id);
+
+        editorInstance.deleteNPC(npc.x(), npc.y());
+        loopService.publishInstanceState(editorInstance);
+
     }
 }

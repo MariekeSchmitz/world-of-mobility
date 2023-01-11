@@ -188,4 +188,8 @@ public class EditorInstance extends Instance {
         }
        
     }
+
+    public void deleteNPC(float x, float y){
+        map.deleteNPC(x, y);
+    }
 }

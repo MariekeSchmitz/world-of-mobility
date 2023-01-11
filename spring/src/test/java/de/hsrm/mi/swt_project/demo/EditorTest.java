@@ -1,8 +1,12 @@
 package de.hsrm.mi.swt_project.demo;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import org.apache.tools.ant.taskdefs.Delete;
+
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -167,6 +171,26 @@ class EditorTest {
                                 .andExpect(status().isForbidden());
 
 
+        }
+
+        @Test
+        void removeNpc() throws Exception{
+                JSONObject body = new JSONObject();
+                body.put("x", 2);
+                body.put("y", 3);
+                body.put("type", "PASSENGER");
+                mockMvc.perform(post("/api/editor/" + editorId + "/placeNpc")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(body.toString()))
+                                .andExpect(status().isOk());
+                assertTrue(!editorInstance.getMap().getNpcs().isEmpty(), "npc was added");
+                mockMvc.perform(delete("/api/editor/" + editorId + "/removeNpc")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(body.toString()))
+                                .andExpect(status().isOk());
+                assertTrue(editorInstance.getMap().getNpcs().isEmpty(), "npc was removed");
+
+                
         }
 
 }
