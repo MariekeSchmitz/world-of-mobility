@@ -3,7 +3,6 @@
 //@ts-ignore
 import type * as THREE from "three";
 import { Plane, Texture, ToonMaterial } from "troisjs";
-import { withDefaults, defineProps } from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -24,7 +23,7 @@ const props = withDefaults(
     :position="props.position"
   >
     <ToonMaterial>
-      <Texture src="src\textures\tiles\RAIL_STRAIGHT.jpg"
+      <Texture src="/src/textures/tiles/RAIL_STRAIGHT.jpg"
     /></ToonMaterial>
   </Plane>
 </template>

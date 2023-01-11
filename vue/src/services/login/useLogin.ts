@@ -55,7 +55,7 @@ async function login(username: string) {
       });
 
       if (!response.ok) {
-        console.log(response.text);
+        throw new Error(response.statusText);
       } else {
         const jsondata: ILoginResponse = await response.json();
         console.log(jsondata);
@@ -70,14 +70,12 @@ async function login(username: string) {
           loginState.error = jsondata.error;
         }
       }
-    } catch (reason) {
-      console.log(reason);
+    } catch (reason: any) {
+      loginState.error = reason;
     }
   } else {
     loginState.error = "Name too Short. Has to be 3 or above letters long.";
   }
-
-  console.log(loginState);
 }
 
 /**

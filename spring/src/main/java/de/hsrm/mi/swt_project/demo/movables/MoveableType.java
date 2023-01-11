@@ -4,27 +4,35 @@ public enum MoveableType {
 
     PASSENGER() {
         @Override
-        public MoveableObject createMovable(int xPos, int yPos, float maxVelocity) {
-            return new Passenger(xPos, yPos, maxVelocity);
+        public MoveableObject createMovable(float xPos, float yPos) {
+            MoveableObject mvObj = new Passenger(xPos, yPos);
+            mvObj.type = this;
+            return mvObj;
         }
 
         @Override
         public MoveableObject createMovable() {
-            return new Passenger();
+            MoveableObject mvObj = new Passenger();
+            mvObj.type = this;
+            return mvObj;
         }
     },
     MOTORIZED_OBJECT() {
         @Override
-        public MoveableObject createMovable(int xPos, int yPos, float maxVelocity) {
-            return new MotorizedObject(xPos, yPos, maxVelocity);
+        public MoveableObject createMovable(float xPos, float yPos) {
+            MoveableObject mvObj = new MotorizedObject(xPos, yPos);
+            mvObj.type = this;
+            return mvObj;
         }
 
         @Override
         public MoveableObject createMovable() {
-            return new MotorizedObject();
+            MoveableObject mvObj = new MotorizedObject();
+            mvObj.type = this;
+            return mvObj;
         }
     };
 
     public abstract MoveableObject createMovable();
-    public abstract MoveableObject createMovable(int xPos, int yPos, float maxVelocity);
+    public abstract MoveableObject createMovable(float xPos, float yPos);
 }

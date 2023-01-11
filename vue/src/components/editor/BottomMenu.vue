@@ -1,54 +1,99 @@
 <script setup lang="ts">
-import { TileName } from "../../services/editor/TileNameEnum";
+import { TileName } from "@/services/editor/TileNameEnum";
+import { usePlaceState } from "@/services/editor/usePlaceState";
+import { NaturObjectEnum } from "@/services/NaturObjectEnum";
+import { ObjectEnum } from "@/services/ObjectEnum";
+import { ControlEnum } from "@/services/ControlEnum";
+import { NpcType } from "@/services/editor/NpcType";
+
+const { setPlaceState } = usePlaceState();
 
 function scrollingLeft() {
-  document.getElementById("box-wrapper").scrollLeft -= 200;
+  const boxwrapper = document.getElementById("box-wrapper");
+  if (boxwrapper != null) {
+    boxwrapper.scrollLeft -= 200;
+  }
 }
 
 function scrollingRight() {
-  document.getElementById("box-wrapper").scrollLeft += 200;
+  const boxwrapper = document.getElementById("box-wrapper");
+  if (boxwrapper != null) {
+    boxwrapper.scrollLeft += 200;
+  }
 }
 
 function toggle() {
-  if (document.getElementById("bottomMenu").style.display == "none") {
-    document.getElementById("bottomMenu").style.display = "grid";
-    document.getElementById("showElement").style.display = "none";
-  } else {
-    document.getElementById("bottomMenu").style.display = "none";
-    document.getElementById("showElement").style.display = "block";
+  const bottomMenu = document.getElementById("bottomMenu");
+  const showElement = document.getElementById("showElement");
+
+  if (bottomMenu != null && showElement != null) {
+    if (bottomMenu.style.display == "none") {
+      bottomMenu.style.display = "grid";
+      showElement.style.display = "none";
+    } else {
+      bottomMenu.style.display = "none";
+      showElement.style.display = "block";
+    }
   }
 }
 
 function switchItems(element: string) {
-  switch (element) {
-    case "componentItems":
-      document.getElementById("streetItems").style.display = "none";
-      document.getElementById("componentItems").style.display = "grid";
-      document.getElementById("otherItems").style.display = "none";
-      break;
-    case "otherItems":
-      document.getElementById("streetItems").style.display = "none";
-      document.getElementById("componentItems").style.display = "none";
-      document.getElementById("otherItems").style.display = "grid";
-      break;
-    default:
-      document.getElementById("streetItems").style.display = "grid";
-      document.getElementById("componentItems").style.display = "none";
-      document.getElementById("otherItems").style.display = "none";
-      break;
+  const streetItems = document.getElementById("streetItems");
+  const componentItems = document.getElementById("componentItems");
+  const otherItems = document.getElementById("otherItems");
+  const passengerItems = document.getElementById("passenger")
+  const motorizedItems = document.getElementById("motorized")
+
+  if (streetItems != null && componentItems != null && otherItems != null &&passengerItems != null  && motorizedItems != null) {
+    switch (element) {
+      case "componentItems":
+        streetItems.style.display = "none";
+        componentItems.style.display = "block";
+        otherItems.style.display = "none";
+        passengerItems.style.display="none"
+        motorizedItems.style.display="none"
+        break;
+      case "otherItems":
+        streetItems.style.display = "none";
+        componentItems.style.display = "none";
+        otherItems.style.display = "block";
+        passengerItems.style.display="none"
+        motorizedItems.style.display="none"
+        break;
+      case "passenger":
+        motorizedItems.style.display="none"
+        passengerItems.style.display="block"
+        break;
+      case "motorized":
+        motorizedItems.style.display="block"
+        passengerItems.style.display="none"
+        break;
+      default:
+        streetItems.style.display = "block";
+        componentItems.style.display = "none";
+        otherItems.style.display = "none";
+        passengerItems.style.display="none"
+        motorizedItems.style.display="none"
+        break;
+    }
   }
 }
 
 function switchContent(element: string) {
-  switch (element) {
-    case "npcMenu":
-      document.getElementById("landscapeMenu").style.display = "none";
-      document.getElementById("npcMenu").style.display = "grid";
-      break;
-    default:
-      document.getElementById("landscapeMenu").style.display = "grid";
-      document.getElementById("npcMenu").style.display = "none";
-      break;
+  const landscapeMenu = document.getElementById("landscapeMenu");
+  const npcMenu = document.getElementById("npcMenu");
+
+  if (landscapeMenu != null && npcMenu != null) {
+    switch (element) {
+      case "npcMenu":
+        landscapeMenu.style.display = "none";
+        npcMenu.style.display = "grid";
+        break;
+      default:
+        landscapeMenu.style.display = "grid";
+        npcMenu.style.display = "none";
+        break;
+    }
   }
 }
 </script>
@@ -67,8 +112,12 @@ function switchContent(element: string) {
         <button @click="switchItems('streetItems')">
           <img src="@/textures/editor/STREET_STRAIGHT.jpg" />
         </button>
-        <button @click="switchItems('componentItems')">Baum</button>
-        <button @click="switchItems('otherItems')">Tankstelle</button>
+        <button @click="switchItems('componentItems')">
+          Natur/<br />Tiere
+        </button>
+        <button @click="switchItems('otherItems')">
+          Gegenstände/<br />Tankstelle
+        </button>
       </div>
 
       <!--
@@ -79,70 +128,169 @@ function switchContent(element: string) {
         </div>
         -->
 
-      <div id="streetItems">
+      <div id="itemList">
         <button id="scrollLeft" @mousedown="scrollingLeft">
           <img src="@/buttons/editor/arrow-left.png" />
         </button>
 
         <ul id="box-wrapper">
-          <li>
-            <button
-              class="tileButton"
-              @click="$emit('selectTile', TileName.STREET_STRAIGHT)"
-            >
-              <img src="@/textures/editor/STREET_STRAIGHT.jpg" />
-            </button>
-          </li>
-          <li>
-            <button
-              class="tileButton"
-              @click="$emit('selectTile', TileName.STREET_CURVE)"
-            >
-              <img src="@/textures/editor/STREET_CURVE.jpg" />
-            </button>
-          </li>
-          <li>
-            <button
-              class="tileButton"
-              @click="$emit('selectTile', TileName.STREET_T_CROSS)"
-            >
-              <img src="@/textures/editor/STREET_T_CROSS.jpg" />
-            </button>
-          </li>
-          <li>
-            <button
-              class="tileButton"
-              @click="$emit('selectTile', TileName.STREET_CROSS)"
-            >
-              <img src="@/textures/editor/STREET_CROSS.jpg" />
-            </button>
-          </li>
-          <li>
-            <button
-              class="tileButton"
-              @click="$emit('selectTile', TileName.SIDEWAY)"
-            >
-              <img src="@/textures/editor/SIDEWAY.jpg" />
-            </button>
-          </li>
+          <div id="streetItems">
+            <li>
+              <button class="itemButton" @click="setPlaceState(TileName.STREET_STRAIGHT, true)">
+                <img src="@/textures/editor/STREET_STRAIGHT.jpg" />
+              </button>
+            </li>
+            <li>
+              <button class="itemButton" @click="setPlaceState(TileName.STREET_CURVE, true)">
+                <img src="@/textures/editor/STREET_CURVE.jpg" />
+              </button>
+            </li>
+            <li>
+              <button class="itemButton" @click="setPlaceState(TileName.STREET_T_CROSS, true)">
+                <img src="@/textures/editor/STREET_T_CROSS.jpg" />
+              </button>
+            </li>
+            <li>
+              <button class="itemButton" @click="setPlaceState(TileName.STREET_CROSS, true)">
+                <img src="@/textures/editor/STREET_CROSS.jpg" />
+              </button>
+            </li>
+            <li>
+              <button class="itemButton" @click="setPlaceState(TileName.SIDEWAY, true)">
+                <img src="@/textures/editor/SIDEWAY.jpg" />
+              </button>
+            </li>
+          </div>
+          <!--
+          <div
+            id="componentItems"
+            v-for="(valueEnum, naturEnum) in NaturObjectEnum"
+            :key="`${valueEnum}`"
+          >
+            <li>
+              <img
+                :src="'@/assets/objekte/natur/' + valueEnum + '.png'"
+                :alt="'@/assets/objekte/natur/' + valueEnum + '.png'"
+              />
+            </li>
+          </div>
+-->
+
+          <div id="componentItems">
+            <li>
+              <button class="itemButton" @click="setPlaceState(ControlEnum.REMOVE, false)">
+                <img src="@/assets/objects/REMOVE.png" />
+              </button>
+            </li>
+            <li>
+              <button class="itemButton" @click="setPlaceState(NaturObjectEnum.TREE, false)">
+                <img src="@/assets/objects/TREE.png" />
+              </button>
+            </li>
+            <li>
+              <button class="itemButton" @click="setPlaceState(NaturObjectEnum.FARM, false)">
+                <img src="@/assets/objects/FARM.png" />
+              </button>
+            </li>
+            <li>
+              <button class="itemButton" @click="setPlaceState(NaturObjectEnum.SHEEP, false)">
+                <img src="@/assets/objects/SHEEP.png" />
+              </button>
+            </li>
+            <li>
+              <button class="itemButton" @click="setPlaceState(NaturObjectEnum.PIG, false)">
+                <img src="@/assets/objects/PIG.png" />
+              </button>
+            </li>
+          </div>
+
+          <div id="otherItems">
+            <li>
+              <button class="itemButton" @click="setPlaceState(ControlEnum.REMOVE, false)">
+                <img src="@/assets/objects/REMOVE.png" />
+              </button>
+            </li>
+            <li>
+              <button class="itemButton" @click="setPlaceState(ObjectEnum.GAS_STATION, false)">
+                <img src="@/assets/objects/GAS_STATION.png" />
+              </button>
+            </li>
+            <li>
+              <button class="itemButton" @click="setPlaceState(ObjectEnum.TRAFFIC_LIGHT, false)">
+                <img src="@/assets/objects/TRAFFIC_LIGHT.png" />
+              </button>
+            </li>
+          </div>
+
         </ul>
 
         <button id="scrollRight" @click="scrollingRight">
           <img src="@/buttons/editor/arrow-right.png" />
         </button>
       </div>
-
-      <div id="componentItems"></div>
-
-      <div id="otherItems"></div>
     </div>
 
-    <button id="hideElement" @click="toggle">
-      <img src="@/buttons/editor/arrow-down.png" />
-    </button>
+    <div id="npcMenu">
+      <div class="itemSelector">
+        <button @click="switchItems('motorized')">
+          Fahrzeuge
+        </button>
+        <button @click="switchItems('passenger')">
+          Fußgeher
+        </button>
+      </div>
 
-    <div id="npcMenu"></div>
+      <div id="itemList">
+        <button id="scrollLeft" @mousedown="scrollingLeft">
+          <img src="@/buttons/editor/arrow-left.png" />
+        </button>
+
+        <ul id="box-wrapper">
+
+          <div id="passenger">
+            <li>
+              <button class="itemButton" @click="setPlaceState(ControlEnum.REMOVE_NPC, false)">
+                <img src="@/assets/objects/REMOVE.png" />
+              </button>
+            </li>
+            <li>
+              <button class="itemButton" @click="setPlaceState(NpcType.PASSENGER, false)">
+                <img src="@/assets/objects/FARM.png" />
+              </button>
+            </li>
+          </div>
+
+          <div id="motorized">
+            <li>
+              <button class="itemButton" @click="setPlaceState(ControlEnum.REMOVE_NPC, false)">
+                <img src="@/assets/objects/REMOVE.png" />
+              </button>
+            </li>
+            <li>
+              <button class="itemButton" @click="setPlaceState(NpcType.MOTORIZED, false)">
+                <img src="@/assets/objects/GAS_STATION.png" />
+              </button>
+            </li>
+
+          </div>
+
+        </ul>
+
+        <button id="scrollRight" @click="scrollingRight">
+          <img src="@/buttons/editor/arrow-right.png" />
+        </button>
+      </div>
+    </div>
+
   </div>
+
+
+
+  <button id="hideElement" @click="toggle">
+    <img src="@/buttons/editor/arrow-down.png" />
+  </button>
+
+
   <button id="showElement" @click="toggle">
     <img src="@/buttons/editor/arrow-up.png" />
   </button>
@@ -167,8 +315,7 @@ function switchContent(element: string) {
 }
 
 #npcMenu {
-  display: grid;
-  display: grid;
+  display: none;
   grid-template-columns: 20% 80%;
 }
 
@@ -189,15 +336,20 @@ function switchContent(element: string) {
   grid-template-rows: 1fr 1fr 1fr;
 }
 
-#streetItems {
+#itemList {
   display: grid;
   grid-template-columns: 10% 80% 10%;
   margin: auto 0;
 }
 
-.tileButton > img {
+.itemButton>img {
   width: 80px;
   height: 80px;
+}
+
+#componentItems,
+#otherItems, #passenger {
+  display: none;
 }
 
 ul {

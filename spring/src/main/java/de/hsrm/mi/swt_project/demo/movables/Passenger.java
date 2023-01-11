@@ -11,7 +11,7 @@ public class Passenger extends MoveableObject {
      * Creates an instance of Passenger
      */
     public Passenger() {
-        this(0, 0, 1);
+        this(0, 0);
     }
 
     /**
@@ -21,8 +21,8 @@ public class Passenger extends MoveableObject {
      * @param yPos y-position of the object on the map
      * @param maxVelocity Maximum velocity of the object.
      */
-    public Passenger(float xPos, float yPos, float maxVelocity) {
-        this(Orientation.NORTH, xPos, yPos, maxVelocity);
+    public Passenger(float xPos, float yPos) {
+        this(Orientation.NORTH, xPos, yPos, 1);
     }
 
     /**

@@ -9,6 +9,7 @@ import STREET_CROSS from "./Tiles/STREET_CROSS.vue";
 import STREET_T_CROSS from "./Tiles/STREET_T_CROSS.vue";
 import RAIL_CURVE from "./Tiles/RAIL_CURVE.vue";
 import RAIL_STRAIGHT from "./Tiles/RAIL_STRAIGHT.vue";
+import GRASSTILE from "./Tiles/GRASSTILE.vue";
 import { tileType } from "./TileTypes";
 
 const props = withDefaults(
@@ -92,4 +93,13 @@ const props = withDefaults(
     :type="props.type"
   >
   </RAIL_STRAIGHT>
+  <GRASSTILE
+    v-if="props.type === tileType.GRASSTILE"
+    :width="props.width"
+    :height="props.height"
+    :rotation="props.rotation"
+    :position="props.position"
+    :type="props.type"
+  >
+  </GRASSTILE>
 </template>

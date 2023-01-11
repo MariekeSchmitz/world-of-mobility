@@ -1,9 +1,14 @@
 package de.hsrm.mi.swt_project.demo.movables;
 
+import org.python.util.PythonInterpreter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.hsrm.mi.swt_project.demo.controls.Moveable;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.controls.Scriptable;
 import de.hsrm.mi.swt_project.demo.controls.Turnable;
+import de.hsrm.mi.swt_project.demo.util.JythonFactory;
 
 /**
  * This class represents objects that can change their position
@@ -12,8 +17,8 @@ import de.hsrm.mi.swt_project.demo.controls.Turnable;
  * @author Sascha Scheid
  */
 public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
-    
-    protected static final float MIN_VELOCITY = 0.0f;
+
+    protected static final float MIN_VELOCITY = -0.5f;
     protected static final float MAX_VELOCITY = 1.0f;
 
     protected static final float MIN_CAPACITY = 0.0f;
@@ -31,6 +36,7 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
 
     protected MoveableType type;
 
+    transient Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * Gets orientation of the movable object.
@@ -46,7 +52,7 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
      * 
      * @return x-Position
      */
-    public float getXPos() {
+    public float getxPos() {
         return xPos;
     }
 
@@ -55,8 +61,25 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
      * 
      * @return x-Position
      */
-    public float getYPos() {
+    public float getyPos() {
         return yPos;
+    }
+
+    /**
+     * Gets script of moveable object
+     * 
+     * @return script
+     */
+    public String getScript() {
+        return script;
+    }
+
+    /**
+     * 
+     * @return type
+     */
+    public MoveableType getType() {
+        return type;
     }
 
     /**
@@ -82,7 +105,17 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
     }
 
     /**
+     * Gets maximum velocity of the moveable object.
+     * 
+     * @return maximum velocity
+     */
+    public float getMaxVelocity() {
+        return maxVelocity;
+    }
+
+    /**
      * Sets new x-position of the movable object.
+     * 
      * @param xPos New x-position
      */
     public void setXPos(float xPos) {
@@ -91,6 +124,7 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
 
     /**
      * Sets new y-position of the movable object.
+     * 
      * @param yPos New y-position
      */
     public void setYPos(float yPos) {
@@ -102,7 +136,7 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
      * 
      * Since capacity is relative to maxVelocity,
      * given value will be clipped to interval [0, 1].
-     *  
+     * 
      * @param capacity New capacity.
      */
     public void setCapacity(float capacity) {
@@ -115,7 +149,7 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
      * 
      * Since currentVelocity is relative to maxVelocity,
      * given value will be clipped to interval [0, 1].
-     *  
+     * 
      * @param velocity New velocity.
      */
     public void setCurrentVelocity(float velocity) {
@@ -125,13 +159,17 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
 
     @Override
     public void loadScript(String script) {
-        this.script = script;        
+        this.script = script;
     }
 
     @Override
     public void executeScript() {
+
         if (this.script != null && !this.script.isEmpty()) {
-            // perform script execution
+            PythonInterpreter interpreter = JythonFactory.getInterpreter();
+            interpreter.set("moveable", this);
+            interpreter.exec(this.script);
+
         }
     }
 
