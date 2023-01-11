@@ -189,11 +189,35 @@ public class EditorInstance extends Instance {
        
     }
 
-    public void deleteNPC(float x, float y) throws NoNpcToRemoveException{
+    /**
+     * deletes npc if found in npc-list
+     * @param x
+     * @param y
+     * @author Tom Gouthier, Marie Bohnert
+     */
+    public void deleteNPC(float x, float y) throws NoNpcExistsOnCoordinates{
        try{
         map.deleteNPC(x, y);
-       } catch(NoNpcToRemoveException e){
+       } catch(NoNpcExistsOnCoordinates e){
         throw e;
        }
+    }
+
+    /**
+     * adds script to npc with given coordinates
+     * @param x x coordinate of npc
+     * @param y y coordinate of npc
+     * @param script script to load
+     * @author Marie Bohnert, Tom Gouthier
+     */
+    public void addScriptToNpc(float x, float y, String script) throws NoNpcExistsOnCoordinates{
+        
+        for (MoveableObject npc:map.getNpcs()){
+            if (npc.getxPos() == x && npc.getyPos() == y) {
+                npc.loadScript(script);
+                return;
+            }
+        }
+        throw new NoNpcExistsOnCoordinates();
     }
 }

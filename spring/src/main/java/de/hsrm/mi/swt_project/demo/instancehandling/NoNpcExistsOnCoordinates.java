@@ -4,6 +4,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 
 @ResponseStatus(HttpStatus.FORBIDDEN)
-public class NoNpcToRemoveException extends RuntimeException {
+public class NoNpcExistsOnCoordinates extends RuntimeException {
     
 }

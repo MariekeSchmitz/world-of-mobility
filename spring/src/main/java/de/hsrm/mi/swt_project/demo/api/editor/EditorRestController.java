@@ -22,7 +22,7 @@ import de.hsrm.mi.swt_project.demo.instancehandling.EditorInstance;
 import de.hsrm.mi.swt_project.demo.instancehandling.GameMap;
 import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
-import de.hsrm.mi.swt_project.demo.instancehandling.NoNpcToRemoveException;
+import de.hsrm.mi.swt_project.demo.instancehandling.NoNpcExistsOnCoordinates;
 import de.hsrm.mi.swt_project.demo.instancehandling.NpcNotPlaceableException;
 import de.hsrm.mi.swt_project.demo.instancehandling.UpdateloopService;
 import de.hsrm.mi.swt_project.demo.messaging.GetListInstanceDTO;
@@ -247,7 +247,7 @@ public class EditorRestController {
         try{
             editorInstance.deleteNPC(npc.x(), npc.y());
             loopService.publishInstanceState(editorInstance);
-        } catch(NoNpcToRemoveException e){
+        } catch(NoNpcExistsOnCoordinates e){
             throw e;
         }
        
@@ -263,12 +263,12 @@ public class EditorRestController {
     @PostMapping("/{id}/loadScript")
     public void postNPCScript(@PathVariable long id, @RequestBody GetScriptDTO scriptDTO){
 
-        Instance instance = instanceHandler.getEditorInstanceById(id);
-        GameMap map = instance.getMap();
-        List<MoveableObject> list = map.getNpcs();
-
-        list.get(scriptDTO.npcId()).loadScript(scriptDTO.script());
-
+        EditorInstance instance = instanceHandler.getEditorInstanceById(id);
+        try {
+            instance.addScriptToNpc(scriptDTO.x(),scriptDTO.y(),scriptDTO.script());
+        } catch(NoNpcExistsOnCoordinates e){
+            throw e;
+        }
     }
 
 }
