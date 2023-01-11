@@ -38,6 +38,7 @@ public class Passenger extends MoveableObject {
         this.setYPos(yPos);
         this.maxVelocity = maxVelocity;
         this.orientation = orientation;
+        this.hitboxRadius = 0.05f;
     }
 
     @Override

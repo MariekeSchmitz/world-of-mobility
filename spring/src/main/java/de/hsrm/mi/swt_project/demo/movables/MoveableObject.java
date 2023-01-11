@@ -25,6 +25,8 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
     protected static final float MIN_CAPACITY = 0.0f;
     protected static final float MAX_CAPACITY = 1.0f;
 
+    protected float hitboxRadius;
+
     protected Orientation orientation;
 
     protected float xPos;
