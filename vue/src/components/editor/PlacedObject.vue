@@ -12,6 +12,7 @@
 //@ts-ignore
 import * as THREE from "three";
 import { Plane, Texture, BasicMaterial } from "troisjs";
+import { editorTileURLs } from "@/components/editor/EditorTileURLDict"
 
 const props = defineProps<{
   type: string;
@@ -21,7 +22,7 @@ const props = defineProps<{
   rotation: THREE.Vector3;
 }>();
 
-let objectPath = "../src/assets/objects/" + props.type + ".png";
+const objectPath = editorTileURLs[props.type];
 </script>
 <template>
   <Plane
