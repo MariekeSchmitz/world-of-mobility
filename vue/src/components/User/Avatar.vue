@@ -1,15 +1,14 @@
 <script setup lang="ts">
-// component that represents a single Avatar - available in different sizes
+// component that represents a single Avatar 
 
 /**
- * Avatar takes in a picture url as well as a size - s, m or l
+ * Avatar takes in a picture url 
  * @author Marie Bohnert
  * @author Tom Gouthier
  * */
 const props = withDefaults(
   defineProps<{
     avatarPicture: string;
-    size: string;
   }>(),
   { avatarPicture: "src/assets/avatar/Gockel.png" }
 );
@@ -18,23 +17,9 @@ const props = withDefaults(
 <template>
   <!-- Avatar Picture, usage wherever the avatar is needed -->
 
-  <img :src="avatarPicture" alt="" :class="size" />
+  <img :src="avatarPicture" alt=""  />
 </template>
 
 <style scoped>
-img {
-  margin: 1em;
-  max-width: 100%;
-  height: auto;
-}
 
-.s {
-  max-width: 100px;
-}
-.m {
-  max-width: 200px;
-}
-.l {
-  max-width: 500px;
-}
 </style>

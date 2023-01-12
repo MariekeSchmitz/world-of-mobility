@@ -7,6 +7,8 @@ module.exports = {
       greenLight: '#2F826520',
       orange: '#FFB72E',
       orangeLight: '#FFB72E20',
+      white: '#ffffff', 
+      transparent: 'transparent'
     },
     fontFamily: {
       sans : ['Poppins', 'sans-serif'],

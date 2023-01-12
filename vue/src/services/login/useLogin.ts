@@ -10,7 +10,7 @@ import type { ISendLogin } from "./ISendLogin";
  */
 const loginState: ILoginState = reactive({
   username: "",
-  avatar: "src/assets/avatar/Schwein.png",
+  avatar: "src/assets/avatar/avatar.png",
   error: "",
   loggedIn: false,
 });

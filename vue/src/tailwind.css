@@ -6,11 +6,27 @@
 
 @layer base {
     h1 {
-        @apply decoration-greenDark text-4xl;
+        @apply text-5xl mb-12 text-greenDark font-fredoka uppercase; 
     }
 
-    div {
+    h2 {
+        @apply text-3xl my-8 text-greenDark font-fredoka uppercase; 
+    }
+
+    /* div {
         @apply border-solid border-2;
+    } */
+
+    body, #app {
+        @apply h-screen;
+    }
+
+    input {
+       @apply border-orange border-b-2 text-greenDark focus:outline-none placeholder:text-orange pb-0 mb-0 font-semibold bg-transparent;
+    }
+
+    .buttonStartPage {
+        @apply text-white rounded-full w-full uppercase block font-fredoka mb-4 p-3 text-xl;
     }
 
 

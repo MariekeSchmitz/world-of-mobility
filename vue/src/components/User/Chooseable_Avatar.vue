@@ -15,6 +15,9 @@ const props = withDefaults(
 );
 
 const { setAvatar } = useLogin();
+
+
+
 </script>
 
 <template>
