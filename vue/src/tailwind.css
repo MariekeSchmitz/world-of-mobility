@@ -3,32 +3,29 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
-    h1 {
-        @apply text-5xl mb-12 text-greenDark font-fredoka uppercase; 
-    }
+  h1 {
+    @apply text-5xl mb-12 text-greenDark font-fredoka uppercase;
+  }
 
-    h2 {
-        @apply text-3xl my-8 text-greenDark font-fredoka uppercase; 
-    }
+  h2 {
+    @apply text-3xl mb-8 text-greenDark font-fredoka uppercase;
+  }
 
-    /* div {
+  /* div {
         @apply border-solid border-2;
     } */
 
-    body, #app {
-        @apply h-screen;
-    }
+  body,
+  #app {
+    @apply h-screen;
+  }
 
-    input {
-       @apply border-orange border-b-2 text-greenDark focus:outline-none placeholder:text-orange pb-0 mb-0 font-semibold bg-transparent;
-    }
+  input {
+    @apply border-orange border-b-2 text-greenDark focus:outline-none placeholder:text-orange pb-0 mb-0 font-semibold bg-transparent;
+  }
 
-    .buttonStartPage {
-        @apply text-white rounded-full w-full uppercase block font-fredoka mb-4 p-3 text-xl;
-    }
-
-
-   
+  .buttonStartPage {
+    @apply text-white rounded-full w-full uppercase block font-fredoka mb-4 p-3 text-xl;
+  }
 }
