@@ -13,6 +13,7 @@ import REMOVE_URL from "@/assets/objects/REMOVE.png";
 import SHEEP_URL from "@/assets/objects/SHEEP.png";
 import TRAFFIC_LIGHT_URL from "@/assets/objects/TRAFFIC_LIGHT.png";
 import TREE_URL from "@/assets/objects/TREE.png";
+import PEDESTRIAN_CROSSING_URL from "@/textures/editor/PEDESTRIAN_CROSSING.jpg"
 
 export const editorTileURLs: { [id: string]: string } = {
   GRASSTILE: GRASSTILE_URL,
@@ -30,4 +31,6 @@ export const editorTileURLs: { [id: string]: string } = {
   SHEEP: SHEEP_URL,
   TRAFFIC_LIGHT: TRAFFIC_LIGHT_URL,
   TREE: TREE_URL,
+  PEDESTRIAN_CROSSING: PEDESTRIAN_CROSSING_URL.
 };
+

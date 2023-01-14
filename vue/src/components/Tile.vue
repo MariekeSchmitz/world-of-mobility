@@ -110,7 +110,15 @@ const props = withDefaults(
     :orientation="props.orientation"
   >
   </STREET_T_CROSS>
-
+  <PEDESTRIAN_CROSSING
+    v-if="props.type === tileType.PEDESTRIAN_CROSSING"
+    :width="props.width"
+    :height="props.height"
+    :rotation="props.rotation"
+    :position="props.position"
+    :type="props.type"
+  >
+  </PEDESTRIAN_CROSSING>
   <RAIL_CURVE
     v-if="props.type === tileType.RAIL_CURVE"
     :width="props.width"
