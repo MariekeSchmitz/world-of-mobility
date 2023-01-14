@@ -101,6 +101,10 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
         return maxVelocity;
     }
 
+    public float getHitboxRaidius() {
+        return hitboxRadius;
+    }
+
     /**
      * Sets new x-position of the movable object.
      * @param xPos New x-position
