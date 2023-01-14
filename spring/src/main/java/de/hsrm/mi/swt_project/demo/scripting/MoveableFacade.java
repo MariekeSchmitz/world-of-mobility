@@ -16,7 +16,9 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
  * @author Finn Schindel
  * @author Timothy Doukhin
  */
-public class MoveableProxy {
+public class MoveableFacade {
+
+    protected static final float ACCELERATION_DELTA = 0.1f;
     
     protected MoveableObject moveable;
     protected ScriptContext context;
@@ -28,8 +30,8 @@ public class MoveableProxy {
      * @param context Context that can be provided
      * @return new instance of MoveableProxy 
      */
-    public static MoveableProxy createFor(MoveableObject moveableObject, ScriptContext context) {
-        return new MoveableProxy(moveableObject, context);
+    public static MoveableFacade createFor(MoveableObject moveableObject, ScriptContext context) {
+        return new MoveableFacade(moveableObject, context);
     }
 
     /**
@@ -38,7 +40,7 @@ public class MoveableProxy {
      * @param moveable Moveable that will be controlled
      * @param context Context that can be provided
      */
-    protected MoveableProxy(MoveableObject moveable, ScriptContext context) {
+    protected MoveableFacade(MoveableObject moveable, ScriptContext context) {
         this.moveable = moveable;
         this.context = context;
     }
@@ -62,7 +64,7 @@ public class MoveableProxy {
      * by 10% of its max velocity.
      */
     public void accelerate() {
-        float newVelocity = this.moveable.getCurrentVelocity() + 0.1f;
+        float newVelocity = this.moveable.getCurrentVelocity() + ACCELERATION_DELTA;
         this.moveable.setCurrentVelocity(newVelocity);
     }
 
@@ -71,7 +73,7 @@ public class MoveableProxy {
      * by 10% of its max velocity.
      */
     public void brake() {
-        float newVelocity = this.moveable.getCurrentVelocity() - 0.1f;
+        float newVelocity = this.moveable.getCurrentVelocity() - ACCELERATION_DELTA;
         this.moveable.setCurrentVelocity(newVelocity);
     }
 

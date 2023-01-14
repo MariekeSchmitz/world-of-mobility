@@ -8,7 +8,7 @@ import de.hsrm.mi.swt_project.demo.controls.Moveable;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.controls.Turnable;
 import de.hsrm.mi.swt_project.demo.scripting.JythonFactory;
-import de.hsrm.mi.swt_project.demo.scripting.MoveableProxy;
+import de.hsrm.mi.swt_project.demo.scripting.MoveableFacade;
 import de.hsrm.mi.swt_project.demo.scripting.ScriptContext;
 import de.hsrm.mi.swt_project.demo.scripting.Scriptable;
 
@@ -154,7 +154,7 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
         if (this.script != null && !this.script.isEmpty() && context != null) {
 
             PythonInterpreter interpreter = JythonFactory.getInterpreter();
-            MoveableProxy proxy = MoveableProxy.createFor(this, context);
+            MoveableFacade proxy = MoveableFacade.createFor(this, context);
             interpreter.set("npc", proxy);   
             interpreter.exec(this.script);
             

@@ -55,7 +55,8 @@ public class ScriptContext {
      */
     public Tile[][] provideMapContext() {
 
-        Tile[][] mapContext = new Tile[LOOK_AHEAD][LOOK_AHEAD];
+        int contextSize = 2 * LOOK_AHEAD + 1;
+        Tile[][] mapContext = new Tile[contextSize][contextSize];
 
         if (this.gameMap == null) {
             return mapContext;
