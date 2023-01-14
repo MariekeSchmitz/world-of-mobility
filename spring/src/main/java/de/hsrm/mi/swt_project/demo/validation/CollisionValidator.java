@@ -2,12 +2,16 @@ package de.hsrm.mi.swt_project.demo.validation;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
 public class CollisionValidator implements Validator{
 
     MoveableObject moveableObject;
     MoveableObject[] moveableObjects;
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     public CollisionValidator(Map<String, MoveableObject> moveableObjects) {
 
@@ -41,9 +45,11 @@ public class CollisionValidator implements Validator{
 
     public boolean doObjectsHit(MoveableObject object1, MoveableObject object2) {
 
+        // Abstand = √((x1 - x2)² + (y1 - y2)²)
         double distance = Math.sqrt(Math.pow(object1.getXPos() - object2.getXPos(), 2) + Math.pow(object1.getYPos() - object2.getYPos(), 2));
-        double maxDistance = object1.getHitboxRaidius() + object2.getHitboxRaidius();
-        if(distance >= maxDistance) {
+        double maxDistance = object1.getHitboxRadius() + object2.getHitboxRadius();
+
+        if(distance > 0 && distance <= maxDistance) {
             return true;
         }
 
@@ -52,7 +58,7 @@ public class CollisionValidator implements Validator{
 
     public void setMoveableObject(MoveableObject moveableObject) {
         this.moveableObject = moveableObject.copy();
-        moveableObject.move();
+        this.moveableObject.move();
     }
     
 }

@@ -36,7 +36,7 @@ public class MotorizedObject extends MoveableObject {
         this.setYPos(yPos);
         this.maxVelocity = maxVelocity;
         this.orientation = adjustOrientation(orientation);
-        this.hitboxRadius = 0.1f;
+        this.hitboxRadius = 0.15f;
     }
 
     @Override

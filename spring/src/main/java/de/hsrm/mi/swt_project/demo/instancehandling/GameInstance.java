@@ -66,10 +66,10 @@ public class GameInstance extends Instance {
                 moveableObjects.get(user).turn(Direction.RIGHT);
                 break;
             case SPEED_UP:
-                moveableObjects.get(user).setCurrentVelocity(moveableObjects.get(user).getCurrentVelocity() + 0.1F);
+                moveableObjects.get(user).setCurrentVelocity(moveableObjects.get(user).getCurrentVelocity() + 0.05F);
                 break;
             case SPEED_DOWN:
-                moveableObjects.get(user).setCurrentVelocity(moveableObjects.get(user).getCurrentVelocity() - 0.1F);
+                moveableObjects.get(user).setCurrentVelocity(moveableObjects.get(user).getCurrentVelocity() - 0.05F);
                 break;
         }
 

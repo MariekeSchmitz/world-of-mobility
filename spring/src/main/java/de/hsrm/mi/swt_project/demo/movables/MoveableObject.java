@@ -19,13 +19,13 @@ import de.hsrm.mi.swt_project.demo.util.JythonFactory;
 public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
 
 
-    protected static final float MIN_VELOCITY = -0.5f;
-    protected static final float MAX_VELOCITY = 1.0f;
+    protected static final float MIN_VELOCITY = -0.1f;
+    protected static final float MAX_VELOCITY = 0.2f;
 
     protected static final float MIN_CAPACITY = 0.0f;
     protected static final float MAX_CAPACITY = 1.0f;
 
-    protected float hitboxRadius;
+    protected float hitboxRadius = 0.15f;
 
     protected Orientation orientation;
 
@@ -101,7 +101,7 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
         return maxVelocity;
     }
 
-    public float getHitboxRaidius() {
+    public float getHitboxRadius() {
         return hitboxRadius;
     }
 
