@@ -2,16 +2,16 @@
 <script setup lang="ts">
 //@ts-ignore
 import type * as THREE from "three";
-import SIDEWAY from "./Tiles/SIDEWAY.vue";
-import STREET_CURVE from "./Tiles/STREET_CURVE.vue";
-import STREET_STRAIGHT from "./Tiles/STREET_STRAIGHT.vue";
-import STREET_CROSS from "./Tiles/STREET_CROSS.vue";
-import STREET_T_CROSS from "./Tiles/STREET_T_CROSS.vue";
-import RAIL_CURVE from "./Tiles/RAIL_CURVE.vue";
-import RAIL_STRAIGHT from "./Tiles/RAIL_STRAIGHT.vue";
-import FARM from "./Tiles/FARM.vue";
-import GRASSTILE from "./Tiles/GRASSTILE.vue";
-import { tileType } from "./TileTypes";
+import SIDEWAY from "@/components/Tiles/SIDEWAY.vue";
+import STREET_CURVE from "@/components/Tiles/STREET_CURVE.vue";
+import STREET_STRAIGHT from "@/components/Tiles/STREET_STRAIGHT.vue";
+import STREET_CROSS from "@/components/Tiles/STREET_CROSS.vue";
+import STREET_T_CROSS from "@/components/Tiles/STREET_T_CROSS.vue";
+import RAIL_CURVE from "@/components/Tiles/RAIL_CURVE.vue";
+import RAIL_STRAIGHT from "@/components/Tiles/RAIL_STRAIGHT.vue";
+import FARM from "@/components/Tiles/FARM.vue";
+import GRASSTILE from "@/components/Tiles/GRASSTILE.vue";
+import { tileType } from "@/components/TileTypes";
 
 const props = withDefaults(
   defineProps<{

@@ -10,8 +10,8 @@ const { instanceId, createGameInstance, receiveGameUpdate, joinGame } =
 const { sendConfig, valSuccess } = useGameConfig();
 const { loginData } = useLogin();
 
-const name = "";
-const playerLimit = 0;
+let name = "";
+let playerLimit = 0;
 const npcs = false;
 const validationChecked = ref(false);
 const validationPassed = ref(false);
@@ -34,7 +34,6 @@ async function checkValidation(name: string) {
 }
 
 async function startGame(name: string) {
-
   if (instanceId.id != -1) {
     joinGame(instanceId.id, loginData.username, "MOTORIZED_OBJECT");
     router.push("/gameview/" + instanceId.id);

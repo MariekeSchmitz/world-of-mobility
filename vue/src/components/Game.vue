@@ -1,5 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
+//@ts-ignore
+import * as THREE from "three";
 import { ref, computed, onMounted, reactive, onUnmounted, watch } from "vue";
 import {
   AmbientLight,
@@ -14,7 +16,6 @@ import {
 } from "troisjs";
 import Map from "@/components/Map.vue";
 import CAR1 from "@/components/objects/CAR1.vue";
-import { Vector3 } from "three";
 import { useGame } from "@/services/useGame";
 import { useLogin } from "@/services/login/useLogin";
 import { orientations } from "@/services/Orientations";
@@ -44,17 +45,17 @@ const car = ref();
 let thirdPerson = reactive({ value: true });
 let freeCam = reactive({ value: true });
 let switchedMode = false;
-const thirdPersonOffset = new Vector3(0, 8, 15);
-const firstPersonOffset = new Vector3(0, 0, 2);
-const cameraOffset = reactive(new Vector3(0, 8, 15));
-const upVector = new Vector3(0, 1, 0);
-let movementVector = new Vector3(0, 0, 0);
+const thirdPersonOffset = new THREE.Vector3(0, 8, 15);
+const firstPersonOffset = new THREE.Vector3(0, 0, 2);
+const cameraOffset = reactive(new THREE.Vector3(0, 8, 15));
+const upVector = new THREE.Vector3(0, 1, 0);
+let movementVector = new THREE.Vector3(0, 0, 0);
 
 const userMovable = computed(() => {
   return getUserMoveable(loginData.username);
 });
 
-const lookAt = reactive(new Vector3(15, 1, 15));
+const lookAt = reactive(new THREE.Vector3(15, 1, 15));
 
 const cameraPosition = computed(() => {
   const vecTempTarget = lookAt.clone();
@@ -75,7 +76,7 @@ const cameraPosition = computed(() => {
 
 const allMoveables = computed(() => {
   if (userMovable.value != undefined) {
-    const newLookAt = new Vector3(
+    const newLookAt = new THREE.Vector3(
       userMovable.value.xPos * SIZE,
       2,
       -userMovable.value.yPos * SIZE
@@ -172,7 +173,7 @@ onUnmounted(() => {
     <Scene background="#97FFFF">
       <!-- Light -->
       <HemisphereLight
-        :position="new Vector3(1, 1, 1)"
+        :position="new THREE.Vector3(1, 1, 1)"
         :intensity="2"
         color="#ffffff"
       />
@@ -185,13 +186,13 @@ onUnmounted(() => {
         :scale="{ x: 1, y: 1, z: 2 }"
         ref="car"
         ><ToonMaterial>
-          <Texture src="/src/textures/Obsidian.jpg" /> </ToonMaterial
+          <Texture src="@/textures/Obsidian.jpg" /> </ToonMaterial
       ></Box> -->
       <div v-for="(moveable, index) in allMoveables" :key="index">
         <CAR1
-          :scale="new Vector3(1, 1, 1)"
+          :scale="new THREE.Vector3(1, 1, 1)"
           :position="
-            new Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
           "
           :rotation="-orientations[moveable.orientation]"
         ></CAR1>
