@@ -137,7 +137,13 @@ const isSelected = computed(() => {
 }
 
 .SIDEWAY {
-  background-image: url("@/textures/tiles/SIDEWAY.jpg");
+  background-image: url("@/textures/tiles/SIDEWAY.png");
+}
+.SIDEWAY_BICYCLE_CURVE {
+  background-image: url("@/textures/tiles/SIDEWAY_BICYCLE_CURVE.png");
+}
+.SIDEWAY_PASSENGER_CURVE {
+  background-image: url("@/textures/tiles/SIDEWAY_PASSENGER_CURVE.png");
 }
 
 .STREET_CROSS {

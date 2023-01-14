@@ -76,6 +76,22 @@ public enum Tiletype {
             return tile;
         }
     },
+    SIDEWAY_BICYCLE_CURVE() {
+        @Override
+        public Tile createTile() {
+            Tile tile = new PassengerTile();
+            tile.type = this;
+            return tile;
+        }
+    },
+    SIDEWAY_PASSENGER_CURVE() {
+        @Override
+        public Tile createTile() {
+            Tile tile = new PassengerTile();
+            tile.type = this;
+            return tile;
+        }
+    },
     FARM() {
         @Override
         public Tile createTile() {

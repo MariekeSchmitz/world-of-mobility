@@ -3,6 +3,8 @@
 //@ts-ignore
 import type * as THREE from "three";
 import SIDEWAY from "@/components/Tiles/SIDEWAY.vue";
+import SIDEWAY_BICYCLE_CURVE from "@/components/Tiles/SIDEWAY_BICYCLE_CURVE.vue";
+import SIDEWAY_PASSENGER_CURVE from "@/components/Tiles/SIDEWAY_PASSENGER_CURVE.vue";
 import STREET_CURVE from "@/components/Tiles/STREET_CURVE.vue";
 import STREET_STRAIGHT from "@/components/Tiles/STREET_STRAIGHT.vue";
 import STREET_CROSS from "@/components/Tiles/STREET_CROSS.vue";
@@ -38,6 +40,28 @@ const props = withDefaults(
     :orientation="props.orientation"
   >
   </SIDEWAY>
+  <SIDEWAY_BICYCLE_CURVE
+    v-if="props.type === tileType.SIDEWAY_BICYCLE_CURVE"
+    :width="props.width"
+    :height="props.height"
+    :rotation="props.rotation"
+    :position="props.position"
+    :type="props.type"
+    :placedObject="props.placedObject"
+    :orientation="props.orientation"
+  >
+  </SIDEWAY_BICYCLE_CURVE>
+  <SIDEWAY_PASSENGER_CURVE
+    v-if="props.type === tileType.SIDEWAY_PASSENGER_CURVE"
+    :width="props.width"
+    :height="props.height"
+    :rotation="props.rotation"
+    :position="props.position"
+    :type="props.type"
+    :placedObject="props.placedObject"
+    :orientation="props.orientation"
+  >
+  </SIDEWAY_PASSENGER_CURVE>
 
   <STREET_CURVE
     v-if="props.type === tileType.STREET_CURVE"
@@ -117,6 +141,8 @@ const props = withDefaults(
     :rotation="props.rotation"
     :position="props.position"
     :type="props.type"
+    :placedObject="props.placedObject"
+    :orientation="props.orientation"
   >
   </FARM>
   <GRASSTILE
