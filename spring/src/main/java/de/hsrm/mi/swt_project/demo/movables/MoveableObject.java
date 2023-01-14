@@ -164,6 +164,8 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
      */
     public abstract MoveableObject copy();
 
-
+    public MoveableType getType() {
+        return type;
+    }
 
 }

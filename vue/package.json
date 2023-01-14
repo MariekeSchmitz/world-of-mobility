@@ -4,7 +4,6 @@
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",
-    "start Server": "cd ../spring/ && gradlew bootRun",
     "preview": "vite preview --port 4173",
     "test:unit": "vitest --environment jsdom",
     "test:e2e": "start-server-and-test preview http://localhost:4173/ 'cypress open --e2e'",

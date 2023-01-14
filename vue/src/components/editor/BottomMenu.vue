@@ -163,7 +163,23 @@ function switchContent(element: string) {
                 class="itemButton"
                 @click="setPlaceState(TileName.SIDEWAY, true)"
               >
-                <img src="@/textures/editor/SIDEWAY.jpg" />
+                <img src="@/textures/editor/SIDEWAY.png" />
+              </button>
+            </li>
+            <li>
+              <button
+                class="itemButton"
+                @click="setPlaceState(TileName.SIDEWAY_BICYCLE_CURVE, true)"
+              >
+                <img src="@/textures/editor/SIDEWAY_BICYCLE_CURVE.png" />
+              </button>
+            </li>
+            <li>
+              <button
+                class="itemButton"
+                @click="setPlaceState(TileName.SIDEWAY_PASSENGER_CURVE, true)"
+              >
+                <img src="@/textures/editor/SIDEWAY_PASSENGER_CURVE.png" />
               </button>
             </li>
             <li>
