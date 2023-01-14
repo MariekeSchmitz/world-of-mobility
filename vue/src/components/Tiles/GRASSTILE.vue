@@ -29,8 +29,8 @@ const props = withDefaults(
 );
 
 const treeOffset = new THREE.Vector3(1, 0, 1);
-const sheepOneOffset = new THREE.Vector3(2, -0.5, 0.5);
-const sheepTwoOffset = new THREE.Vector3(3, -0.5, 4);
+const sheepOneOffset = new THREE.Vector3(2, -0.8, 0.5);
+const sheepTwoOffset = new THREE.Vector3(3, -0.8, 1);
 const pigOffset = new THREE.Vector3(2, -0.5, 1);
 </script>
 <template>

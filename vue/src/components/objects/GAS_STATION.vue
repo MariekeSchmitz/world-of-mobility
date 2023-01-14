@@ -4,7 +4,7 @@
 import * as THREE from "three";
 import { GltfModel } from "troisjs";
 import { withDefaults, defineProps } from "vue";
-import CAR_CHARGER_URL from "@/assets/models/CAR_CHARGER.glb?url";
+import GAS_STATION_URL from "@/assets/models/GAS_STATION.glb?url";
 
 /**
  * Class for Car Charger Components
@@ -23,7 +23,7 @@ const props = withDefaults(
 <template>
   <GltfModel
     ref="model"
-    :src="CAR_CHARGER_URL"
+    :src="GAS_STATION_URL"
     :position="props.position"
     :rotation="props.rotation"
     :scale="props.scale"
