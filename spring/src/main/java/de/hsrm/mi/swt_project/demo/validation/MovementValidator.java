@@ -68,7 +68,7 @@ public class MovementValidator implements Validator {
 
             Tile crossedTile = this.map[tileRow][tileCol];
 
-            if (!tileAllowsMovmentFromPostion(crossedTile) || !canDriveOnTile(crossedTile) || !canWalkOnTile(crossedTile)) {
+            if (!tileAllowsMovementFromPostion(crossedTile) || !canDriveOnTile(crossedTile) || !canWalkOnTile(crossedTile)) {
                 return false;
             }
 
@@ -94,13 +94,20 @@ public class MovementValidator implements Validator {
      * @return List containing int array with two elements representing [row][col].
      */
     protected List<int[]> approximateCrossedTiles(float startX, float startY, float endX, float endY) {
-
+        
         List<int[]> crossedTiles = new ArrayList<>();
-
+        
         int[] tileCoord = new int[2];
-
+        
         float currentX = startX;
         float currentY = startY;
+        
+        if (this.moveableCopy.getCurrentVelocity() == 0) {
+            tileCoord[0] = (int) currentY;
+            tileCoord[1] = (int) currentX;
+            crossedTiles.add(tileCoord);
+            return crossedTiles;
+        }
 
         boolean changedTile = true;
         boolean notAtEndX = false;
@@ -204,7 +211,7 @@ public class MovementValidator implements Validator {
      * @param tile Tile to check allowed directions of.
      * @return true if movement to the tile is allowed, else false
      */
-    protected boolean tileAllowsMovmentFromPostion(Tile tile) {
+    protected boolean tileAllowsMovementFromPostion(Tile tile) {
 
         if (!(tile instanceof Streetile) || !(this.moveableCopy instanceof MotorizedObject)) {
             return true;
