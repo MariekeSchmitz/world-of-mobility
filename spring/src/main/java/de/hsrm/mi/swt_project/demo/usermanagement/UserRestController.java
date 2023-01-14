@@ -33,15 +33,16 @@ public class UserRestController {
      * @return SendUserDTO
      * 
      * @author Tom Gouthier
+     * @throws Exception
      */
     @PostMapping("/login")
     public SendUserDTO addNewUser(@RequestBody GetUserDTO user) {
 
         try {
             userService.addUser(user.name());
-            return SendUserDTO.from(user.name(), "");
-        } catch (UserNotUniqueException|UsernameTooShortException e) {
-            return SendUserDTO.from(user.name(), e.getMessage());
+            return SendUserDTO.from(user.name());
+        } catch (UserNotUniqueException | UsernameTooShortException e) {
+            throw e;
         }
     }
 
@@ -57,7 +58,7 @@ public class UserRestController {
     public SendUserDTO deleteUser(@RequestParam("username") String name) {
 
         userService.removeUser(name);
-        return SendUserDTO.from(name, "");
+        return SendUserDTO.from(name);
 
     }
 }

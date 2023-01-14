@@ -8,4 +8,5 @@ export enum tileType {
   RAIL_STRAIGHT = "RAIL_STRAIGHT",
   RAIL_CURVE = "RAIL_CURVE",
   GRASSTILE = "GRASSTILE",
+  FARM = "FARM",
 }
