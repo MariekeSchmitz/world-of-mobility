@@ -4,11 +4,11 @@ import org.python.util.PythonInterpreter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.Moveable;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.controls.Scriptable;
 import de.hsrm.mi.swt_project.demo.controls.Turnable;
+import de.hsrm.mi.swt_project.demo.util.JythonFactory;
 
 /**
  * This class represents objects that can change their position
@@ -19,7 +19,7 @@ import de.hsrm.mi.swt_project.demo.controls.Turnable;
 public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
 
 
-    protected static final float MIN_VELOCITY = 0.0f;
+    protected static final float MIN_VELOCITY = -0.5f;
     protected static final float MAX_VELOCITY = 1.0f;
 
     protected static final float MIN_CAPACITY = 0.0f;
@@ -38,7 +38,7 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
 
     protected MoveableType type;
 
-    Logger logger = LoggerFactory.getLogger(getClass());
+    transient Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * Gets orientation of the movable object.
@@ -87,6 +87,16 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
      */
     public float getCurrentVelocity() {
         return currentVelocity;
+    }
+
+
+    /**
+     * Gets maximum velocity of the moveable object.
+     * 
+     * @return maximum velocity
+     */
+    public float getMaxVelocity() {
+        return maxVelocity;
     }
 
     /**
@@ -138,14 +148,12 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
 
     @Override
     public void executeScript() {
+
         if (this.script != null && !this.script.isEmpty()) {
-            try (PythonInterpreter interpreter = new PythonInterpreter()) {
-                interpreter.set("moveable", this);
-                interpreter.set("Direction", Direction.class);
+                PythonInterpreter interpreter = JythonFactory.getInterpreter();
+                interpreter.set("moveable", this);   
                 interpreter.exec(this.script);
-            } catch (Exception e) {
-                logger.error("Execute Skript Error {}",script);
-            }
+
         }
     }
 
@@ -155,5 +163,9 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
      * @return Copy of the object.
      */
     public abstract MoveableObject copy();
+
+    public MoveableType getType() {
+        return type;
+    }
 
 }

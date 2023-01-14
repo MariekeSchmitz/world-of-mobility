@@ -23,7 +23,7 @@ public record SendMoveableUpdateDTO (
             username, 
             moveableObject.getXPos(), 
             moveableObject.getYPos(),
-            moveableObject.getClass().getSimpleName(),
+            moveableObject.getType().toString(),
             moveableObject.getCapacity(),
             moveableObject.getCurrentVelocity(),
             moveableObject.getOrientation());

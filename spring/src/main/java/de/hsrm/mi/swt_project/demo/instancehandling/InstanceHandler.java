@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.controls.Updateable;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObject;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObjectType;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;
@@ -29,24 +31,28 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
  */
 public class InstanceHandler implements Updateable {
 
+    private static final String JSON = ".json";
+
     @Autowired
     protected UpdateloopService loopservice;
 
-    Logger logger = LoggerFactory.getLogger(InstanceHandler.class);
-    private final String JSON = ".json";
+    @Value("${instance.lifetime:1200}")
+    protected long instanceLifetimeCycles;
 
-    protected List<Instance> instances;
+    protected Logger logger = LoggerFactory.getLogger(InstanceHandler.class);
+
+    protected List<Instance> instances = new ArrayList<>();
 
     // TODO think of another solution because long can reach limit
     protected long idCounter = 1;
-    // @Value("${map.savedir:maps}")
-    protected String mapSavePath = "maps";
+    @Value("${map.savedir:maps}")
+    protected String mapSavePath;
 
     /**
      * Creates a new instance handler.
      */
     public InstanceHandler() {
-        instances = new ArrayList<Instance>();
+        instances = new ArrayList<>();
     }
 
     /**
@@ -57,21 +63,38 @@ public class InstanceHandler implements Updateable {
      * @return the id of the new instance
      */
     public long createGameInstance(String mapName, String sessionName) {
+
+        GameMap map;
+
         if (mapName == null) {
-            instances.add(new GameInstance(new GameMap(), sessionName, idCounter));
-            return idCounter++;
+
+            map = new GameMap();
+
         } else {
+
             String fileName = "%s/%s.json".formatted(mapSavePath, mapName);
+            Path filePath = Path.of(fileName);
+            String mapFile;
+    
             try {
-                Path filePath = Path.of(fileName);
-                String mapFile = Files.readString(filePath);
-                instances.add(new GameInstance(loadMap(mapFile), sessionName, idCounter));
-                return idCounter++;
+                mapFile = Files.readString(filePath);
             } catch (IOException e) {
-                logger.info("IOException occured on createGameInstance in InstanceHandler: {}\nFilename: {}", e, fileName);
+                logger.error("IOException occured on createGameInstance in InstanceHandler: {}\nFilename: {}", e, fileName);
                 return -1;
             }
+    
+            map = loadMap(mapFile);
+
         }
+
+        Instance instance = new GameInstance(map, sessionName, idCounter, mapSavePath);
+
+        instance.setLifetime(instanceLifetimeCycles);
+        instances.add(instance);
+
+        idCounter++;
+
+        return instance.getId();
     }
 
     /**
@@ -81,18 +104,32 @@ public class InstanceHandler implements Updateable {
      * @return idCounter
      */
     public long createEditorInstance(String mapName) {
-        try {
-            String fileName = "%s/%S.json".formatted(mapSavePath, mapName);
-            Path filePath = Path.of(fileName);
-            String mapFile = Files.readString(filePath);
-            instances.add(new EditorInstance(loadMap(mapFile), idCounter));
-        } catch (IOException e) {
-            GameMap map = new GameMap();
-            map.setName(mapName);
-            instances.add(new EditorInstance(map, idCounter));
+
+        if (mapName == null) {
+            logger.error("Could not create game instance because no mapName was given.");
+            return -1;
         }
 
-        return idCounter++;
+        GameMap map;
+
+        String fileName = "%s/%S.json".formatted(mapSavePath, mapName);
+        Path filePath = Path.of(fileName);
+
+        try {
+            String mapFile = Files.readString(filePath);
+            map = loadMap(mapFile);
+        } catch (IOException e) {
+            map = new GameMap();
+            map.setName(mapName);
+        }
+
+        Instance instance = new EditorInstance(map, idCounter, mapSavePath);
+        instance.setLifetime(instanceLifetimeCycles);
+        instances.add(instance);
+
+        idCounter++;
+
+        return instance.getId();
     }
 
     /**
@@ -117,17 +154,16 @@ public class InstanceHandler implements Updateable {
                 List<Object> ls = rows.toList();
                 if (ls.get(i) != null) {
                     JSONObject tileObject = rows.getJSONObject(i);
-                    // Functionality of placedObjects unknown because of a lack of Placeable objects
-                    // JSONArray placedObjects = tileObject.getJSONArray("placedObjects");
-                    // List<Placeable> placedObjsToPlace = new ArrayList<>();
-                    // placedObjects.forEach(obj -> {
-                    // Placeable placeable = (Placeable) obj;
-                    // placedObjsToPlace.add(placeable);
-                    // });
                     Tiletype tileType = tileObject.getEnum(Tiletype.class, "type");
                     Orientation orientation = tileObject.getEnum(Orientation.class, "orientation");
                     Tile newTile = tileType.createTile();
                     newTile.setOrientation(orientation);
+                    if(tileObject.has("placedObject")) {
+                        JSONObject placedObject = tileObject.getJSONObject("placedObject");
+                        PlaceableObjectType placeableType = placedObject.getEnum(PlaceableObjectType.class, "type");
+                        PlaceableObject placeableObject = placeableType.createPlaceableObject();
+                        newTile.addPlaceable(placeableObject);
+                    }
                     map.setTile(newTile, xPos, yPos);
                 }
                 xPos++;
@@ -140,10 +176,9 @@ public class InstanceHandler implements Updateable {
             MoveableType npcType = npcObject.getEnum(MoveableType.class, "type");
             float xPosition = npcObject.getFloat("xPos");
             float yPosition = npcObject.getFloat("yPos");
-            float maxVelocity = npcObject.getFloat("maxVelocity");
             float capacity = npcObject.getFloat("capacity");
             String script = npcObject.getString("script");
-            MoveableObject newNpc = npcType.createMovable(xPosition, yPosition, maxVelocity);
+            MoveableObject newNpc = npcType.createMovable(xPosition, yPosition);
             newNpc.setCapacity(capacity);
             newNpc.loadScript(script);
             map.addNpc(newNpc);
@@ -169,12 +204,28 @@ public class InstanceHandler implements Updateable {
      * the new state of an instance will be published.
      */
     public void update() {
+
+        List<Instance> toDelete = new ArrayList<>();
+
         for (Instance instance : instances) {
+
+            if (instance.getRemainingLifetime() <= 0) {
+                logger.info("Lifetime of instance {} ended.", instance);
+                toDelete.add(instance);
+                continue;
+            }
+
             instance.update();
+
             if (instance instanceof GameInstance) { // Only publish state of GameInstances periodically
                 loopservice.publishInstanceState(instance);
             }
         }
+
+        for (Instance instance : toDelete) {
+            this.instances.remove(instance);
+        }
+
     }
 
     public void triggerScript() {
@@ -234,13 +285,15 @@ public class InstanceHandler implements Updateable {
      * @return the instance with the given id
      */
     public GameInstance getGameInstanceById(long id) {
+
         for (Instance instance : instances) {
-            if (instance.getId() == id) {
-                if (instance instanceof GameInstance) {
-                    return (GameInstance) instance;
-                }
+
+            if (instance.getId() == id && instance instanceof GameInstance gameInstance) {
+                return gameInstance;
             }
+
         }
+
         return null;
     }
 
@@ -251,17 +304,20 @@ public class InstanceHandler implements Updateable {
      * @return the instance with the given id
      */
     public EditorInstance getEditorInstanceById(long id) {
+
         for (Instance instance : instances) {
-            if (instance.getId() == id) {
-                if (instance instanceof EditorInstance) {
-                    return (EditorInstance) instance;
-                }
+
+            if (instance.getId() == id && instance instanceof EditorInstance editorInstance) {
+                return editorInstance;
             }
+
         }
+
         return null;
     }
 
     public List<String> getMaps() {
+        
         File[] directoryListing = new File(mapSavePath).listFiles();
         List<String> mapNames = new ArrayList<>();
 
@@ -269,11 +325,9 @@ public class InstanceHandler implements Updateable {
             for (File child : directoryListing) {
                 mapNames.add(child.getName().replace(JSON, ""));
             }
-            return mapNames;
-        } else {
-            System.out.println("No maps found");
-            return null;
         }
+
+        return mapNames;
     }
 
     /**
@@ -282,16 +336,20 @@ public class InstanceHandler implements Updateable {
      * @param sessionName suggested gamename by gameconfiguration
      * @return if suggested gamename can be used
      */
-    public Boolean checkSessionNameAvailable(String sessionName) {
+    public boolean checkSessionNameAvailable(String sessionName) {
 
         for (Instance instance : instances) {
-            if (instance instanceof GameInstance) {
-                String name = ((GameInstance) instance).getName();
+
+            if (instance instanceof GameInstance gameInstance) {
+
+                String name = gameInstance.getName();
                 if (name.equals(sessionName)) {
                     return false;
                 }
+
             }
         }
+        
         return true;
     }
 
@@ -301,7 +359,7 @@ public class InstanceHandler implements Updateable {
      * @param worldname name to be checked
      * @return if suggested World Name is unique or not
      */
-    public Boolean checkWorldNameAvailable(String worldname) {
+    public boolean checkWorldNameAvailable(String worldname) {
         for (String name : getMaps()) {
             if (name.equals(worldname)) {
 
@@ -311,7 +369,6 @@ public class InstanceHandler implements Updateable {
 
         for (Instance instance : getEditorInstances()) {
             String mapName = instance.getMap().getName();
-            System.out.println(mapName);
 
             if (mapName.equals(worldname)) {
                 return false;

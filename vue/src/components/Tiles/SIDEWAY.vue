@@ -1,9 +1,10 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 //@ts-ignore
-import type * as THREE from "three";
-import { Plane, Texture, ToonMaterial } from "troisjs";
+import * as THREE from "three";
+import { GltfModel } from "troisjs";
 import { withDefaults, defineProps } from "vue";
+import SIDEWAY_URL from "@/assets/models/SIDEWAY.glb?url";
 
 const props = withDefaults(
   defineProps<{
@@ -12,19 +13,17 @@ const props = withDefaults(
     position: THREE.Vector3;
     rotation: THREE.Vector3;
     type: string;
+    placedObject: any;
+    orientation: string;
   }>(),
   { width: 10, height: 10 }
 );
 </script>
 <template>
-  <Plane
-    :width="props.width"
-    :height="props.height"
-    :rotation="props.rotation"
+  <GltfModel
+    ref="model"
+    :src="SIDEWAY_URL"
     :position="props.position"
-  >
-    <ToonMaterial>
-      <Texture src="/src/textures/tiles/SIDEWAY.jpg"
-    /></ToonMaterial>
-  </Plane>
+    :rotation="props.rotation"
+  />
 </template>

@@ -1,10 +1,10 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 //@ts-ignore
-import type * as THREE from "three";
-import { Plane, Texture, ToonMaterial } from "troisjs";
+import * as THREE from "three";
+import { GltfModel } from "troisjs";
 import { withDefaults, defineProps } from "vue";
-
+import RAIL_CURVE_URL from "@/assets/models/RAIL_CURVE.glb?url";
 const props = withDefaults(
   defineProps<{
     width: number;
@@ -12,19 +12,17 @@ const props = withDefaults(
     position: THREE.Vector3;
     rotation: THREE.Vector3;
     type: string;
+    placedObject: any;
+    orientation: string;
   }>(),
   { width: 10, height: 10 }
 );
 </script>
 <template>
-  <Plane
-    :width="props.width"
-    :height="props.height"
-    :rotation="props.rotation"
+  <GltfModel
+    ref="model"
+    :src="RAIL_CURVE_URL"
     :position="props.position"
-  >
-    <ToonMaterial>
-      <Texture src="/src/textures/tiles/RAIL_CURVE.jpg"
-    /></ToonMaterial>
-  </Plane>
+    :rotation="props.rotation"
+  />
 </template>

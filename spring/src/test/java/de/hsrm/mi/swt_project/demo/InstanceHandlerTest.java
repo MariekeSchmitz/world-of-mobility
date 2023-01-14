@@ -1,6 +1,5 @@
 package de.hsrm.mi.swt_project.demo;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -53,7 +52,6 @@ class InstanceHandlerTest {
 
         GameInstance gameInstance = instanceHandler.getGameInstanceById(id);
         GameMap gameMap = gameInstance.getMap();
-        System.out.println(gameMap);
         assertTrue(gameMap != null, "GameMap is not null");
 
     }
