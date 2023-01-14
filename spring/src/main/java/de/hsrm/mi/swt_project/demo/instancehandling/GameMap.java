@@ -118,8 +118,8 @@ public class GameMap {
                 validate = true;
             }
         }else if(tile instanceof CanHoldStreetObject){
-            if ((!(tile.getType() == Tiletype.STREET_CURVE) && placeableObject instanceof TrafficLight) ||
-                (tile.getType() == Tiletype.STREET_STRAIGHT && placeableObject instanceof GasStation)){
+            if ((!(tile.getType().equals(Tiletype.STREET_CURVE)) && placeableObject instanceof TrafficLight) ||
+                (tile.getType().equals(Tiletype.STREET_STRAIGHT) && placeableObject instanceof GasStation)){
                 validate = true;
             }
             
