@@ -32,7 +32,7 @@ function leave() {
   <div>
     <div>
       <button id="exitButton" @click="leave()">
-        <img src="../buttons/editor/close.png" alt="" />
+        <img src="@/buttons/editor/close.png" alt="" />
       </button>
     </div>
     <Game :instanceID="props.instanceID"></Game>
