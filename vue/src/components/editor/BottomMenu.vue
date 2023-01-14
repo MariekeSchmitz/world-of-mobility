@@ -153,6 +153,14 @@ function switchContent(element: string) {
             <li>
               <button
                 class="itemButton"
+                @click="setPlaceState(TileName.PEDESTRIAN_CROSSING, true)"
+              >
+                <img src="@/textures/editor/PEDESTRIAN_CROSSING.jpg" />
+              </button>
+            </li>
+            <li>
+              <button
+                class="itemButton"
                 @click="setPlaceState(TileName.SIDEWAY, true)"
               >
                 <img src="@/textures/editor/SIDEWAY.jpg" />
