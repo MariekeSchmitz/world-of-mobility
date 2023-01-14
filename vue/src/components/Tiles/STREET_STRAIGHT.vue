@@ -1,18 +1,19 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 //@ts-ignore
+import * as THREE from "three";
 import { ObjectEnum } from "@/services/ObjectEnum";
-import { Vector3 } from "three";
 import { GltfModel } from "troisjs";
 import { withDefaults, defineProps } from "vue";
-import TRAFFIC_LIGHT from "../objects/TRAFFIC_LIGHT.vue";
+import TRAFFIC_LIGHT from "@/components/objects/TRAFFIC_LIGHT.vue";
+import STREET_STRAIGHT_URL from "@/assets/models/STREET_STRAIGHT.glb?url";
 
 const props = withDefaults(
   defineProps<{
     width: number;
     height: number;
-    position: Vector3;
-    rotation: Vector3;
+    position: THREE.Vector3;
+    rotation: THREE.Vector3;
     type: string;
     placedObject: any;
     orientation: string;
@@ -23,44 +24,44 @@ const props = withDefaults(
 const trafficLightLeft = "trafficLightLeft";
 const trafficLightRight = "trafficLightRight";
 
-function setPosition(orientation: string, name: string): Vector3 {
+function setPosition(orientation: string, name: string): THREE.Vector3 {
   if (orientation == "WEST" || orientation == "EAST") {
     if (name == "trafficLightLeft") {
-      return new Vector3(-0.5, 0, -3);
+      return new THREE.Vector3(-0.5, 0, -3);
     } else if (name == "trafficLightRight") {
-      return new Vector3(1, 0, 3);
+      return new THREE.Vector3(1, 0, 3);
     }
   } else if (orientation == "NORTH" || orientation == "SOUTH") {
     if (name == "trafficLightLeft") {
-      return new Vector3(3, 0, -0.5);
+      return new THREE.Vector3(3, 0, -0.5);
     } else if (name == "trafficLightRight") {
-      return new Vector3(-3, 0, -1);
+      return new THREE.Vector3(-3, 0, -1);
     }
   }
-  return new Vector3(0, 0, 0);
+  return new THREE.Vector3(0, 0, 0);
 }
 
-function setRotation(orientation: string, name: string): Vector3 {
+function setRotation(orientation: string, name: string): THREE.Vector3 {
   if (orientation == "WEST" || orientation == "EAST") {
     if (name == "trafficLightLeft") {
-      return new Vector3(0, 1.57, 0);
+      return new THREE.Vector3(0, 1.57, 0);
     } else if (name == "trafficLightRight") {
-      return new Vector3(0, 4.71, 0);
+      return new THREE.Vector3(0, 4.71, 0);
     }
   } else if (orientation == "NORTH" || orientation == "SOUTH") {
     if (name == "trafficLightLeft") {
-      return new Vector3(0, 0, 0);
+      return new THREE.Vector3(0, 0, 0);
     } else if (name == "trafficLightRight") {
-      return new Vector3(0, 3.14, 0);
+      return new THREE.Vector3(0, 3.14, 0);
     }
   }
-  return new Vector3(0, 0, 0);
+  return new THREE.Vector3(0, 0, 0);
 }
 </script>
 <template>
   <GltfModel
     ref="model"
-    src="/src/assets/models/STREET_STRAIGHT.glb"
+    :src="STREET_STRAIGHT_URL"
     :position="props.position"
     :rotation="props.rotation"
   />

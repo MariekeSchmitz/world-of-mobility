@@ -1,9 +1,10 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 //@ts-ignore
-import { Vector3 } from "three";
+import * as THREE from "three";
 import { GltfModel } from "troisjs";
 import { withDefaults, defineProps } from "vue";
+import CAR1_URL from "@/assets/models/CAR1.glb?url";
 
 /**
  * Class for Car Components
@@ -12,18 +13,18 @@ import { withDefaults, defineProps } from "vue";
 const props = withDefaults(
   defineProps<{
     scale: any;
-    position: Vector3;
+    position: THREE.Vector3;
     rotation: number;
   }>(),
-  { scale: new Vector3(1, 1, 1) }
+  { scale: new THREE.Vector3(1, 1, 1) }
 );
 </script>
 <template>
   <GltfModel
     ref="model"
-    src="/src/assets/models/CAR1.glb"
+    :src="CAR1_URL"
     :position="props.position"
-    :rotation="new Vector3(0, props.rotation, 0)"
+    :rotation="new THREE.Vector3(0, props.rotation, 0)"
     :scale="props.scale"
   />
 </template>

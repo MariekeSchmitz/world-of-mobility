@@ -22,6 +22,6 @@ const props = withDefaults(
     :rotation="props.rotation"
     :position="props.position"
   >
-    <ToonMaterial> <Texture src="/src/textures/tiles/FARM.jpg" /></ToonMaterial>
+    <ToonMaterial> <Texture src="@/textures/tiles/FARM.jpg" /></ToonMaterial>
   </Plane>
 </template>

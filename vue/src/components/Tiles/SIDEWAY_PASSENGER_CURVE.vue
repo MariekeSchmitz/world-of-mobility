@@ -1,16 +1,16 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 //@ts-ignore
-import { Vector3 } from "three";
+import * as THREE from "three";
 import { GltfModel } from "troisjs";
 import { withDefaults, defineProps } from "vue";
-
+import SIDEWAY_PASSENGER_CURVE_URL from "@/assets/models/SIDEWAY_PASSENGER_CURVE.glb?url";
 const props = withDefaults(
   defineProps<{
     width: number;
     height: number;
-    position: Vector3;
-    rotation: Vector3;
+    position: THREE.Vector3;
+    rotation: THREE.Vector3;
     type: string;
     placedObject: any;
     orientation: string;
@@ -21,7 +21,7 @@ const props = withDefaults(
 <template>
   <GltfModel
     ref="model"
-    src="/src/assets/models/SIDEWAY_PASSENGER_CURVE.glb"
+    :src="SIDEWAY_PASSENGER_CURVE_URL"
     :position="props.position"
     :rotation="props.rotation"
   />

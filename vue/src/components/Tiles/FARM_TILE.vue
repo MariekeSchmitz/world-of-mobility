@@ -1,9 +1,10 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 //@ts-ignore
-import { Vector3 } from "three";
+import * as THREE from "three";
 import { GltfModel } from "troisjs";
 import { withDefaults, defineProps } from "vue";
+import FARM_TILE_URL from "@/assets/models/FARM_TILE.glb?url";
 
 /**
  * Class for Farm Components
@@ -13,8 +14,8 @@ const props = withDefaults(
   defineProps<{
     width: number;
     height: number;
-    position: Vector3;
-    rotation: Vector3;
+    position: THREE.Vector3;
+    rotation: THREE.Vector3;
     type: string;
     placedObject: any;
     orientation: string;
@@ -25,7 +26,7 @@ const props = withDefaults(
 <template>
   <GltfModel
     ref="model"
-    src="/src/assets/models/FARM_TILE.glb"
+    :src="FARM_TILE_URL"
     :position="props.position"
     :rotation="props.rotation"
   />
