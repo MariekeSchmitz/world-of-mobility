@@ -1,8 +1,12 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 //@ts-ignore
-import type * as THREE from "three";
-import { Plane, Texture, ToonMaterial } from "troisjs";
+import * as THREE from "three";
+import { ObjectEnum } from "@/services/ObjectEnum";
+import { GltfModel } from "troisjs";
+import { withDefaults, defineProps } from "vue";
+import TRAFFIC_LIGHT from "@/components/objects/TRAFFIC_LIGHT.vue";
+import PEDESTRIAN_CROSSING_URL from "@/assets/models/PEDESTRIAN_CROSSING.glb?url";
 
 const props = withDefaults(
   defineProps<{
@@ -11,19 +15,32 @@ const props = withDefaults(
     position: THREE.Vector3;
     rotation: THREE.Vector3;
     type: string;
+    placedObject: any;
+    orientation: string;
   }>(),
   { width: 10, height: 10 }
 );
+
+const trafficLightLeftOffset = new THREE.Vector3(3, 0, -0.5);
+const trafficLightRightOffset = new THREE.Vector3(-3.5, 0, -1);
 </script>
 <template>
-  <Plane
-    :width="props.width"
-    :height="props.height"
-    :rotation="props.rotation"
+  <GltfModel
+    ref="model"
+    :src="PEDESTRIAN_CROSSING_URL"
     :position="props.position"
-  >
-    <ToonMaterial>
-      <Texture src="/src/textures/tiles/PEDESTRIAN_CROSSING.jpg"
-    /></ToonMaterial>
-  </Plane>
+    :rotation="props.rotation"
+  />
+  <TRAFFIC_LIGHT
+    v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
+    :position="props.position.clone().add(trafficLightLeftOffset)"
+    :rotation="new THREE.Vector3(0, 0, 0)"
+    :type="ObjectEnum.TRAFFIC_LIGHT"
+  />
+  <TRAFFIC_LIGHT
+    v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
+    :position="props.position.clone().add(trafficLightRightOffset)"
+    :rotation="new THREE.Vector3(0, 3, 0)"
+    :type="ObjectEnum.TRAFFIC_LIGHT"
+  />
 </template>

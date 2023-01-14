@@ -5,6 +5,7 @@ import type * as THREE from "three";
 import SIDEWAY from "@/components/Tiles/SIDEWAY.vue";
 import SIDEWAY_BICYCLE_CURVE from "@/components/Tiles/SIDEWAY_BICYCLE_CURVE.vue";
 import SIDEWAY_PASSENGER_CURVE from "@/components/Tiles/SIDEWAY_PASSENGER_CURVE.vue";
+import PEDESTRIAN_CROSSING from "@/components/Tiles/PEDESTRIAN_CROSSING.vue";
 import STREET_CURVE from "@/components/Tiles/STREET_CURVE.vue";
 import STREET_STRAIGHT from "@/components/Tiles/STREET_STRAIGHT.vue";
 import STREET_CROSS from "@/components/Tiles/STREET_CROSS.vue";
@@ -117,6 +118,8 @@ const props = withDefaults(
     :rotation="props.rotation"
     :position="props.position"
     :type="props.type"
+    :placedObject="props.placedObject"
+    :orientation="props.orientation"
   >
   </PEDESTRIAN_CROSSING>
   <RAIL_CURVE
