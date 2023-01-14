@@ -16,9 +16,14 @@ import {
 } from "troisjs";
 import Map from "@/components/Map.vue";
 import CAR1 from "@/components/objects/CAR1.vue";
+import SHEEP from "@/components/objects/SHEEP.vue";
 import { useGame } from "@/services/useGame";
 import { useLogin } from "@/services/login/useLogin";
 import { orientations } from "@/services/Orientations";
+import TRUCK from "@/components/objects/TRUCK.vue";
+import TRACTOR from "@/components/objects/TRACTOR.vue";
+import PIG from "@/components/objects/PIG.vue";
+import TUPEL from "@/components/objects/TUPEL.vue";
 
 const SIZE = 16;
 
@@ -52,6 +57,7 @@ const upVector = new THREE.Vector3(0, 1, 0);
 let movementVector = new THREE.Vector3(0, 0, 0);
 
 const userMovable = computed(() => {
+  console.log(getUserMoveable(loginData.username));
   return getUserMoveable(loginData.username);
 });
 
@@ -190,12 +196,58 @@ onUnmounted(() => {
       ></Box> -->
       <div v-for="(moveable, index) in allMoveables" :key="index">
         <CAR1
+          v-if="moveable.classname == 'CAR'"
           :scale="new THREE.Vector3(1, 1, 1)"
           :position="
             new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
           "
           :rotation="-orientations[moveable.orientation]"
-        ></CAR1>
+        />
+        <SHEEP
+          v-if="moveable.classname == 'SHEEP'"
+          :scale="new THREE.Vector3(1, 1, 1)"
+          :position="
+            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+          "
+          :rotation="-orientations[moveable.orientation]"
+          :type="moveable.classname"
+        />
+        <TRUCK
+          v-if="moveable.classname == 'TRUCK'"
+          :scale="new THREE.Vector3(1, 1, 1)"
+          :position="
+            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+          "
+          :rotation="-orientations[moveable.orientation]"
+          :type="moveable.classname"
+        />
+        <TRACTOR
+          v-if="moveable.classname == 'TRACTOR'"
+          :scale="new THREE.Vector3(1, 1, 1)"
+          :position="
+            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+          "
+          :rotation="-orientations[moveable.orientation]"
+          :type="moveable.classname"
+        />
+        <PIG
+          v-if="moveable.classname == 'PIG'"
+          :scale="new THREE.Vector3(1, 1, 1)"
+          :position="
+            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+          "
+          :rotation="-orientations[moveable.orientation]"
+          :type="moveable.classname"
+        />
+        <TUPEL
+          v-if="moveable.classname == 'TUPEL'"
+          :scale="new THREE.Vector3(1, 1, 1)"
+          :position="
+            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+          "
+          :rotation="-orientations[moveable.orientation]"
+          :type="moveable.classname"
+        />
       </div>
     </Scene>
   </Renderer>

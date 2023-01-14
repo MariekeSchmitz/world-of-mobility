@@ -14,7 +14,7 @@ const props = withDefaults(
   defineProps<{
     scale: any;
     position: THREE.Vector3;
-    rotation: THREE.Vector3;
+    rotation: number;
     type: string;
   }>(),
   { scale: new THREE.Vector3(1, 1, 1) }
@@ -25,7 +25,7 @@ const props = withDefaults(
     ref="model"
     :src="TRACTOR_URL"
     :position="props.position"
-    :rotation="props.rotation"
+    :rotation="new THREE.Vector3(0, props.rotation, 0)"
     :scale="props.scale"
   />
 </template>

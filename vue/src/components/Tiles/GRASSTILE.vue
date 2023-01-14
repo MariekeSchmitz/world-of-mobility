@@ -29,9 +29,9 @@ const props = withDefaults(
 );
 
 const treeOffset = new THREE.Vector3(1, 0, 1);
-const sheepOneOffset = new THREE.Vector3(2, -0.8, 0.5);
-const sheepTwoOffset = new THREE.Vector3(3, -0.8, 1);
-const pigOffset = new THREE.Vector3(2, -0.5, 1);
+const sheepOneOffset = new THREE.Vector3(-4, 0.8, 5);
+const sheepTwoOffset = new THREE.Vector3(3, 0.8, 1);
+const pigOffset = new THREE.Vector3(2, 0.8, 1);
 </script>
 <template>
   <GltfModel
@@ -49,19 +49,19 @@ const pigOffset = new THREE.Vector3(2, -0.5, 1);
   <SHEEP
     v-if:="props.placedObject === NaturObjectEnum.SHEEP"
     :position="props.position.clone().add(sheepOneOffset)"
-    :rotation="new THREE.Vector3(0, 4.5, 0)"
+    :rotation="4.5"
     :type="NaturObjectEnum.SHEEP"
   />
   <SHEEP
     v-if:="props.placedObject === NaturObjectEnum.SHEEP"
     :position="props.position.clone().add(sheepTwoOffset)"
-    :rotation="new THREE.Vector3(0, 0, 0)"
+    :rotation="1.31"
     :type="NaturObjectEnum.SHEEP"
   />
   <PIG
     v-if:="props.placedObject === NaturObjectEnum.PIG"
     :position="props.position.clone().add(pigOffset)"
-    :rotation="new THREE.Vector3(0, 0, 0)"
+    :rotation="3.14"
     :type="NaturObjectEnum.PIG"
   />
 </template>
