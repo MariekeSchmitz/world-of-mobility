@@ -14,12 +14,16 @@ import { RouterLink } from "vue-router";
 import router from "@/router";
 import { useUserEditor } from "@/services/useUserEditor";
 import { useLogin } from "@/services/login/useLogin";
+import Avatar from "@/components/User/Avatar.vue";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faPlus, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+library.add(faPlus, faArrowLeft);
 
 const { instanceState, getInstanceList } = useInstanceList();
 const { mapsOverview, getMaps } = useMapOverview();
 const { createWorld } = useEditor();
 const { joinEditor } = useUserEditor();
-const { loginData } = useLogin();
+const { loginData, avatarData } = useLogin();
 
 onMounted(() => {
   getInstanceList("editor");
@@ -50,78 +54,85 @@ async function getWorldAndForwardToEditor(name: string) {
 </script>
 
 <template>
-  <div>
-    <div>
-      <RouterLink to="/login"
-        ><img src="../buttons/editor/arrow-left.png" alt=""
-      /></RouterLink>
-      <RouterLink to="/createWorld">
-        <button>
-          <img src="../buttons/editor/plus.png" alt="" /> Welt erstellen
-        </button>
+  <div class="m-32">
+    <div class="grid grid-cols-2 mb-28">
+      <RouterLink to="/login" class="">
+        <font-awesome-icon
+          icon="fa-solid fa-arrow-left"
+          size="3xl"
+          color="white"
+          class="bg-greenLight rounded-full p-2 w-8 h-8 inline justify-self-start"
+        />
       </RouterLink>
-      <img id="logo" src="" alt="Logo Fehlt" />
+      <Avatar
+        :avatarPicture="avatarData.avatar"
+        class="justify-self-end"
+      ></Avatar>
     </div>
 
-    <hr />
-
-    <div id="selection">
-      <h1>Welt editieren</h1>
-      <fieldset>
-        <input
-          type="radio"
-          id="editmode"
-          name="selectmode"
-          value="Wird gerade editiert"
-          @click="switchScene('edit')"
-        />
-        <label for="editmode">Wird gerade editiert</label>
-        <input
-          type="radio"
-          id="allmode"
-          name="selectmode"
-          checked
-          value="Alle"
-          @click="switchScene('all')"
-        />
-        <label for="allmode">Alle</label>
-      </fieldset>
-
-      <div class="flexbox">
-        <div class="box" v-for="ele in instanceState.instancelist.instancelist">
-          <button @click="addUserAndJoin(ele.id)">
-            <GameListItem
-              :worldname="ele.worldname"
-              :people="ele.playeramount"
-            ></GameListItem>
+    <div class="">
+      <div class="mb-12">
+        <RouterLink to="/createWorld">
+          <button class="inline-flex items-center">
+            <font-awesome-icon
+              icon="fa-solid fa-plus"
+              size="xl"
+              color="white"
+              class="w-12 h-12 p-4 inline bg-greenDark rounded-full"
+            />
+            <h2 class="ml-8 mb-0 inline">Welt erstellen</h2>
           </button>
+        </RouterLink>
+      </div>
+
+      <hr class="mb-12 border-2 border-greenDark" />
+
+      <div id="selection">
+        <div class="mb-12 inline-flex items-center">
+          <h2 class="inline mb-0 mr-20">Welt editieren</h2>
+          <fieldset class="inline-flex items-center">
+            <div class="mr-12 inline-flex items-center">
+              <input
+                type="radio"
+                id="editmode"
+                name="selectmode"
+                value="Wird gerade editiert"
+                class="radioButton"
+                @click="switchScene('edit')"
+              />
+              <label for="editmode">Wird gerade editiert</label>
+            </div>
+            <div class="inline-flex items-center">
+              <input
+                type="radio"
+                id="allmode"
+                name="selectmode"
+                checked
+                value="Alle"
+                class="radioButton"
+                @click="switchScene('all')"
+              />
+              <label for="allmode">Alle</label>
+            </div>
+          </fieldset>
         </div>
+        <div class="grid grid-cols-5">
+          <div class="" v-for="ele in instanceState.instancelist.instancelist">
+            <button @click="addUserAndJoin(ele.id)">
+              <GameListItem
+                :worldname="ele.worldname"
+                :people="ele.playeramount"
+              ></GameListItem>
+            </button>
+          </div>
 
-        <div class="box" v-if="showAll" v-for="ele in mapsOverview.allMaps">
-          <button @click="getWorldAndForwardToEditor(ele.mapName)">
-            <GameListItem :worldname="ele.mapName"></GameListItem>
-          </button>
+          <div class="" v-if="showAll" v-for="ele in mapsOverview.allMaps">
+            <button @click="getWorldAndForwardToEditor(ele.mapName)">
+              <GameListItem :worldname="ele.mapName"></GameListItem>
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
-
-<style>
-#logo {
-  width: 5rem;
-  height: 5rem;
-}
-
-button {
-  text-align: center;
-}
-
-.flexbox {
-  display: flex;
-}
-
-.box {
-  flex-direction: row;
-}
-</style>

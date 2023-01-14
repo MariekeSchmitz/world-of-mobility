@@ -7,10 +7,11 @@ import { ref, watch } from "vue";
 import router from "@/router";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
+import ErrorWarning from "@/components/ErrorWarning.vue";
 // Then add it to library
 library.add(faPen);
 
-const { loginData, login, logout } = useLogin();
+const { loginData, login, logout, avatarData } = useLogin();
 
 const name = ref(loginData.username);
 const choosingAvatar = ref(false);
@@ -26,10 +27,8 @@ async function loginAndRedirect(url: string) {
   }
 }
 
-watch(loginData, (neu, alt) => {
-  if (neu.avatar) {
-    toggleAvatarSelection();
-  }
+watch(avatarData, (neu, alt) => {
+  toggleAvatarSelection();
 });
 </script>
 
@@ -51,7 +50,7 @@ watch(loginData, (neu, alt) => {
       <div class="grid grid-cols-3 gap-6 items-center">
         <div class="grid justify-items-end items-end">
           <Avatar
-            :avatarPicture="loginData.avatar"
+            :avatarPicture="avatarData.avatar"
             class="inline w-28"
           ></Avatar>
           <button
@@ -68,18 +67,18 @@ watch(loginData, (neu, alt) => {
           type="text"
           v-model="name"
           placeholder="Bitte Namen eingeben"
-          class="col-span-2 h-1/4 mr-12"
+          class="col-span-2 h-1/4 mr-12 font-poppins font-semibold"
         />
-        <div
-          class="text-greenLight font-semibold text-left"
+        <p
+          class="text-greenDark text-xl font-bold text-left"
           v-if="loginData.loggedIn"
         >
           {{ loginData.username }}
-        </div>
+        </p>
 
-        <!--<p class="text-greenLight" v-if="loginData.error !== ''">
-          {{ loginData.error }}
-        </p>-->
+        <div v-if="loginData.error !== ''">
+          <ErrorWarning :errorMsg="loginData.error"> </ErrorWarning>
+        </div>
       </div>
 
       <div class="w-1/2 mt-8">
@@ -111,5 +110,3 @@ watch(loginData, (neu, alt) => {
     <!-- <div class="fixed block inset-0 bg-orange bg-opacity-50 overflow-y-auto h-full w-full" id="my-modal"></div> -->
   </div>
 </template>
-
-<style scoped></style>

@@ -26,16 +26,16 @@ const avatarPictures: string[] = [
 
 <template>
   <div
-    class="fixed inset-0 bg-orange bg-opacity-50 overflow-y-auto h-full w-full grid grid-cols-3 content-center"
+    class="fixed inset-0 bg-greenOverlay bg-opacity-50 overflow-y-auto h-full w-full grid grid-cols-3 content-center"
   >
     <div class="bg-white p-16 grid col-start-2 col-end-2">
       <h2 class="">Choose <br />your Avatar</h2>
-      <div class="grid grid-cols-3">
+      <div class="grid grid-cols-3 justify-items-center">
         <div
           v-for="avatar in avatarPictures"
           :key="avatarPictures.indexOf(avatar)"
         >
-          <div v-if="avatar != loginData.avatar">
+          <div>
             <Chooseable_Avatar :avatarPicture="avatar" :size="'s'">
             </Chooseable_Avatar>
           </div>
@@ -44,5 +44,3 @@ const avatarPictures: string[] = [
     </div>
   </div>
 </template>
-
-<style scoped></style>

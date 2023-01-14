@@ -1,4 +1,5 @@
 import { reactive, readonly } from "vue";
+import type { IAvatarState } from "./IAvatarState";
 import type { ILoginResponse } from "./ILoginResponse";
 import type { ILoginState } from "./ILoginState";
 import type { ISendLogin } from "./ISendLogin";
@@ -10,9 +11,12 @@ import type { ISendLogin } from "./ISendLogin";
  */
 const loginState: ILoginState = reactive({
   username: "",
-  avatar: "src/assets/avatar/avatar.png",
   error: "",
   loggedIn: false,
+});
+
+const avatarState: IAvatarState = reactive({
+  avatar: "src/assets/avatar/avatar.png",
 });
 
 /**
@@ -22,8 +26,8 @@ const loginState: ILoginState = reactive({
  */
 
 const setAvatar = (avatar: string) => {
-  loginState.avatar = avatar;
-  console.log(avatar);
+  avatarState.avatar = "";
+  avatarState.avatar = avatar;
 };
 
 /**
@@ -100,5 +104,6 @@ export function useLogin() {
     setAvatar,
     login,
     logout,
+    avatarData: readonly(avatarState),
   };
 }

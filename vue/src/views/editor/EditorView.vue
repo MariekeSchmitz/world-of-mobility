@@ -96,7 +96,7 @@
   </Renderer>
 </template>
 
-<style>
+<style scoped>
 html {
   overflow: hidden;
 }
