@@ -3,7 +3,6 @@
 //@ts-ignore
 import type * as THREE from "three";
 import { Plane, Texture, ToonMaterial } from "troisjs";
-import grassTileUrl from "@/textures/tiles/GRASSTILE.jpg"
 
 const props = withDefaults(
   defineProps<{
@@ -24,7 +23,7 @@ const props = withDefaults(
     :position="props.position"
   >
     <ToonMaterial>
-      <Texture :src= "grassTileUrl"
+      <Texture src="/src/textures/tiles/PEDESTRIAN_CROSSING.jpg"
     /></ToonMaterial>
   </Plane>
 </template>
