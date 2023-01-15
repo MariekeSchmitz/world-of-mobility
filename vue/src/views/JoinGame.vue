@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useUser } from "@/services/useUser";
+import { ref } from "vue";
 import User from "@/components/joinGame/User.vue";
 import CarSelection from "@/components/carselect/CarSelection.vue";
 import { onMounted } from "vue";
@@ -13,16 +14,18 @@ const { joinGame } = useGame();
 const { userList, getUserList } = useUser();
 const { loginData } = useLogin();
 
+const joinSuccessfull = ref(false);
+const showError = ref(false);
 const props = defineProps<{
   instanceID: number;
 }>();
 
 let moveableType = "";
 
-function join() {
+async function join() {
   if (props.instanceID != undefined && spawnState.xPos != -1 && spawnState.yPos != -1 && spawnState.tileNumber != -1) {
-    joinGame(props.instanceID, loginData.username, moveableType, spawnState.xPos, spawnState.yPos);
-    router.push("/game/" + props.instanceID);
+    joinSuccessfull.value = await joinGame(props.instanceID, loginData.username, moveableType, spawnState.xPos, spawnState.yPos);
+    if(joinSuccessfull.value) router.push("/game/" + props.instanceID);
   }
 }
 
@@ -61,6 +64,9 @@ onMounted(() => {
       </div>
     </div>
     <button @click="join()">Beitreten</button>
+    <p v-if="showError">
+      Spielerlimit ausgeschöpft.
+    </p>
   </div>
 </template>
 
