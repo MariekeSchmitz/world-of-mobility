@@ -57,10 +57,10 @@ public class ScriptContext {
     public Tile[][] provideMapContext() {
 
         int contextSize = 2 * LOOK_AHEAD + 1;
-        Tile[][] defaultContext = new Tile[contextSize][contextSize];
+        Tile[][] mapContext = new Tile[contextSize][contextSize];
 
         if (this.gameMap == null) {
-            return defaultContext;
+            return mapContext;
         }
 
         int tileRow = (int) this.moveable.getYPos();
@@ -72,34 +72,18 @@ public class ScriptContext {
         int colStart = tileCol - LOOK_AHEAD;
         int colEnd   = tileCol + LOOK_AHEAD;
 
+        // fill context from full map
         for (int row = rowStart, contextRow = 0; row <= rowEnd; row++, contextRow++) {
             for (int col = colStart, contextCol = 0; col <= colEnd; col++, contextCol++) {
 
                 if (row >= 0 && row < this.gameMap.length && col >= 0 && col < this.gameMap.length) {
-                    defaultContext[contextRow][contextCol] = this.gameMap[row][col];
+                    mapContext[contextRow][contextCol] = this.gameMap[row][col];
                 }
 
             }
         }
 
-        Tile[][] mapContext = new Tile[contextSize][contextSize];
-
-        switch (moveable.getOrientation()) {
-            case SOUTH:
-                ArrayHelpers.rotate90CCW(defaultContext, mapContext);
-                ArrayHelpers.rotate90CCW(mapContext, defaultContext);
-                return defaultContext;
-            case WEST:
-                ArrayHelpers.rotate90CCW(defaultContext, mapContext);
-                return mapContext;     
-            case EAST:
-                ArrayHelpers.rotate90CW(defaultContext, mapContext);
-                return mapContext; 
-            default:
-                return defaultContext;
-        }
-
-
+        return orientedMapContext(mapContext);
     }    
 
     /**
@@ -138,5 +122,61 @@ public class ScriptContext {
                 && movCol <= colEnd;
 
         }).toList();
+    }
+
+    /**
+     * Adjusts orientation of the map context so
+     * that index (0, 0) is always behind the
+     * moveable object to the left side.
+     * 
+     * Examples:
+     * 
+     * 
+     * (1) Moveable object with orientation NORTH
+     * 
+     *      (1,0)      (1,1)
+     * 
+     *             ^
+     * 
+     *      (0,0)      (0,1)
+     * 
+     * 
+     * (2) Moveable object with orientation EAST
+     * 
+     *      (0,0)      (1,0)
+     * 
+     *             >
+     * 
+     *      (0,1)      (1,1)
+     * 
+     * @param mapContext Unoriented map context.
+     * @return Oriented map context.
+     */
+    protected Tile[][] orientedMapContext(Tile[][] mapContext) {
+
+        int contextSize = 2 * LOOK_AHEAD + 1;
+        Tile[][] orientedContext = new Tile[contextSize][contextSize];
+
+        switch (moveable.getOrientation()) {
+
+            case NORTH:
+                return mapContext;
+
+            case EAST:
+                ArrayHelpers.rotate90CW(mapContext, orientedContext);
+                return orientedContext; 
+
+            case SOUTH:
+                ArrayHelpers.rotate90CW(mapContext, orientedContext);
+                ArrayHelpers.rotate90CW(orientedContext, mapContext);
+                return mapContext;
+
+            case WEST:
+                ArrayHelpers.rotate90CCW(mapContext, orientedContext);
+                return orientedContext;     
+
+            default:
+                return mapContext;
+        }
     }
 }
