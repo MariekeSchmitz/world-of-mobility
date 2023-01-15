@@ -100,6 +100,15 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
     }
 
     /**
+     * Gets the moveable type of the object.
+     * 
+     * @return Type of the moveable object
+     */
+    public MoveableType getType() {
+        return type;
+    }
+
+    /**
      * Sets new x-position of the movable object.
      * @param xPos New x-position
      */
@@ -163,9 +172,5 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
      * @return Copy of the object.
      */
     public abstract MoveableObject copy();
-
-    public MoveableType getType() {
-        return type;
-    }
 
 }
