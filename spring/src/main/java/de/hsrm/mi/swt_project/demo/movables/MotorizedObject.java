@@ -19,7 +19,7 @@ public class MotorizedObject extends MoveableObject {
      * @param maxVelocity Maximum velocity of the object.
      */
     public MotorizedObject(float xPos, float yPos) {
-        this(Orientation.NORTH, xPos, yPos, 1);
+        this(Orientation.NORTH, xPos, yPos, 0.2f);
     }
 
     /**
