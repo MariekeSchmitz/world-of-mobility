@@ -324,5 +324,24 @@ public class ArrayHelpers {
         }
         return true;
     }
-    
+
+    public static <T> void rotate90CCW(T[][] src, T[][] dest) {
+        int rows = src.length;
+        int cols = src[0].length;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                dest[j][rows - 1 - i] = src[i][j];
+            }
+        }
+    }
+
+    public static <T> void rotate90CW(T[][] src, T[][] dest) {
+        int rows = src.length;
+        int cols = src[0].length;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                dest[cols - 1 - j][i] = src[i][j];
+            }
+        }
+    }
 }

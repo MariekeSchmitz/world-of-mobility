@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
+import de.hsrm.mi.swt_project.demo.util.ArrayHelpers;
 
 /**
  * Context that needs to be passed in a script to
@@ -56,10 +57,10 @@ public class ScriptContext {
     public Tile[][] provideMapContext() {
 
         int contextSize = 2 * LOOK_AHEAD + 1;
-        Tile[][] mapContext = new Tile[contextSize][contextSize];
+        Tile[][] defaultContext = new Tile[contextSize][contextSize];
 
         if (this.gameMap == null) {
-            return mapContext;
+            return defaultContext;
         }
 
         int tileRow = (int) this.moveable.getYPos();
@@ -75,13 +76,30 @@ public class ScriptContext {
             for (int col = colStart, contextCol = 0; col <= colEnd; col++, contextCol++) {
 
                 if (row >= 0 && row < this.gameMap.length && col >= 0 && col < this.gameMap.length) {
-                    mapContext[contextRow][contextCol] = this.gameMap[row][col];
+                    defaultContext[contextRow][contextCol] = this.gameMap[row][col];
                 }
 
             }
         }
 
-        return mapContext;
+        Tile[][] mapContext = new Tile[contextSize][contextSize];
+
+        switch (moveable.getOrientation()) {
+            case SOUTH:
+                ArrayHelpers.rotate90CCW(defaultContext, mapContext);
+                ArrayHelpers.rotate90CCW(mapContext, defaultContext);
+                return defaultContext;
+            case WEST:
+                ArrayHelpers.rotate90CCW(defaultContext, mapContext);
+                return mapContext;     
+            case EAST:
+                ArrayHelpers.rotate90CW(defaultContext, mapContext);
+                return mapContext; 
+            default:
+                return defaultContext;
+        }
+
+
     }    
 
     /**
