@@ -1,5 +1,7 @@
 <!-- prettier-ignore -->
 <script setup lang="ts">
+//@ts-ignore
+
   import { ref, onMounted, reactive, watch, onUnmounted } from "vue";
 
   import * as THREE from 'three'

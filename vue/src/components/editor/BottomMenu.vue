@@ -153,9 +153,33 @@ function switchContent(element: string) {
             <li>
               <button
                 class="itemButton"
+                @click="setPlaceState(TileName.PEDESTRIAN_CROSSING, true)"
+              >
+                <img src="@/textures/editor/PEDESTRIAN_CROSSING.jpg" />
+              </button>
+            </li>
+            <li>
+              <button
+                class="itemButton"
                 @click="setPlaceState(TileName.SIDEWAY, true)"
               >
-                <img src="@/textures/editor/SIDEWAY.jpg" />
+                <img src="@/textures/editor/SIDEWAY.png" />
+              </button>
+            </li>
+            <li>
+              <button
+                class="itemButton"
+                @click="setPlaceState(TileName.SIDEWAY_BICYCLE_CURVE, true)"
+              >
+                <img src="@/textures/editor/SIDEWAY_BICYCLE_CURVE.png" />
+              </button>
+            </li>
+            <li>
+              <button
+                class="itemButton"
+                @click="setPlaceState(TileName.SIDEWAY_PASSENGER_CURVE, true)"
+              >
+                <img src="@/textures/editor/SIDEWAY_PASSENGER_CURVE.png" />
               </button>
             </li>
             <li>

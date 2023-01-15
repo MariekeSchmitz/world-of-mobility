@@ -1,24 +1,25 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
+//@ts-ignore
+import * as THREE from "three";
 import { Box, ToonMaterial } from "troisjs";
-import { Vector3 } from "three";
 import { computed } from "vue";
 
 const props = defineProps<{
-  pos: Vector3;
+  pos: THREE.Vector3;
   rotation: number; //in radians
 }>();
 
-function rotate(offsetVec: Vector3, angle: number) {
-  const axis = new Vector3(0, 1, 0);
+function rotate(offsetVec: THREE.Vector3, angle: number) {
+  const axis = new THREE.Vector3(0, 1, 0);
   const w = offsetVec.clone();
   const res = w.applyAxisAngle(axis, angle);
   return res;
 }
 
 const offsets = {
-  offsetBody: new Vector3(0, 0.15, 0),
-  offsetTop: new Vector3(0, 0.9, -0.15),
+  offsetBody: new THREE.Vector3(0, 0.15, 0),
+  offsetTop: new THREE.Vector3(0, 0.9, -0.15),
   // offsetTireLeftFront: new Vector3(3, -0.25, 1),
   // offsetTireLeftBack: new Vector3(3, -0.25, -1),
   // offsetTireRigthFront: new Vector3(1, -0.25, 1),
@@ -28,10 +29,10 @@ const offsets = {
 };
 
 const tires = [
-  { offset: new Vector3(1, -0.25, 1), name: "tireLeftFront" },
-  { offset: new Vector3(1, -0.25, -1), name: "tireLeftBack" },
-  { offset: new Vector3(-1, -0.25, 1), name: "tireRightFront" },
-  { offset: new Vector3(-1, -0.25, -1), name: "tireRightBack" },
+  { offset: new THREE.Vector3(1, -0.25, 1), name: "tireLeftFront" },
+  { offset: new THREE.Vector3(1, -0.25, -1), name: "tireLeftBack" },
+  { offset: new THREE.Vector3(-1, -0.25, 1), name: "tireRightFront" },
+  { offset: new THREE.Vector3(-1, -0.25, -1), name: "tireRightBack" },
 ];
 
 const rotatedTires = computed(() => {
@@ -49,8 +50,8 @@ const rotatedTires = computed(() => {
 });
 
 const lights = [
-  { offset: new Vector3(-0.5, 0, 1.28), name: "lightRightFront" },
-  { offset: new Vector3(0.5, 0, 1.28), name: "lightLeftFront" },
+  { offset: new THREE.Vector3(-0.5, 0, 1.28), name: "lightRightFront" },
+  { offset: new THREE.Vector3(0.5, 0, 1.28), name: "lightLeftFront" },
 ];
 
 const rotatedLights = computed(() => {
@@ -93,19 +94,19 @@ const topPosRotated = computed(() => {
   <!-- Main Torso of the car -->
   <Box
     ref="body"
-    :scale="new Vector3(2, 1, 3)"
+    :scale="new THREE.Vector3(2, 1, 3)"
     :size="1"
     :position="bodyPosRotated"
-    :rotation="new Vector3(0, props.rotation, 0)"
+    :rotation="new THREE.Vector3(0, props.rotation, 0)"
   >
     <ToonMaterial color="#cc0000" />
   </Box>
   <Box
     ref="top"
-    :scale="new Vector3(2, 0.75, 2)"
+    :scale="new THREE.Vector3(2, 0.75, 2)"
     :size="1"
     :position="topPosRotated"
-    :rotation="new Vector3(0, props.rotation, 0)"
+    :rotation="new THREE.Vector3(0, props.rotation, 0)"
   >
     <ToonMaterial color="#cc0000" />
   </Box>
@@ -116,7 +117,7 @@ const topPosRotated = computed(() => {
       ref="{{tire.name}}"
       :size="0.5"
       :position="tire.position"
-      :rotation="new Vector3(0, props.rotation, 0)"
+      :rotation="new THREE.Vector3(0, props.rotation, 0)"
     >
       <ToonMaterial color="#123456" />
     </Box>
@@ -128,7 +129,7 @@ const topPosRotated = computed(() => {
       ref="{{light.name}}"
       :size="0.5"
       :position="light.position"
-      :rotation="new Vector3(0, props.rotation, 0)"
+      :rotation="new THREE.Vector3(0, props.rotation, 0)"
     >
       <ToonMaterial color="#F1C232" />
     </Box>
