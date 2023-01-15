@@ -7,12 +7,22 @@ import org.slf4j.LoggerFactory;
 
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
+/**
+ * This class validates wheather two moveable objects collide.
+ * 
+ * @author Felix Ruf
+ * @author Alexandra Müller
+ */
 public class CollisionValidator implements Validator{
 
-    MoveableObject moveableObject;
-    MoveableObject[] moveableObjects;
-    Logger logger = LoggerFactory.getLogger(getClass());
+    private MoveableObject moveableObject;
+    private MoveableObject[] moveableObjects;
 
+    /**
+     * Creates a new CollisionValidator.
+     * 
+     * @param moveableObjects Map of moveable objects which will be checked for collisions.
+     */
     public CollisionValidator(Map<String, MoveableObject> moveableObjects) {
 
         this.moveableObjects = new MoveableObject[moveableObjects.size()];
@@ -26,16 +36,16 @@ public class CollisionValidator implements Validator{
         }
     }
 
+    /**
+     * Checks if the moveable object collides with any other moveable object.
+     * 
+     * @return true if the moveable object does not collide with any other moveable object
+     */
     @Override
     public boolean validate() {
         
-        // for(int i = 0; i < moveableObjects.length; i++) {
-        //     for(int j = i+1; j < moveableObjects.length; i++) {
-        //         doObjectsHit(moveableObjects[i], moveableObjects[j]);
-        //     }
-        // }
-        for(int i = 0; i < moveableObjects.length; i++) {
-            if(doObjectsHit(moveableObject, moveableObjects[i])) {
+        for (MoveableObject moveableObject : moveableObjects) {
+            if (doObjectsHit(this.moveableObject, moveableObject)) {
                 return false;
             }
         }
@@ -43,19 +53,32 @@ public class CollisionValidator implements Validator{
         return true;
     }
 
+    /**
+     * Checks if two moveable objects collide.
+     * 
+     * @param object1 first moveable object
+     * @param object2 second moveable object
+     * @return true if the moveable objects collide, else false
+     */
     public boolean doObjectsHit(MoveableObject object1, MoveableObject object2) {
+        float x = object1.getXPos() - object2.getXPos();
+        float y = object1.getYPos() - object2.getYPos();
 
-        // Abstand = √((x1 - x2)² + (y1 - y2)²)
-        double distance = Math.sqrt(Math.pow(object1.getXPos() - object2.getXPos(), 2) + Math.pow(object1.getYPos() - object2.getYPos(), 2));
-        double maxDistance = object1.getHitboxRadius() + object2.getHitboxRadius();
+        double distanceSqrt = x * x + y * y;
+        double maxDistanceSqrt = (object1.getHitboxRadius() + object2.getHitboxRadius()) * (object1.getHitboxRadius() + object2.getHitboxRadius());
 
-        if(distance > 0 && distance <= maxDistance) {
+        if(distanceSqrt > 0 && distanceSqrt <= maxDistanceSqrt) {
             return true;
         }
 
         return false;
     }
 
+    /**
+     * Sets the moveable object to be validated.
+     * 
+     * @param moveableObject moveable object to be validated
+     */
     public void setMoveableObject(MoveableObject moveableObject) {
         this.moveableObject = moveableObject.copy();
         this.moveableObject.move();
