@@ -12,6 +12,7 @@ public class ArrayHelpers {
     protected static final String SRC_DEST_NULL_ERROR = "src and dest arrays are not allowed to be null.";
     protected static final String SRC_DEST_SQUARED_ERROR = "src and dest arrays must both be square shaped.";
     protected static final String SRC_DEST_EVEN_ODD_ERROR = "src and dest must both be of even or both of odd size";
+    protected static final String SRC_DEST_NOT_EQUAL_ERROR = "src and dest must both be of the same size.";
     protected static final String DEST_SMALLER_SRC_ERROR = "dest array size must be smaller than or equal to src array size. src size: %d, dest size: %d";
     protected static final String DEST_BIGGER_SRC_ERROR = "dest array must be bigger than src array. src size: %d, dest size: %d";
     protected static final String OFFSET_SMALLER_EQUAL_ERROR = "offset must be smaller than or equal to %d, was %d";
@@ -325,7 +326,41 @@ public class ArrayHelpers {
         return true;
     }
 
-    public static <T> void rotate90CCW(T[][] src, T[][] dest) {
+    /**
+     * Copies elements of one 2D array into another
+     * 2D array so that the elements are placed as 
+     * if the 2D array was rotated by 90 degrees 
+     * clockwise.
+     * 
+     * Example:
+     * 
+     *  --- --- ---        --- --- ---
+     * | 5 | 5 | 5 |      | 5 | 5 | 5 |
+     *  --- --- ---        --- --- ---
+     * | 5 | 1 | 1 |  ->  | 5 | 1 | 1 |
+     *  --- --- ---        --- --- ---
+     * | 5 | 1 | 1 |      | 5 | 1 | 1 |
+     *  --- --- ---        --- --- ---
+     * 
+     * 
+     * @param <T> Type of the array elements.
+     * @param src Array from which the elements will be copied.
+     * @param dest Array where the elements will be copied into.
+     */
+    public static <T> void rotate90CW(T[][] src, T[][] dest) {
+
+        if (src == null || dest == null) {
+            throw new IllegalArgumentException(SRC_DEST_NULL_ERROR);
+        }
+
+        if (!isSquare(src) || !isSquare(dest)) {
+            throw new IllegalArgumentException(SRC_DEST_SQUARED_ERROR);
+        }
+
+        if (src.length > dest.length) {
+            throw new IllegalArgumentException(SRC_DEST_NOT_EQUAL_ERROR);
+        }
+
         int rows = src.length;
         int cols = src[0].length;
         for (int i = 0; i < rows; i++) {
@@ -335,9 +370,44 @@ public class ArrayHelpers {
         }
     }
 
-    public static <T> void rotate90CW(T[][] src, T[][] dest) {
+    /**
+     * Copies elements of one 2D array into another
+     * 2D array so that the elements are placed as 
+     * if the 2D array was rotated by 90 degrees 
+     * counterclockwise.
+     * 
+     * Example:
+     * 
+     *  --- --- ---        --- --- ---
+     * | 5 | 5 | 5 |      | 5 | 1 | 1 |
+     *  --- --- ---        --- --- ---
+     * | 5 | 1 | 1 |  ->  | 5 | 1 | 1 |
+     *  --- --- ---        --- --- ---
+     * | 5 | 1 | 1 |      | 5 | 5 | 5 |
+     *  --- --- ---        --- --- ---
+     * 
+     * 
+     * @param <T> Type of the array elements.
+     * @param src Array from which the elements will be copied.
+     * @param dest Array where the elements will be copied into.
+     */
+    public static <T> void rotate90CCW(T[][] src, T[][] dest) {
+
+        if (src == null || dest == null) {
+            throw new IllegalArgumentException(SRC_DEST_NULL_ERROR);
+        }
+
+        if (!isSquare(src) || !isSquare(dest)) {
+            throw new IllegalArgumentException(SRC_DEST_SQUARED_ERROR);
+        }
+
+        if (src.length > dest.length) {
+            throw new IllegalArgumentException(SRC_DEST_NOT_EQUAL_ERROR);
+        }
+
         int rows = src.length;
         int cols = src[0].length;
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 dest[cols - 1 - j][i] = src[i][j];

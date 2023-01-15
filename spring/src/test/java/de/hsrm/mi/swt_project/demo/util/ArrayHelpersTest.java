@@ -223,4 +223,52 @@ class ArrayHelpersTest {
         }
     }
 
+    @Test
+    void testRotate90CCW() {
+
+        String[][] src = {
+            { "A", "B" },
+            { "C", "D" }
+        };
+
+        String[][] expected = {
+            { "B", "D" },
+            { "A", "C" }
+        };
+
+        String[][] actual = new String[2][2];
+
+        ArrayHelpers.rotate90CCW(src, actual);
+
+        for (int i = 0; i < expected.length; i++) {
+            for (int j = 0; j < expected[0].length; j++) {
+                assertEquals(expected[i][j], actual[i][j]);
+            }
+        }
+    }
+
+    @Test
+    void testRotate90CW() {
+
+        String[][] src = {
+            { "A", "B" },
+            { "C", "D" }
+        };
+
+        String[][] expected = {
+            { "C", "A" },
+            { "D", "B" }
+        };
+
+        String[][] actual = new String[2][2];
+
+        ArrayHelpers.rotate90CW(src, actual);
+
+        for (int i = 0; i < expected.length; i++) {
+            for (int j = 0; j < expected[0].length; j++) {
+                assertEquals(expected[i][j], actual[i][j]);
+            }
+        }
+    }
+
 }
