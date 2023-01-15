@@ -154,8 +154,8 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
         if (this.script != null && !this.script.isEmpty() && context != null) {
 
             PythonInterpreter interpreter = JythonFactory.getInterpreter();
-            MoveableFacade proxy = MoveableFacade.createFor(this, context);
-            interpreter.set("npc", proxy);   
+            MoveableFacade facade = MoveableFacade.createFor(this, context);
+            interpreter.set("npc", facade);   
             interpreter.exec(this.script);
             
         }
