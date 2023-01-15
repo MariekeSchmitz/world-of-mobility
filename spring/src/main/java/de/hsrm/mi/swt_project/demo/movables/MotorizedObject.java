@@ -49,6 +49,7 @@ public class MotorizedObject extends MoveableObject {
         copy.capacity = this.capacity;
         copy.script = this.script;
         copy.orientation = this.orientation;
+        copy.type = this.type;
 
         return copy;
     }
