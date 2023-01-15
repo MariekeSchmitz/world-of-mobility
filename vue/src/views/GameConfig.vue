@@ -42,7 +42,7 @@ async function checkValidation(name: string) {
     <input id="playerLimit" type="number" :min="1" v-model="playerLimit" />
     <p>NPCs platzieren</p>
     <label class="switch">
-      <input if="npcSwitch" type="checkbox" :v-model="npcs" />
+      <input if="npcSwitch" type="checkbox" v-model="npcs" />
       <span class="slider round"></span>
     </label>
 

@@ -26,6 +26,7 @@ async function join() {
   if (props.instanceID != undefined && spawnState.xPos != -1 && spawnState.yPos != -1 && spawnState.tileNumber != -1) {
     joinSuccessfull.value = await joinGame(props.instanceID, loginData.username, moveableType, spawnState.xPos, spawnState.yPos);
     if(joinSuccessfull.value) router.push("/game/" + props.instanceID);
+    else showError.value = true;
   }
 }
 
