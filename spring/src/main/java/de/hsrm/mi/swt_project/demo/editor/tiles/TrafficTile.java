@@ -30,9 +30,5 @@ public abstract class TrafficTile extends Tile {
         }
 
     }
-
-    public List<Orientation> getAllowedDirections() {
-        return allowedDirections;
-    }
-
+    
 }
