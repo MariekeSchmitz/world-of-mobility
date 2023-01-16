@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.hsrm.mi.swt_project.demo.instancehandling.GameInstance;
@@ -195,5 +196,22 @@ public class GameRestController{
     @PostMapping(value="/{id}/leave-game", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void leaveGame(@RequestBody JoinGameDTO leaveGameRequest , @PathVariable long id) {
         instanceHandler.getGameInstanceById(id).removePlayer(leaveGameRequest.user());
+    }
+
+    /**
+     * Cheacks wether the MoveableObject can spawn at the given location
+     * 
+     * @param moveableObject String of the Moveable Object to check for
+     * @param xPos x-Position the Object will be spawned at
+     * @param yPos y-Position the Object will be spawned at
+     * @param id ID of the GameInstance the Object will be spawned in
+     * @return boolean value that indicates wether the Object can Spawn at the given location
+     */
+    @GetMapping(value = "/{id}/validate-spawnpoint")
+    public String validateSpawnpoint(@RequestParam String moveableObject, @RequestParam int xPos, @RequestParam int yPos, @PathVariable long id) {
+        GameInstance gameInstance = instanceHandler.getGameInstanceById(id);
+        MoveableObject objectToValidate = MoveableType.valueOf(moveableObject).createMovable();
+        String stringifiedBoolean = String.valueOf(gameInstance.validateSpawnpoint(objectToValidate, xPos, yPos));
+        return stringifiedBoolean;
     }
 }

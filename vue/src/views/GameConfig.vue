@@ -10,8 +10,8 @@ const { instanceId, createGameInstance, receiveGameUpdate, joinGame } =
 const { sendConfig, valSuccess } = useGameConfig();
 const { loginData } = useLogin();
 
-const name = "";
-const playerLimit = 0;
+let name = "";
+let playerLimit = 0;
 const npcs = false;
 const validationChecked = ref(false);
 const validationPassed = ref(false);
@@ -26,13 +26,14 @@ async function checkValidation(name: string) {
   validationChecked.value = true;
 
   if (valSuccess.validationSuccess) {
-    validationPassed.value = true;
+    await createGameInstance(props.mapName, name);
+    if (instanceId.id != -1) {
+      router.push("/joingame/" + instanceId.id);
+    }
   }
 }
 
 async function startGame(name: string) {
-  await createGameInstance(props.mapName, name);
-
   if (instanceId.id != -1) {
     joinGame(instanceId.id, loginData.username, "MOTORIZED_OBJECT");
     router.push("/gameview/" + instanceId.id);
@@ -73,13 +74,6 @@ async function startGame(name: string) {
     >
       Erstellen
     </button>
-    <button
-      v-if="validationChecked && validationPassed"
-      @click="startGame(name)"
-    >
-      Start
-    </button>
-
     <p v-if="validationChecked && !validationPassed">
       Der Name {{ name }} wurde schon vergeben.
     </p>

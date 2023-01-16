@@ -50,8 +50,8 @@ public class InstanceHandler implements Updateable {
 
     // TODO think of another solution because long can reach limit
     protected long idCounter = 1;
-    // @Value("${map.savedir:maps}")
-    protected String mapSavePath = "maps";
+    @Value("${map.savedir:maps}")
+    protected String mapSavePath;
 
     /**
      * Creates a new instance handler.
@@ -92,7 +92,7 @@ public class InstanceHandler implements Updateable {
 
         }
 
-        Instance instance = new GameInstance(map, sessionName, idCounter);
+        Instance instance = new GameInstance(map, sessionName, idCounter, mapSavePath);
 
         instance.setLifetime(instanceLifetimeCycles);
         instances.add(instance);
@@ -128,7 +128,7 @@ public class InstanceHandler implements Updateable {
             map.setName(mapName);
         }
 
-        Instance instance = new EditorInstance(map, idCounter);
+        Instance instance = new EditorInstance(map, idCounter, mapSavePath);
         instance.setLifetime(instanceLifetimeCycles);
         instances.add(instance);
 
