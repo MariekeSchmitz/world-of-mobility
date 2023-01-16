@@ -36,6 +36,9 @@ public class InstanceHandler implements Updateable {
     @Autowired
     protected UpdateloopService loopservice;
 
+    @Autowired
+    private UpdateloopInstanceInfo loopInstanceInfo;
+
     @Value("${instance.lifetime:1200}")
     protected long instanceLifetimeCycles;
 
@@ -223,6 +226,7 @@ public class InstanceHandler implements Updateable {
         }
 
         for (Instance instance : toDelete) {
+            loopInstanceInfo.publishInstanceInfoState(instance, "DELETE");
             this.instances.remove(instance);
         }
 

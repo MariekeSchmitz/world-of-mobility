@@ -3,7 +3,6 @@
 //@ts-ignore
 import * as THREE from "three";
 import { GltfModel } from "troisjs";
-import { withDefaults, defineProps } from "vue";
 import CAR2_URL from "@/assets/models/CAR2.glb?url";
 
 /**

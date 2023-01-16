@@ -24,12 +24,7 @@ const { loginData } = useLogin();
 interface MaplistState {
   maplist: Array<string>;
 }
-interface IInstanceInfo {
-  id: number;
-  gamename: string;
-  worldname: string;
-  playeramount: number;
-}
+
 const maplistState: MaplistState = reactive({ maplist: [] });
 
 onMounted(async () => {

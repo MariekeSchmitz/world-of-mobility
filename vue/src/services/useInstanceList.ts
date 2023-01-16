@@ -14,39 +14,50 @@ export function useInstanceList(): any {
     gamename: string;
     worldname: string;
     playeramount: number;
+    command: string;
   }
 
   interface IInstanceState {
     instancelist: Array<IInstanceInfo>;
   }
 
-  const instanceState: IInstanceState = reactive({ instancelist: [] });
+  const instanceState: IInstanceState = reactive({
+    instancelist: [],
+  });
 
   function processInstanceUpdate(instanceUpdate: IInstanceInfo) {
     let found = 0;
     console.log("whole list: ", instanceState.instancelist);
 
-    instanceState.instancelist.forEach(function (item) {
-      console.log("item: ", item.id, " update ", instanceUpdate.id);
-      if (item.id == instanceUpdate.id) {
-        if (item.playeramount != instanceUpdate.playeramount) {
-          item.playeramount = instanceUpdate.playeramount;
-          found = 1;
-          console.log(
-            "found: ",
-            item.playeramount,
-            " new: ",
-            instanceUpdate.playeramount
-          );
+    if (instanceUpdate.command == "CREATE") {
+      instanceState.instancelist.forEach(function (item) {
+        console.log("item: ", item.id, " update ", instanceUpdate.id);
+        if (item.id == instanceUpdate.id) {
+          if (
+            instanceUpdate.command == "CREATE" &&
+            item.playeramount != instanceUpdate.playeramount
+          ) {
+            item.playeramount = instanceUpdate.playeramount;
+            found = 1;
+            console.log(
+              "found: ",
+              item.playeramount,
+              " new: ",
+              instanceUpdate.playeramount
+            );
+          }
         }
-      }
-    });
+      });
 
-    if (found == 0) {
-      instanceState.instancelist.unshift(instanceUpdate);
-      console.log("added new");
-    } else {
-      found = 0;
+      if (found == 0) {
+        instanceState.instancelist.unshift(instanceUpdate);
+        console.log("added new");
+      } else {
+        found = 0;
+      }
+    } else if (instanceUpdate.command == "DELETE") {
+      const deleteIndex = instanceState.instancelist.indexOf(instanceUpdate);
+      instanceState.instancelist.splice(deleteIndex, 1);
     }
   }
 

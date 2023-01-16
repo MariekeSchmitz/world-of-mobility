@@ -199,7 +199,7 @@ public class EditorRestController {
     @PostMapping(value="/{id}/join-editor", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void joinGame(@RequestBody JoinEditorDTO joinEditorRequest , @PathVariable long id) {
         instanceHandler.getEditorInstanceById(id).addUser(joinEditorRequest.user());
-        loopInstanceInfo.publishInstanceInfoState(instanceHandler.getEditorInstanceById(id));
+        loopInstanceInfo.publishInstanceInfoState(instanceHandler.getEditorInstanceById(id), "CREATE");
     }
 
     /**
@@ -211,7 +211,7 @@ public class EditorRestController {
     @PostMapping(value="/{id}/leave-editor", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void leaveGame(@RequestBody JoinEditorDTO leaveEditorRequest , @PathVariable long id) {
         instanceHandler.getEditorInstanceById(id).removeUser(leaveEditorRequest.user());
-        loopInstanceInfo.publishInstanceInfoState(instanceHandler.getEditorInstanceById(id));
+        loopInstanceInfo.publishInstanceInfoState(instanceHandler.getEditorInstanceById(id), "CREATE");
     }
 
 }

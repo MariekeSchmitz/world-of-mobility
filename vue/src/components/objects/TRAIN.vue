@@ -3,7 +3,6 @@
 //@ts-ignore
 import * as THREE from "three";
 import { GltfModel } from "troisjs";
-import { withDefaults, defineProps } from "vue";
 import TRAIN_URL from "@/assets/models/TRAIN.glb?url";
 
 /**

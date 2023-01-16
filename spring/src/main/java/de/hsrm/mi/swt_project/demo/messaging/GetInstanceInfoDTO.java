@@ -10,7 +10,7 @@ import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
  * @param playeramount = amount from playing Users
  * @author Astrid Klemmer, Finn Schindel
  */
-public record GetInstanceInfoDTO(long id, String gamename, String worldname, int playeramount) {
+public record GetInstanceInfoDTO(long id, String gamename, String worldname, int playeramount, String command) {
 
     /**
      * create a DTO
@@ -18,20 +18,22 @@ public record GetInstanceInfoDTO(long id, String gamename, String worldname, int
      * @param instance
      * @return GetInstanceInfoDTO
      */
-    public static GetInstanceInfoDTO from(Instance instance) {
+    public static GetInstanceInfoDTO from(Instance instance, String command) {
         if (instance instanceof GameInstance gameinstance) {
             return new GetInstanceInfoDTO(
                 gameinstance.getId(),
                 gameinstance.getName(),
                 gameinstance.getMap().getName(),
-                GameUserListDTO.from(gameinstance.getMoveableObjects()).users().size()
+                GameUserListDTO.from(gameinstance.getMoveableObjects()).users().size(),
+                command
                 );
         } else {
             return new GetInstanceInfoDTO(
                 instance.getId(),
                 "EditorGameName " + instance.getId(),
                 instance.getMap().getName(),
-                ((EditorInstance) instance).getUsers().size()
+                ((EditorInstance) instance).getUsers().size(),
+                command
                 );
         }
 

@@ -137,7 +137,7 @@ public class GameRestController{
         if (instance != null) {
             MoveableObject moveable = MoveableType.valueOf(type).createMovable(xPos, yPos);
             instance.addPlayer(user, moveable);
-            loopInstanceInfo.publishInstanceInfoState(instanceHandler.getGameInstanceById(id));
+            loopInstanceInfo.publishInstanceInfoState(instanceHandler.getGameInstanceById(id), "CREATE");
         }
     }
 
@@ -201,7 +201,7 @@ public class GameRestController{
     @PostMapping(value="/{id}/leave-game", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void leaveGame(@RequestBody JoinGameDTO leaveGameRequest , @PathVariable long id) {
         instanceHandler.getGameInstanceById(id).removePlayer(leaveGameRequest.user());
-        loopInstanceInfo.publishInstanceInfoState(instanceHandler.getGameInstanceById(id));
+        loopInstanceInfo.publishInstanceInfoState(instanceHandler.getGameInstanceById(id), "CREATE");
     }
 
     /**

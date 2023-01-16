@@ -38,7 +38,7 @@ class GameTest {
         mockMvc.perform(
             post("/api/game/instancelist")
         ).andExpect(status().isOk())
-        .andExpect(jsonPath("$.instancelist", hasSize(amountGameItems)));
+        .andExpect(jsonPath("$", hasSize(amountGameItems)));
         //.andExpect(jsonPath("$.angebotid", is(a.getId()), Long.class))
         //.andExpect(jsonPath("$.beschreibung", is(a.getBeschreibung())));
         

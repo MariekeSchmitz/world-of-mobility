@@ -25,13 +25,11 @@ public class UpdateloopInstanceInfo {
      * 
      * @param instance Instance thats state will be sent to the topic.
      */
-    public void publishInstanceInfoState(Instance instance) {
-        System.out.println("define if editor or game");
+    public void publishInstanceInfoState(Instance instance, String command) {
         if (instance instanceof GameInstance gameInstance) {
-            this.publishGameInstanceInfoState(gameInstance);
+            this.publishGameInstanceInfoState(gameInstance, command);
         } else if (instance instanceof EditorInstance editorInstance) {
-            System.out.println("is game");
-            this.publishEditorInstanceInfoState(editorInstance);
+            this.publishEditorInstanceInfoState(editorInstance, command);
         }
     }
 
@@ -41,11 +39,9 @@ public class UpdateloopInstanceInfo {
      * 
      * @param instance GameInstance thats state will be sent to the topic.
      */
-    protected void publishGameInstanceInfoState(GameInstance instance) {
-
-        final long id = instance.getId();
+    protected void publishGameInstanceInfoState(GameInstance instance, String command) {
         
-        final GetInstanceInfoDTO dto = GetInstanceInfoDTO.from(instance);
+        final GetInstanceInfoDTO dto = GetInstanceInfoDTO.from(instance, command);
         final String destination = GAME_TOPIC;
        
         messaging.convertAndSend(destination, dto);    
@@ -57,17 +53,11 @@ public class UpdateloopInstanceInfo {
      * 
      * @param instance EditorInstance thats state will be sent to the topic.
      */
-    protected void publishEditorInstanceInfoState(EditorInstance instance) {
+    protected void publishEditorInstanceInfoState(EditorInstance instance, String command) {
 
-        final long id = instance.getId();
-        System.out.println("update this instance " + id);
-
-        final GetInstanceInfoDTO dto = GetInstanceInfoDTO.from(instance);
-        System.out.println("send this dto " + dto);
+        final GetInstanceInfoDTO dto = GetInstanceInfoDTO.from(instance, command);
 
         final String destination = EDITOR_TOPIC;
-        System.out.println("send to  " + destination);
-
 
         messaging.convertAndSend(destination, dto);
     }
