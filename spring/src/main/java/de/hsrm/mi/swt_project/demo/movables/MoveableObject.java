@@ -6,9 +6,11 @@ import org.slf4j.LoggerFactory;
 
 import de.hsrm.mi.swt_project.demo.controls.Moveable;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
-import de.hsrm.mi.swt_project.demo.controls.Scriptable;
 import de.hsrm.mi.swt_project.demo.controls.Turnable;
-import de.hsrm.mi.swt_project.demo.util.JythonFactory;
+import de.hsrm.mi.swt_project.demo.scripting.JythonFactory;
+import de.hsrm.mi.swt_project.demo.scripting.MoveableFacade;
+import de.hsrm.mi.swt_project.demo.scripting.ScriptContext;
+import de.hsrm.mi.swt_project.demo.scripting.Scriptable;
 
 /**
  * This class represents objects that can change their position
@@ -19,7 +21,7 @@ import de.hsrm.mi.swt_project.demo.util.JythonFactory;
 public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
 
 
-    protected static final float MIN_VELOCITY = 0.0f;
+    protected static final float MIN_VELOCITY = -0.5f;
     protected static final float MAX_VELOCITY = 1.0f;
 
     protected static final float MIN_CAPACITY = 0.0f;
@@ -100,6 +102,15 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
     }
 
     /**
+     * Gets the moveable type of the object.
+     * 
+     * @return Type of the moveable object
+     */
+    public MoveableType getType() {
+        return type;
+    }
+
+    /**
      * Sets new x-position of the movable object.
      * @param xPos New x-position
      */
@@ -147,13 +158,15 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
     }
 
     @Override
-    public void executeScript() {
+    public void executeScript(ScriptContext context) {
 
-        if (this.script != null && !this.script.isEmpty()) {
-                PythonInterpreter interpreter = JythonFactory.getInterpreter();
-                interpreter.set("moveable", this);   
-                interpreter.exec(this.script);
+        if (this.script != null && !this.script.isEmpty() && context != null) {
 
+            PythonInterpreter interpreter = JythonFactory.getInterpreter();
+            MoveableFacade facade = MoveableFacade.createFor(this, context);
+            interpreter.set("npc", facade);   
+            interpreter.exec(this.script);
+            
         }
     }
 
@@ -163,7 +176,5 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
      * @return Copy of the object.
      */
     public abstract MoveableObject copy();
-
-
 
 }

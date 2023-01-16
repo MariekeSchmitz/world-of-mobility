@@ -35,7 +35,7 @@ const mapDefault: MapInterface = {
   tiles: [
     [
       {
-        type: "Default",
+        type: "GRASSTILE",
         orientation: "NORTH",
         placedObject: { type: "TREE" },
       },

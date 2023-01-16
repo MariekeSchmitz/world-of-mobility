@@ -37,9 +37,9 @@ public class EditorInstance extends Instance {
      * @param map the map to use for the instance
      * @param id the id of the instance
      */
-    public EditorInstance(GameMap map, long id) {
-        super(map, id);
-        this.users = new ArrayList<>();
+    public EditorInstance(GameMap map, long id, String mapSavePath) {
+        super(map, id, mapSavePath);
+        this.users = new ArrayList<String>();
     }
 
     /**
@@ -71,6 +71,7 @@ public class EditorInstance extends Instance {
                 }
                 break;
         }
+        resetRemainingLifetime();
     }
 
     /**
@@ -85,6 +86,8 @@ public class EditorInstance extends Instance {
     public boolean editPlaceablesOnMap(int xPos, int yPos, PlaceableControl placeableControl, PlaceableObjectType placeableObjectType) {
 
         Tile tile = map.getTiles()[yPos][xPos];
+
+        resetRemainingLifetime();
 
         switch(placeableControl) {
             case ADD:
@@ -103,6 +106,7 @@ public class EditorInstance extends Instance {
      */
     public void addUser(String user) {
         users.add(user);
+        resetRemainingLifetime();
     }
 
     /**
@@ -112,14 +116,6 @@ public class EditorInstance extends Instance {
      */
     public void removeUser(String user) {
         users.remove(user);
-    }
-
-    /**
-     * Pushes updates of the instance.
-     */
-    @Override
-    public void update() {
-        // TODO Auto-generated method stub
     }
 
     /**
