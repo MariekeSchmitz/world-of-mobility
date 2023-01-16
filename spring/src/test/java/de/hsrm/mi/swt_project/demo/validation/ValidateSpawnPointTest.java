@@ -31,13 +31,13 @@ public class ValidateSpawnPointTest {
 
     @BeforeEach
     void setUp() {
-        gameId = instanceHandler.createGameInstance("test", "validationTest");
+        gameId = instanceHandler.createGameInstance(null, "validationTest");
     }
 
     @Test
     void getSpawnpointValidationGood() throws Exception {
 
-        String requestParams = "?moveableObject=MOTORIZED_OBJECT&xPos=0&yPos=0";
+        String requestParams = "?moveableObject=CAR&xPos=0&yPos=0";
 
         mockMvc.perform(
             get("/api/game/" + gameId + "/validate-spawnpoint" + requestParams)

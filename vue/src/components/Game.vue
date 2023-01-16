@@ -1,25 +1,31 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
+//@ts-ignore
+import * as THREE from "three";
 import { ref, computed, onMounted, reactive, onUnmounted, watch } from "vue";
 import {
   AmbientLight,
   Box,
   Camera,
   Scene,
-  PointLight,
+  HemisphereLight,
   Renderer,
   ToonMaterial,
   Texture,
   GltfModel,
 } from "troisjs";
 import Map from "@/components/Map.vue";
-import Car from "@/components/objects/Car.vue";
-import { Vector3 } from "three";
+import CAR1 from "@/components/objects/CAR1.vue";
+import SHEEP from "@/components/objects/SHEEP.vue";
 import { useGame } from "@/services/useGame";
 import { useLogin } from "@/services/login/useLogin";
 import { orientations } from "@/services/Orientations";
+import TRUCK from "@/components/objects/TRUCK.vue";
+import TRACTOR from "@/components/objects/TRACTOR.vue";
+import PIG from "@/components/objects/PIG.vue";
+import TUPEL from "@/components/objects/TUPEL.vue";
 
-const SIZE = 10;
+const SIZE = 16;
 
 const props = withDefaults(
   defineProps<{
@@ -44,17 +50,18 @@ const car = ref();
 let thirdPerson = reactive({ value: true });
 let freeCam = reactive({ value: true });
 let switchedMode = false;
-const thirdPersonOffset = new Vector3(0, 8, 15);
-const firstPersonOffset = new Vector3(0, 0, 2);
-const cameraOffset = reactive(new Vector3(0, 8, 15));
-const upVector = new Vector3(0, 1, 0);
-let movementVector = new Vector3(0, 0, 0);
+const thirdPersonOffset = new THREE.Vector3(0, 8, 15);
+const firstPersonOffset = new THREE.Vector3(0, 0, 2);
+const cameraOffset = reactive(new THREE.Vector3(0, 8, 15));
+const upVector = new THREE.Vector3(0, 1, 0);
+let movementVector = new THREE.Vector3(0, 0, 0);
 
 const userMovable = computed(() => {
+  console.log(getUserMoveable(loginData.username));
   return getUserMoveable(loginData.username);
 });
 
-const lookAt = reactive(new Vector3(15, 1, 15));
+const lookAt = reactive(new THREE.Vector3(15, 1, 15));
 
 const cameraPosition = computed(() => {
   const vecTempTarget = lookAt.clone();
@@ -75,7 +82,7 @@ const cameraPosition = computed(() => {
 
 const allMoveables = computed(() => {
   if (userMovable.value != undefined) {
-    const newLookAt = new Vector3(
+    const newLookAt = new THREE.Vector3(
       userMovable.value.xPos * SIZE,
       2,
       -userMovable.value.yPos * SIZE
@@ -171,24 +178,76 @@ onUnmounted(() => {
     <Camera :position="cameraPosition" ref="camera" />
     <Scene background="#97FFFF">
       <!-- Light -->
-      <PointLight :position="{ x: 0, y: 0, z: 10 }" />
-      <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
+      <HemisphereLight
+        :position="new THREE.Vector3(1, 1, 1)"
+        :intensity="2"
+        color="#ffffff"
+      />
+      <!-- <AmbientLight :intensity="0.85" color="#ffffff"></AmbientLight> -->
       <!-- Map -->
       <Map :instanceID="props.instanceID"></Map>
       <!-- "Car" -->
-      <Box
+      <!-- <Box
         :position="{ x: 1, y: 1, z: 2 }"
         :scale="{ x: 1, y: 1, z: 2 }"
         ref="car"
         ><ToonMaterial>
-          <Texture src="/src/textures/Obsidian.jpg" /> </ToonMaterial
-      ></Box>
-
+          <Texture src="@/textures/Obsidian.jpg" /> </ToonMaterial
+      ></Box> -->
       <div v-for="(moveable, index) in allMoveables" :key="index">
-        <Car
-          :pos="new Vector3(moveable.xPos * SIZE, 0.5, -moveable.yPos * SIZE)"
+        <CAR1
+          v-if="moveable.classname == 'CAR'"
+          :scale="new THREE.Vector3(1, 1, 1)"
+          :position="
+            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+          "
           :rotation="-orientations[moveable.orientation]"
-        ></Car>
+        />
+        <SHEEP
+          v-if="moveable.classname == 'SHEEP'"
+          :scale="new THREE.Vector3(1, 1, 1)"
+          :position="
+            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+          "
+          :rotation="-orientations[moveable.orientation]"
+          :type="moveable.classname"
+        />
+        <TRUCK
+          v-if="moveable.classname == 'TRUCK'"
+          :scale="new THREE.Vector3(1, 1, 1)"
+          :position="
+            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+          "
+          :rotation="-orientations[moveable.orientation]"
+          :type="moveable.classname"
+        />
+        <TRACTOR
+          v-if="moveable.classname == 'TRACTOR'"
+          :scale="new THREE.Vector3(1, 1, 1)"
+          :position="
+            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+          "
+          :rotation="-orientations[moveable.orientation]"
+          :type="moveable.classname"
+        />
+        <PIG
+          v-if="moveable.classname == 'PIG'"
+          :scale="new THREE.Vector3(1, 1, 1)"
+          :position="
+            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+          "
+          :rotation="-orientations[moveable.orientation]"
+          :type="moveable.classname"
+        />
+        <TUPEL
+          v-if="moveable.classname == 'TUPEL'"
+          :scale="new THREE.Vector3(1, 1, 1)"
+          :position="
+            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+          "
+          :rotation="-orientations[moveable.orientation]"
+          :type="moveable.classname"
+        />
       </div>
     </Scene>
   </Renderer>
