@@ -54,38 +54,41 @@ async function getWorldAndForwardToEditor(name: string) {
 </script>
 
 <template>
-  <div class="m-32">
-    <div class="grid grid-cols-2 mb-28">
-      <RouterLink to="/login" class="">
-        <font-awesome-icon
-          icon="fa-solid fa-arrow-left"
-          size="3xl"
-          color="white"
-          class="bg-greenLight rounded-full p-2 w-8 h-8 inline justify-self-start"
-        />
-      </RouterLink>
-      <Avatar
-        :avatarPicture="avatarData.avatar"
-        class="justify-self-end"
-      ></Avatar>
-    </div>
+
+  
+  <div class="grid grid-cols-2 mx-12 mt-12 mb-12">
+    <RouterLink to="/login" class="">
+      <font-awesome-icon
+        icon="fa-solid fa-arrow-left"
+        size="3xl"
+        color="white"
+        class="bg-greenLight rounded-full p-2 w-8 h-8 inline justify-self-start"
+      />
+    </RouterLink>
+    <Avatar
+      :avatarPicture="avatarData.avatar"
+      class="justify-self-end"
+    ></Avatar>
+  </div>
+
+  <div class="mx-40 mt-12 my-20">
 
     <div class="">
-      <div class="mb-12">
+      <div class="group mb-12">
         <RouterLink to="/createWorld">
           <button class="inline-flex items-center">
             <font-awesome-icon
               icon="fa-solid fa-plus"
               size="xl"
               color="white"
-              class="w-12 h-12 p-4 inline bg-greenDark rounded-full"
+              class="w-8 h-8 p-4 inline bg-greenDark rounded-full group-hover:bg-orange"
             />
-            <h2 class="ml-8 mb-0 inline">Welt erstellen</h2>
+            <h2 class="ml-6 mb-0 inline group-hover:text-orange">Welt erstellen</h2>
           </button>
         </RouterLink>
       </div>
 
-      <hr class="mb-12 border-2 border-greenDark" />
+      <hr class="mb-12 border-2 border-greenDark bg-greenDark" />
 
       <div id="selection">
         <div class="mb-12 inline-flex items-center">
@@ -117,19 +120,18 @@ async function getWorldAndForwardToEditor(name: string) {
           </fieldset>
         </div>
         <div class="grid grid-cols-5">
-          <div class="" v-for="ele in instanceState.instancelist.instancelist">
-            <button @click="addUserAndJoin(ele.id)">
-              <GameListItem
-                :worldname="ele.worldname"
-                :people="ele.playeramount"
-              ></GameListItem>
-            </button>
+          <div class="gameListItem" v-for="ele in instanceState.instancelist.instancelist" @click="addUserAndJoin(ele.id)">
+            
+            <GameListItem 
+              :worldname="ele.worldname"
+              :people="ele.playeramount"
+              
+            ></GameListItem>
+          
           </div>
 
-          <div class="" v-if="showAll" v-for="ele in mapsOverview.allMaps">
-            <button @click="getWorldAndForwardToEditor(ele.mapName)">
-              <GameListItem :worldname="ele.mapName"></GameListItem>
-            </button>
+          <div class="gameListItem" v-if="showAll" v-for="ele in mapsOverview.allMaps" @click="getWorldAndForwardToEditor(ele.mapName)">
+            <GameListItem :worldname="ele.mapName" class="gameListItem"></GameListItem>
           </div>
         </div>
       </div>
