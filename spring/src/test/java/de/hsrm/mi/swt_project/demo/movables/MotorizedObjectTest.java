@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
-
+import de.hsrm.mi.swt_project.demo.scripting.ScriptContext;
 @SpringBootTest
 class MotorizedObjectTest {
     
@@ -70,8 +70,9 @@ class MotorizedObjectTest {
     @Test
     void testExecuteScript() {
         MotorizedObject vehicle = new MotorizedObject(Orientation.NORTH, 50, 50, 1);
-        vehicle.loadScript("moveable.turn(Direction.LEFT)");
-        vehicle.executeScript();
+        ScriptContext context = new ScriptContext(vehicle, null, null);
+        vehicle.loadScript("npc.turnLeft()");
+        vehicle.executeScript(context);
         assertEquals(Orientation.WEST, vehicle.getOrientation());
     }
     
