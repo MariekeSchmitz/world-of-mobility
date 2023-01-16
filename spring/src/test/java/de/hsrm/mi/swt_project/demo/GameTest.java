@@ -25,10 +25,10 @@ class GameTest {
 
     @BeforeEach
     void setUp() {
-        instanceHandler.createGameInstance("Map1", "Game1");
-        instanceHandler.createGameInstance("Map2", "Game2");
+        instanceHandler.createGameInstance("Map1", "Game1", 16, false);
+        instanceHandler.createGameInstance("Map2", "Game2", 16, false);
         instanceHandler.createEditorInstance("Map3");
-        instanceHandler.createGameInstance("Map4", "Game3");
+        instanceHandler.createGameInstance("Map4", "Game3", 16, false);
     }
 
     @Test

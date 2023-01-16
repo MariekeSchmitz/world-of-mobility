@@ -29,6 +29,8 @@ public class GameInstance extends Instance {
     private Map<String, MoveableObject> moveableObjects = new HashMap<>();
     private ScriptContextCache contextCache = new ScriptContextCache();
     private String name;
+    private int maximumPlayerCount;
+    private int npcCount;
     
     /**
      * Creates a new instance of the game.
@@ -40,21 +42,29 @@ public class GameInstance extends Instance {
      * @param map the map to use for the instance
      * @param name the name of the instance
      * @param id the id of the instance
+     * @param maximumPlayerCount count how many player can join the game 
+     * @param npcsActivated flag if npcs are activated or not
      */
-    public GameInstance(GameMap map, String name, long id, String mapSavePath) {
+    public GameInstance(GameMap map, String name, long id, String mapSavePath, int maximumPlayerCount, boolean npcsActivated) {
 
         super(map, id, mapSavePath);
         this.name = name;
+        this.maximumPlayerCount = maximumPlayerCount;
 
         ListIterator<MoveableObject> iterator = map.getNpcs().listIterator();
 
-        while (iterator.hasNext()) {
+        if(npcsActivated){
+            this.npcCount = map.getNpcs().size();
+            while (iterator.hasNext()) {
 
-            int index = iterator.nextIndex();
-            MoveableObject npc = iterator.next().copy();
+                int index = iterator.nextIndex();
+                MoveableObject npc = iterator.next().copy();
 
-            String npcName = "NPC%d".formatted(index);
-            moveableObjects.put(npcName, npc);
+                String npcName = "NPC%d".formatted(index);
+                moveableObjects.put(npcName, npc);
+            }
+        } else {
+            this.npcCount = 0;
         }
     }
 
@@ -172,5 +182,15 @@ public class GameInstance extends Instance {
     public boolean validateSpawnpoint(MoveableObject moveableObject, int xPos, int yPos) {
         SpawnpointValidator spawnpointValidator = new SpawnpointValidator(this.map.getTiles(), moveableObject, xPos, yPos);
         return spawnpointValidator.validate();
+    }
+
+    /**
+     * Checks if count of players is less than maximumPlayerCount
+     * @return true if playerCount is less than maximumPlayerCount, false if not
+     */
+    public boolean playerSlotAvailable(){
+        int playerCount = moveableObjects.size()- npcCount;
+        if(playerCount < maximumPlayerCount) return true;
+        else return false;
     }
 }
