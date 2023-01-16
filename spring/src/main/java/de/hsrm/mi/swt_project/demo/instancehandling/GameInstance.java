@@ -1,13 +1,20 @@
 package de.hsrm.mi.swt_project.demo.instancehandling;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
+import org.python.util.PythonInterpreter;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.GameControl;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
+import de.hsrm.mi.swt_project.demo.scripting.JythonFactory;
+import de.hsrm.mi.swt_project.demo.scripting.ScriptContext;
+import de.hsrm.mi.swt_project.demo.scripting.ScriptContextCache;
+import de.hsrm.mi.swt_project.demo.validation.CollisionValidator;
 import de.hsrm.mi.swt_project.demo.validation.MovementValidator;
 import de.hsrm.mi.swt_project.demo.validation.SpawnpointValidator;
 import de.hsrm.mi.swt_project.demo.validation.Validator;
@@ -20,6 +27,7 @@ import de.hsrm.mi.swt_project.demo.validation.Validator;
 public class GameInstance extends Instance {
 
     private Map<String, MoveableObject> moveableObjects = new HashMap<>();
+    private ScriptContextCache contextCache = new ScriptContextCache();
     private String name;
     private int maximumPlayerCount;
     private int npcCount;
@@ -76,10 +84,10 @@ public class GameInstance extends Instance {
                 moveableObjects.get(user).turn(Direction.RIGHT);
                 break;
             case SPEED_UP:
-                moveableObjects.get(user).setCurrentVelocity(moveableObjects.get(user).getCurrentVelocity() + 0.1F);
+                moveableObjects.get(user).setCurrentVelocity(moveableObjects.get(user).getCurrentVelocity() + 0.05F);
                 break;
             case SPEED_DOWN:
-                moveableObjects.get(user).setCurrentVelocity(moveableObjects.get(user).getCurrentVelocity() - 0.1F);
+                moveableObjects.get(user).setCurrentVelocity(moveableObjects.get(user).getCurrentVelocity() - 0.05F);
                 break;
         }
 
@@ -114,12 +122,18 @@ public class GameInstance extends Instance {
     public void update() {
 
         super.update();
+        
+        CollisionValidator collisionValidator = new CollisionValidator(moveableObjects);
+        PythonInterpreter interpreter = JythonFactory.getInterpreter();
+        interpreter.set("tiles", this.map.getTiles());
+        interpreter.set("moveables", this.moveableObjects);
 
         for(MoveableObject moveableObject : moveableObjects.values()) {
 
             Validator movementValidator = new MovementValidator(this.map.getTiles(), moveableObject);
+            collisionValidator.setMoveableObject(moveableObject);
 
-            if (movementValidator.validate()) {
+            if (movementValidator.validate() && collisionValidator.validate()) {
                 moveableObject.move();
             } else {
                 moveableObject.setCurrentVelocity(0);
@@ -131,8 +145,11 @@ public class GameInstance extends Instance {
      * Trigged Script for NPC
      */
     public void updateScript() {
-        for(MoveableObject movableObject : moveableObjects.values()) {
-            movableObject.executeScript();
+        List<MoveableObject> allMoveables = this.moveableObjects.values().stream().toList();
+        Tile[][] mapTiles = this.map.getTiles();
+        for (MoveableObject movableObject : allMoveables) {
+            ScriptContext context = contextCache.getContextFor(movableObject, mapTiles, allMoveables);
+            movableObject.executeScript(context);
         }
     }
 

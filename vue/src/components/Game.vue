@@ -3,17 +3,7 @@
 //@ts-ignore
 import * as THREE from "three";
 import { ref, computed, onMounted, reactive, onUnmounted, watch } from "vue";
-import {
-  AmbientLight,
-  Box,
-  Camera,
-  Scene,
-  HemisphereLight,
-  Renderer,
-  ToonMaterial,
-  Texture,
-  GltfModel,
-} from "troisjs";
+import { Camera, Scene, HemisphereLight, Renderer } from "troisjs";
 import Map from "@/components/Map.vue";
 import CAR1 from "@/components/objects/CAR1.vue";
 import SHEEP from "@/components/objects/SHEEP.vue";
@@ -43,25 +33,33 @@ const {
 const { loginData } = useLogin();
 
 const renderer = ref();
-const model = ref(null);
 const camera = ref();
-const car = ref();
 
-let thirdPerson = reactive({ value: true });
-let freeCam = reactive({ value: true });
+let thirdPerson = ref(true);
+let freeCam = ref(true);
 let switchedMode = false;
+const hoverHeight = 2;
 const thirdPersonOffset = new THREE.Vector3(0, 8, 15);
 const firstPersonOffset = new THREE.Vector3(0, 0, 2);
 const cameraOffset = reactive(new THREE.Vector3(0, 8, 15));
 const upVector = new THREE.Vector3(0, 1, 0);
 let movementVector = new THREE.Vector3(0, 0, 0);
+const lookAt = reactive(new THREE.Vector3(0, 0, 0));
 
+/**
+ * returns the moveable object of the logged in user.
+ */
 const userMovable = computed(() => {
   return getUserMoveable(loginData.username);
 });
 
-const lookAt = reactive(new THREE.Vector3(15, 1, 15));
+watch(userMovable, () => {
+  setAzimuthAngle();
+});
 
+/**
+ * returns the position of the camera.
+ */
 const cameraPosition = computed(() => {
   const vecTempTarget = lookAt.clone();
   const vecTempOffset = cameraOffset.clone();
@@ -71,7 +69,7 @@ const cameraPosition = computed(() => {
     if (userMovable.value != undefined) {
       vecTempOffset.applyAxisAngle(
         upVector,
-        orientations[userMovable.value.orientation]
+        -orientations[userMovable.value.orientation]
       );
     }
     switchedMode = false;
@@ -79,11 +77,14 @@ const cameraPosition = computed(() => {
   }
 });
 
+/***
+ * keeps every playerobject up to date.
+ */
 const allMoveables = computed(() => {
   if (userMovable.value != undefined) {
     const newLookAt = new THREE.Vector3(
       userMovable.value.xPos * SIZE,
-      2,
+      hoverHeight,
       -userMovable.value.yPos * SIZE
     );
     movementVector = newLookAt.clone().sub(lookAt);
@@ -97,6 +98,10 @@ const allMoveables = computed(() => {
  */
 function switchCamMode() {
   freeCam.value = !freeCam.value;
+  if (renderer.value) {
+    renderer.value.three.cameraCtrl.enabled =
+      !renderer.value.three.cameraCtrl.enabled;
+  }
 }
 
 /**
@@ -113,6 +118,20 @@ function switchPerspective() {
 }
 function onReady(model: any) {
   console.log("model Ready", model);
+}
+
+function setAzimuthAngle() {
+  if (!renderer.value || !userMovable.value) return;
+  const orbitControls = renderer.value.three.cameraCtrl;
+  if (freeCam.value && !thirdPerson.value) {
+    orbitControls.minAzimuthAngle =
+      -orientations[userMovable.value.orientation] - Math.PI / 2;
+    orbitControls.maxAzimuthAngle =
+      -orientations[userMovable.value.orientation] + Math.PI / 2;
+  } else {
+    orbitControls.minAzimuthAngle = Infinity;
+    orbitControls.maxAzimuthAngle = Infinity;
+  }
 }
 /**
  * An Eventhandler for the Keyboardevents.
@@ -132,6 +151,7 @@ function handleKeyEvent(e: KeyboardEvent) {
   } else if (e.code === "KeyF") {
     switchCamMode();
   }
+  setAzimuthAngle();
 }
 
 /**
@@ -147,25 +167,10 @@ onMounted(() => {
   orbitControls.enableRotate = true;
   orbitControls.screenSpacePanning = false;
   orbitControls.maxPolarAngle = Math.PI / 2;
-
-  function setAzimuthAngle() {
-    console.log("hallo");
-    if (freeCam.value && !thirdPerson.value) {
-      orbitControls.minAzimuthAngle =
-        orientations[userMovable.value.orientation] - Math.PI / 2;
-      orbitControls.minAzimuthAngle =
-        orientations[userMovable.value.orientation] + Math.PI / 2;
-    } else {
-      orbitControls.minAzimuthAngle =
-        orientations[userMovable.value.orientation];
-      orbitControls.maxAzimuthAngle =
-        orientations[userMovable.value.orientation] + 1.99 * Math.PI;
-    }
-  }
+  orbitControls.maxDistance = 20;
 
   receiveGameUpdate(props.instanceID);
   document.addEventListener("keyup", handleKeyEvent);
-  watch(userMovable.value, () => setAzimuthAngle());
 });
 onUnmounted(() => {
   document.removeEventListener("keyup", handleKeyEvent);
