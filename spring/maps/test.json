@@ -82,8 +82,12 @@
         "type": "GRASSTILE"
       },
       {
+        "allowedDirections": [
+          "NORTH",
+          "SOUTH"
+        ],
         "orientation": "NORTH",
-        "type": "GRASSTILE"
+        "type": "STREET_STRAIGHT"
       },
       {
         "orientation": "NORTH",
@@ -116,8 +120,12 @@
         "type": "GRASSTILE"
       },
       {
+        "allowedDirections": [
+          "NORTH",
+          "SOUTH"
+        ],
         "orientation": "NORTH",
-        "type": "GRASSTILE"
+        "type": "STREET_STRAIGHT"
       },
       {
         "orientation": "NORTH",
@@ -150,8 +158,12 @@
         "type": "GRASSTILE"
       },
       {
+        "allowedDirections": [
+          "NORTH",
+          "SOUTH"
+        ],
         "orientation": "NORTH",
-        "type": "GRASSTILE"
+        "type": "STREET_STRAIGHT"
       },
       {
         "orientation": "NORTH",

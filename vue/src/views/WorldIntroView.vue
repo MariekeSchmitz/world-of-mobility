@@ -6,8 +6,8 @@
 
 import GameListItem from "@/components/selectview/GameListItem.vue";
 import { useInstanceList } from "@/services/useInstanceList";
-import { computed, ref } from "@vue/reactivity";
-import { onMounted } from "vue";
+import { computed, reactive, ref } from "@vue/reactivity";
+import { onMounted, watch } from "vue";
 import { useMapOverview } from "@/services/useMapOverview";
 import { useEditor } from "@/services/useEditor";
 import { RouterLink } from "vue-router";
@@ -21,9 +21,38 @@ const { createWorld } = useEditor();
 const { joinEditor } = useUserEditor();
 const { loginData } = useLogin();
 
-onMounted(() => {
-  getInstanceList("editor");
-  getMaps();
+interface MaplistState {
+  maplist: Array<string>;
+}
+interface IInstanceInfo {
+  id: number;
+  gamename: string;
+  worldname: string;
+  playeramount: number;
+}
+const maplistState: MaplistState = reactive({ maplist: [] });
+
+onMounted(async () => {
+  await getMaps();
+  await getInstanceList("editor");
+});
+
+const instancelist = computed(() => {
+  maplistState.maplist = mapsOverview.allMaps.map((map) => map.mapName);
+  if (maplistState.maplist != undefined) {
+    for (let i = maplistState.maplist.length - 1; i >= 0; i--) {
+      for (let j = instanceState.instancelist.length - 1; j >= 0; j--) {
+        if (
+          instanceState.instancelist[j].worldname == maplistState.maplist[i]
+        ) {
+          console.log("found ", maplistState.maplist[i]);
+          maplistState.maplist.splice(i, 1);
+        }
+      }
+    }
+  }
+
+  return instanceState.instancelist;
 });
 
 const showAll = ref(true);
@@ -88,7 +117,7 @@ async function getWorldAndForwardToEditor(name: string) {
       </fieldset>
 
       <div class="flexbox">
-        <div class="box" v-for="ele in instanceState.instancelist.instancelist">
+        <div class="box" v-for="ele in instancelist">
           <button @click="addUserAndJoin(ele.id)">
             <GameListItem
               :worldname="ele.worldname"
@@ -97,9 +126,12 @@ async function getWorldAndForwardToEditor(name: string) {
           </button>
         </div>
 
-        <div class="box" v-if="showAll" v-for="ele in mapsOverview.allMaps">
-          <button @click="getWorldAndForwardToEditor(ele.mapName)">
-            <GameListItem :worldname="ele.mapName"></GameListItem>
+        <div class="box" v-if="showAll" v-for="ele in maplistState.maplist">
+          <button
+            v-if="ele != undefined"
+            @click="getWorldAndForwardToEditor(ele)"
+          >
+            <GameListItem :worldname="ele"></GameListItem>
           </button>
         </div>
       </div>
