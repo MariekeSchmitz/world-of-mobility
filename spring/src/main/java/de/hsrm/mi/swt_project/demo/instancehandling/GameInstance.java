@@ -7,6 +7,7 @@ import java.util.Map;
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.GameControl;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
+import de.hsrm.mi.swt_project.demo.validation.CollisionValidator;
 import de.hsrm.mi.swt_project.demo.validation.MovementValidator;
 import de.hsrm.mi.swt_project.demo.validation.SpawnpointValidator;
 import de.hsrm.mi.swt_project.demo.validation.Validator;
@@ -65,10 +66,10 @@ public class GameInstance extends Instance {
                 moveableObjects.get(user).turn(Direction.RIGHT);
                 break;
             case SPEED_UP:
-                moveableObjects.get(user).setCurrentVelocity(moveableObjects.get(user).getCurrentVelocity() + 0.1F);
+                moveableObjects.get(user).setCurrentVelocity(moveableObjects.get(user).getCurrentVelocity() + 0.05F);
                 break;
             case SPEED_DOWN:
-                moveableObjects.get(user).setCurrentVelocity(moveableObjects.get(user).getCurrentVelocity() - 0.1F);
+                moveableObjects.get(user).setCurrentVelocity(moveableObjects.get(user).getCurrentVelocity() - 0.05F);
                 break;
         }
 
@@ -103,12 +104,15 @@ public class GameInstance extends Instance {
     public void update() {
 
         super.update();
+        
+        CollisionValidator collisionValidator = new CollisionValidator(moveableObjects);
 
         for(MoveableObject moveableObject : moveableObjects.values()) {
 
             Validator movementValidator = new MovementValidator(this.map.getTiles(), moveableObject);
+            collisionValidator.setMoveableObject(moveableObject);
 
-            if (movementValidator.validate()) {
+            if (movementValidator.validate() && collisionValidator.validate()) {
                 moveableObject.move();
             } else {
                 moveableObject.setCurrentVelocity(0);
