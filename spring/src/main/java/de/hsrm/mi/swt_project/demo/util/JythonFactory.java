@@ -12,40 +12,22 @@ public class JythonFactory {
 
     public static final String API_PATH = "npcApi.py";
 
-    protected static final PythonInterpreter INTERPRETER = new PythonInterpreter();
-    protected static boolean initialized = false;
-
     /**
      * Private default constructor to avoid instanciation.
      */
     private JythonFactory() {
-        // empty
+        // do nothing
     }
     
     public static PythonInterpreter getInterpreter(){
-
-        if (!initialized) {
-            init();
-        }
-
-        return INTERPRETER;
-    }
-
-    /**
-     * Initialized interpreter by setting global context and
-     * executing the api script.
-     */
-    protected static void init() {
-
-        INTERPRETER.set("Direction", Direction.class);
-
         try (InputStream resource = new ClassPathResource(API_PATH).getInputStream()) {
-            INTERPRETER.execfile(resource);
+            PythonInterpreter pythonInterpreter = new PythonInterpreter();
+            pythonInterpreter.set("Direction", Direction.class);
+            pythonInterpreter.execfile(resource);
+            return pythonInterpreter;
         } catch (IOException e) {
-            e.printStackTrace();
+            return new PythonInterpreter();
         }
-
-        initialized = true;
-    }
+    } 
 
 }
