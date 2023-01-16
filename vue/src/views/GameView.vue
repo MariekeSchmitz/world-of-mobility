@@ -24,7 +24,7 @@ onUnmounted(() => {
 });
 
 function leave() {
-  router.push("/joingame/" + props.instanceID);
+  router.push("/gameintro");
 }
 </script>
 
