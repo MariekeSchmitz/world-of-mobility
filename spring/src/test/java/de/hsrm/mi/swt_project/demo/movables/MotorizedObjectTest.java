@@ -97,7 +97,7 @@ class MotorizedObjectTest {
     @Test
     void testToString() {
         MotorizedObject p = new MotorizedObject(1, 2);
-        assertEquals("MotorizedObject[xPos=1.00,yPos=2.00,curV=0.00,maxV=1.00,cap=1.00,orientation=NORTH]", p.toString());
+        assertEquals("MotorizedObject[xPos=1.00,yPos=2.00,curV=0.00,maxV=0.20,cap=1.00,orientation=NORTH]", p.toString());
     }
 
 }

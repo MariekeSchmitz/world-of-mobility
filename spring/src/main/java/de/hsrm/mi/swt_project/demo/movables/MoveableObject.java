@@ -25,6 +25,8 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
     protected static final float MIN_CAPACITY = 0.0f;
     protected static final float MAX_CAPACITY = 1.0f;
 
+    protected float hitboxRadius = 0.15f;
+
     protected Orientation orientation;
 
     protected float xPos;
@@ -97,6 +99,10 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
      */
     public float getMaxVelocity() {
         return maxVelocity;
+    }
+
+    public float getHitboxRadius() {
+        return hitboxRadius;
     }
 
     /**
