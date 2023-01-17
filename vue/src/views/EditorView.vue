@@ -77,8 +77,11 @@
 
   <BottomMenu></BottomMenu>
 
+  <!--
+  sends msg on every instance, should only be in one instance for all; first player gets all msg shown as many times as there are players
+        
   <ServerChat :instanceId="editorID"></ServerChat>
-
+  -->
   <MiniMap />
 
   <Renderer
@@ -97,11 +100,7 @@
       <PointLight :position="{ x: 0, y: 0, z: 10 }" />
       <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
 
-      <!--
-        sends msg on every instance, should only be in one instance for all; first player gets all msg shown as many times as there are players
-        <EditorMap :editorID="editorID"></EditorMap>
-
-      -->
+      <EditorMap :editorID="editorID"></EditorMap>
     </Scene>
   </Renderer>
 </template>
