@@ -55,7 +55,7 @@ public class ScriptValidator implements Validator {
             && !scriptContainsForbiddenImports() 
             && !scriptContainsForbiddenFunctions()
             && !scriptUsesNonApiCalls();
-    };
+    }
 
     /**
      * Checks if the script contains methods that are

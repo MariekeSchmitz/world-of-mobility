@@ -17,6 +17,11 @@ public enum Orientation {
         public Orientation prev() {
             return NORTH_WEST;
         }
+
+        @Override
+        public Orientation opposite() {
+            return SOUTH;
+        }
     },
 
     NORTH_EAST {
@@ -28,6 +33,11 @@ public enum Orientation {
         @Override
         public Orientation prev() {
             return NORTH;
+        }
+
+        @Override
+        public Orientation opposite() {
+            return SOUTH_WEST;
         }
     },
 
@@ -41,6 +51,11 @@ public enum Orientation {
         public Orientation prev() {
             return NORTH_EAST;
         }
+
+        @Override
+        public Orientation opposite() {
+            return WEST;
+        }
     },
 
     SOUTH_EAST {
@@ -52,6 +67,11 @@ public enum Orientation {
         @Override 
         public Orientation prev() {
             return EAST;
+        }
+
+        @Override
+        public Orientation opposite() {
+            return NORTH_WEST;
         }
     },
 
@@ -65,6 +85,11 @@ public enum Orientation {
         public Orientation prev() {
             return SOUTH_EAST;
         }
+
+        @Override
+        public Orientation opposite() {
+            return NORTH;
+        }
     },
 
     SOUTH_WEST {
@@ -76,6 +101,11 @@ public enum Orientation {
         @Override
         public Orientation prev() {
             return SOUTH;
+        }
+
+        @Override
+        public Orientation opposite() {
+            return NORTH_EAST;
         }
     },
 
@@ -89,6 +119,11 @@ public enum Orientation {
         public Orientation prev() {
             return SOUTH_WEST;
         }
+
+        @Override
+        public Orientation opposite() {
+            return EAST;
+        }
     },
     
     NORTH_WEST {
@@ -100,6 +135,11 @@ public enum Orientation {
         @Override
         public Orientation prev() {
             return WEST;
+        }
+
+        @Override
+        public Orientation opposite() {
+            return SOUTH_EAST;
         }
     };
     
@@ -116,5 +156,13 @@ public enum Orientation {
      * @return Previous orientation in N-NE-E-SE-S-SW-W-NW cycle.
      */
     public abstract Orientation prev();
+
+    /**
+     * Gets the opposite orientation of pairs
+     * (N, S), (NE, SW), (E, W), (SE, NW).
+     * 
+     * @return Opposite orientation.
+     */
+    public abstract Orientation opposite();
 
 }
