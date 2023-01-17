@@ -21,11 +21,14 @@
   import { number } from "mathjs";
   import { useUserEditor } from "@/services/useUserEditor";
   import { useLogin } from "@/services/login/useLogin";
+import ScriptField from "@/components/editor/ScriptField.vue";
 
  
   const props = defineProps<{
     editorID: string;
   }>();
+
+  let editorID: number = parseInt(props.editorID);
 
   const { loginData } = useLogin();
   const { leaveEditor } = useUserEditor();
@@ -51,6 +54,24 @@
 
     const {saveMap} = useMap();
 
+    let npcx= ref(0);
+    let npcy = ref(0);
+    
+    const npcNeedsScript = ref(false)
+
+
+
+  function setNpcValues(x:number,y:number) {
+    npcx.value = x;
+    npcy.value = y;
+    setNpcScriptView(true)
+  } 
+
+  
+  function setNpcScriptView(val:boolean) {
+    npcNeedsScript.value = val;
+  }
+
 </script>
 
 <template>
@@ -73,7 +94,14 @@
 
   <LeftMenu />
 
-  <BottomMenu></BottomMenu>
+  <ScriptField
+    v-if="npcNeedsScript"
+    :id="editorID"
+    :x="npcx"
+    :y="npcy"
+    @script-window-closed="setNpcScriptView(false)"
+  ></ScriptField>
+  <BottomMenu v-if="!npcNeedsScript"></BottomMenu>
 
   <MiniMap />
 
@@ -93,7 +121,10 @@
       <PointLight :position="{ x: 0, y: 0, z: 10 }" />
       <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
 
-      <EditorMap :editorID="editorID"></EditorMap>
+      <EditorMap
+        :editorID="editorID"
+        @npc-added="setNpcValues($event.x, $event.y)"
+      ></EditorMap>
     </Scene>
   </Renderer>
 </template>

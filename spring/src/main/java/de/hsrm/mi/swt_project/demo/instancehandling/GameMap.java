@@ -24,7 +24,6 @@ import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.DriveableByCar;
 import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.Walkable;
 import de.hsrm.mi.swt_project.demo.movables.MotorizedObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
-import de.hsrm.mi.swt_project.demo.movables.MoveableType;
 import de.hsrm.mi.swt_project.demo.movables.Passenger;
 import de.hsrm.mi.swt_project.demo.util.ArrayHelpers;
 
@@ -75,16 +74,17 @@ public class GameMap {
 
     /**
      * deletes npc if found in npc-list
+     * 
      * @param x
      * @param y
      * @author Tom Gouthier, Marie Bohnert
      */
-    public void deleteNPC(float x, float y) throws NoNpcExistsOnCoordinates{
+    public void deleteNPC(float x, float y) throws NoNpcExistsOnCoordinates {
 
         logger.info("trying to remove npc with coordinates: {} {}", x, y);
 
-        for(MoveableObject npc : npcs){
-            if(npc.getxPos() == x && npc.getyPos() == y){
+        for (MoveableObject npc : npcs) {
+            if (npc.getxPos() == x && npc.getyPos() == y) {
                 npcs.remove(npc);
                 logger.info("removed following npc: {}", npc);
                 return;
@@ -141,15 +141,15 @@ public class GameMap {
         boolean validate = false;
 
         if (tile instanceof CanHoldNatureObject) {
-            if (placeableObject instanceof Tree || placeableObject instanceof Pig ||placeableObject instanceof Sheep) {
+            if (placeableObject instanceof Tree || placeableObject instanceof Pig || placeableObject instanceof Sheep) {
                 validate = true;
             }
-        }else if(tile instanceof CanHoldStreetObject){
+        } else if (tile instanceof CanHoldStreetObject) {
             if ((!(tile.getType().equals(Tiletype.STREET_CURVE)) && placeableObject instanceof TrafficLight) ||
-                (tile.getType().equals(Tiletype.STREET_STRAIGHT) && placeableObject instanceof GasStation)){
+                    (tile.getType().equals(Tiletype.STREET_STRAIGHT) && placeableObject instanceof GasStation)) {
                 validate = true;
             }
-            
+
         }
 
         if (validate) {
@@ -267,7 +267,8 @@ public class GameMap {
     }
 
     /**
-     *  validates if npc can be placed
+     * validates if npc can be placed
+     * 
      * @param moveableObject
      * @return boolean can be placed or not
      * @author Tom Gouthier, Marie Bohnert

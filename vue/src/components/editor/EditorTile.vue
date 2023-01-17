@@ -12,7 +12,7 @@ import { useMapUpdate } from "@/services/useMapUpdate";
 import type { ExportTile } from "@/services/editor/ExportTileInterface";
 import { usePlaceObject } from "@/services/usePlaceObject";
 import { ControlEnum } from "@/services/ControlEnum";
-import { editorTileURLs } from "@/components/editor/EditorTileURLDict"
+import { editorTileURLs } from "@/components/editor/EditorTileURLDict";
 import { NpcType } from "@/services/editor/NpcType";
 import { usePlaceNpc } from "@/services/editor/usePlaceNpc";
 import type { INpc } from "@/interfaces/INpc";
@@ -50,6 +50,14 @@ watch(readCMState.value, () => {
   cmVisible.value = false;
 });
 
+const emit = defineEmits<{
+  (e: "npc-added", npc: { x: number; y: number }): void;
+}>();
+
+function npcAdded(x: number, y: number): void {
+  emit("npc-added", { x, y });
+}
+
 function tileHover(event: any) {
   //console.log("tileHover: ",event);
   event.component.mesh.material.color.set(event.over ? "#dddddd" : "#ffffff");
@@ -85,16 +93,13 @@ function placeItem() {
       sendMapUpdates(toSendObj);
     }
   } else if (!readPlaceState.value.isTile) {
-    if (
-      (<any>Object).values(NpcType).includes(readPlaceState.value.type)
-    ) {
+    if ((<any>Object).values(NpcType).includes(readPlaceState.value.type)) {
       // @ts-expect-error
       placeNpc(posX, posY, readPlaceState.value.type, props.editorID);
+      npcAdded(posX, posY);
     } else if (readPlaceState.value.type === ControlEnum.REMOVE_NPC) {
-      removeNpc(posX, posY, props.editorID)
-    } else 
-      sendPlaceObject(posX, posY, props.placedObject);
-    
+      removeNpc(posX, posY, props.editorID);
+    } else sendPlaceObject(posX, posY, props.placedObject);
   }
 }
 
@@ -185,26 +190,50 @@ function removeTile() {
     yPos: posY,
     control: "REMOVE",
   };
-  removeNpc(posX,posY,props.editorID);
+  removeNpc(posX, posY, props.editorID);
   sendMapUpdates(removeDTO);
 }
 </script>
 <template>
-  <Plane @click="placeItem" @pointer-over="tileHover" :width="props.width" :height="props.height"
-    :rotation="props.rotation" :position="props.position">
+  <Plane
+    @click="placeItem"
+    @pointer-over="tileHover"
+    :width="props.width"
+    :height="props.height"
+    :rotation="props.rotation"
+    :position="props.position"
+  >
     <BasicMaterial>
       <Texture v-bind:src="texturePath" />
     </BasicMaterial>
   </Plane>
 
-  <ContextMenu v-if="cmVisible" v-on:turnRight="turnRight()" v-on:turnLeft="turnLeft()" v-on:removeTile="removeTile()"
-    :width="0.8" :height="0.3" :position="props.position.clone().add(new THREE.Vector3(0, 0.4, 0.03))"></ContextMenu>
+  <ContextMenu
+    v-if="cmVisible"
+    v-on:turnRight="turnRight()"
+    v-on:turnLeft="turnLeft()"
+    v-on:removeTile="removeTile()"
+    :width="0.8"
+    :height="0.3"
+    :position="props.position.clone().add(new THREE.Vector3(0, 0.4, 0.03))"
+  ></ContextMenu>
 
-  <PlacedObject v-if="props.placedObject != 'none'" :type="props.placedObject" :width="props.width"
-    :height="props.height" :rotation="props.rotation"
-    :position="props.position.clone().add(new THREE.Vector3(0.1, -0.1, 0.02))"></PlacedObject>
+  <PlacedObject
+    v-if="props.placedObject != 'none'"
+    :type="props.placedObject"
+    :width="props.width"
+    :height="props.height"
+    :rotation="props.rotation"
+    :position="props.position.clone().add(new THREE.Vector3(0.1, -0.1, 0.02))"
+  ></PlacedObject>
 
-  <PlacedObject v-if="props.placedNpc" :type="props.placedNpc.type" :width="props.width" :height="props.height"
-    :rotation="props.rotation" :position="props.position.clone().add(new THREE.Vector3(0.1, -0.1, 0.02))">
+  <PlacedObject
+    v-if="props.placedNpc"
+    :type="props.placedNpc.type"
+    :width="props.width"
+    :height="props.height"
+    :rotation="props.rotation"
+    :position="props.position.clone().add(new THREE.Vector3(0.1, -0.1, 0.02))"
+  >
   </PlacedObject>
 </template>

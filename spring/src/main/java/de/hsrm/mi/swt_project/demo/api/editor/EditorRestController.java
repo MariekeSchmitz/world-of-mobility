@@ -24,6 +24,7 @@ import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
 import de.hsrm.mi.swt_project.demo.instancehandling.NoNpcExistsOnCoordinates;
 import de.hsrm.mi.swt_project.demo.instancehandling.NpcNotPlaceableException;
+import de.hsrm.mi.swt_project.demo.instancehandling.ScriptNotValidException;
 import de.hsrm.mi.swt_project.demo.instancehandling.UpdateloopService;
 import de.hsrm.mi.swt_project.demo.messaging.GetListInstanceDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetMapUpdateDTO;
@@ -230,43 +231,50 @@ public class EditorRestController {
     @PostMapping("/{id}/placeNpc")
     public void placeNpc(@PathVariable long id, @RequestBody PlaceNpcDTO npc) {
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(id);
-        try{
+        try {
             editorInstance.placeNPC(npc.x(), npc.y(), npc.type());
             loopService.publishInstanceState(editorInstance);
 
-        } catch(NpcNotPlaceableException error){
+        } catch (NpcNotPlaceableException error) {
             throw error;
         }
-        
+
     }
 
+    /**
+     * DELETE Endpoint to delete npcs
+     * 
+     * @param id  editor instance id
+     * @param npc DTO with data needed to remove a npc on a certain location
+     * @author Marie Bohnert, Tom Gouthier
+     */
     @DeleteMapping("/{id}/removeNpc")
-    public void removeNpc(@PathVariable long id, @RequestBody RemoveNpcDTO npc){
+    public void removeNpc(@PathVariable long id, @RequestBody RemoveNpcDTO npc) {
 
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(id);
-        try{
+        try {
             editorInstance.deleteNPC(npc.x(), npc.y());
             loopService.publishInstanceState(editorInstance);
-        } catch(NoNpcExistsOnCoordinates e){
+        } catch (NoNpcExistsOnCoordinates e) {
             throw e;
         }
-       
 
     }
+
     /**
      * 
      * 
-     * @param id editor instance identifier
+     * @param id        editor instance identifier
      * @param scriptDTO sent from client
      * @author Tom Gouthier, Marie Bohnert
      */
     @PostMapping("/{id}/loadScript")
-    public void postNPCScript(@PathVariable long id, @RequestBody GetScriptDTO scriptDTO){
+    public void postNPCScript(@PathVariable long id, @RequestBody GetScriptDTO scriptDTO) {
 
         EditorInstance instance = instanceHandler.getEditorInstanceById(id);
         try {
-            instance.addScriptToNpc(scriptDTO.x(),scriptDTO.y(),scriptDTO.script());
-        } catch(NoNpcExistsOnCoordinates e){
+            instance.addScriptToNpc(scriptDTO.x(), scriptDTO.y(), scriptDTO.script());
+        } catch (NoNpcExistsOnCoordinates | ScriptNotValidException e) {
             throw e;
         }
     }

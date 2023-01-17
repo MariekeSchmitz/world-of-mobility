@@ -12,17 +12,16 @@ import type { INpc } from "@/interfaces/INpc";
 
 const props = withDefaults(
   defineProps<{
-    editorID: string;
+    editorID: number;
   }>(),
-  { editorID: "0" }
+  { editorID: 0 }
 );
 
-let editorID: number = parseInt(props.editorID);
-const { receiveMapUpdates, mapUpdates } = useMapUpdate(editorID);
+const { receiveMapUpdates, mapUpdates } = useMapUpdate(props.editorID);
 const { getMapEditor } = useMap();
 
-receiveMapUpdates(editorID);
-const loadedMap = getMapEditor(editorID);
+receiveMapUpdates(props.editorID);
+const loadedMap = getMapEditor(props.editorID);
 
 const mapWidth = ref(8);
 const mapHeight = ref(8);
@@ -84,6 +83,7 @@ onMounted(() => {
           :editorID="editorID"
           :cmVisible="false"
           :placedNpc="findNpc(row, column)"
+          @npc-added="$emit('npc-added', $event)"
         >
         </EditorTile>
       </div>
@@ -100,6 +100,7 @@ onMounted(() => {
           :editorID="editorID"
           :cmVisible="false"
           :placedNpc="findNpc(row, column)"
+          @npc-added="$emit('npc-added', $event)"
         >
         </EditorTile>
       </div>

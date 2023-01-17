@@ -8,9 +8,13 @@ interface IPlaceNPC {
   y: number;
   type: NpcType;
 }
-interface IRemoveNPC{
-  x:number,
-  y:number
+
+/**
+ * interface that represents a npc that is supposed to be deleted
+ */
+interface IRemoveNPC {
+  x: number;
+  y: number;
 }
 
 /**
@@ -47,8 +51,13 @@ async function placeNpc(x: number, y: number, type: NpcType, id: number) {
   }
 }
 
-async function removeNpc(x: number, y: number, id: number){
-
+/**
+ * removes Npc on specific coordinates
+ * @param x x coordinate of npc
+ * @param y y coordinate of npc
+ * @param id id of editor-instance
+ */
+async function removeNpc(x: number, y: number, id: number) {
   const npc: IRemoveNPC = {
     x: x,
     y: y,
@@ -72,16 +81,11 @@ async function removeNpc(x: number, y: number, id: number){
   } catch (error) {
     console.log("Error: " + error);
   }
-
-
-
-
-} 
+}
 
 export function usePlaceNpc() {
   return {
     placeNpc,
-    removeNpc
+    removeNpc,
   };
 }
-

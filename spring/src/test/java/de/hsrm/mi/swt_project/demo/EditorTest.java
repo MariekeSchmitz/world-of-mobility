@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -155,15 +154,15 @@ class EditorTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(body.toString()))
                                 .andExpect(status().isForbidden());
-                
+
         }
 
         @Test
-        void post_placeNpc_ForbiddenTile() throws Exception{
-                Tile tile = Tiletype.STREET_CURVE.createTile();       
-                if (editorInstance.getMap().getTiles()[3][2]!=null) {
-                        editorInstance.getMap().removeTile(2, 3);     
-                }      
+        void post_placeNpc_ForbiddenTile() throws Exception {
+                Tile tile = Tiletype.STREET_CURVE.createTile();
+                if (editorInstance.getMap().getTiles()[3][2] != null) {
+                        editorInstance.getMap().removeTile(2, 3);
+                }
                 editorInstance.getMap().addTile(tile, 2, 3);
                 JSONObject body = new JSONObject();
                 body.put("x", 2);
@@ -174,11 +173,10 @@ class EditorTest {
                                 .content(body.toString()))
                                 .andExpect(status().isForbidden());
 
-
         }
 
         @Test
-        void removeNpc_good() throws Exception{
+        void removeNpc_good() throws Exception {
                 JSONObject body = new JSONObject();
                 body.put("x", 2);
                 body.put("y", 3);
@@ -195,11 +193,10 @@ class EditorTest {
                                 .andExpect(status().isOk());
                 assertTrue(editorInstance.getMap().getNpcs().isEmpty(), "npc was removed");
 
-                
         }
 
         @Test
-        void removeNpc_bad() throws Exception{
+        void removeNpc_bad() throws Exception {
                 JSONObject body = new JSONObject();
                 body.put("x", 2);
                 body.put("y", 3);
@@ -207,7 +204,48 @@ class EditorTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(body.toString()))
                                 .andExpect(status().isForbidden());
-                
+
+        }
+
+        @Test
+        void postInvalidScript() throws Exception {
+                JSONObject body = new JSONObject();
+                editorInstance.getMap().addNpc(MoveableType.SHEEP.createMovable(2, 3));
+                body.put("script", "import abc from xyz");
+                body.put("x", 2);
+                body.put("y", 3);
+                mockMvc.perform(post("/api/editor/" + editorId + "/loadScript")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(body.toString()))
+                                .andExpect(status().isForbidden());
+
+        }
+
+        @Test
+        void postValidScript() throws Exception {
+                JSONObject body = new JSONObject();
+                editorInstance.getMap().addNpc(MoveableType.CAR.createMovable(2, 3));
+                body.put("script", "hallo");
+                body.put("x", 2);
+                body.put("y", 3);
+                mockMvc.perform(post("/api/editor/" + editorId + "/loadScript")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(body.toString()))
+                                .andExpect(status().isOk());
+
+        }
+
+        @Test
+        void postScriptforInvalidNpc() throws Exception {
+                JSONObject body = new JSONObject();
+                body.put("script", "hallo");
+                body.put("x", 2);
+                body.put("y", 3);
+                mockMvc.perform(post("/api/editor/" + editorId + "/loadScript")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(body.toString()))
+                                .andExpect(status().isForbidden());
+
         }
 
 }
