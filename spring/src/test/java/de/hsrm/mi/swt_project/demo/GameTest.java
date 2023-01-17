@@ -31,7 +31,7 @@ class GameTest {
 
     @BeforeEach
     void setUp() {
-        gameId = instanceHandler.createGameInstance("test", "Game1");
+        instanceHandler.createGameInstance("test", "Game1", 16, false);
     }
 
     @Test

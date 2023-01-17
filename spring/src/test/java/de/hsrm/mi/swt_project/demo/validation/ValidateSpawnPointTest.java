@@ -31,7 +31,7 @@ public class ValidateSpawnPointTest {
 
     @BeforeEach
     void setUp() {
-        gameId = instanceHandler.createGameInstance(null, "validationTest");
+        gameId = instanceHandler.createGameInstance(null, "validationTest", 16, false);
     }
 
     @Test

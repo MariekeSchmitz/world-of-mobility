@@ -1,12 +1,19 @@
 package de.hsrm.mi.swt_project.demo.instancehandling;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
+import org.python.util.PythonInterpreter;
+
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.GameControl;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
+import de.hsrm.mi.swt_project.demo.scripting.JythonFactory;
+import de.hsrm.mi.swt_project.demo.scripting.ScriptContext;
+import de.hsrm.mi.swt_project.demo.scripting.ScriptContextCache;
 import de.hsrm.mi.swt_project.demo.validation.CollisionValidator;
 import de.hsrm.mi.swt_project.demo.validation.MovementValidator;
 import de.hsrm.mi.swt_project.demo.validation.SpawnpointValidator;
@@ -20,7 +27,10 @@ import de.hsrm.mi.swt_project.demo.validation.Validator;
 public class GameInstance extends Instance {
 
     private Map<String, MoveableObject> moveableObjects = new HashMap<>();
+    private ScriptContextCache contextCache = new ScriptContextCache();
     private String name;
+    private int maximumPlayerCount;
+    private int npcCount;
     
     /**
      * Creates a new instance of the game.
@@ -32,21 +42,29 @@ public class GameInstance extends Instance {
      * @param map the map to use for the instance
      * @param name the name of the instance
      * @param id the id of the instance
+     * @param maximumPlayerCount count how many player can join the game 
+     * @param npcsActivated flag if npcs are activated or not
      */
-    public GameInstance(GameMap map, String name, long id, String mapSavePath) {
+    public GameInstance(GameMap map, String name, long id, String mapSavePath, int maximumPlayerCount, boolean npcsActivated) {
 
         super(map, id, mapSavePath);
         this.name = name;
+        this.maximumPlayerCount = maximumPlayerCount;
 
         ListIterator<MoveableObject> iterator = map.getNpcs().listIterator();
 
-        while (iterator.hasNext()) {
+        if(npcsActivated){
+            this.npcCount = map.getNpcs().size();
+            while (iterator.hasNext()) {
 
-            int index = iterator.nextIndex();
-            MoveableObject npc = iterator.next().copy();
+                int index = iterator.nextIndex();
+                MoveableObject npc = iterator.next().copy();
 
-            String npcName = "NPC%d".formatted(index);
-            moveableObjects.put(npcName, npc);
+                String npcName = "NPC%d".formatted(index);
+                moveableObjects.put(npcName, npc);
+            }
+        } else {
+            this.npcCount = 0;
         }
     }
 
@@ -106,6 +124,9 @@ public class GameInstance extends Instance {
         super.update();
         
         CollisionValidator collisionValidator = new CollisionValidator(moveableObjects);
+        PythonInterpreter interpreter = JythonFactory.getInterpreter();
+        interpreter.set("tiles", this.map.getTiles());
+        interpreter.set("moveables", this.moveableObjects);
 
         for(MoveableObject moveableObject : moveableObjects.values()) {
 
@@ -124,8 +145,11 @@ public class GameInstance extends Instance {
      * Trigged Script for NPC
      */
     public void updateScript() {
-        for(MoveableObject movableObject : moveableObjects.values()) {
-            movableObject.executeScript();
+        List<MoveableObject> allMoveables = this.moveableObjects.values().stream().toList();
+        Tile[][] mapTiles = this.map.getTiles();
+        for (MoveableObject movableObject : allMoveables) {
+            ScriptContext context = contextCache.getContextFor(movableObject, mapTiles, allMoveables);
+            movableObject.executeScript(context);
         }
     }
 
@@ -158,5 +182,15 @@ public class GameInstance extends Instance {
     public boolean validateSpawnpoint(MoveableObject moveableObject, int xPos, int yPos) {
         SpawnpointValidator spawnpointValidator = new SpawnpointValidator(this.map.getTiles(), moveableObject, xPos, yPos);
         return spawnpointValidator.validate();
+    }
+
+    /**
+     * Checks if count of players is less than maximumPlayerCount
+     * @return true if playerCount is less than maximumPlayerCount, false if not
+     */
+    public boolean playerSlotAvailable(){
+        int playerCount = moveableObjects.size()- npcCount;
+        if(playerCount < maximumPlayerCount) return true;
+        else return false;
     }
 }
