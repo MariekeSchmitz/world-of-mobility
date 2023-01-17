@@ -15,6 +15,8 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
  */
 public class CollisionValidator implements Validator{
 
+    Logger logger = LoggerFactory.getLogger(CollisionValidator.class);
+
     private MoveableObject moveableObject;
     private MoveableObject[] moveableObjects;
 

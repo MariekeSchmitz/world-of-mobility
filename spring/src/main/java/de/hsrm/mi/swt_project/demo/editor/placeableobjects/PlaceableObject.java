@@ -4,9 +4,6 @@ public class PlaceableObject implements Placeable {
 
     protected PlaceableObjectType type;
 
-    public PlaceableObject() {
-    }
-
     public PlaceableObjectType getType() {
         return type;
     }

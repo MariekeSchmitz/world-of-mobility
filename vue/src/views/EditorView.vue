@@ -22,17 +22,19 @@
   import { number } from "mathjs";
   import { useUserEditor } from "@/services/useUserEditor";
   import { useLogin } from "@/services/login/useLogin";
+  import ServerChat from "@/components/ServerChat.vue";
 
  
   const props = defineProps<{
-    editorID: number;
+    editorID: string;
   }>();
 
+  const editorID = Number(props.editorID);
   const { loginData } = useLogin();
   const { leaveEditor } = useUserEditor();
 
   onUnmounted(() => {
-      leaveEditor(props.editorID, loginData.username);
+      leaveEditor(editorID, loginData.username);
   });
 
     /**
@@ -57,7 +59,7 @@
 <template>
   <div class="mapTitle">
     <p>Farmerama Map</p>
-    <button @click="saveMap('testMap2', props.editorID)">save</button>
+    <button @click="saveMap('testMap2', editorID)">save</button>
   </div>
   <div id="exitButton">
     <button class="roundButton">
@@ -74,10 +76,15 @@
 
   <LeftMenu />
 
-  <UserListMenu :instanceID="props.editorID"></UserListMenu>
+  <UserListMenu :instanceID="editorID"></UserListMenu>
 
   <BottomMenu></BottomMenu>
 
+  <!--
+  sends msg on every instance, should only be in one instance for all; first player gets all msg shown as many times as there are players
+        
+  <ServerChat :instanceId="editorID"></ServerChat>
+  -->
   <MiniMap />
 
   <Renderer

@@ -286,7 +286,7 @@ function switchContent(element: string) {
   </button>
 </template>
 
-<style>
+<style scoped>
 #bottomMenu {
   display: grid;
   grid-template-columns: 20% 75% 5%;

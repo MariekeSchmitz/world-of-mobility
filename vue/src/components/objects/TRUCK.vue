@@ -3,7 +3,6 @@
 //@ts-ignore
 import * as THREE from "three";
 import { GltfModel } from "troisjs";
-import { withDefaults, defineProps } from "vue";
 import TRUCK_URL from "@/assets/models/TRUCK.glb?url";
 
 /**
@@ -12,7 +11,7 @@ import TRUCK_URL from "@/assets/models/TRUCK.glb?url";
  */
 const props = withDefaults(
   defineProps<{
-    scale: any;
+    scale?: any;
     position: THREE.Vector3;
     rotation: number;
     type: string;

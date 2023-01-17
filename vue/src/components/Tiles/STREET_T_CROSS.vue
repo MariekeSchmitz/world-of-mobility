@@ -3,7 +3,6 @@
 //@ts-ignore
 import * as THREE from "three";
 import { GltfModel } from "troisjs";
-import { withDefaults, defineProps } from "vue";
 import TRAFFIC_LIGHT from "@/components/objects/TRAFFIC_LIGHT.vue";
 import { ObjectEnum } from "@/services/ObjectEnum";
 import STREET_T_CROSS_URL from "@/assets/models/STREET_T_CROSS.glb?url";

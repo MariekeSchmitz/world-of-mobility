@@ -4,7 +4,6 @@
 import * as THREE from "three";
 import { ObjectEnum } from "@/services/ObjectEnum";
 import { GltfModel } from "troisjs";
-import { withDefaults, defineProps } from "vue";
 import TRAFFIC_LIGHT from "@/components/objects/TRAFFIC_LIGHT.vue";
 import PEDESTRIAN_CROSSING_URL from "@/assets/models/PEDESTRIAN_CROSSING.glb?url";
 
