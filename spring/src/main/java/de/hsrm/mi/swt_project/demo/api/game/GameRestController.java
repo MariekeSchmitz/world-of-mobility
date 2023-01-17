@@ -129,8 +129,8 @@ public class GameRestController{
         String user = joinGameRequest.user();
         String type = joinGameRequest.type();
 
-        int xPos = joinGameRequest.xPos();
-        int yPos = joinGameRequest.yPos();
+        float xPos = joinGameRequest.xPos();
+        float yPos = joinGameRequest.yPos();
 
         logger.info("POST Request for '/api/game/{}/join-game' with body: {} and {} and {} and {}", id, user, type, xPos, yPos);
 
