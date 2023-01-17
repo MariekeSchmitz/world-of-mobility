@@ -220,39 +220,14 @@ public class MovementValidator implements Validator {
         }
 
         Streetile streetTile = (Streetile) tile;
+        Orientation headingTo = moveableCopy.getOrientation();
 
-        for (Orientation orientation: streetTile.getAllowedDirections()) {
-            switch (moveableCopy.getOrientation()) {
-                case NORTH:
-                    if(orientation.equals(Orientation.SOUTH)){
-                        return true;
-                    };
-                    break;
-
-                case SOUTH:
-                    if(orientation.equals(Orientation.NORTH)){
-                        return true;
-                    };                        
-                    break;
-
-                case EAST:
-                    if(orientation.equals(Orientation.WEST)){
-                        return true;
-                    };
-                    break;
-
-                case WEST:
-                    if(orientation.equals(Orientation.EAST)){
-                        return true;
-                    };                        
-                    break;
-
-                default:
-                    break;
-            }
-        }   
-
-        return false;
+        return streetTile
+            .getAllowedDirections()
+            .stream()
+            .anyMatch(
+                allowedFrom -> allowedFrom.opposite().equals(headingTo)
+            );
     }
 
     /**

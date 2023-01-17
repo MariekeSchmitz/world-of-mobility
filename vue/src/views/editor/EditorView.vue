@@ -17,6 +17,7 @@
   import LeftMenu from "@/components/editor/LeftMenu.vue";
   import EditorMap from "@/components/editor/EditorMap.vue";
   import MiniMap from "@/components/editor/MiniMap.vue";
+  import UserListMenu from "@/components/editor/UserListMenu.vue";
   import {useMap} from "@/services/useMap"
   import { number } from "mathjs";
   import { useUserEditor } from "@/services/useUserEditor";
@@ -93,6 +94,8 @@ import ScriptField from "@/components/editor/ScriptField.vue";
   </div>
 
   <LeftMenu />
+
+  <UserListMenu :instanceID="editorID"></UserListMenu>
 
   <ScriptField
     v-if="npcNeedsScript"
