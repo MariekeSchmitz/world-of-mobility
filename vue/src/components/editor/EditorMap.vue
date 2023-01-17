@@ -59,7 +59,6 @@ function findNpc(x: number, y: number): INpc | undefined {
 
 watch(mapUpdates.value, () => {
   mapReactive.value = mapUpdates.value.map;
-  console.log(mapReactive.value);
 });
 
 onMounted(() => {

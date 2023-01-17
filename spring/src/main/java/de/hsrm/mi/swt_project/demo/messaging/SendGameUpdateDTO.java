@@ -6,14 +6,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
+import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLightState;
 
 /**
  * DTO that bundles updates of all moveable objects into one DTO
  * @author Marieke Schmitz 
  */
-public record SendGameUpdateDTO(List<SendMoveableUpdateDTO> moveableUpdates) {
+public record SendGameUpdateDTO(List<SendMoveableUpdateDTO> moveableUpdates, TrafficLightState trafficLightState) {
     
-    public static SendGameUpdateDTO from(Map<String,MoveableObject> moveableObjects) {
+    public static SendGameUpdateDTO from(Map<String,MoveableObject> moveableObjects, TrafficLightState trafficLightState) {
 
         List<SendMoveableUpdateDTO> moveableUpdates = new LinkedList<>();
 
@@ -27,7 +28,7 @@ public record SendGameUpdateDTO(List<SendMoveableUpdateDTO> moveableUpdates) {
 
         }
 
-        return new SendGameUpdateDTO(moveableUpdates);
+        return new SendGameUpdateDTO(moveableUpdates, trafficLightState);
 
     }
 

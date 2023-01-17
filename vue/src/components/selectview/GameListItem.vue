@@ -8,10 +8,10 @@
  */
 const props = withDefaults(
   defineProps<{
-    gamename: string;
+    gamename?: string;
     worldname: string;
-    people: number;
-    picture: string;
+    people?: number;
+    picture?: string;
   }>(),
   {
     gamename: "",

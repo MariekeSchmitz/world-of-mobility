@@ -22,14 +22,14 @@ onMounted(() => {
 });
 
 function scrollingLeft() {
-  const boxwrapper = document.getElementById("box-wrapper");
+  const boxwrapper = document.getElementById("user-wrapper");
   if (boxwrapper != null) {
     boxwrapper.scrollLeft -= 200;
   }
 }
 
 function scrollingRight() {
-  const boxwrapper = document.getElementById("box-wrapper");
+  const boxwrapper = document.getElementById("user-wrapper");
   if (boxwrapper != null) {
     boxwrapper.scrollLeft += 200;
   }
@@ -58,7 +58,7 @@ function toggle() {
         <img src="@/buttons/editor/arrow-left.png" />
       </button>
 
-      <ul id="box-wrapper">
+      <ul id="user-wrapper">
         <li v-for="user in userList.users">
           <button class="itemButton" v-if="user != loginData.username">
             <User :name="user"></User>

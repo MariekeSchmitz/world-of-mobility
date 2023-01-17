@@ -21,7 +21,7 @@ public record GetListInstanceDTO(List<GetInstanceInfoDTO> instancelist) {
         List<GetInstanceInfoDTO> dtoList = new LinkedList<>();
 
         for (Instance instance : instances) {
-            dtoList.add(GetInstanceInfoDTO.from(instance));
+            dtoList.add(GetInstanceInfoDTO.from(instance, "CREATE"));
         }
         return new GetListInstanceDTO(dtoList);
     }

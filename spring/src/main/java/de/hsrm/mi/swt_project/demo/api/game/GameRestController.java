@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import de.hsrm.mi.swt_project.demo.instancehandling.GameInstance;
 import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
+import de.hsrm.mi.swt_project.demo.instancehandling.UpdateloopInstanceInfo;
 import de.hsrm.mi.swt_project.demo.messaging.GameUserListDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetAllMapsOverviewDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetGameCommandDTO;
@@ -41,6 +42,9 @@ import de.hsrm.mi.swt_project.demo.messaging.ValidationDTO;
 public class GameRestController{
     @Autowired
     InstanceHandler instanceHandler;
+
+    @Autowired
+    private UpdateloopInstanceInfo loopInstanceInfo;
 
     Logger logger = LoggerFactory.getLogger(GameRestController.class);
 
@@ -67,7 +71,7 @@ public class GameRestController{
     public SendGameUpdateDTO getGameUpdate(@PathVariable long id) {
         logger.info("GET Request for '/api/game/{}/game-update'", id);
 
-        return SendGameUpdateDTO.from(instanceHandler.getGameInstanceById(id).getMoveableObjects());
+        return SendGameUpdateDTO.from(instanceHandler.getGameInstanceById(id).getMoveableObjects(), instanceHandler.getTrafficLightState());
     }
 
     /**
@@ -75,7 +79,7 @@ public class GameRestController{
      * @param getListInstanceDTO
      * @author Finn Schindel, Astrid Klemmer
      */
-    @PostMapping(value = "/instancelist")
+    @GetMapping(value = "/instancelist")
     public GetListInstanceDTO postGameList() {
         logger.info("Post Request for List form all GameList");
         List<Instance> gamelist = instanceHandler.getGameInstances();
@@ -135,6 +139,7 @@ public class GameRestController{
         if (instance != null && playerSlotAvailable) {
             MoveableObject moveable = MoveableType.valueOf(type).createMovable(xPos, yPos);
             instance.addPlayer(user, moveable);
+            loopInstanceInfo.publishInstanceInfoState(instanceHandler.getGameInstanceById(id), "CREATE");
             return true;
         } else {
             return false;
@@ -202,7 +207,9 @@ public class GameRestController{
      */
     @PostMapping(value="/{id}/leave-game", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void leaveGame(@RequestBody JoinGameDTO leaveGameRequest , @PathVariable long id) {
+        logger.info("Post-Req leave-game - delete user ", leaveGameRequest.user());
         instanceHandler.getGameInstanceById(id).removePlayer(leaveGameRequest.user());
+        loopInstanceInfo.publishInstanceInfoState(instanceHandler.getGameInstanceById(id), "CREATE");
     }
 
     /**

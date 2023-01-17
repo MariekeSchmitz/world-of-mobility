@@ -3,7 +3,6 @@
 //@ts-ignore
 import * as THREE from "three";
 import { GltfModel } from "troisjs";
-import { withDefaults, defineProps } from "vue";
 import SIDEWAY_URL from "@/assets/models/SIDEWAY.glb?url";
 
 const props = withDefaults(

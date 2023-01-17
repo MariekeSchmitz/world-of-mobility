@@ -59,7 +59,6 @@ function npcAdded(x: number, y: number): void {
 }
 
 function tileHover(event: any) {
-  //console.log("tileHover: ",event);
   event.component.mesh.material.color.set(event.over ? "#dddddd" : "#ffffff");
 }
 
@@ -163,7 +162,6 @@ function turnLeft() {
 function turnRight() {
   let posX = props.position.x - offsetx.value - 1;
   let posY = props.position.y - offsety.value - 1;
-  console.log("POSX=", posX, " POSY=", posY);
   let turnrightDTO: ExportTile = {
     type: "SIDEWAY",
     orientation: "NORTH",

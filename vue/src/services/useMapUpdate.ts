@@ -41,10 +41,9 @@ export function useMapUpdate(editorId: number): any {
   });
 
   function receiveMapUpdates() {
-    const proto = location.protocol == 'https:' ? "wss" : "ws";
+    const proto = location.protocol == "https:" ? "wss" : "ws";
     const wsurl = `${proto}://${window.location.host}/stompbroker`;
     const DEST = `/topic/editor/${editorId}`;
-    console.log("UPDAAAAAAAAAAAATE");
     const stompClient = new Client({ brokerURL: wsurl });
     stompClient.onWebSocketError = (event) =>
       console.log(`ERROR: WebSocket-Error in MapUpdate: ${event}`);
@@ -74,7 +73,6 @@ export function useMapUpdate(editorId: number): any {
       const id = setTimeout(() => controller.abort(), 8000);
 
       const data: IMapUpdate = mapUpdateObj;
-      console.log(data);
 
       const response = await fetch(URL, {
         method: "POST",
