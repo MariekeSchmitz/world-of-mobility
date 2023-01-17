@@ -11,7 +11,7 @@ import TRACTOR_URL from "@/assets/models/TRACTOR.glb?url";
  */
 const props = withDefaults(
   defineProps<{
-    scale: any;
+    scale?: any;
     position: THREE.Vector3;
     rotation: number;
     type: string;

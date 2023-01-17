@@ -11,7 +11,7 @@ import TRAIN_URL from "@/assets/models/TRAIN.glb?url";
  */
 const props = withDefaults(
   defineProps<{
-    scale: any;
+    scale?: any;
     position: THREE.Vector3;
     rotation: THREE.Vector3;
     type: string;

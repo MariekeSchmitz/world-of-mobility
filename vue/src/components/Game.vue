@@ -23,13 +23,8 @@ const props = withDefaults(
   }>(),
   { instanceID: 1 }
 );
-const {
-  sendCommand,
-  receiveGameUpdate,
-  mapUpdates,
-  getUserMoveable,
-  leaveGame,
-} = useGame();
+const { sendCommand, receiveGameUpdate, mapUpdates, getUserMoveable } =
+  useGame();
 const { loginData } = useLogin();
 
 const renderer = ref();

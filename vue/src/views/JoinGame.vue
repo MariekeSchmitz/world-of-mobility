@@ -16,27 +16,29 @@ const { loginData } = useLogin();
 
 const joinSuccessfull = ref(false);
 const showError = ref(false);
+
 const props = defineProps<{
-  instanceID: number;
+  instanceID: string;
 }>();
 
+const instanceID = Number(props.instanceID);
 let moveableType = "";
 
 async function join() {
   if (
-    props.instanceID != undefined &&
+    instanceID != undefined &&
     spawnState.xPos != -1 &&
     spawnState.yPos != -1 &&
     spawnState.tileNumber != -1
   ) {
     joinSuccessfull.value = await joinGame(
-      props.instanceID,
+      instanceID,
       loginData.username,
       moveableType,
       spawnState.xPos,
       spawnState.yPos
     );
-    if (joinSuccessfull.value) router.push("/gameview/" + props.instanceID);
+    if (joinSuccessfull.value) router.push("/gameview/" + instanceID);
     else showError.value = true;
   }
 }
@@ -47,8 +49,8 @@ function updateMoveable(type: string) {
 }
 
 onMounted(() => {
-  getUserList(props.instanceID);
-  setInstanceId(props.instanceID);
+  getUserList(instanceID);
+  setInstanceId(instanceID);
 });
 </script>
 
@@ -66,7 +68,7 @@ onMounted(() => {
       </div>
       <div id="place-select">
         <h1>Spawnpoint wählen</h1>
-        <SpawnPoint :instance-id="props.instanceID" />
+        <SpawnPoint :instance-id="instanceID" />
       </div>
     </div>
     <h2>Beigetretene Spieler</h2>

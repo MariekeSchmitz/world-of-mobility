@@ -39,11 +39,14 @@ function receiveMessages() {
   stompClient.activate();
 }
 
-async function updateTestMessage(message: string): Promise<void> {
-  const url = "/api/servermessage";
+async function updateTestMessage(
+  message: string,
+  instanceId: number
+): Promise<void> {
+  const url = "/api/editor/servermessage";
   try {
     const data: IServerMessage = {
-      id: 1,
+      id: instanceId,
       txt: message,
     };
 

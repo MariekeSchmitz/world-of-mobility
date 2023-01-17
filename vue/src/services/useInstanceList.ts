@@ -28,7 +28,6 @@ export function useInstanceList(): any {
 
   function processInstanceUpdate(instanceUpdate: IInstanceInfo) {
     let found = 0;
-    console.log(instanceUpdate);
     if (instanceUpdate.command == "CREATE") {
       instanceState.instancelist.forEach(function (item) {
         if (item.id == instanceUpdate.id) {

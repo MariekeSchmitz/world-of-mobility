@@ -8,7 +8,7 @@ import StartPage from "@/views/StartPage.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import WorldSelection from "@/views/WorldSelection.vue";
 import GameConfig from "@/views/GameConfig.vue";
-import EditorView from "@/views/editor/EditorView.vue";
+import EditorView from "@/views/EditorView.vue";
 import GameView from "@/views/GameView.vue";
 import { useLogin } from "@/services/login/useLogin";
 
@@ -18,10 +18,9 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/game/:instanceID",
+      path: "/game",
       name: "Game",
       component: Game,
-      props: true,
     },
     {
       path: "/gameview/:instanceID",

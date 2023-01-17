@@ -11,7 +11,7 @@ import TRUCK_URL from "@/assets/models/TRUCK.glb?url";
  */
 const props = withDefaults(
   defineProps<{
-    scale: any;
+    scale?: any;
     position: THREE.Vector3;
     rotation: number;
     type: string;

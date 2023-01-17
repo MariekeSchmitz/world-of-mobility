@@ -9,14 +9,16 @@ import EditorTile from "@/components/editor/EditorTile.vue";
 import * as THREE from "three";
 import type { MapInterface } from "@/services/editor/MapInterface";
 
-const props = defineProps({
-  editorID: {
-    default: 0,
-    type: number,
-  },
-});
+const props = withDefaults(
+  defineProps<{
+    editorID: number;
+  }>(),
+  {
+    editorID: 0,
+  }
+);
 
-let editorID: number = props.editorID;
+const editorID: number = props.editorID;
 
 const { receiveMapUpdates, mapUpdates } = useMapUpdate(props.editorID);
 const { getMapEditor } = useMap();

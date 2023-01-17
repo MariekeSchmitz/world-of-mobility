@@ -11,7 +11,7 @@ import CAR2_URL from "@/assets/models/CAR2.glb?url";
  */
 const props = withDefaults(
   defineProps<{
-    scale: any;
+    scale?: any;
     position: THREE.Vector3;
     rotation: number;
   }>(),

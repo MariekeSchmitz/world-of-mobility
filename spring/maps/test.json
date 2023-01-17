@@ -97,33 +97,33 @@
       },
       {
         "allowedDirections": [
-          "WEST",
-          "NORTH",
-          "EAST"
+          "EAST",
+          "SOUTH",
+          "WEST"
         ],
         "orientation": "SOUTH",
         "type": "STREET_T_CROSS"
       },
       {
         "allowedDirections": [
-          "EAST",
-          "WEST"
+          "NORTH",
+          "SOUTH"
         ],
         "orientation": "EAST",
         "type": "STREET_STRAIGHT"
       },
       {
         "allowedDirections": [
-          "EAST",
-          "WEST"
+          "NORTH",
+          "SOUTH"
         ],
         "orientation": "EAST",
         "type": "STREET_STRAIGHT"
       },
       {
         "allowedDirections": [
-          "WEST",
-          "NORTH"
+          "SOUTH",
+          "WEST"
         ],
         "orientation": "EAST",
         "type": "STREET_CURVE"
@@ -159,8 +159,12 @@
         "type": "GRASSTILE"
       },
       {
+        "allowedDirections": [
+          "SOUTH",
+          "WEST"
+        ],
         "orientation": "NORTH",
-        "type": "GRASSTILE"
+        "type": "STREET_CURVE"
       },
       {
         "orientation": "NORTH",
@@ -237,8 +241,12 @@
         "type": "GRASSTILE"
       },
       {
+        "allowedDirections": [
+          "NORTH",
+          "SOUTH"
+        ],
         "orientation": "NORTH",
-        "type": "GRASSTILE"
+        "type": "STREET_STRAIGHT"
       },
       {
         "orientation": "NORTH",
@@ -266,8 +274,8 @@
       },
       {
         "allowedDirections": [
-          "NORTH",
-          "EAST"
+          "SOUTH",
+          "WEST"
         ],
         "orientation": "SOUTH",
         "type": "STREET_CURVE"
@@ -315,20 +323,32 @@
         "type": "GRASSTILE"
       },
       {
+        "allowedDirections": [
+          "NORTH",
+          "SOUTH"
+        ],
         "orientation": "NORTH",
-        "type": "GRASSTILE"
+        "type": "STREET_STRAIGHT"
+      },
+      {
+        "allowedDirections": [
+          "NORTH",
+          "SOUTH"
+        ],
+        "orientation": "NORTH",
+        "type": "STREET_STRAIGHT"
       },
       {
         "orientation": "NORTH",
         "type": "GRASSTILE"
       },
       {
+        "allowedDirections": [
+          "NORTH",
+          "SOUTH"
+        ],
         "orientation": "NORTH",
-        "type": "GRASSTILE"
-      },
-      {
-        "orientation": "NORTH",
-        "type": "GRASSTILE"
+        "type": "STREET_STRAIGHT"
       },
       {
         "orientation": "NORTH",
@@ -344,8 +364,8 @@
       },
       {
         "allowedDirections": [
-          "NORTH",
-          "EAST"
+          "SOUTH",
+          "WEST"
         ],
         "orientation": "SOUTH",
         "type": "STREET_CURVE"
@@ -397,8 +417,12 @@
         "type": "GRASSTILE"
       },
       {
+        "allowedDirections": [
+          "NORTH",
+          "SOUTH"
+        ],
         "orientation": "NORTH",
-        "type": "GRASSTILE"
+        "type": "STREET_STRAIGHT"
       },
       {
         "orientation": "NORTH",
@@ -410,8 +434,8 @@
       },
       {
         "allowedDirections": [
-          "EAST",
-          "WEST"
+          "NORTH",
+          "SOUTH"
         ],
         "orientation": "EAST",
         "type": "PEDESTRIAN_CROSSING"
@@ -559,25 +583,25 @@
       },
       {
         "allowedDirections": [
-          "NORTH",
-          "EAST"
+          "SOUTH",
+          "WEST"
         ],
         "orientation": "SOUTH",
         "type": "STREET_CURVE"
       },
       {
         "allowedDirections": [
-          "EAST",
-          "WEST"
+          "NORTH",
+          "SOUTH"
         ],
         "orientation": "EAST",
         "type": "STREET_STRAIGHT"
       },
       {
         "allowedDirections": [
+          "EAST",
           "SOUTH",
-          "WEST",
-          "NORTH"
+          "WEST"
         ],
         "orientation": "EAST",
         "type": "STREET_T_CROSS"
@@ -721,16 +745,16 @@
       },
       {
         "allowedDirections": [
-          "EAST",
-          "SOUTH"
+          "SOUTH",
+          "WEST"
         ],
         "orientation": "WEST",
         "type": "STREET_CURVE"
       },
       {
         "allowedDirections": [
-          "EAST",
-          "WEST"
+          "NORTH",
+          "SOUTH"
         ],
         "orientation": "EAST",
         "placedObject": {
