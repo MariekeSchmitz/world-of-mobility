@@ -83,15 +83,25 @@ public class MotorizedObject extends MoveableObject {
         }
     }
 
+    /**
+     * Turns motorized object to the given direction.
+     * Inverts the turn if the object is moving backwards.
+     */
     @Override
     public void turn(Direction direction) {
 
         switch (direction) {
             case LEFT:
-                this.orientation = this.orientation.prev().prev();  // can only turn 90 degrees
+                if(this.currentVelocity < 0) 
+                    this.orientation = this.orientation.next().next();
+                else
+                    this.orientation = this.orientation.prev().prev();  // can only turn 90 degrees
                 break;
             case RIGHT:
-                this.orientation = this.orientation.next().next();  // can only turn 90 degrees
+            if (this.currentVelocity < 0)
+                    this.orientation = this.orientation.prev().prev();
+                else
+                    this.orientation = this.orientation.next().next();  // can only turn 90 degrees
                 break;
             default:
                 break;

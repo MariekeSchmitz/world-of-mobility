@@ -107,14 +107,23 @@ public class Passenger extends MoveableObject {
         }
     }
 
+    /**
+     * Turns passenger object to the given direction.
+     * Inverts the turn if the object is moving backwards.
+     */
     @Override
     public void turn(Direction direction) {
         switch (direction) {
             case LEFT:
-                this.orientation = this.orientation.prev();
-                break;
+                if(this.currentVelocity < 0) 
+                    this.orientation = this.orientation.next();
+                else
+                    this.orientation = this.orientation.prev();
             case RIGHT:
-                this.orientation = this.orientation.next();
+            if (this.currentVelocity < 0)
+                    this.orientation = this.orientation.prev();
+                else
+                    this.orientation = this.orientation.next();
                 break;
             default:
                 break;
