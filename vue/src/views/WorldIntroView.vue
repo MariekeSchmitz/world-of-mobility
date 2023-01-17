@@ -45,7 +45,7 @@ const instancelist = computed(() => {
       }
     }
   }
-
+  console.log(instanceState.instancelist);
   return instanceState.instancelist;
 });
 
