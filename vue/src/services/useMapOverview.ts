@@ -36,7 +36,6 @@ async function getMaps() {
     const jsonData: IMapOverviewDTO = await response.json();
 
     mapsOverview.allMaps = jsonData.allMaps;
-    console.log(mapsOverview.allMaps);
 
     clearTimeout(id);
 

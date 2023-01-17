@@ -1,6 +1,7 @@
 package de.hsrm.mi.swt_project.demo;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.Matchers.hasSize;
@@ -99,17 +100,55 @@ class EditorTest {
     }
 
     @Test
-    void post_instancelist_good() throws Exception {
+    void get_instancelist_good() throws Exception {
         int amountEditorItems = instanceHandler.getEditorInstances().size();
 
         mockMvc.perform(
-            post("/api/editor/instancelist")
+            get("/api/editor/instancelist")
         ).andExpect(status().isOk())
         .andExpect(jsonPath("$.instancelist", hasSize(amountEditorItems)));
 
     }
 
-   
+    @Test
+    void postCreateWorldFromMapGood() throws Exception {
+        
+        JSONObject body = new JSONObject();
+        body.put("name", "roadMap");
+
+        mockMvc.perform(
+            post("/api/editor/createWorldFromMap")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(body.toString())
+        ).andExpect(status().isOk())
+        .andExpect(jsonPath("$.error").value(""));
+    }
+
+    @Test
+    void postJoinEditorGood() throws Exception {
+        
+        JSONObject body = new JSONObject();
+        body.put("name", "John");
+
+        mockMvc.perform(
+            post("/api/editor/"+editorId+"/join-editor")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(body.toString())
+        ).andExpect(status().isOk());
+    }
+
+    @Test
+    void postLeaveEditorGood() throws Exception {
+        
+        JSONObject body = new JSONObject();
+        body.put("name", "John");
+
+        mockMvc.perform(
+            post("/api/editor/"+editorId+"/leave-editor")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(body.toString())
+        ).andExpect(status().isOk());
+    }
     
 
 

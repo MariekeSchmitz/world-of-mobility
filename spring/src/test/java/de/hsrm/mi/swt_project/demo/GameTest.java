@@ -7,7 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+
+import org.json.JSONObject;
+import org.springframework.http.MediaType;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -23,25 +27,40 @@ class GameTest {
     @Autowired
     private InstanceHandler instanceHandler;
 
+    long gameId;
+
     @BeforeEach
     void setUp() {
-        instanceHandler.createGameInstance("Map1", "Game1");
-        instanceHandler.createGameInstance("Map2", "Game2");
-        instanceHandler.createEditorInstance("Map3");
-        instanceHandler.createGameInstance("Map4", "Game3");
+        gameId = instanceHandler.createGameInstance("test", "Game1");
     }
 
     @Test
-    void postInstancelistGood() throws Exception {
+    void getInstancelistGood() throws Exception {
         int amountGameItems = instanceHandler.getGameInstances().size();
 
         mockMvc.perform(
-            post("/api/game/instancelist")
+            get("/api/game/instancelist")
         ).andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(amountGameItems)));
+        .andExpect(jsonPath("$.instancelist", hasSize(amountGameItems)));
         //.andExpect(jsonPath("$.angebotid", is(a.getId()), Long.class))
         //.andExpect(jsonPath("$.beschreibung", is(a.getBeschreibung())));
         
+    }
+
+    @Test
+    void postLeaveEditorGood() throws Exception {
+        
+        JSONObject body = new JSONObject();
+        body.put("name", "John");
+        body.put("type", "");
+        body.put("xPos", 0);
+        body.put("yPos", 0);
+
+        mockMvc.perform(
+            post("/api/game/"+gameId+"/leave-game")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(body.toString())
+        ).andExpect(status().isOk());
     }
 
 

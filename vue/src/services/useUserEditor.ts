@@ -67,7 +67,6 @@ export function useUserEditor(): any {
 
       clearTimeout(id);
 
-      console.log(response.text());
       if (!response.ok) {
         return false;
       }

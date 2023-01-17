@@ -46,7 +46,6 @@ const mapReactive = ref(mapDefault);
 
 watch(mapUpdates.value, () => {
   mapReactive.value = mapUpdates.value.map;
-  console.log(mapReactive.value);
 });
 
 onMounted(() => {

@@ -12,7 +12,7 @@ import { useMapUpdate } from "@/services/useMapUpdate";
 import type { ExportTile } from "@/services/editor/ExportTileInterface";
 import { usePlaceObject } from "@/services/usePlaceObject";
 import { ControlEnum } from "@/services/ControlEnum";
-import { editorTileURLs } from "@/components/editor/EditorTileURLDict"
+import { editorTileURLs } from "@/components/editor/EditorTileURLDict";
 
 const props = withDefaults(
   defineProps<{
@@ -46,7 +46,6 @@ watch(readCMState.value, () => {
 });
 
 function tileHover(event: any) {
-  //console.log("tileHover: ",event);
   event.component.mesh.material.color.set(event.over ? "#dddddd" : "#ffffff");
 }
 
@@ -144,7 +143,6 @@ function turnLeft() {
 function turnRight() {
   let posX = props.position.x - offsetx.value - 1;
   let posY = props.position.y - offsety.value - 1;
-  console.log("POSX=", posX, " POSY=", posY);
   let turnrightDTO: ExportTile = {
     type: "SIDEWAY",
     orientation: "NORTH",

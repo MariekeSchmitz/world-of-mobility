@@ -32,6 +32,38 @@
       {
         "orientation": "NORTH",
         "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
       }
     ],
     [
@@ -64,6 +96,55 @@
         "type": "GRASSTILE"
       },
       {
+        "allowedDirections": [
+          "WEST",
+          "NORTH",
+          "EAST"
+        ],
+        "orientation": "SOUTH",
+        "type": "STREET_T_CROSS"
+      },
+      {
+        "allowedDirections": [
+          "EAST",
+          "WEST"
+        ],
+        "orientation": "EAST",
+        "type": "STREET_STRAIGHT"
+      },
+      {
+        "allowedDirections": [
+          "EAST",
+          "WEST"
+        ],
+        "orientation": "EAST",
+        "type": "STREET_STRAIGHT"
+      },
+      {
+        "allowedDirections": [
+          "WEST",
+          "NORTH"
+        ],
+        "orientation": "EAST",
+        "type": "STREET_CURVE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
         "orientation": "NORTH",
         "type": "GRASSTILE"
       }
@@ -72,6 +153,38 @@
       {
         "orientation": "NORTH",
         "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "allowedDirections": [
+          "NORTH",
+          "SOUTH"
+        ],
+        "orientation": "NORTH",
+        "type": "STREET_STRAIGHT"
       },
       {
         "orientation": "NORTH",
@@ -104,9 +217,29 @@
       {
         "orientation": "NORTH",
         "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
       }
     ],
     [
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
       {
         "orientation": "NORTH",
         "type": "GRASSTILE"
@@ -132,6 +265,34 @@
         "type": "GRASSTILE"
       },
       {
+        "allowedDirections": [
+          "NORTH",
+          "EAST"
+        ],
+        "orientation": "SOUTH",
+        "type": "STREET_CURVE"
+      },
+      {
+        "allowedDirections": [
+          "EAST",
+          "SOUTH",
+          "WEST"
+        ],
+        "orientation": "NORTH",
+        "placedObject": {
+          "type": "TRAFFIC_LIGHT"
+        },
+        "type": "STREET_T_CROSS"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
         "orientation": "NORTH",
         "type": "GRASSTILE"
       },
@@ -156,6 +317,183 @@
       {
         "orientation": "NORTH",
         "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "allowedDirections": [
+          "NORTH",
+          "SOUTH"
+        ],
+        "orientation": "NORTH",
+        "type": "STREET_STRAIGHT"
+      },
+      {
+        "allowedDirections": [
+          "NORTH",
+          "EAST"
+        ],
+        "orientation": "SOUTH",
+        "type": "STREET_CURVE"
+      },
+      {
+        "allowedDirections": [
+          "SOUTH",
+          "WEST"
+        ],
+        "orientation": "NORTH",
+        "type": "STREET_CURVE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      }
+    ],
+    [
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "allowedDirections": [
+          "EAST",
+          "WEST"
+        ],
+        "orientation": "EAST",
+        "type": "PEDESTRIAN_CROSSING"
+      },
+      {
+        "allowedDirections": [
+          "NORTH",
+          "EAST",
+          "SOUTH",
+          "WEST"
+        ],
+        "orientation": "NORTH",
+        "placedObject": {
+          "type": "TRAFFIC_LIGHT"
+        },
+        "type": "STREET_CROSS"
+      },
+      {
+        "allowedDirections": [
+          "SOUTH",
+          "WEST"
+        ],
+        "orientation": "NORTH",
+        "type": "STREET_CURVE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      }
+    ],
+    [
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "EAST",
+        "type": "SIDEWAY"
+      },
+      {
+        "orientation": "EAST",
+        "type": "SIDEWAY"
       },
       {
         "allowedDirections": [
@@ -180,24 +518,6 @@
       {
         "orientation": "NORTH",
         "type": "GRASSTILE"
-      }
-    ],
-    [
-      {
-        "orientation": "NORTH",
-        "type": "GRASSTILE"
-      },
-      {
-        "orientation": "NORTH",
-        "type": "GRASSTILE"
-      },
-      {
-        "orientation": "NORTH",
-        "type": "GRASSTILE"
-      },
-      {
-        "orientation": "NORTH",
-        "type": "GRASSTILE"
       },
       {
         "orientation": "NORTH",
@@ -238,6 +558,51 @@
         "type": "GRASSTILE"
       },
       {
+        "allowedDirections": [
+          "NORTH",
+          "EAST"
+        ],
+        "orientation": "SOUTH",
+        "type": "STREET_CURVE"
+      },
+      {
+        "allowedDirections": [
+          "EAST",
+          "WEST"
+        ],
+        "orientation": "EAST",
+        "type": "STREET_STRAIGHT"
+      },
+      {
+        "allowedDirections": [
+          "SOUTH",
+          "WEST",
+          "NORTH"
+        ],
+        "orientation": "EAST",
+        "type": "STREET_T_CROSS"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
         "orientation": "NORTH",
         "type": "GRASSTILE"
       },
@@ -251,6 +616,550 @@
       }
     ],
     [
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "allowedDirections": [
+          "NORTH",
+          "SOUTH"
+        ],
+        "orientation": "NORTH",
+        "placedObject": {
+          "type": "GAS_STATION"
+        },
+        "type": "STREET_STRAIGHT"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "allowedDirections": [
+          "NORTH",
+          "SOUTH"
+        ],
+        "orientation": "NORTH",
+        "type": "STREET_STRAIGHT"
+      },
+      {
+        "orientation": "NORTH",
+        "placedObject": {
+          "type": "TREE"
+        },
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "placedObject": {
+          "type": "PIG"
+        },
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      }
+    ],
+    [
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "allowedDirections": [
+          "EAST",
+          "SOUTH"
+        ],
+        "orientation": "WEST",
+        "type": "STREET_CURVE"
+      },
+      {
+        "allowedDirections": [
+          "EAST",
+          "WEST"
+        ],
+        "orientation": "EAST",
+        "placedObject": {
+          "type": "TRAFFIC_LIGHT"
+        },
+        "type": "STREET_STRAIGHT"
+      },
+      {
+        "allowedDirections": [
+          "SOUTH",
+          "WEST"
+        ],
+        "orientation": "NORTH",
+        "type": "STREET_CURVE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      }
+    ],
+    [
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "placedObject": {
+          "type": "TREE"
+        },
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      }
+    ],
+    [
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "placedObject": {
+          "type": "SHEEP"
+        },
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      }
+    ],
+    [
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "placedObject": {
+          "type": "TREE"
+        },
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "placedObject": {
+          "type": "SHEEP"
+        },
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "placedObject": {
+          "type": "TREE"
+        },
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      }
+    ],
+    [
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "placedObject": {
+          "type": "PIG"
+        },
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      }
+    ],
+    [
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      }
+    ],
+    [
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
       {
         "orientation": "NORTH",
         "type": "GRASSTILE"

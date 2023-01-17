@@ -57,7 +57,6 @@ const upVector = new THREE.Vector3(0, 1, 0);
 let movementVector = new THREE.Vector3(0, 0, 0);
 
 const userMovable = computed(() => {
-  console.log(getUserMoveable(loginData.username));
   return getUserMoveable(loginData.username);
 });
 
@@ -150,7 +149,6 @@ onMounted(() => {
   orbitControls.maxPolarAngle = Math.PI / 2;
 
   function setAzimuthAngle() {
-    console.log("hallo");
     if (freeCam.value && !thirdPerson.value) {
       orbitControls.minAzimuthAngle =
         orientations[userMovable.value.orientation] - Math.PI / 2;

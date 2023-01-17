@@ -40,7 +40,6 @@ const instancelist = computed(() => {
         if (
           instanceState.instancelist[j].worldname == maplistState.maplist[i]
         ) {
-          console.log("found ", maplistState.maplist[i]);
           maplistState.maplist.splice(i, 1);
         }
       }

@@ -27,11 +27,9 @@ export function useInstanceList(): any {
 
   function processInstanceUpdate(instanceUpdate: IInstanceInfo) {
     let found = 0;
-    console.log("whole list: ", instanceState.instancelist);
 
     if (instanceUpdate.command == "CREATE") {
       instanceState.instancelist.forEach(function (item) {
-        console.log("item: ", item.id, " update ", instanceUpdate.id);
         if (item.id == instanceUpdate.id) {
           if (
             instanceUpdate.command == "CREATE" &&
@@ -39,19 +37,12 @@ export function useInstanceList(): any {
           ) {
             item.playeramount = instanceUpdate.playeramount;
             found = 1;
-            console.log(
-              "found: ",
-              item.playeramount,
-              " new: ",
-              instanceUpdate.playeramount
-            );
           }
         }
       });
 
       if (found == 0) {
         instanceState.instancelist.unshift(instanceUpdate);
-        console.log("added new");
       } else {
         found = 0;
       }
@@ -65,7 +56,6 @@ export function useInstanceList(): any {
     const proto = location.protocol == "https:" ? "wss" : "ws";
     const wsurl = `${proto}://${window.location.host}/stompbroker`;
     const DEST = `/topic/${path}/instanceInfo`;
-    console.log("Update:instanceInfo");
     const stompClient = new Client({ brokerURL: wsurl });
     stompClient.onWebSocketError = (event) =>
       console.log(`ERROR: WebSocket-Error in InstanceUpdate: ${event}`);
@@ -76,7 +66,6 @@ export function useInstanceList(): any {
       console.log("Connected Stompbroker to InstanceUpdate");
       stompClient.subscribe(DEST, (message) => {
         const instanceUpdate: IInstanceInfo = JSON.parse(message.body);
-        console.log(instanceUpdate);
         processInstanceUpdate(instanceUpdate);
       });
     };
@@ -115,9 +104,7 @@ export function useInstanceList(): any {
         return false;
       }
       const jsonData: IInstanceState = await response.json();
-      console.log("getInstancelist json: ", jsonData);
       instanceState.instancelist = jsonData.instancelist;
-      console.log("getinstancelist obj ", instanceState.instancelist);
 
       receiveInstanceUpdates(path);
 
