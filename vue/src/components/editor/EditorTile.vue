@@ -92,14 +92,14 @@ function placeItem() {
 
       sendMapUpdates(toSendObj);
     }
-  } else if (!readPlaceState.value.isTile) {
-    if ((<any>Object).values(NpcType).includes(readPlaceState.value.type)) {
-      // @ts-expect-error
-      placeNpc(posX, posY, readPlaceState.value.type, props.editorID);
-      npcAdded(posX, posY);
-    } else if (readPlaceState.value.type === ControlEnum.REMOVE_NPC) {
-      removeNpc(posX, posY, props.editorID);
-    } else sendPlaceObject(posX, posY, props.placedObject);
+  } else if (readPlaceState.value.isNpc) {
+    // @ts-expect-error
+    placeNpc(posX, posY, readPlaceState.value.type, props.editorID);
+    npcAdded(posX, posY);
+  } else if (readPlaceState.value.isPlaceable) {
+    sendPlaceObject(posX, posY, props.placedObject);
+  } else if (readPlaceState.value.type === ControlEnum.REMOVE_NPC) {
+    removeNpc(posX, posY, props.editorID);
   }
 }
 
