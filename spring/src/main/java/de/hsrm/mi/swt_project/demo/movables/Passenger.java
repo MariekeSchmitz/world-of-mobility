@@ -119,6 +119,7 @@ public class Passenger extends MoveableObject {
                     this.orientation = this.orientation.next();
                 else
                     this.orientation = this.orientation.prev();
+                break;
             case RIGHT:
             if (this.currentVelocity < 0)
                     this.orientation = this.orientation.prev();
