@@ -123,8 +123,8 @@ public class MoveableFacade {
      */
     public float distanceTo(MoveableObject other) {        
 
-        float xdist = this.moveable.getXPos() - other.getXPos();
-        float ydist = this.moveable.getYPos() - other.getYPos();
+        float xdist = this.moveable.getxPos() - other.getxPos();
+        float ydist = this.moveable.getyPos() - other.getyPos();
 
         return (float) Math.sqrt(xdist * xdist + ydist * ydist);
     }    

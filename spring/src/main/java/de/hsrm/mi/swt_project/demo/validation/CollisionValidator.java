@@ -61,8 +61,8 @@ public class CollisionValidator implements Validator{
      * @return true if the moveable objects collide, else false
      */
     public boolean doObjectsHit(MoveableObject object1, MoveableObject object2) {
-        float x = object1.getXPos() - object2.getXPos();
-        float y = object1.getYPos() - object2.getYPos();
+        float x = object1.getxPos() - object2.getxPos();
+        float y = object1.getyPos() - object2.getyPos();
 
         double distanceSqrt = x * x + y * y;
         double maxDistanceSqrt = (object1.getHitboxRadius() + object2.getHitboxRadius()) * (object1.getHitboxRadius() + object2.getHitboxRadius());

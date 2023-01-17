@@ -86,9 +86,9 @@ function placeItem() {
     }
   } else if (!readPlaceState.value.isTile) {
     if (
-      readPlaceState.value.type === NpcType.PASSENGER ||
-      readPlaceState.value.type === NpcType.MOTORIZED
+      (<any>Object).values(NpcType).includes(readPlaceState.value.type)
     ) {
+      // @ts-expect-error
       placeNpc(posX, posY, readPlaceState.value.type, props.editorID);
     } else if (readPlaceState.value.type === ControlEnum.REMOVE_NPC) {
       removeNpc(posX, posY, props.editorID)
@@ -204,7 +204,7 @@ function removeTile() {
     :height="props.height" :rotation="props.rotation"
     :position="props.position.clone().add(new THREE.Vector3(0.1, -0.1, 0.02))"></PlacedObject>
 
-  <PlacedObject v-if="props.placedNpc" :type="'TREE'" :width="props.width" :height="props.height"
+  <PlacedObject v-if="props.placedNpc" :type="props.placedNpc.type" :width="props.width" :height="props.height"
     :rotation="props.rotation" :position="props.position.clone().add(new THREE.Vector3(0.1, -0.1, 0.02))">
   </PlacedObject>
 </template>

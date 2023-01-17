@@ -1,7 +1,14 @@
 /**
  * enum with the different npc types.
  */
+
+
+
 export enum NpcType {
-  "PASSENGER" = "PASSENGER",
-  "MOTORIZED" = "MOTORIZED_OBJECT",
+  PIG = "PIG",
+  SHEEP = "SHEEP",
+  CAR = "CAR",
+  TRUCK = "TRUCK",
+  TRACTOR = "TRACTOR",
+  TUPEL = "TUPEL"
 }

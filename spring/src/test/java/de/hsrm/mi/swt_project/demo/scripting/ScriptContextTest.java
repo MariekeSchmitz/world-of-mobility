@@ -42,8 +42,8 @@ class ScriptContextTest {
         // check that center of map context is the tile where the moveable is positioned
         assertSame(gameMap[5][5], mapContext[1][1]);
 
-        int row = (int) moveable.getYPos();
-        int col = (int) moveable.getXPos();
+        int row = (int) moveable.getyPos();
+        int col = (int) moveable.getxPos();
 
         int contextSize = mapContext.length;
 
@@ -70,8 +70,8 @@ class ScriptContextTest {
 
         Tile[][] mapContext = context.provideMapContext();
 
-        int row = (int) moveable.getYPos();
-        int col = (int) moveable.getXPos();
+        int row = (int) moveable.getyPos();
+        int col = (int) moveable.getxPos();
 
         int contextSize = mapContext.length;
 

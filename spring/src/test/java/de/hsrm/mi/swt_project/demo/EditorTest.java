@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.apache.tools.ant.taskdefs.Delete;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import org.json.JSONObject;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +45,11 @@ class EditorTest {
         void setUp() {
                 editorId = instanceHandler.createEditorInstance("test2");
                 editorInstance = instanceHandler.getEditorInstanceById(editorId);
+        }
+
+        @AfterEach
+        void cleanup() {
+                instanceHandler.removeInstance(editorInstance);
         }
 
         @Test
@@ -123,7 +128,7 @@ class EditorTest {
                 JSONObject body = new JSONObject();
                 body.put("x", 1);
                 body.put("y", 2);
-                body.put("type", "PASSENGER");
+                body.put("type", "PIG");
                 mockMvc.perform(post("/api/editor/" + editorId + "/placeNpc")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(body.toString()))
@@ -132,7 +137,7 @@ class EditorTest {
                 assertTrue(!editorInstance.getMap().getNpcs().isEmpty(), "npc was added");
                 assertEquals(1.0f, editorInstance.getMap().getNpcs().get(0).getxPos(), "x post is correct");
                 assertEquals(2.0f, editorInstance.getMap().getNpcs().get(0).getyPos(), "y pos is correct");
-                assertEquals(editorInstance.getMap().getNpcs().get(0).getType(), MoveableType.PASSENGER,
+                assertEquals(editorInstance.getMap().getNpcs().get(0).getType(), MoveableType.PIG,
                                 "type is correct");
         }
 
@@ -141,7 +146,7 @@ class EditorTest {
                 JSONObject body = new JSONObject();
                 body.put("x", 2);
                 body.put("y", 3);
-                body.put("type", "PASSENGER");
+                body.put("type", "PIG");
                 mockMvc.perform(post("/api/editor/" + editorId + "/placeNpc")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(body.toString()))
@@ -163,7 +168,7 @@ class EditorTest {
                 JSONObject body = new JSONObject();
                 body.put("x", 2);
                 body.put("y", 3);
-                body.put("type", "PASSENGER");
+                body.put("type", "SHEEP");
                 mockMvc.perform(post("/api/editor/" + editorId + "/placeNpc")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(body.toString()))
@@ -177,7 +182,7 @@ class EditorTest {
                 JSONObject body = new JSONObject();
                 body.put("x", 2);
                 body.put("y", 3);
-                body.put("type", "PASSENGER");
+                body.put("type", "SHEEP");
                 mockMvc.perform(post("/api/editor/" + editorId + "/placeNpc")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(body.toString()))

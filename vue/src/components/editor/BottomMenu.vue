@@ -5,21 +5,34 @@ import { NaturObjectEnum } from "@/services/NaturObjectEnum";
 import { ObjectEnum } from "@/services/ObjectEnum";
 import { ControlEnum } from "@/services/ControlEnum";
 import { NpcType } from "@/services/editor/NpcType";
+import { moveableImages } from "../carselect/MoveableImages";
+
 
 const { setPlaceState } = usePlaceState();
 
 function scrollingLeft() {
   const boxwrapper = document.getElementById("box-wrapper");
+  const boxwrappernpc = document.getElementById("box-wrapper-npc");
+
   if (boxwrapper != null) {
     boxwrapper.scrollLeft -= 200;
   }
+  if (boxwrappernpc != null) {
+    boxwrappernpc.scrollLeft -= 200;
+  }
 }
+
 
 function scrollingRight() {
   const boxwrapper = document.getElementById("box-wrapper");
+  const boxwrappernpc = document.getElementById("box-wrapper-npc");
   if (boxwrapper != null) {
     boxwrapper.scrollLeft += 200;
   }
+  if (boxwrappernpc != null) {
+    boxwrappernpc.scrollLeft += 200;
+  }
+
 }
 
 function toggle() {
@@ -283,7 +296,7 @@ function switchContent(element: string) {
           <img src="@/buttons/editor/arrow-left.png" />
         </button>
 
-        <ul id="box-wrapper">
+        <ul id="box-wrapper-npc">
 
           <div id="passenger">
             <li>
@@ -292,8 +305,18 @@ function switchContent(element: string) {
               </button>
             </li>
             <li>
-              <button class="itemButton" @click="setPlaceState(NpcType.PASSENGER, false)">
-                <img src="@/assets/objects/FARM.png" />
+              <button class="itemButton" @click="setPlaceState(NpcType.PIG, false)">
+                <img :src="moveableImages[NpcType.PIG]" />
+              </button>
+            </li>
+            <li>
+              <button class="itemButton" @click="setPlaceState(NpcType.SHEEP, false)">
+                <img :src="moveableImages[NpcType.SHEEP]" />
+              </button>
+            </li>
+            <li>
+              <button class="itemButton" @click="setPlaceState(NpcType.TUPEL, false)">
+                <img :src="moveableImages[NpcType.TUPEL]" />
               </button>
             </li>
           </div>
@@ -305,8 +328,18 @@ function switchContent(element: string) {
               </button>
             </li>
             <li>
-              <button class="itemButton" @click="setPlaceState(NpcType.MOTORIZED, false)">
-                <img src="@/assets/objects/GAS_STATION.png" />
+              <button class="itemButton" @click="setPlaceState(NpcType.CAR, false)">
+                <img :src="moveableImages[NpcType.CAR]" />
+              </button>
+            </li>
+            <li>
+              <button class="itemButton" @click="setPlaceState(NpcType.TRUCK, false)">
+                <img :src="moveableImages[NpcType.TRUCK]" />
+              </button>
+            </li>
+            <li>
+              <button class="itemButton" @click="setPlaceState(NpcType.TRACTOR, false)">
+                <img :src="moveableImages[NpcType.TRACTOR]" />
               </button>
             </li>
 
