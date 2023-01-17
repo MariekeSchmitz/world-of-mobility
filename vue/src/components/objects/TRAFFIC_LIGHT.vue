@@ -5,7 +5,6 @@ import * as THREE from "three";
 import { GltfModel } from "troisjs";
 import { withDefaults, defineProps } from "vue";
 import TRAFFIC_LIGHT_URL from "@/assets/models/TRAFFIC_LIGHT.glb?url";
-import { Vector3 } from "three";
 
 /**
  * Class for traffic light Components

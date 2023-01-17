@@ -3,11 +3,12 @@
 //@ts-ignore
 import * as THREE from "three";
 import { ObjectEnum } from "@/services/ObjectEnum";
-import { GltfModel } from "troisjs";
+import { GltfModel, Sphere, SpotLight } from "troisjs";
 import { withDefaults, defineProps } from "vue";
 import TRAFFIC_LIGHT from "@/components/objects/TRAFFIC_LIGHT.vue";
 import GAS_STATION from "@/components/objects/GAS_STATION.vue";
 import STREET_STRAIGHT_URL from "@/assets/models/STREET_STRAIGHT.glb?url";
+import TRAFFIC_LIGHT_LIGHT from "@/components/objects/TRAFFIC_LIGHT_LIGHT.vue";
 
 const props = withDefaults(
   defineProps<{
@@ -85,6 +86,19 @@ function setRotation(orientation: string, name: string): THREE.Vector3 {
     :rotation="setRotation(props.orientation, trafficLightLeft)"
     :type="ObjectEnum.TRAFFIC_LIGHT"
   />
+  <TRAFFIC_LIGHT_LIGHT
+    v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
+    :intensity="20"
+    :position="
+      props.position
+        .clone()
+        .add(setPosition(props.orientation, trafficLightLeft))
+    "
+    :angle="1"
+    :red="true"
+    :yellow="true"
+    :green="true"
+  />
   <TRAFFIC_LIGHT
     v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
     :position="
@@ -94,6 +108,19 @@ function setRotation(orientation: string, name: string): THREE.Vector3 {
     "
     :rotation="setRotation(props.orientation, trafficLightRight)"
     :type="ObjectEnum.TRAFFIC_LIGHT"
+  />
+  <TRAFFIC_LIGHT_LIGHT
+    v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
+    :intensity="20"
+    :position="
+      props.position
+        .clone()
+        .add(setPosition(props.orientation, trafficLightRight))
+    "
+    :angle="2"
+    :red="true"
+    :yellow="true"
+    :green="true"
   />
   <GAS_STATION
     v-if:="props.placedObject === ObjectEnum.GAS_STATION"
