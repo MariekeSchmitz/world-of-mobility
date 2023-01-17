@@ -375,7 +375,7 @@ function switchContent(element: string) {
               <button
                 class="itemButton"
                 @click="
-                  setPlaceState(ControlEnum.REMOVE_NPC, false, false, true)
+                  setPlaceState(ControlEnum.REMOVE_NPC, false, false, false)
                 "
               >
                 <img src="@/assets/objects/REMOVE.png" />

@@ -93,6 +93,7 @@ function placeItem() {
     }
   } else if (readPlaceState.value.isNpc) {
     // @ts-expect-error
+
     placeNpc(posX, posY, readPlaceState.value.type, props.editorID);
     npcAdded(posX, posY);
   } else if (readPlaceState.value.isPlaceable) {
