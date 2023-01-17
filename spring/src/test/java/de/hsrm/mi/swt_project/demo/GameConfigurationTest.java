@@ -25,10 +25,10 @@ class GameConfigurationTest {
     @Test
     void validationGameNameCorrect() {
 
-        instanceHandler.createGameInstance(null, "Instance1");
-        instanceHandler.createGameInstance(null, "Instance2");
-        instanceHandler.createGameInstance(null, "Instance3");
-        instanceHandler.createGameInstance(null, "Instance4");
+        instanceHandler.createGameInstance(null, "Instance1", 16, false);
+        instanceHandler.createGameInstance(null, "Instance2", 16, false);
+        instanceHandler.createGameInstance(null, "Instance3", 16, false);
+        instanceHandler.createGameInstance(null, "Instance4", 16, false);
 
         assertFalse(instanceHandler.checkSessionNameAvailable("Instance1"));
         assertFalse(instanceHandler.checkSessionNameAvailable("Instance4"));

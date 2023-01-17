@@ -99,13 +99,15 @@ public class GameRestController{
     
     @PostMapping(value="/create-game", consumes = MediaType.APPLICATION_JSON_VALUE)
     public long createGame(@RequestBody GetGameConfigDTO gameConfig) {
-
+        
         String mapName = gameConfig.mapName();
         String sessionName = gameConfig.sessionName();
+        int maximumPlayerCount = gameConfig.maximumPlayerCount();
+        boolean npcsActivated = gameConfig.npcsActivated();
 
         logger.info("POST Request for '/api/game/create-game' with body: {} and {}", mapName, sessionName);
 
-        return instanceHandler.createGameInstance(mapName, sessionName);
+        return instanceHandler.createGameInstance(mapName, sessionName, maximumPlayerCount, npcsActivated);
     }
 
     /**
@@ -118,7 +120,7 @@ public class GameRestController{
      * @param yPos the y position the player wants to spawn at
      */
     @PostMapping(value="/{id}/join-game", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void joinGame(@RequestBody JoinGameDTO joinGameRequest , @PathVariable long id) {
+    public boolean joinGame(@RequestBody JoinGameDTO joinGameRequest , @PathVariable long id) {
 
         String user = joinGameRequest.user();
         String type = joinGameRequest.type();
@@ -129,10 +131,13 @@ public class GameRestController{
         logger.info("POST Request for '/api/game/{}/join-game' with body: {} and {} and {} and {}", id, user, type, xPos, yPos);
 
         GameInstance instance = instanceHandler.getGameInstanceById(id);
-
-        if (instance != null) {
+        boolean playerSlotAvailable = instance.playerSlotAvailable();
+        if (instance != null && playerSlotAvailable) {
             MoveableObject moveable = MoveableType.valueOf(type).createMovable(xPos, yPos);
             instance.addPlayer(user, moveable);
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -165,10 +170,12 @@ public class GameRestController{
 
         String mapName = gameConfig.mapName();
         String sessionName = gameConfig.sessionName();
+        int maximumPlayerCount = gameConfig.maximumPlayerCount();
 
         logger.info("GET Request for '/api/game/game-config' with body: {} and {}", mapName, sessionName);
 
         boolean validationSuccess = instanceHandler.checkSessionNameAvailable(sessionName);
+        if(maximumPlayerCount < 1) validationSuccess = false;
 
         return new ValidationDTO(validationSuccess);
     }

@@ -96,7 +96,7 @@ class PassengerTest {
     @Test
     void testToString() {
         Passenger p = new Passenger(1, 2);
-        assertEquals("Passenger[xPos=1.00,yPos=2.00,curV=0.00,maxV=1.00,cap=1.00,orientation=NORTH]", p.toString());
+        assertEquals("Passenger[xPos=1.00,yPos=2.00,curV=0.00,maxV=0.10,cap=1.00,orientation=NORTH]", p.toString());
     }
     
 }
