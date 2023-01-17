@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import de.hsrm.mi.swt_project.demo.instancehandling.EditorInstance;
 import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
+import de.hsrm.mi.swt_project.demo.instancehandling.UpdateloopInstanceInfo;
 import de.hsrm.mi.swt_project.demo.instancehandling.UpdateloopService;
+import de.hsrm.mi.swt_project.demo.messaging.EditorUserListDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetListInstanceDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetMapUpdateDTO;
 import de.hsrm.mi.swt_project.demo.messaging.JoinEditorDTO;
@@ -41,6 +43,9 @@ public class EditorRestController {
 
     @Autowired
     private UpdateloopService loopService;
+
+    @Autowired
+    private UpdateloopInstanceInfo loopInstanceInfo;
 
     Logger logger = LoggerFactory.getLogger(EditorRestController.class);
 
@@ -129,10 +134,10 @@ public class EditorRestController {
      * @param getListInstanceDTO
      * @author Finn Schindel, Astrid Klemmer
      */
-    @PostMapping(value = "/instancelist")
+    @GetMapping(value = "/instancelist")
     public GetListInstanceDTO postEditorList() {
-        // logger.info("Post Request for List form all EditorList");
         List<Instance> editorlist = instanceHandler.getEditorInstances();
+        logger.info("Post-Req instancelist - all EditorInstances ", editorlist);
         return GetListInstanceDTO.from(editorlist);
     }
 
@@ -180,12 +185,10 @@ public class EditorRestController {
      */
     @PostMapping("/createWorldFromMap")
     public SendNewWorldDTO postWorldFromMap(@RequestBody GetNewWorldDTO newWorldDTO) {
-        
         String name = newWorldDTO.name();
+        logger.info("Post-Req createWorldFromMap - create new Instance ", name);
         long id = instanceHandler.createEditorInstance(name);
-        
         return SendNewWorldDTO.from(id, "");
-
     }
 
     /**
@@ -196,7 +199,9 @@ public class EditorRestController {
      */
     @PostMapping(value="/{id}/join-editor", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void joinGame(@RequestBody JoinEditorDTO joinEditorRequest , @PathVariable long id) {
+        logger.info("Post-Req join-editor - add user ", joinEditorRequest.user());
         instanceHandler.getEditorInstanceById(id).addUser(joinEditorRequest.user());
+        loopInstanceInfo.publishInstanceInfoState(instanceHandler.getEditorInstanceById(id), "CREATE");
     }
 
     /**
@@ -207,7 +212,21 @@ public class EditorRestController {
      */
     @PostMapping(value="/{id}/leave-editor", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void leaveGame(@RequestBody JoinEditorDTO leaveEditorRequest , @PathVariable long id) {
+        logger.info("Post-Req leave-editor - delete user ", leaveEditorRequest.user());
         instanceHandler.getEditorInstanceById(id).removeUser(leaveEditorRequest.user());
+        loopInstanceInfo.publishInstanceInfoState(instanceHandler.getEditorInstanceById(id), "CREATE");
+    }
+
+    /**
+     * Get for getting userlist from a editor instance
+     * @param id editor instance that user is joining
+     * @return EditorUserList DTO with all users
+     * @author Astrid Klemmer & Marieke Schmitz
+     */
+    @GetMapping(value="/userlist/{id}")
+    public EditorUserListDTO userlistEditor(@PathVariable long id) {
+        List<String> userlist = instanceHandler.getEditorInstanceById(id).getUsers();
+        return EditorUserListDTO.from(userlist);
     }
 
 }

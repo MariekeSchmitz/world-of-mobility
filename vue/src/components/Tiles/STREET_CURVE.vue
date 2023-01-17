@@ -3,7 +3,6 @@
 //@ts-ignore
 import * as THREE from "three";
 import { GltfModel } from "troisjs";
-import { withDefaults, defineProps } from "vue";
 import STREET_CURVE_URL from "@/assets/models/STREET_CURVE.glb?url";
 
 const props = withDefaults(

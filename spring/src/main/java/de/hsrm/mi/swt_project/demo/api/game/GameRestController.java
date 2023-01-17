@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import de.hsrm.mi.swt_project.demo.instancehandling.GameInstance;
 import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
+import de.hsrm.mi.swt_project.demo.instancehandling.UpdateloopInstanceInfo;
 import de.hsrm.mi.swt_project.demo.messaging.GameUserListDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetAllMapsOverviewDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetGameCommandDTO;
@@ -41,6 +42,9 @@ import de.hsrm.mi.swt_project.demo.messaging.ValidationDTO;
 public class GameRestController{
     @Autowired
     InstanceHandler instanceHandler;
+
+    @Autowired
+    private UpdateloopInstanceInfo loopInstanceInfo;
 
     Logger logger = LoggerFactory.getLogger(GameRestController.class);
 
@@ -75,7 +79,7 @@ public class GameRestController{
      * @param getListInstanceDTO
      * @author Finn Schindel, Astrid Klemmer
      */
-    @PostMapping(value = "/instancelist")
+    @GetMapping(value = "/instancelist")
     public GetListInstanceDTO postGameList() {
         logger.info("Post Request for List form all GameList");
         List<Instance> gamelist = instanceHandler.getGameInstances();
@@ -99,13 +103,15 @@ public class GameRestController{
     
     @PostMapping(value="/create-game", consumes = MediaType.APPLICATION_JSON_VALUE)
     public long createGame(@RequestBody GetGameConfigDTO gameConfig) {
-
+        
         String mapName = gameConfig.mapName();
         String sessionName = gameConfig.sessionName();
+        int maximumPlayerCount = gameConfig.maximumPlayerCount();
+        boolean npcsActivated = gameConfig.npcsActivated();
 
         logger.info("POST Request for '/api/game/create-game' with body: {} and {}", mapName, sessionName);
 
-        return instanceHandler.createGameInstance(mapName, sessionName);
+        return instanceHandler.createGameInstance(mapName, sessionName, maximumPlayerCount, npcsActivated);
     }
 
     /**
@@ -118,21 +124,25 @@ public class GameRestController{
      * @param yPos the y position the player wants to spawn at
      */
     @PostMapping(value="/{id}/join-game", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void joinGame(@RequestBody JoinGameDTO joinGameRequest , @PathVariable long id) {
+    public boolean joinGame(@RequestBody JoinGameDTO joinGameRequest , @PathVariable long id) {
 
         String user = joinGameRequest.user();
         String type = joinGameRequest.type();
 
-        int xPos = joinGameRequest.xPos();
-        int yPos = joinGameRequest.yPos();
+        float xPos = joinGameRequest.xPos();
+        float yPos = joinGameRequest.yPos();
 
         logger.info("POST Request for '/api/game/{}/join-game' with body: {} and {} and {} and {}", id, user, type, xPos, yPos);
 
         GameInstance instance = instanceHandler.getGameInstanceById(id);
-
-        if (instance != null) {
+        boolean playerSlotAvailable = instance.playerSlotAvailable();
+        if (instance != null && playerSlotAvailable) {
             MoveableObject moveable = MoveableType.valueOf(type).createMovable(xPos, yPos);
             instance.addPlayer(user, moveable);
+            loopInstanceInfo.publishInstanceInfoState(instanceHandler.getGameInstanceById(id), "CREATE");
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -165,10 +175,12 @@ public class GameRestController{
 
         String mapName = gameConfig.mapName();
         String sessionName = gameConfig.sessionName();
+        int maximumPlayerCount = gameConfig.maximumPlayerCount();
 
         logger.info("GET Request for '/api/game/game-config' with body: {} and {}", mapName, sessionName);
 
         boolean validationSuccess = instanceHandler.checkSessionNameAvailable(sessionName);
+        if(maximumPlayerCount < 1) validationSuccess = false;
 
         return new ValidationDTO(validationSuccess);
     }
@@ -195,7 +207,9 @@ public class GameRestController{
      */
     @PostMapping(value="/{id}/leave-game", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void leaveGame(@RequestBody JoinGameDTO leaveGameRequest , @PathVariable long id) {
+        logger.info("Post-Req leave-game - delete user ", leaveGameRequest.user());
         instanceHandler.getGameInstanceById(id).removePlayer(leaveGameRequest.user());
+        loopInstanceInfo.publishInstanceInfoState(instanceHandler.getGameInstanceById(id), "CREATE");
     }
 
     /**

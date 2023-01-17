@@ -37,7 +37,7 @@ public class MovementValidator implements Validator {
      * @param tiles 2D-Array of tiles describing the map
      * @param moveable Object of which the movement will be validated.
      *                 A deep copy of the object will be used for validation checks
-     *                 to avoid messing the state of the object!
+     *                 to avoid messing with the state of the object!
      */
     public MovementValidator(Tile[][] tiles, MoveableObject moveable) {
         this.map = tiles;
@@ -47,10 +47,9 @@ public class MovementValidator implements Validator {
     @Override
     public boolean validate() {
 
-        
         float startPosX = this.moveableCopy.getXPos();
         float startPosY = this.moveableCopy.getYPos();
-
+	
         moveableCopy.move();
         
         float endPosX = this.moveableCopy.getXPos();
@@ -60,20 +59,18 @@ public class MovementValidator implements Validator {
             return false;
         }
 
-        
         for (int[] crossedTilePos : this.approximateCrossedTiles(startPosX, startPosY, endPosX, endPosY)) {
-            
+	
             int tileRow = crossedTilePos[0];
             int tileCol = crossedTilePos[1];
-
+	
             Tile crossedTile = this.map[tileRow][tileCol];
-
+	
             if (!tileAllowsMovementFromPostion(crossedTile) || !canDriveOnTile(crossedTile) || !canWalkOnTile(crossedTile)) {
                 return false;
             }
-
         }
-       
+       	
         return true;
     }
 
@@ -93,63 +90,98 @@ public class MovementValidator implements Validator {
      * @param endY End y-position of the moveable object.
      * @return List containing int array with two elements representing [row][col].
      */
-    protected List<int[]> approximateCrossedTiles(float startX, float startY, float endX, float endY) {
-        
+	
+     protected List<int[]> approximateCrossedTiles(float startX, float startY, float endX, float endY) {
+	
         List<int[]> crossedTiles = new ArrayList<>();
-        
+	
         int[] tileCoord = new int[2];
-        
+	
         float currentX = startX;
         float currentY = startY;
-        
+
         if (this.moveableCopy.getCurrentVelocity() == 0) {
             tileCoord[0] = (int) currentY;
             tileCoord[1] = (int) currentX;
             crossedTiles.add(tileCoord);
             return crossedTiles;
         }
-
+	
         boolean changedTile = true;
         boolean notAtEndX = false;
         boolean notAtEndY = false;
 
+        float sgnX = 0;
+        float sgnY = 0;
 
-        float sgnX = this.moveableCopy.getOrientation().equals(Orientation.WEST) 
-                        ? 1
-                        : this.moveableCopy.getOrientation().equals(Orientation.EAST)
-                            ? -1
-                            : 0;
+        switch(this.moveableCopy.getOrientation()) {
 
-        float sgnY = this.moveableCopy.getOrientation().equals(Orientation.NORTH) 
-                        ? 1
-                        : this.moveableCopy.getOrientation().equals(Orientation.SOUTH)
-                            ? -1
-                            : 0;
-                            
+            case NORTH:
+                sgnY = 1;
+                break;
+
+            case NORTH_EAST:
+                sgnY = 1;
+                sgnX = 1;
+                break;
+
+            case NORTH_WEST:
+                sgnY = 1;
+                sgnX = -1;
+                break;
+
+            case EAST:
+                sgnX = 1;
+                break;
+
+            case SOUTH:
+                sgnY = -1;
+                break;
+
+            case SOUTH_EAST:
+                sgnY = -1;
+                sgnX = 1;
+                break;
+
+            case SOUTH_WEST:
+                sgnY = -1;
+                sgnX = -1;
+                break;
+
+            case WEST:
+                sgnX = -1;
+                break;
+
+            default:
+                break;
+
+        }
+		
         do {
 
             if (changedTile) {
-
                 tileCoord[0] = (int) currentY;
                 tileCoord[1] = (int) currentX;
-
                 crossedTiles.add(tileCoord);
             }
-
+	
+            // Simulate movement in direction by assuming that NORTH increases y-coordinates
+            // and EAST increases x-coordinates, while SOUTH decreases y-coordinates and
+            // WEST decreases y-coordinates
             currentX += sgnX * (this.moveableCopy.getCurrentVelocity() / APPROXIMATION_SECTIONS);
             currentY += sgnY * (this.moveableCopy.getCurrentVelocity() / APPROXIMATION_SECTIONS);
-
+	
             changedTile = ((int) currentY != tileCoord[0]) || ((int) currentX != tileCoord[1]);
-
+	
             // Multiply current and end position with sign of movement to consider movement
             // in negative direction. Only check position in direction of movement.
             notAtEndX = (sgnY == 0) && ((sgnX * currentX) <= (sgnX * endX));
-            notAtEndY = (sgnX == 0) && ((sgnY * currentY) <= (sgnY * endY));
-            
+            notAtEndY = (sgnX == 0) && ((sgnY * currentY) <= (sgnY * endY));           
+	
         } while (notAtEndX || notAtEndY);
         
         return crossedTiles;
-    }
+    } 	
 
     /**
      * Checks if the position is inside the map.
@@ -166,6 +198,36 @@ public class MovementValidator implements Validator {
         boolean yPosValid = (yPos < mapSize) && (yPos >= 0);
 
         return xPosValid && yPosValid;
+    }
+
+
+     /**
+      * Street tiles restrict the directions from which it is
+      * allowed. This is done by checking if the orientation
+      * of the moveable object is the opposite of any of the
+      * allowed directions of the street tile.
+      * 
+      * If tile is not a street tile or moveable is not motorized
+      * the movement will be allowed.
+      * 
+      * @param tile Tile to check allowed directions of.
+      * @return true if movement to the tile is allowed, else false
+      */
+      protected boolean tileAllowsMovementFromPostion(Tile tile) {
+ 
+        if (!(tile instanceof Streetile) || !(this.moveableCopy instanceof MotorizedObject)) {
+            return true;
+        }
+
+        Streetile streetTile = (Streetile) tile;
+        Orientation headingTo = moveableCopy.getOrientation();
+
+        return streetTile
+            .getAllowedDirections()
+            .stream()
+            .anyMatch(
+                allowedFrom -> allowedFrom.opposite().equals(headingTo)
+            );
     }
 
     /**
@@ -197,60 +259,6 @@ public class MovementValidator implements Validator {
         boolean tileIsWalkable = (tile instanceof Walkable);
 
         return moveableIsNotPassenger || tileIsWalkable;
-    }
-
-    /**
-     * Street tiles restrict the directions from which it is
-     * allowed. This is done by checking if the orientation
-     * of the moveable object is the opposite of any of the
-     * allowed directions of the street tile.
-     * 
-     * If tile is not a street tile or moveable is not motorized
-     * the movement will be allowed.
-     * 
-     * @param tile Tile to check allowed directions of.
-     * @return true if movement to the tile is allowed, else false
-     */
-    protected boolean tileAllowsMovementFromPostion(Tile tile) {
-
-        if (!(tile instanceof Streetile) || !(this.moveableCopy instanceof MotorizedObject)) {
-            return true;
-        }
-
-        Streetile streetTile = (Streetile) tile;
-
-        for (Orientation orientation: streetTile.getAllowedDirections()) {
-            switch (moveableCopy.getOrientation()) {
-                case NORTH:
-                    if(orientation.equals(Orientation.SOUTH)){
-                        return true;
-                    };
-                    break;
-
-                case SOUTH:
-                    if(orientation.equals(Orientation.NORTH)){
-                        return true;
-                    };                        
-                    break;
-
-                case EAST:
-                    if(orientation.equals(Orientation.WEST)){
-                        return true;
-                    };
-                    break;
-
-                case WEST:
-                    if(orientation.equals(Orientation.EAST)){
-                        return true;
-                    };                        
-                    break;
-
-                default:
-                    break;
-            }
-        }   
-
-        return false;
     }
     
 }

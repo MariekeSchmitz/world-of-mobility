@@ -14,6 +14,16 @@ public abstract class TrafficTile extends Tile {
 
     protected List<Orientation> allowedDirections = new ArrayList<>();
 
+    /**
+     * Gets directions from which something is
+     * able to move onto the tile.
+     * 
+     * @return List containing allowed direction
+     */
+    public List<Orientation> getAllowedDirections() {
+        return this.allowedDirections;
+    }
+
     @Override
     public void turn(Direction direction) {
 
@@ -30,9 +40,5 @@ public abstract class TrafficTile extends Tile {
         }
 
     }
-
-    public List<Orientation> getAllowedDirections() {
-        return allowedDirections;
-    }
-
+    
 }

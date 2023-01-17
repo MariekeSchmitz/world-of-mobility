@@ -3,7 +3,6 @@
 //@ts-ignore
 import * as THREE from "three";
 import { GltfModel } from "troisjs";
-import { withDefaults, defineProps } from "vue";
 import RAIL_STRAIGHT_URL from "@/assets/models/RAIL_STRAIGHT.glb?url";
 
 const props = withDefaults(

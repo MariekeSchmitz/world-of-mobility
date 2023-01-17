@@ -54,7 +54,6 @@ function computeVector3(orientation: string): THREE.Vector3 {
 }
 onMounted(async () => {
   loadedMap.value = await getGameMap(props.instanceID);
-  console.log(loadedMap.value);
 });
 </script>
 <template>

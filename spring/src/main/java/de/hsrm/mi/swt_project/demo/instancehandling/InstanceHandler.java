@@ -40,6 +40,9 @@ public class InstanceHandler implements Updateable {
 
     @Autowired
     protected TrafficLogicLoopTask trafficTask;
+    
+    private UpdateloopInstanceInfo loopInstanceInfo;
+
 
     @Value("${instance.lifetime:1200}")
     protected long instanceLifetimeCycles;
@@ -67,7 +70,7 @@ public class InstanceHandler implements Updateable {
      * @param sessionName the name of the session
      * @return the id of the new instance
      */
-    public long createGameInstance(String mapName, String sessionName) {
+    public long createGameInstance(String mapName, String sessionName, int maximumPlayerCount, boolean npcsActivated) {
 
         GameMap map;
 
@@ -92,7 +95,7 @@ public class InstanceHandler implements Updateable {
 
         }
 
-        Instance instance = new GameInstance(map, sessionName, idCounter, mapSavePath);
+        Instance instance = new GameInstance(map, sessionName, idCounter, mapSavePath, maximumPlayerCount, npcsActivated);
 
         instance.setLifetime(instanceLifetimeCycles);
         instances.add(instance);
@@ -228,6 +231,7 @@ public class InstanceHandler implements Updateable {
         }
 
         for (Instance instance : toDelete) {
+            loopInstanceInfo.publishInstanceInfoState(instance, "DELETE");
             this.instances.remove(instance);
         }
 

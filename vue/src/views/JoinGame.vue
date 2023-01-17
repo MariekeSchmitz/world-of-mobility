@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useUser } from "@/services/useUser";
+import { ref } from "vue";
 import User from "@/components/joinGame/User.vue";
 import CarSelection from "@/components/carselect/CarSelection.vue";
 import { onMounted } from "vue";
@@ -7,22 +8,38 @@ import { useGame } from "@/services/useGame";
 import { useLogin } from "@/services/login/useLogin";
 import router from "@/router";
 import SpawnPoint from "@/components/spawnpoint/SpawnPoint.vue";
-import { useSpawnPoint } from '@/components/spawnpoint/useSpawnPoint';
+import { useSpawnPoint } from "@/components/spawnpoint/useSpawnPoint";
 const { spawnState, setMoveableObject, setInstanceId } = useSpawnPoint();
 const { joinGame } = useGame();
 const { userList, getUserList } = useUser();
 const { loginData } = useLogin();
 
+const joinSuccessfull = ref(false);
+const showError = ref(false);
+
 const props = defineProps<{
-  instanceID: number;
+  instanceID: string;
 }>();
 
+const instanceID = Number(props.instanceID);
 let moveableType = "";
 
-function join() {
-  if (props.instanceID != undefined && spawnState.xPos != -1 && spawnState.yPos != -1 && spawnState.tileNumber != -1) {
-    joinGame(props.instanceID, loginData.username, moveableType, spawnState.xPos, spawnState.yPos);
-    router.push("/game/" + props.instanceID);
+async function join() {
+  if (
+    instanceID != undefined &&
+    spawnState.xPos != -1 &&
+    spawnState.yPos != -1 &&
+    spawnState.tileNumber != -1
+  ) {
+    joinSuccessfull.value = await joinGame(
+      instanceID,
+      loginData.username,
+      moveableType,
+      spawnState.xPos,
+      spawnState.yPos
+    );
+    if (joinSuccessfull.value) router.push("/gameview/" + instanceID);
+    else showError.value = true;
   }
 }
 
@@ -32,8 +49,8 @@ function updateMoveable(type: string) {
 }
 
 onMounted(() => {
-  getUserList(props.instanceID);
-  setInstanceId(props.instanceID);
+  getUserList(instanceID);
+  setInstanceId(instanceID);
 });
 </script>
 
@@ -51,7 +68,7 @@ onMounted(() => {
       </div>
       <div id="place-select">
         <h1>Spawnpoint wählen</h1>
-        <SpawnPoint :instance-id="props.instanceID"/>
+        <SpawnPoint :instance-id="instanceID" />
       </div>
     </div>
     <h2>Beigetretene Spieler</h2>
@@ -61,18 +78,19 @@ onMounted(() => {
       </div>
     </div>
     <button @click="join()">Beitreten</button>
+    <p v-if="showError">Spielerlimit ausgeschöpft.</p>
   </div>
 </template>
 
 <style scoped>
-
 #personal-config-container {
   display: flex;
   box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.47);
   margin-top: 2%;
 }
 
-#car-select, #place-select {
+#car-select,
+#place-select {
   padding: 20px;
   padding-top: 0;
 }
@@ -81,7 +99,8 @@ onMounted(() => {
   border-right: 3px solid rgba(0, 0, 0, 0.455);
 }
 
-#car-select h1, #place-select h1 {
+#car-select h1,
+#place-select h1 {
   width: 50%;
 }
 

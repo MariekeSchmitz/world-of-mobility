@@ -49,7 +49,7 @@ async function createWorld(name: string, path: string) {
         newWorldState.id = jsondata.id;
       }
     } catch (reason) {
-      console.log(reason);
+      console.log("ERROR: Fetching new Instance failed: ", reason);
     }
   } else {
     newWorldState.error = "Name too short.";

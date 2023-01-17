@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, onMounted, ref, computed } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { useSpawnPoint } from "@/components/spawnpoint/useSpawnPoint";
 
 const { miniMapScalingState, setSpawnPoint, spawnState } = useSpawnPoint();

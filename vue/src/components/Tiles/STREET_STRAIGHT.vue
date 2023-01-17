@@ -4,10 +4,10 @@
 import * as THREE from "three";
 import { ObjectEnum } from "@/services/ObjectEnum";
 import { GltfModel } from "troisjs";
-import { withDefaults, defineProps } from "vue";
 import TRAFFIC_LIGHT from "@/components/objects/TRAFFIC_LIGHT.vue";
 import GAS_STATION from "@/components/objects/GAS_STATION.vue";
 import STREET_STRAIGHT_URL from "@/assets/models/STREET_STRAIGHT.glb?url";
+import TRAFFIC_LIGHT_LIGHT from "@/components/objects/TRAFFIC_LIGHT_LIGHT.vue";
 
 const props = withDefaults(
   defineProps<{
@@ -29,17 +29,17 @@ const gasStation = "gasStation";
 function setPosition(orientation: string, name: string): THREE.Vector3 {
   if (orientation == "WEST" || orientation == "EAST") {
     if (name == "trafficLightLeft") {
-      return new THREE.Vector3(-0.5, 0, -3);
+      return new THREE.Vector3(3, 0, -6);
     } else if (name == "trafficLightRight") {
-      return new THREE.Vector3(1, 0, 3);
+      return new THREE.Vector3(-3, 0, 6);
     } else if (name == "gasStation") {
       return new THREE.Vector3(1, -0.3, 6.5);
     }
   } else if (orientation == "NORTH" || orientation == "SOUTH") {
     if (name == "trafficLightLeft") {
-      return new THREE.Vector3(3, 0, -0.5);
+      return new THREE.Vector3(6, 0, 3);
     } else if (name == "trafficLightRight") {
-      return new THREE.Vector3(-3, 0, -1);
+      return new THREE.Vector3(-6, 0, -3);
     } else if (name == "gasStation") {
       return new THREE.Vector3(-6.5, -0.3, 0);
     }
@@ -85,6 +85,18 @@ function setRotation(orientation: string, name: string): THREE.Vector3 {
     :rotation="setRotation(props.orientation, trafficLightLeft)"
     :type="ObjectEnum.TRAFFIC_LIGHT"
   />
+  <TRAFFIC_LIGHT_LIGHT
+    v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
+    :position="
+      props.position
+        .clone()
+        .add(setPosition(props.orientation, trafficLightLeft))
+    "
+    :angle="3"
+    :red="true"
+    :yellow="false"
+    :green="false"
+  />
   <TRAFFIC_LIGHT
     v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
     :position="
@@ -94,6 +106,18 @@ function setRotation(orientation: string, name: string): THREE.Vector3 {
     "
     :rotation="setRotation(props.orientation, trafficLightRight)"
     :type="ObjectEnum.TRAFFIC_LIGHT"
+  />
+  <TRAFFIC_LIGHT_LIGHT
+    v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
+    :position="
+      props.position
+        .clone()
+        .add(setPosition(props.orientation, trafficLightRight))
+    "
+    :angle="3"
+    :red="false"
+    :yellow="false"
+    :green="true"
   />
   <GAS_STATION
     v-if:="props.placedObject === ObjectEnum.GAS_STATION"

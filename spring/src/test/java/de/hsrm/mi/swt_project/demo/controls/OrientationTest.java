@@ -52,4 +52,23 @@ class OrientationTest {
         }
     }
 
+    @Test
+    void testOpposite() {
+
+        Orientation[] orientations = {
+            Orientation.NORTH,
+            Orientation.NORTH_EAST,
+            Orientation.EAST,
+            Orientation.SOUTH_EAST,
+            Orientation.NORTH_WEST,
+            Orientation.WEST,
+            Orientation.SOUTH_WEST,
+            Orientation.SOUTH,
+        };
+
+        for (int i = 0; i < orientations.length; i++) {
+            int oppositeIndex = orientations.length - 1 - i;
+            assertEquals(orientations[oppositeIndex], orientations[i].opposite());
+        }
+    }
 }

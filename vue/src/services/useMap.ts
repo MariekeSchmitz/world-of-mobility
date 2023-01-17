@@ -78,7 +78,6 @@ export function useMap(): any {
       const URL = "/api/editor/savemap";
 
       const data = { mapName, mapId };
-      console.log(data);
       const id = setTimeout(() => controller.abort(), 8000);
 
       const response = await fetch(URL, {
