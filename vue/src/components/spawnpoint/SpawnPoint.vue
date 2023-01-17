@@ -173,6 +173,8 @@ onUnmounted(() => {
   height: v-bind("miniMapScalingState.windowWidth");
   width: v-bind("miniMapScalingState.windowWidth");
   background-color: rgb(66, 66, 66);
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 #tile-row {
@@ -180,8 +182,4 @@ onUnmounted(() => {
   flex-direction: row;
 }
 
-#tile-column {
-  display: flex;
-  flex-direction: column;
-}
 </style>
