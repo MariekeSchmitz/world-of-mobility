@@ -168,6 +168,9 @@
       },
       {
         "orientation": "NORTH",
+        "placedObject": {
+          "type": "PIG"
+        },
         "type": "GRASSTILE"
       },
       {
@@ -497,6 +500,9 @@
       },
       {
         "orientation": "NORTH",
+        "placedObject": {
+          "type": "TREE"
+        },
         "type": "GRASSTILE"
       },
       {
@@ -509,6 +515,9 @@
       },
       {
         "orientation": "NORTH",
+        "placedObject": {
+          "type": "SHEEP"
+        },
         "type": "GRASSTILE"
       },
       {
