@@ -68,12 +68,18 @@ export function useGame(): any {
     }
   }
 
-  async function createGameInstance(mapName: string, sessionName: string) {
+  async function createGameInstance(mapName: string, sessionName: string, maximumPlayerCount: number,
+    npcsActivated: boolean) {
     try {
       const controller = new AbortController();
       const URL = "/api/game/create-game";
 
-      const data = { mapName: mapName, sessionName: sessionName };
+      const data = {
+        mapName: mapName,
+        sessionName: sessionName,
+        maximumPlayerCount: maximumPlayerCount,
+        npcsActivated: npcsActivated
+      };
 
       const id = setTimeout(() => controller.abort(), 8000);
 
@@ -112,13 +118,12 @@ export function useGame(): any {
         signal: controller.signal,
         body: JSON.stringify(data),
       });
-
-      clearTimeout(id);
-
       if (!response.ok) {
         return false;
       }
-      return true;
+      const jsonData = await response.json();
+      return jsonData;
+      clearTimeout(id);
     } catch (reason) {
       console.log(`ERROR: Sending Command failed: ${reason}`);
       return false;

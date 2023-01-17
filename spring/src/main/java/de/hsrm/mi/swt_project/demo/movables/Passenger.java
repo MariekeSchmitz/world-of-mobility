@@ -22,7 +22,7 @@ public class Passenger extends MoveableObject {
      * @param maxVelocity Maximum velocity of the object.
      */
     public Passenger(float xPos, float yPos) {
-        this(Orientation.NORTH, xPos, yPos, 1);
+        this(Orientation.NORTH, xPos, yPos, 0.1f);
     }
 
     /**
@@ -38,6 +38,7 @@ public class Passenger extends MoveableObject {
         this.setYPos(yPos);
         this.maxVelocity = maxVelocity;
         this.orientation = orientation;
+        this.hitboxRadius = 0.05f;
     }
 
     @Override

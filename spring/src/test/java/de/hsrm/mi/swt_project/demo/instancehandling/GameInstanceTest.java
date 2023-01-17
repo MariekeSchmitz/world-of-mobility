@@ -3,6 +3,7 @@ package de.hsrm.mi.swt_project.demo.instancehandling;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,7 @@ class GameInstanceTest {
     private GameInstance gameInstance;
     private Passenger passenger;
     private MotorizedObject car;
+    private int maximumPlayerCount = 6;
 
 
     /**
@@ -56,7 +58,7 @@ class GameInstanceTest {
         map.getTiles()[1][0] = street;
         map.getTiles()[1][1] = street;
 
-        gameInstance = new GameInstance(map, "TestGame", 1, "maps");
+        gameInstance = new GameInstance(map, "TestGame", 1, "maps", maximumPlayerCount, true);
 
     }
 
@@ -68,7 +70,7 @@ class GameInstanceTest {
 
         map.addNpc(original);
 
-        GameInstance instance = new GameInstance(map, "Test", 1, "maps");
+        GameInstance instance = new GameInstance(map, "Test", 1, "maps", maximumPlayerCount, true);
 
         MoveableObject copy = instance.getMoveableObjects().get("NPC0");
 
@@ -144,5 +146,69 @@ class GameInstanceTest {
         // Be at start position after full circle
         assertEquals(startX, passenger.getXPos());
         assertEquals(startY, passenger.getYPos());
+    }
+
+    @Test 
+    void testPlayerSlotAvailableFalseWithoutNPCs(){
+        GameMap map = new GameMap();
+        GameInstance instance = new GameInstance(map, "Test", 1, "maps", maximumPlayerCount, false);
+        for(int i = 0; i < maximumPlayerCount; i++){
+            instance.addPlayer(String.format("user{%d}", i), car);
+        }
+        assertFalse(instance.playerSlotAvailable());
+    }
+
+    @Test 
+    void testPlayerSlotAvailableTrueWithoutNPCs(){
+        GameMap map = new GameMap();
+        GameInstance instance = new GameInstance(map, "Test", 1, "maps", maximumPlayerCount, false);
+        assertTrue(instance.playerSlotAvailable());
+        for(int i = 0; i < maximumPlayerCount-1; i++){
+            instance.addPlayer(String.format("user{%d}", i), car);
+        }
+        assertTrue(instance.playerSlotAvailable());
+    }
+
+    @Test 
+    void testPlayerSlotAvailableFalseWithNPCs(){
+        GameMap map = new GameMap();
+        for(int i = 0; i < maximumPlayerCount; i++){
+            map.addNpc(car);
+        }
+        GameInstance instance = new GameInstance(map, "Test", 1, "maps", maximumPlayerCount, true);
+        for(int i = 0; i < maximumPlayerCount; i++){
+            instance.addPlayer(String.format("user{%d}", i), car);
+        }
+        assertFalse(instance.playerSlotAvailable());
+    }
+
+    @Test 
+    void testPlayerSlotAvailableTrueWithNPCs(){
+        GameMap map = new GameMap();
+        for(int i = 0; i < maximumPlayerCount; i++){
+            map.addNpc(car);
+        }
+        GameInstance instance = new GameInstance(map, "Test", 1, "maps", maximumPlayerCount, true);
+        assertTrue(instance.playerSlotAvailable());
+        for(int i = 0; i < maximumPlayerCount-1; i++){
+            instance.addPlayer(String.format("user{%d}", i), car);
+        }
+        assertTrue(instance.playerSlotAvailable());
+    }
+
+    @Test 
+    void testInstanceHasNPCsWhenNPCsActivated(){
+        GameMap map = new GameMap();
+        map.addNpc(car);
+        GameInstance instance = new GameInstance(map, "Test", 1, "maps", maximumPlayerCount, true);
+        assertTrue(instance.getMoveableObjects().size()==1);
+    }
+
+    @Test 
+    void testInstanceHasNoNPCsWhenNPCsDeactivated(){
+        GameMap map = new GameMap();
+        map.addNpc(car);
+        GameInstance instance = new GameInstance(map, "Test", 1, "maps", maximumPlayerCount, false);
+        assertTrue(instance.getMoveableObjects().size()==0);
     }
 }
