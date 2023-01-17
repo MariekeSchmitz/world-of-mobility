@@ -76,7 +76,7 @@
 
   <LeftMenu />
 
-  <UserListMenu :instanceID="props.editorID"></UserListMenu>
+  <UserListMenu :instanceID="editorID"></UserListMenu>
 
   <BottomMenu></BottomMenu>
 
