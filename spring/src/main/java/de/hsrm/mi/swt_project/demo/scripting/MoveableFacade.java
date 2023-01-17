@@ -7,7 +7,7 @@ import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
 /**
- * This class is a proxy for a moveable object.
+ * This class is a facade for a moveable object.
  * It is used to provide a more restricted and
  * higher level API that can be used when providing
  * scripts for moveable objects.
@@ -24,18 +24,18 @@ public class MoveableFacade {
     protected ScriptContext context;
 
     /**
-     * Static factory method for MoveableProxy.
+     * Static factory method for MoveableFacade.
      * 
      * @param moveable Moveable that will be proxied
      * @param context Context that can be provided
-     * @return new instance of MoveableProxy 
+     * @return new instance of MoveableFacade 
      */
     public static MoveableFacade createFor(MoveableObject moveableObject, ScriptContext context) {
         return new MoveableFacade(moveableObject, context);
     }
 
     /**
-     * Creates a new MoveableProxy.
+     * Creates a new MoveableFacade.
      * 
      * @param moveable Moveable that will be controlled
      * @param context Context that can be provided
@@ -43,6 +43,17 @@ public class MoveableFacade {
     protected MoveableFacade(MoveableObject moveable, ScriptContext context) {
         this.moveable = moveable;
         this.context = context;
+    }
+
+    public float currentVelocity(){
+        return moveable.getCurrentVelocity();
+    }
+
+    public Tile getFrontTile(){
+        Tile[][] mapContext = context.provideMapContext();
+        int pos = mapContext.length / 2;
+
+        return mapContext[pos + 1][pos];
     }
 
     /**
