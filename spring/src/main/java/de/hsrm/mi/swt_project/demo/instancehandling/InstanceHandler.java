@@ -21,6 +21,8 @@ import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObjectType;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;
+import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLightState;
+import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLogicLoopTask;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
 /**
@@ -37,7 +39,10 @@ public class InstanceHandler implements Updateable {
     protected UpdateloopService loopservice;
 
     @Autowired
+    protected TrafficLogicLoopTask trafficTask;
+    
     private UpdateloopInstanceInfo loopInstanceInfo;
+
 
     @Value("${instance.lifetime:1200}")
     protected long instanceLifetimeCycles;
@@ -380,5 +385,9 @@ public class InstanceHandler implements Updateable {
         }
 
         return true;
+    }
+
+    public TrafficLightState getTrafficLightState() {
+        return trafficTask.getTrafficLightState();
     }
 }
