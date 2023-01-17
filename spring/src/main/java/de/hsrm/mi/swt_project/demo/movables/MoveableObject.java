@@ -6,9 +6,11 @@ import org.slf4j.LoggerFactory;
 
 import de.hsrm.mi.swt_project.demo.controls.Moveable;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
-import de.hsrm.mi.swt_project.demo.controls.Scriptable;
+import de.hsrm.mi.swt_project.demo.scripting.Scriptable;
 import de.hsrm.mi.swt_project.demo.controls.Turnable;
-import de.hsrm.mi.swt_project.demo.util.JythonFactory;
+import de.hsrm.mi.swt_project.demo.scripting.JythonFactory;
+import de.hsrm.mi.swt_project.demo.scripting.MoveableFacade;
+import de.hsrm.mi.swt_project.demo.scripting.ScriptContext;
 
 /**
  * This class represents objects that can change their position
@@ -23,6 +25,8 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
 
     protected static final float MIN_CAPACITY = 0.0f;
     protected static final float MAX_CAPACITY = 1.0f;
+
+    protected float hitboxRadius = 0.15f;
 
     protected Orientation orientation;
 
@@ -74,13 +78,6 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
         return script;
     }
 
-    /**
-     * 
-     * @return type
-     */
-    public MoveableType getType() {
-        return type;
-    }
 
     /**
      * Gets capacity of the object. Capacity indicates
@@ -111,6 +108,19 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
      */
     public float getMaxVelocity() {
         return maxVelocity;
+    }
+
+    public float getHitboxRadius() {
+        return hitboxRadius;
+    }
+
+    /**
+     * Gets the moveable type of the object.
+     * 
+     * @return Type of the moveable object
+     */
+    public MoveableType getType() {
+        return type;
     }
 
     /**
@@ -163,13 +173,13 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
     }
 
     @Override
-    public void executeScript() {
+    public void executeScript(ScriptContext context) {
 
-        if (this.script != null && !this.script.isEmpty()) {
+        if (this.script != null && !this.script.isEmpty() && context != null) {
             PythonInterpreter interpreter = JythonFactory.getInterpreter();
-            interpreter.set("moveable", this);
+            MoveableFacade facade = MoveableFacade.createFor(this, context);
+            interpreter.set("npc", facade);   
             interpreter.exec(this.script);
-
         }
     }
 

@@ -40,9 +40,9 @@ public class EditorInstance extends Instance {
      * @param map the map to use for the instance
      * @param id  the id of the instance
      */
-    public EditorInstance(GameMap map, long id) {
-        super(map, id);
-        this.users = new ArrayList<>();
+    public EditorInstance(GameMap map, long id, String mapSavePath) {
+        super(map, id, mapSavePath);
+        this.users = new ArrayList<String>();
     }
 
     /**

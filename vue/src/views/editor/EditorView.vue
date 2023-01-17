@@ -1,5 +1,7 @@
 <!-- prettier-ignore -->
 <script setup lang="ts">
+//@ts-ignore
+
   import { ref, onMounted, reactive, watch, onUnmounted } from "vue";
 
   import * as THREE from 'three'
@@ -131,7 +133,10 @@ button:hover {
   position: fixed;
   left: 10px;
   top: 20px;
-  width: 60px;
+  width: 30px;
+  aspect-ratio: 1/1;
+  border: none;
+  border-radius: 100%;
 }
 
 .mapTitle > p {

@@ -12,6 +12,7 @@
 //@ts-ignore
 import * as THREE from "three";
 import { Plane, Texture, BasicMaterial } from "troisjs";
+import { editorTileURLs } from "@/components/editor/EditorTileURLDict"
 
 const props = defineProps<{
   type: string;
@@ -21,7 +22,7 @@ const props = defineProps<{
   rotation: THREE.Vector3;
 }>();
 
-let objectPath = "../src/assets/objects/" + props.type + ".png";
+const objectPath = editorTileURLs[props.type];
 </script>
 <template>
   <Plane
@@ -30,8 +31,8 @@ let objectPath = "../src/assets/objects/" + props.type + ".png";
     :rotation="props.rotation"
     :position="props.position"
   >
-    <BasicMaterial>
+    <BasicMaterial :props="{ transparent: true}" >
       <Texture v-bind:src="objectPath" />
-    </BasicMaterial>
+    </BasicMaterial >
   </Plane>
 </template>

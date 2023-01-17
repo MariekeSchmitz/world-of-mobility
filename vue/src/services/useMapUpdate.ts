@@ -41,7 +41,8 @@ export function useMapUpdate(editorId: number): any {
   });
 
   function receiveMapUpdates() {
-    const wsurl = `ws://${window.location.host}/stompbroker`;
+    const proto = location.protocol == 'https:' ? "wss" : "ws";
+    const wsurl = `${proto}://${window.location.host}/stompbroker`;
     const DEST = `/topic/editor/${editorId}`;
     console.log("UPDAAAAAAAAAAAATE");
     const stompClient = new Client({ brokerURL: wsurl });

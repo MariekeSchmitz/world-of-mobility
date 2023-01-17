@@ -30,51 +30,40 @@ const setAvatar = (avatar: string) => {
  * @author Tom Gouthier
  * @author Marie Bohnert
  * sends login request to server
+ * if successfull, sets state accordingly
  */
 
 async function login(username: string) {
   if (loginState.loggedIn) {
-    loginState.error = `Already signed in as ${loginState.username}`;
     return;
   }
-  // if username too short dont make the request at all
-  if (username.length >= 3) {
-    const login: ISendLogin = {
-      name: username,
-    };
+  const login: ISendLogin = {
+    name: username,
+  };
 
-    console.log(login);
-    const url = "/api/user/login";
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(login),
-      });
+  const url = "/api/user/login";
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(login),
+    });
 
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      } else {
-        const jsondata: ILoginResponse = await response.json();
-        console.log(jsondata);
-        // when no error sent by server, set loginState accordingly
-        if (jsondata.error === "") {
-          loginState.error = "";
-          loginState.username = jsondata.username;
-          loginState.loggedIn = true;
-          console.log("logged in as", username);
-          // else dont do a login and reset State, set Error to error sent by server
-        } else {
-          loginState.error = jsondata.error;
-        }
-      }
-    } catch (reason: any) {
-      loginState.error = reason;
+    // if response is not 200, set error state to error message in error response (403 if not unique or username too short)
+    if (!response.ok) {
+      const jsondata = await response.json();
+      loginState.error = jsondata.message;
+    } else {
+      // if reponse is ok (200) set state accordingly
+      const jsondata: ILoginResponse = await response.json();
+      loginState.error = "";
+      loginState.username = jsondata.username;
+      loginState.loggedIn = true;
     }
-  } else {
-    loginState.error = "Name too Short. Has to be 3 or above letters long.";
+  } catch (reason: any) {
+    loginState.error = reason;
   }
 }
 
@@ -85,6 +74,7 @@ async function login(username: string) {
  */
 async function logout() {
   if (!loginState.loggedIn) {
+    loginState.error = "Not logged In";
     return;
   }
   const url = `/api/user/logout?username=${loginState.username}`;
@@ -93,18 +83,15 @@ async function logout() {
       method: "DELETE",
     });
     if (!response.ok) {
-      console.log(response.text);
+      throw new Error(response.statusText);
     } else {
-      console.log(`${loginState.username} logged out`);
       loginState.username = "";
       loginState.loggedIn = false;
       loginState.error = "";
     }
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    loginState.error = error;
   }
-
-  console.log(loginState);
 }
 
 export function useLogin() {

@@ -1,26 +1,21 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
+//@ts-ignore
+import * as THREE from "three";
 import { ref, computed, onMounted, reactive, onUnmounted, watch } from "vue";
-import {
-  AmbientLight,
-  Box,
-  Camera,
-  Scene,
-  PointLight,
-  Renderer,
-  ToonMaterial,
-  Texture,
-  GltfModel,
-} from "troisjs";
+import { Camera, Scene, HemisphereLight, Renderer } from "troisjs";
 import Map from "@/components/Map.vue";
-import Car from "@/components/objects/Car.vue";
-import { Vector3 } from "three";
+import CAR1 from "@/components/objects/CAR1.vue";
+import SHEEP from "@/components/objects/SHEEP.vue";
 import { useGame } from "@/services/useGame";
 import { useLogin } from "@/services/login/useLogin";
 import { orientations } from "@/services/Orientations";
+import TRUCK from "@/components/objects/TRUCK.vue";
+import TRACTOR from "@/components/objects/TRACTOR.vue";
+import PIG from "@/components/objects/PIG.vue";
+import TUPEL from "@/components/objects/TUPEL.vue";
 
-const SIZE = 10
-
+const SIZE = 16;
 
 const props = withDefaults(
   defineProps<{
@@ -38,25 +33,33 @@ const {
 const { loginData } = useLogin();
 
 const renderer = ref();
-const model = ref(null);
 const camera = ref();
-const car = ref();
 
-let thirdPerson = reactive({ value: true });
-let freeCam = reactive({ value: true });
+let thirdPerson = ref(true);
+let freeCam = ref(true);
 let switchedMode = false;
-const thirdPersonOffset = new Vector3(0, 8, -15);
-const firstPersonOffset = new Vector3(0, 0, -2);
-const cameraOffset = reactive(new Vector3(0, 8, -15));
-const upVector = new Vector3(0, 1, 0);
-let movementVector = new Vector3(0, 0, 0);   
+const hoverHeight = 2;
+const thirdPersonOffset = new THREE.Vector3(0, 8, 15);
+const firstPersonOffset = new THREE.Vector3(0, 0, 2);
+const cameraOffset = reactive(new THREE.Vector3(0, 8, 15));
+const upVector = new THREE.Vector3(0, 1, 0);
+let movementVector = new THREE.Vector3(0, 0, 0);
+const lookAt = reactive(new THREE.Vector3(0, 0, 0));
 
+/**
+ * returns the moveable object of the logged in user.
+ */
 const userMovable = computed(() => {
   return getUserMoveable(loginData.username);
 });
 
-const lookAt = reactive(new Vector3(15, 1, 15));
+watch(userMovable, () => {
+  setAzimuthAngle();
+});
 
+/**
+ * returns the position of the camera.
+ */
 const cameraPosition = computed(() => {
   const vecTempTarget = lookAt.clone();
   const vecTempOffset = cameraOffset.clone();
@@ -66,7 +69,7 @@ const cameraPosition = computed(() => {
     if (userMovable.value != undefined) {
       vecTempOffset.applyAxisAngle(
         upVector,
-        orientations[userMovable.value.orientation]
+        -orientations[userMovable.value.orientation]
       );
     }
     switchedMode = false;
@@ -74,12 +77,15 @@ const cameraPosition = computed(() => {
   }
 });
 
+/***
+ * keeps every playerobject up to date.
+ */
 const allMoveables = computed(() => {
   if (userMovable.value != undefined) {
-    const newLookAt = new Vector3(
+    const newLookAt = new THREE.Vector3(
       userMovable.value.xPos * SIZE,
-      2,
-      userMovable.value.yPos * SIZE
+      hoverHeight,
+      -userMovable.value.yPos * SIZE
     );
     movementVector = newLookAt.clone().sub(lookAt);
     lookAt.copy(newLookAt);
@@ -92,6 +98,10 @@ const allMoveables = computed(() => {
  */
 function switchCamMode() {
   freeCam.value = !freeCam.value;
+  if (renderer.value) {
+    renderer.value.three.cameraCtrl.enabled =
+      !renderer.value.three.cameraCtrl.enabled;
+  }
 }
 
 /**
@@ -109,6 +119,20 @@ function switchPerspective() {
 function onReady(model: any) {
   console.log("model Ready", model);
 }
+
+function setAzimuthAngle() {
+  if (!renderer.value || !userMovable.value) return;
+  const orbitControls = renderer.value.three.cameraCtrl;
+  if (freeCam.value && !thirdPerson.value) {
+    orbitControls.minAzimuthAngle =
+      -orientations[userMovable.value.orientation] - Math.PI / 2;
+    orbitControls.maxAzimuthAngle =
+      -orientations[userMovable.value.orientation] + Math.PI / 2;
+  } else {
+    orbitControls.minAzimuthAngle = Infinity;
+    orbitControls.maxAzimuthAngle = Infinity;
+  }
+}
 /**
  * An Eventhandler for the Keyboardevents.
  * @param e a KeyboardEvent, pressed button etc.
@@ -119,14 +143,15 @@ function handleKeyEvent(e: KeyboardEvent) {
   } else if (e.code === "KeyS") {
     sendCommand(props.instanceID, loginData.username, "SPEED_DOWN");
   } else if (e.code === "KeyA") {
-    sendCommand(props.instanceID, loginData.username, "RIGHT");
-  } else if (e.code === "KeyD") {
     sendCommand(props.instanceID, loginData.username, "LEFT");
+  } else if (e.code === "KeyD") {
+    sendCommand(props.instanceID, loginData.username, "RIGHT");
   } else if (e.code === "KeyV") {
     switchPerspective();
   } else if (e.code === "KeyF") {
     switchCamMode();
   }
+  setAzimuthAngle();
 }
 
 /**
@@ -142,27 +167,13 @@ onMounted(() => {
   orbitControls.enableRotate = true;
   orbitControls.screenSpacePanning = false;
   orbitControls.maxPolarAngle = Math.PI / 2;
+  orbitControls.maxDistance = 20;
 
-  function setAzimuthAngle(){
-    console.log("hallo");
-    if (freeCam.value && !thirdPerson.value) {
-      orbitControls.minAzimuthAngle = orientations[userMovable.value.orientation] - Math.PI / 2;
-      orbitControls.minAzimuthAngle = orientations[userMovable.value.orientation] + Math.PI / 2;
-    } else {
-      orbitControls.minAzimuthAngle =
-      orientations[userMovable.value.orientation];
-      orbitControls.maxAzimuthAngle =
-      orientations[userMovable.value.orientation] + 1.99 * Math.PI;
-    }
-  }
-  
   receiveGameUpdate(props.instanceID);
   document.addEventListener("keyup", handleKeyEvent);
-  watch(userMovable.value,()=>setAzimuthAngle());
 });
 onUnmounted(() => {
   document.removeEventListener("keyup", handleKeyEvent);
-  leaveGame(props.instanceID, loginData.username, "MOTORIZED_OBJECT");
 });
 </script>
 
@@ -171,30 +182,76 @@ onUnmounted(() => {
     <Camera :position="cameraPosition" ref="camera" />
     <Scene background="#97FFFF">
       <!-- Light -->
-      <PointLight :position="{ x: 0, y: 0, z: 10 }" />
-      <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
-      <GltfModel
-        ref="model"
-        src="/src/assets/models/Qube.glb"
-        @load="onReady"
-        :position="new Vector3(10, 0, 10)"
+      <HemisphereLight
+        :position="new THREE.Vector3(1, 1, 1)"
+        :intensity="2"
+        color="#ffffff"
       />
+      <!-- <AmbientLight :intensity="0.85" color="#ffffff"></AmbientLight> -->
       <!-- Map -->
       <Map :instanceID="props.instanceID"></Map>
       <!-- "Car" -->
-      <Box
+      <!-- <Box
         :position="{ x: 1, y: 1, z: 2 }"
         :scale="{ x: 1, y: 1, z: 2 }"
         ref="car"
         ><ToonMaterial>
-          <Texture src="/src/textures/Obsidian.jpg" /> </ToonMaterial
-      ></Box>
-
+          <Texture src="@/textures/Obsidian.jpg" /> </ToonMaterial
+      ></Box> -->
       <div v-for="(moveable, index) in allMoveables" :key="index">
-        <Car
-          :pos="new Vector3(moveable.xPos * SIZE, 0.5, moveable.yPos * SIZE)"
-          :rotation="orientations[moveable.orientation]"
-        ></Car>
+        <CAR1
+          v-if="moveable.classname == 'CAR'"
+          :scale="new THREE.Vector3(1, 1, 1)"
+          :position="
+            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+          "
+          :rotation="-orientations[moveable.orientation]"
+        />
+        <SHEEP
+          v-if="moveable.classname == 'SHEEP'"
+          :scale="new THREE.Vector3(1, 1, 1)"
+          :position="
+            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+          "
+          :rotation="-orientations[moveable.orientation]"
+          :type="moveable.classname"
+        />
+        <TRUCK
+          v-if="moveable.classname == 'TRUCK'"
+          :scale="new THREE.Vector3(1, 1, 1)"
+          :position="
+            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+          "
+          :rotation="-orientations[moveable.orientation]"
+          :type="moveable.classname"
+        />
+        <TRACTOR
+          v-if="moveable.classname == 'TRACTOR'"
+          :scale="new THREE.Vector3(1, 1, 1)"
+          :position="
+            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+          "
+          :rotation="-orientations[moveable.orientation]"
+          :type="moveable.classname"
+        />
+        <PIG
+          v-if="moveable.classname == 'PIG'"
+          :scale="new THREE.Vector3(1, 1, 1)"
+          :position="
+            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+          "
+          :rotation="-orientations[moveable.orientation]"
+          :type="moveable.classname"
+        />
+        <TUPEL
+          v-if="moveable.classname == 'TUPEL'"
+          :scale="new THREE.Vector3(1, 1, 1)"
+          :position="
+            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+          "
+          :rotation="-orientations[moveable.orientation]"
+          :type="moveable.classname"
+        />
       </div>
     </Scene>
   </Renderer>

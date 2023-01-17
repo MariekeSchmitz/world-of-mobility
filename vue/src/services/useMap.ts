@@ -40,7 +40,6 @@ export function useMap(): any {
       });
 
       const jsonData: IMapDTO = await response.json();
-
       clearTimeout(id);
       return jsonData;
     } catch (reason) {
