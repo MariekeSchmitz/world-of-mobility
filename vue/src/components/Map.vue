@@ -7,6 +7,7 @@ import type { I3DMap } from "@/services/I3DMap";
 import type { ITile } from "@/interfaces/ITile";
 import { computed, onMounted, reactive, ref } from "vue";
 import { useMap } from "@/services/useMap";
+import Room from "@/components/objects/ROOM.vue";
 
 const squareSize = 16;
 const { getGameMap } = useMap();
@@ -58,6 +59,12 @@ onMounted(async () => {
 });
 </script>
 <template>
+  <Room
+    :scale="new THREE.Vector3(30, 30, 30)"
+    type="Raum"
+    :rotation="0"
+    :position="new THREE.Vector3(87,-97,40)"
+  ></Room>
   <!-- Loop to build the map -->
   <div v-for="(subTile, row) in loadedMap.tiles" :key="`${row}`">
     <div v-for="(tile, column) in subTile" :key="`${tile}`">
