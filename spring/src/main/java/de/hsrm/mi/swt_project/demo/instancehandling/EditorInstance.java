@@ -147,14 +147,14 @@ public class EditorInstance extends Instance {
                     throw new IOException("Something went wrong when creating a new file");
                 }
             } catch (IOException e) {
-                logger.info("IOException occured in saveMap in EditorInstance, when creating a file: {}", e);
+                logger.info("IOException occured in saveMap in EditorInstance, when creating a file: ", e);
             }
         }
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(savePath))) {
             bw.write(mapToSave);
         } catch (Exception e) {
-            logger.info("Exception occured in saveMap in EditorInstance when writing to a file: {}", e);
+            logger.info("Exception occured in saveMap in EditorInstance when writing to a file: ", e);
         }
         
     }

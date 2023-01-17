@@ -207,6 +207,7 @@ public class GameRestController{
      */
     @PostMapping(value="/{id}/leave-game", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void leaveGame(@RequestBody JoinGameDTO leaveGameRequest , @PathVariable long id) {
+        logger.info("Post-Req leave-game - delete user ", leaveGameRequest.user());
         instanceHandler.getGameInstanceById(id).removePlayer(leaveGameRequest.user());
         loopInstanceInfo.publishInstanceInfoState(instanceHandler.getGameInstanceById(id), "CREATE");
     }
