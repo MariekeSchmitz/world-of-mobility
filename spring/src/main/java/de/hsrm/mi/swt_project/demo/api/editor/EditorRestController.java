@@ -22,6 +22,7 @@ import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
 import de.hsrm.mi.swt_project.demo.instancehandling.UpdateloopInstanceInfo;
 import de.hsrm.mi.swt_project.demo.instancehandling.UpdateloopService;
+import de.hsrm.mi.swt_project.demo.messaging.EditorUserListDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetListInstanceDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetMapUpdateDTO;
 import de.hsrm.mi.swt_project.demo.messaging.JoinEditorDTO;
@@ -214,6 +215,18 @@ public class EditorRestController {
         logger.info("Post-Req leave-editor - delete user ", leaveEditorRequest.user());
         instanceHandler.getEditorInstanceById(id).removeUser(leaveEditorRequest.user());
         loopInstanceInfo.publishInstanceInfoState(instanceHandler.getEditorInstanceById(id), "CREATE");
+    }
+
+    /**
+     * Get for getting userlist from a editor instance
+     * @param id editor instance that user is joining
+     * @return EditorUserList DTO with all users
+     * @author Astrid Klemmer & Marieke Schmitz
+     */
+    @GetMapping(value="/userlist/{id}")
+    public EditorUserListDTO userlistEditor(@PathVariable long id) {
+        List<String> userlist = instanceHandler.getEditorInstanceById(id).getUsers();
+        return EditorUserListDTO.from(userlist);
     }
 
 }

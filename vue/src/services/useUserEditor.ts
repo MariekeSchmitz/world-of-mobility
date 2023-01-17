@@ -1,3 +1,5 @@
+import { reactive, readonly } from "vue";
+
 /**
  * Sends user to the backend to update userlist of editor instance
  * @returns if adding user worked or not
@@ -77,8 +79,47 @@ export function useUserEditor(): any {
     }
   }
 
+  interface IUserList {
+    users: string[];
+  }
+
+  const userListState: IUserList = reactive<IUserList>({
+    users: [],
+  });
+
+  /**
+   * collect Userlist
+   * @param instanceId id of editor instance
+   * @returns if it worked
+   * @author Astrid Klemmer & Marieke Schmitz
+   */
+  async function getUserlistEditor(editorId: number) {
+    try {
+      const controller = new AbortController();
+      const URL = "/api/editor/userlist/" + editorId;
+
+      const id = setTimeout(() => controller.abort(), 8000);
+
+      const response = await fetch(URL, {
+        method: "GET",
+      });
+
+      const jsonData: IUserList = await response.json();
+
+      userListState.users = jsonData.users;
+
+      clearTimeout(id);
+
+      return jsonData;
+    } catch (reason) {
+      console.log(`ERROR: Fetching Map failed: ${reason}`);
+    }
+  }
+
   return {
     joinEditor,
     leaveEditor,
+    getUserlistEditor,
+    userList: readonly(userListState),
   };
 }

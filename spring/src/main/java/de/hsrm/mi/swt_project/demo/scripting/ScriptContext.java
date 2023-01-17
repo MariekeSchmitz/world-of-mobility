@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
+import de.hsrm.mi.swt_project.demo.util.ArrayHelpers;
 
 /**
  * Context that needs to be passed in a script to
@@ -71,6 +72,7 @@ public class ScriptContext {
         int colStart = tileCol - LOOK_AHEAD;
         int colEnd   = tileCol + LOOK_AHEAD;
 
+        // fill context from full map
         for (int row = rowStart, contextRow = 0; row <= rowEnd; row++, contextRow++) {
             for (int col = colStart, contextCol = 0; col <= colEnd; col++, contextCol++) {
 
@@ -81,7 +83,7 @@ public class ScriptContext {
             }
         }
 
-        return mapContext;
+        return orientedMapContext(mapContext);
     }    
 
     /**
@@ -120,5 +122,61 @@ public class ScriptContext {
                 && movCol <= colEnd;
 
         }).toList();
+    }
+
+    /**
+     * Adjusts orientation of the map context so
+     * that index (0, 0) is always behind the
+     * moveable object to the left side.
+     * 
+     * Examples:
+     * 
+     * 
+     * (1) Moveable object with orientation NORTH
+     * 
+     *      (1,0)      (1,1)
+     * 
+     *             ^
+     * 
+     *      (0,0)      (0,1)
+     * 
+     * 
+     * (2) Moveable object with orientation EAST
+     * 
+     *      (0,0)      (1,0)
+     * 
+     *             >
+     * 
+     *      (0,1)      (1,1)
+     * 
+     * @param mapContext Unoriented map context.
+     * @return Oriented map context.
+     */
+    protected Tile[][] orientedMapContext(Tile[][] mapContext) {
+
+        int contextSize = 2 * LOOK_AHEAD + 1;
+        Tile[][] orientedContext = new Tile[contextSize][contextSize];
+
+        switch (moveable.getOrientation()) {
+
+            case NORTH:
+                return mapContext;
+
+            case EAST:
+                ArrayHelpers.rotate90CW(mapContext, orientedContext);
+                return orientedContext; 
+
+            case SOUTH:
+                ArrayHelpers.rotate90CW(mapContext, orientedContext);
+                ArrayHelpers.rotate90CW(orientedContext, mapContext);
+                return mapContext;
+
+            case WEST:
+                ArrayHelpers.rotate90CCW(mapContext, orientedContext);
+                return orientedContext;     
+
+            default:
+                return mapContext;
+        }
     }
 }
