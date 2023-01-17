@@ -17,6 +17,7 @@
   import LeftMenu from "@/components/editor/LeftMenu.vue";
   import EditorMap from "@/components/editor/EditorMap.vue";
   import MiniMap from "@/components/editor/MiniMap.vue";
+  import UserListMenu from "@/components/editor/UserListMenu.vue";
   import {useMap} from "@/services/useMap"
   import { number } from "mathjs";
   import { useUserEditor } from "@/services/useUserEditor";
@@ -72,6 +73,8 @@
   </div>
 
   <LeftMenu />
+
+  <UserListMenu :instanceID="props.editorID"></UserListMenu>
 
   <BottomMenu></BottomMenu>
 
