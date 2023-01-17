@@ -30,7 +30,7 @@ public class MovementValidator implements Validator {
      * @param tiles 2D-Array of tiles describing the map
      * @param moveable Object of which the movement will be validated.
      *                 A deep copy of the object will be used for validation checks
-     *                 to avoid messing the state of the object!
+     *                 to avoid messing with the state of the object!
      */
     public MovementValidator(Tile[][] tiles, MoveableObject moveable) {
         this.map = tiles;

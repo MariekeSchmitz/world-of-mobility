@@ -2,6 +2,7 @@ package de.hsrm.mi.swt_project.demo.messaging;
 
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
+import de.hsrm.mi.swt_project.demo.movables.MoveableType;
 
 /**
  * DTO that bundles all necessary information on one moveable object
@@ -12,7 +13,7 @@ public record SendMoveableUpdateDTO (
     String user,
     float xPos,
     float yPos,
-    String classname,
+    MoveableType classname,
     float capacity,
     float velocity,
     Orientation orientation
@@ -23,7 +24,7 @@ public record SendMoveableUpdateDTO (
             username, 
             moveableObject.getXPos(), 
             moveableObject.getYPos(),
-            moveableObject.getType().toString(),
+            moveableObject.getType(),
             moveableObject.getCapacity(),
             moveableObject.getCurrentVelocity(),
             moveableObject.getOrientation());
