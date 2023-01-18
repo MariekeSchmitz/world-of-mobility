@@ -61,13 +61,16 @@ public class GameMap {
      * 
      */
     public void addNpc(MoveableObject moveable) {
-        try {
-            Resource resource = new ClassPathResource("defaultNPCScript.py");
-            File scriptfile = resource.getFile();
-            String script = Files.readString(scriptfile.toPath());
-            moveable.loadScript(script);
-        } catch (Exception e) {
-            logger.error("LoadDefaultScript Error");
+
+        if (moveable.getScript() == null || moveable.getScript().isEmpty()) {
+            try {
+                Resource resource = new ClassPathResource("defaultNPCScript.py");
+                File scriptfile = resource.getFile();
+                String script = Files.readString(scriptfile.toPath());
+                moveable.loadScript(script);
+            } catch (Exception e) {
+                logger.error("LoadDefaultScript Error");
+            }
         }
         this.npcs.add(moveable);
     }
