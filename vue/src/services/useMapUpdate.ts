@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Client } from "@stomp/stompjs";
 import { reactive, readonly, ref } from "vue";
+import type { INpc } from "@/interfaces/INpc";
 
 export function useMapUpdate(editorId: number): any {
   interface IMapUpdate {
@@ -11,6 +12,11 @@ export function useMapUpdate(editorId: number): any {
     newXPos: number;
     newYPos: number;
     placedObject: IPlacedObject;
+  }
+
+  interface IMapDTO {
+    tiles: Array<Array<ITile>>;
+    npcs: Array<INpc>;
   }
 
   interface IMapState {
@@ -27,22 +33,10 @@ export function useMapUpdate(editorId: number): any {
     type: string;
   }
 
-  interface INpc {
-    user: string;
-    xPos: number;
-    yPos: number;
-    classname: string;
-  }
-
-  interface IMapDTO {
-    tiles: Array<Array<ITile>>;
-    NPCS: Array<any>;
-  }
-
   const mapState = ref<IMapState>({
     map: {
       tiles: [[]],
-      NPCS: [],
+      npcs: [],
     },
   });
 

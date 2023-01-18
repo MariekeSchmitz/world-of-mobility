@@ -10,7 +10,7 @@ import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.scripting.ScriptContext;
 @SpringBootTest
 class MotorizedObjectTest {
-    
+
     @Test
     void testOrientationAdjustment() {
         assertEquals(Orientation.NORTH, new MotorizedObject().getOrientation());
@@ -21,15 +21,15 @@ class MotorizedObjectTest {
     void testTurn() {
 
         Orientation[] expectedOrientations = {
-            Orientation.EAST,
-            Orientation.SOUTH,
-            Orientation.WEST,
-            Orientation.NORTH
+                Orientation.EAST,
+                Orientation.SOUTH,
+                Orientation.WEST,
+                Orientation.NORTH
         };
 
         MotorizedObject vehicle = new MotorizedObject();
 
-        for (Orientation orientation: expectedOrientations) {
+        for (Orientation orientation : expectedOrientations) {
             vehicle.turn(Direction.RIGHT);
             assertEquals(orientation, vehicle.getOrientation());
         }
@@ -50,8 +50,8 @@ class MotorizedObjectTest {
             }
         }
 
-        assertEquals(55, vehicle.getXPos());
-        assertEquals(55, vehicle.getYPos());
+        assertEquals(55, vehicle.getxPos());
+        assertEquals(55, vehicle.getyPos());
     }
 
     @Test
@@ -75,7 +75,7 @@ class MotorizedObjectTest {
         vehicle.executeScript(context);
         assertEquals(Orientation.WEST, vehicle.getOrientation());
     }
-    
+
     @Test
     void testEquals() {
         MotorizedObject mo1 = new MotorizedObject(50, 50);

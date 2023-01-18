@@ -1,10 +1,11 @@
 import Game from "@/components/Game.vue";
-import WorldIntroView from "@/views/WorldIntroView.vue";
+import CreateWorld from "@/views/CreateWorld.vue";
 import GameIntroView from "@/views/GameIntroView.vue";
 import JoinGame from "@/views/JoinGame.vue";
-import CreateWorld from "@/views/CreateWorld.vue";
+import WorldIntroView from "@/views/WorldIntroView.vue";
 
 import StartPage from "@/views/StartPage.vue";
+
 import { createRouter, createWebHistory } from "vue-router";
 import WorldSelection from "@/views/WorldSelection.vue";
 import GameConfig from "@/views/GameConfig.vue";
@@ -75,9 +76,10 @@ const router = createRouter({
   ],
 });
 
+/**
+ * if user is not logged in, always root to login page
+ */
 router.beforeEach(async (to, from) => {
-  // wenn z.B. ein 'berechtigt' nicht wahr ist,
-  // alle Nicht-/login-Navigationen auf /login leiten
   if (!loginData.loggedIn && to.name !== "Login") {
     return { name: "Login" };
   }

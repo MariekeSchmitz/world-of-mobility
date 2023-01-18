@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * List of all Users, up to date at all times. Used to check, if user is unique
  * 
- * @author Tom Gouthier
+ * @author Tom Gouthier, Marie Bohnert
  */
 public class UserList {
 

@@ -16,7 +16,7 @@ import de.hsrm.mi.swt_project.demo.movables.Passenger;
  * This class validates the movement of a moveable object.
  * 
  * To do so, it simulates the move with a deep copy of
- * the moveable object. After that it checks if it will 
+ * the moveable object. After that it checks if it will
  * still be inside the map area and if it is allowed to
  * be positioned on the tile it reaches.
  * 
@@ -34,7 +34,7 @@ public class MovementValidator implements Validator {
     /**
      * Creates a new MovementValidator.
      * 
-     * @param tiles 2D-Array of tiles describing the map
+     * @param tiles    2D-Array of tiles describing the map
      * @param moveable Object of which the movement will be validated.
      *                 A deep copy of the object will be used for validation checks
      *                 to avoid messing with the state of the object!
@@ -47,13 +47,13 @@ public class MovementValidator implements Validator {
     @Override
     public boolean validate() {
 
-        float startPosX = this.moveableCopy.getXPos();
-        float startPosY = this.moveableCopy.getYPos();
+        float startPosX = this.moveableCopy.getxPos();
+        float startPosY = this.moveableCopy.getyPos();
 	
         moveableCopy.move();
         
-        float endPosX = this.moveableCopy.getXPos();
-        float endPosY = this.moveableCopy.getYPos();
+        float endPosX = this.moveableCopy.getxPos();
+        float endPosY = this.moveableCopy.getyPos();
 
         if (!insideMap(endPosX, endPosY)) {
             return false;
@@ -190,7 +190,7 @@ public class MovementValidator implements Validator {
      * @param yPos y-position that equals the row to check
      * @return true if position is inside the map, else false
      */
-    protected boolean insideMap(float xPos, float yPos){
+    protected boolean insideMap(float xPos, float yPos) {
 
         int mapSize = this.map.length;
 
@@ -260,5 +260,5 @@ public class MovementValidator implements Validator {
 
         return moveableIsNotPassenger || tileIsWalkable;
     }
-    
+
 }

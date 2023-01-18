@@ -20,7 +20,11 @@ import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.CanHoldNatureObject;
 import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.CanHoldStreetObject;
+import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.DriveableByCar;
+import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.Walkable;
+import de.hsrm.mi.swt_project.demo.movables.MotorizedObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
+import de.hsrm.mi.swt_project.demo.movables.Passenger;
 import de.hsrm.mi.swt_project.demo.util.ArrayHelpers;
 
 /**
@@ -56,7 +60,7 @@ public class GameMap {
      * @param moveable
      * 
      */
-    public void addNpc(MoveableObject moveable){
+    public void addNpc(MoveableObject moveable) {
         try {
             Resource resource = new ClassPathResource("defaultNPCScript.py");
             File scriptfile = resource.getFile();
@@ -66,6 +70,29 @@ public class GameMap {
             logger.error("LoadDefaultScript Error");
         }
         this.npcs.add(moveable);
+    }
+
+    /**
+     * deletes npc if found in npc-list
+     * 
+     * @param x
+     * @param y
+     * @author Tom Gouthier, Marie Bohnert
+     */
+    public void deleteNPC(float x, float y) throws NoNpcExistsOnCoordinates {
+
+        logger.info("trying to remove npc with coordinates: {} {}", x, y);
+
+        for (MoveableObject npc : npcs) {
+            if (npc.getxPos() == x && npc.getyPos() == y) {
+                npcs.remove(npc);
+                logger.info("removed following npc: {}", npc);
+                return;
+            }
+        }
+        logger.info("npc doesn't exist");
+        throw new NoNpcExistsOnCoordinates();
+
     }
 
     /**
@@ -114,25 +141,25 @@ public class GameMap {
         boolean validate = false;
 
         if (tile instanceof CanHoldNatureObject) {
-            if (placeableObject instanceof Tree || placeableObject instanceof Pig ||placeableObject instanceof Sheep) {
+            if (placeableObject instanceof Tree || placeableObject instanceof Pig || placeableObject instanceof Sheep) {
                 validate = true;
             }
-        }else if(tile instanceof CanHoldStreetObject){
+        } else if (tile instanceof CanHoldStreetObject) {
             if ((!(tile.getType().equals(Tiletype.STREET_CURVE)) && placeableObject instanceof TrafficLight) ||
-                (tile.getType().equals(Tiletype.STREET_STRAIGHT) && placeableObject instanceof GasStation)){
+                    (tile.getType().equals(Tiletype.STREET_STRAIGHT) && placeableObject instanceof GasStation)) {
                 validate = true;
             }
-            
+
         }
 
-        if(validate){
+        if (validate) {
             tile.addPlaceable(placeableObject);
 
-                if (isExpansionNeeded(xPos, yPos)) {
-                    this.expandMap();
-                }
-        
-                return true;
+            if (isExpansionNeeded(xPos, yPos)) {
+                this.expandMap();
+            }
+
+            return true;
         }
 
         return false;
@@ -238,4 +265,40 @@ public class GameMap {
             }
         }
     }
+
+    /**
+     * validates if npc can be placed
+     * 
+     * @param moveableObject
+     * @return boolean can be placed or not
+     * @author Tom Gouthier, Marie Bohnert
+     */
+    public boolean validateNpcPlacement(MoveableObject moveableObject) {
+
+        int xPos = (int) moveableObject.getxPos();
+        int yPos = (int) moveableObject.getyPos();
+
+        if (moveableObject instanceof Passenger) {
+
+            if (!(tiles[yPos][xPos] instanceof Walkable)) {
+                return false;
+            }
+
+        } else if (moveableObject instanceof MotorizedObject) {
+
+            if (!(tiles[yPos][xPos] instanceof DriveableByCar)) {
+                return false;
+            }
+
+        }
+
+        for (MoveableObject npc : npcs) {
+
+            if (xPos == npc.getxPos() && yPos == npc.getyPos()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

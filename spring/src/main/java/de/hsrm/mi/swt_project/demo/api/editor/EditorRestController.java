@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,9 @@ import de.hsrm.mi.swt_project.demo.instancehandling.EditorInstance;
 import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
 import de.hsrm.mi.swt_project.demo.instancehandling.UpdateloopInstanceInfo;
+import de.hsrm.mi.swt_project.demo.instancehandling.NoNpcExistsOnCoordinates;
+import de.hsrm.mi.swt_project.demo.instancehandling.NpcNotPlaceableException;
+import de.hsrm.mi.swt_project.demo.instancehandling.ScriptNotValidException;
 import de.hsrm.mi.swt_project.demo.instancehandling.UpdateloopService;
 import de.hsrm.mi.swt_project.demo.messaging.EditorUserListDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetListInstanceDTO;
@@ -69,11 +73,14 @@ public class EditorRestController {
     }
 
     @PostMapping(value = "/placeableObjectUpdate/{editorId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ValidationDTO postPlaceableObjectUpdate(@RequestBody GetPlaceableObjectUpdateDTO getPlaceableObjectUpdateDTO, @PathVariable int editorId) {
-        
+    public ValidationDTO postPlaceableObjectUpdate(@RequestBody GetPlaceableObjectUpdateDTO getPlaceableObjectUpdateDTO,
+            @PathVariable int editorId) {
+
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(editorId);
-        boolean placed = editorInstance.editPlaceablesOnMap(getPlaceableObjectUpdateDTO.xPos(), getPlaceableObjectUpdateDTO.yPos(), getPlaceableObjectUpdateDTO.control(), getPlaceableObjectUpdateDTO.type());
-        if(placed){
+        boolean placed = editorInstance.editPlaceablesOnMap(getPlaceableObjectUpdateDTO.xPos(),
+                getPlaceableObjectUpdateDTO.yPos(), getPlaceableObjectUpdateDTO.control(),
+                getPlaceableObjectUpdateDTO.type());
+        if (placed) {
             loopService.publishInstanceState(editorInstance);
         }
         return new ValidationDTO(placed);
@@ -193,12 +200,13 @@ public class EditorRestController {
 
     /**
      * Post for adding a user to a editor instance
+     * 
      * @param joinEditorRequest Dto with name of new joining user
-     * @param id editor instance that user is joining
+     * @param id                editor instance that user is joining
      * @author Astrid Klemmer
      */
-    @PostMapping(value="/{id}/join-editor", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void joinGame(@RequestBody JoinEditorDTO joinEditorRequest , @PathVariable long id) {
+    @PostMapping(value = "/{id}/join-editor", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void joinGame(@RequestBody JoinEditorDTO joinEditorRequest, @PathVariable long id) {
         logger.info("Post-Req join-editor - add user ", joinEditorRequest.user());
         instanceHandler.getEditorInstanceById(id).addUser(joinEditorRequest.user());
         loopInstanceInfo.publishInstanceInfoState(instanceHandler.getEditorInstanceById(id), "CREATE");
@@ -206,12 +214,13 @@ public class EditorRestController {
 
     /**
      * Post for removing a user from a editor instance
+     * 
      * @param leaveEditorRequest Dto with name of leaving user
-     * @param id editor instance that user is joining
+     * @param id                 editor instance that user is joining
      * @author Astrid Klemmer
      */
-    @PostMapping(value="/{id}/leave-editor", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void leaveGame(@RequestBody JoinEditorDTO leaveEditorRequest , @PathVariable long id) {
+    @PostMapping(value = "/{id}/leave-editor", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void leaveGame(@RequestBody JoinEditorDTO leaveEditorRequest, @PathVariable long id) {
         logger.info("Post-Req leave-editor - delete user ", leaveEditorRequest.user());
         instanceHandler.getEditorInstanceById(id).removeUser(leaveEditorRequest.user());
         loopInstanceInfo.publishInstanceInfoState(instanceHandler.getEditorInstanceById(id), "CREATE");
@@ -219,14 +228,73 @@ public class EditorRestController {
 
     /**
      * Get for getting userlist from a editor instance
+     * 
      * @param id editor instance that user is joining
      * @return EditorUserList DTO with all users
      * @author Astrid Klemmer & Marieke Schmitz
      */
-    @GetMapping(value="/userlist/{id}")
+    @GetMapping(value = "/userlist/{id}")
     public EditorUserListDTO userlistEditor(@PathVariable long id) {
         List<String> userlist = instanceHandler.getEditorInstanceById(id).getUsers();
         return EditorUserListDTO.from(userlist);
+    }
+
+    /**
+     * POST Endpoint to place npcs
+     * 
+     * @param id  editor instance id
+     * @param npc DTO with data needed to place a npc on a certain location
+     * @author Marie Bohnert, Tom Gouthier
+     */
+    @PostMapping("/{id}/placeNpc")
+    public void placeNpc(@PathVariable long id, @RequestBody PlaceNpcDTO npc) {
+        EditorInstance editorInstance = instanceHandler.getEditorInstanceById(id);
+        try {
+            editorInstance.placeNPC(npc.x(), npc.y(), npc.type());
+            loopService.publishInstanceState(editorInstance);
+
+        } catch (NpcNotPlaceableException error) {
+            throw error;
+        }
+
+    }
+
+    /**
+     * DELETE Endpoint to delete npcs
+     * 
+     * @param id  editor instance id
+     * @param npc DTO with data needed to remove a npc on a certain location
+     * @author Marie Bohnert, Tom Gouthier
+     */
+    @DeleteMapping("/{id}/removeNpc")
+    public void removeNpc(@PathVariable long id, @RequestBody RemoveNpcDTO npc) {
+
+        EditorInstance editorInstance = instanceHandler.getEditorInstanceById(id);
+        try {
+            editorInstance.deleteNPC(npc.x(), npc.y());
+            loopService.publishInstanceState(editorInstance);
+        } catch (NoNpcExistsOnCoordinates e) {
+            throw e;
+        }
+
+    }
+
+    /**
+     * 
+     * 
+     * @param id        editor instance identifier
+     * @param scriptDTO sent from client
+     * @author Tom Gouthier, Marie Bohnert
+     */
+    @PostMapping("/{id}/loadScript")
+    public void postNPCScript(@PathVariable long id, @RequestBody GetScriptDTO scriptDTO) {
+
+        EditorInstance instance = instanceHandler.getEditorInstanceById(id);
+        try {
+            instance.addScriptToNpc(scriptDTO.x(), scriptDTO.y(), scriptDTO.script());
+        } catch (NoNpcExistsOnCoordinates | ScriptNotValidException e) {
+            throw e;
+        }
     }
 
 }
