@@ -20,6 +20,7 @@ import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObject;
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObjectType;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
+import de.hsrm.mi.swt_project.demo.editor.tiles.TrafficTile;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
@@ -43,9 +44,7 @@ public class InstanceHandler implements Updateable {
 
     protected List<Instance> instances = new ArrayList<>();
 
-    // TODO think of another solution because long can reach limit
     protected long idCounter = 1;
-    // @Value("${map.savedir:maps}")
     protected String mapSavePath = "maps";
 
     /**
@@ -137,7 +136,8 @@ public class InstanceHandler implements Updateable {
      * 
      * @param mapFile the JSON file to load the map from
      * @return the loaded map
-     * @author Felix Ruf, Alexandra Müller
+     * @author Alexandra Müller
+     * @author Felix Ruf
      */
     private GameMap loadMap(String mapFile) {
         JSONObject file = new JSONObject(mapFile);
@@ -163,6 +163,13 @@ public class InstanceHandler implements Updateable {
                         PlaceableObjectType placeableType = placedObject.getEnum(PlaceableObjectType.class, "type");
                         PlaceableObject placeableObject = placeableType.createPlaceableObject();
                         newTile.addPlaceable(placeableObject);
+                    }
+                    if(tileObject.has("allowedDirections")) {
+                        JSONArray allowedDirections = tileObject.getJSONArray("allowedDirections");
+                        for (Object orientationObject : allowedDirections) {
+                            Orientation allowedDirectionsString = Orientation.valueOf((String) orientationObject);
+                            ((TrafficTile)(newTile)).addAllowedDirections(allowedDirectionsString);
+                        }
                     }
                     map.setTile(newTile, xPos, yPos);
                 }

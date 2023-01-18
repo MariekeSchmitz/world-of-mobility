@@ -30,5 +30,15 @@ public abstract class TrafficTile extends Tile {
         }
 
     }
+
+    /**
+     * Adds allowed ori
+     * @param orientation
+     */
+    public void addAllowedDirections(Orientation... orientation) {
+        for (Orientation o : orientation) {
+            allowedDirections.add(o);
+        }
+    }
     
 }
