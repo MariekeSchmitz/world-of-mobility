@@ -33,22 +33,39 @@ const camera = ref();
 let thirdPerson = ref(true);
 let freeCam = ref(true);
 let switchedMode = false;
-const hoverHeight = 2;
+
+const UPVECTOR = new THREE.Vector3(0, 1, 0);
+const HOVERHEIGHT = 2;
+
 const thirdPersonOffset = new THREE.Vector3(0, 8, 15);
 const firstPersonOffset = new THREE.Vector3(0, 0, 2);
 const cameraOffset = reactive(new THREE.Vector3(0, 8, 15));
-const upVector = new THREE.Vector3(0, 1, 0);
+
+const firstPersonLookAtOffSet = new THREE.Vector3(0, 0, 0)
+const cameraLookAt = reactive(new THREE.Vector3(0, 0, 0));
+
 let movementVector = new THREE.Vector3(0, 0, 0);
-const lookAt = reactive(new THREE.Vector3(0, 0, 0));
+let oldPosition = new THREE.Vector3( 0, 0, 0)
+let newPosition = new THREE.Vector3( 0, 0 ,0)
 
 /**
  * returns the moveable object of the logged in user.
  */
-const userMovable = computed(() => {
-  return getUserMoveable(loginData.username);
+const userMoveable = computed(() => {
+  const newUserMoveable = getUserMoveable(loginData.username);
+  oldPosition.copy(newPosition)
+  if (userMoveable.value != undefined) {
+    newPosition.copy(new THREE.Vector3(
+      newUserMoveable.value.xPos * SIZE,
+      0,
+      -newUserMoveable.value.yPos * SIZE)
+    );
+    movementVector = newPosition.clone().sub(oldPosition);
+  }
+  return newUserMoveable
 });
 
-watch(userMovable, () => {
+watch(userMoveable, () => {
   setAzimuthAngle();
 });
 
@@ -56,15 +73,15 @@ watch(userMovable, () => {
  * returns the position of the camera.
  */
 const cameraPosition = computed(() => {
-  const vecTempTarget = lookAt.clone();
+  const vecTempTarget = cameraLookAt.clone();
   const vecTempOffset = cameraOffset.clone();
   if (freeCam.value && camera.value && !switchedMode) {
     return camera.value.camera.position.add(movementVector);
   } else {
-    if (userMovable.value != undefined) {
+    if (userMoveable.value != undefined) {
       vecTempOffset.applyAxisAngle(
-        upVector,
-        -orientations[userMovable.value.orientation]
+        UPVECTOR,
+        -orientations[userMoveable.value.orientation]
       );
     }
     switchedMode = false;
@@ -76,14 +93,14 @@ const cameraPosition = computed(() => {
  * keeps every playerobject up to date.
  */
 const allMoveables = computed(() => {
-  if (userMovable.value != undefined) {
-    const newLookAt = new THREE.Vector3(
-      userMovable.value.xPos * SIZE,
-      hoverHeight,
-      -userMovable.value.yPos * SIZE
+  oldPosition.copy(newPosition)
+  if (userMoveable.value != undefined) {
+    newPosition.copy(new THREE.Vector3(
+      userMoveable.value.xPos * SIZE,
+      0,
+      -userMoveable.value.yPos * SIZE)
     );
-    movementVector = newLookAt.clone().sub(lookAt);
-    lookAt.copy(newLookAt);
+    movementVector = newPosition.clone().sub(oldPosition);
   }
   return mapUpdates.moveableUpdates;
 });
@@ -115,14 +132,18 @@ function onReady(model: any) {
   console.log("model Ready", model);
 }
 
+function setLookAt(){
+  
+}
+
 function setAzimuthAngle() {
-  if (!renderer.value || !userMovable.value) return;
+  if (!renderer.value || !userMoveable.value) return;
   const orbitControls = renderer.value.three.cameraCtrl;
   if (freeCam.value && !thirdPerson.value) {
     orbitControls.minAzimuthAngle =
-      -orientations[userMovable.value.orientation] - Math.PI / 2;
+      -orientations[userMoveable.value.orientation] - Math.PI / 2;
     orbitControls.maxAzimuthAngle =
-      -orientations[userMovable.value.orientation] + Math.PI / 2;
+      -orientations[userMoveable.value.orientation] + Math.PI / 2;
   } else {
     orbitControls.minAzimuthAngle = Infinity;
     orbitControls.maxAzimuthAngle = Infinity;
@@ -157,7 +178,7 @@ function handleKeyEvent(e: KeyboardEvent) {
  */
 onMounted(() => {
   const orbitControls = renderer.value.three.cameraCtrl;
-  orbitControls.target = lookAt;
+  orbitControls.target = cameraLookAt;
   orbitControls.enablePan = false;
   orbitControls.enableRotate = true;
   orbitControls.screenSpacePanning = false;
