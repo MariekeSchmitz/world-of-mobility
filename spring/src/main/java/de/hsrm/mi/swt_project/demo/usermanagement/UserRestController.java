@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * These involve login and logout.
  * Accessable by client side.
  * 
- * @author Tom Gouthier
+ * @author Tom Gouthier, Marie Bohnert
  */
 @RestController
 @RequestMapping("/api/user")
@@ -32,7 +32,7 @@ public class UserRestController {
      * 
      * @return SendUserDTO
      * 
-     * @author Tom Gouthier
+     * @author Tom Gouthier, Marie Bohnert
      * @throws Exception
      */
     @PostMapping("/login")
@@ -52,7 +52,7 @@ public class UserRestController {
      * 
      * @return SendUserDTO
      * 
-     * @author Tom Gouthier
+     * @author Tom Gouthier, Marie Bohnert
      */
     @DeleteMapping("/logout")
     public SendUserDTO deleteUser(@RequestParam("username") String name) {

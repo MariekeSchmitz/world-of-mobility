@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Vector3 } from "three";
+//@ts-ignore
+import * as THREE from "three";
 import { Plane, Texture, BasicMaterial } from "troisjs";
 
 const props = defineProps<{
@@ -8,7 +9,7 @@ const props = defineProps<{
   position: THREE.Vector3;
 }>();
 
-const emit = defineEmits(["turnRight"]);
+const emit = defineEmits(["turnRight", "turnLeft", "removeTile"]);
 </script>
 <template>
   <!--Background-->
@@ -21,7 +22,7 @@ const emit = defineEmits(["turnRight"]);
     @click="$emit('turnRight')"
     :width="props.width / 4"
     :height="props.height * (2 / 3)"
-    :position="props.position.clone().add(new Vector3(0.25, 0, 0.01))"
+    :position="props.position.clone().add(new THREE.Vector3(0.25, 0, 0.01))"
   >
     <BasicMaterial color="blue" />
   </Plane>
@@ -31,7 +32,7 @@ const emit = defineEmits(["turnRight"]);
     @click="$emit('turnLeft')"
     :width="props.width / 4"
     :height="props.height * (2 / 3)"
-    :position="props.position.clone().add(new Vector3(-0.25, 0, 0.01))"
+    :position="props.position.clone().add(new THREE.Vector3(-0.25, 0, 0.01))"
   >
     <BasicMaterial color="blue" />
   </Plane>
@@ -41,7 +42,7 @@ const emit = defineEmits(["turnRight"]);
     @click="$emit('removeTile')"
     :width="props.width / 4"
     :height="props.height * (2 / 3)"
-    :position="props.position.clone().add(new Vector3(0, 0, 0.01))"
+    :position="props.position.clone().add(new THREE.Vector3(0, 0, 0.01))"
   >
     <BasicMaterial color="red" />
   </Plane>

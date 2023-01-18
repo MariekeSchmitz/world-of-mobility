@@ -7,10 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
-
+import de.hsrm.mi.swt_project.demo.scripting.ScriptContext;
 @SpringBootTest
 class MotorizedObjectTest {
-    
+
     @Test
     void testOrientationAdjustment() {
         assertEquals(Orientation.NORTH, new MotorizedObject().getOrientation());
@@ -21,15 +21,15 @@ class MotorizedObjectTest {
     void testTurn() {
 
         Orientation[] expectedOrientations = {
-            Orientation.EAST,
-            Orientation.SOUTH,
-            Orientation.WEST,
-            Orientation.NORTH
+                Orientation.EAST,
+                Orientation.SOUTH,
+                Orientation.WEST,
+                Orientation.NORTH
         };
 
         MotorizedObject vehicle = new MotorizedObject();
 
-        for (Orientation orientation: expectedOrientations) {
+        for (Orientation orientation : expectedOrientations) {
             vehicle.turn(Direction.RIGHT);
             assertEquals(orientation, vehicle.getOrientation());
         }
@@ -50,8 +50,8 @@ class MotorizedObjectTest {
             }
         }
 
-        assertEquals(55, vehicle.getXPos());
-        assertEquals(55, vehicle.getYPos());
+        assertEquals(55, vehicle.getxPos());
+        assertEquals(55, vehicle.getyPos());
     }
 
     @Test
@@ -70,11 +70,12 @@ class MotorizedObjectTest {
     @Test
     void testExecuteScript() {
         MotorizedObject vehicle = new MotorizedObject(Orientation.NORTH, 50, 50, 1);
-        vehicle.loadScript("moveable.turn(Direction.LEFT)");
-        vehicle.executeScript();
+        ScriptContext context = new ScriptContext(vehicle, null, null);
+        vehicle.loadScript("npc.turnLeft()");
+        vehicle.executeScript(context);
         assertEquals(Orientation.WEST, vehicle.getOrientation());
     }
-    
+
     @Test
     void testEquals() {
         MotorizedObject mo1 = new MotorizedObject(50, 50);
@@ -97,7 +98,7 @@ class MotorizedObjectTest {
     @Test
     void testToString() {
         MotorizedObject p = new MotorizedObject(1, 2);
-        assertEquals("MotorizedObject[xPos=1.00,yPos=2.00,curV=0.00,maxV=1.00,cap=1.00,orientation=NORTH]", p.toString());
+        assertEquals("MotorizedObject[xPos=1.00,yPos=2.00,curV=0.00,maxV=0.20,cap=1.00,orientation=NORTH]", p.toString());
     }
 
 }

@@ -20,6 +20,7 @@ export function useGame(): any {
 
   interface IGameUpdate {
     moveableUpdates: Array<IMoveable>;
+    trafficLightState: String;
   }
 
   interface IGameState {
@@ -28,6 +29,7 @@ export function useGame(): any {
 
   const gameState = reactive<IGameUpdate>({
     moveableUpdates: [],
+    trafficLightState: "NORTHSOUTH"
   });
 
   interface IInstanceId {
@@ -68,12 +70,18 @@ export function useGame(): any {
     }
   }
 
-  async function createGameInstance(mapName: string, sessionName: string) {
+  async function createGameInstance(mapName: string, sessionName: string, maximumPlayerCount: number,
+    npcsActivated: boolean) {
     try {
       const controller = new AbortController();
       const URL = "/api/game/create-game";
 
-      const data = { mapName: mapName, sessionName: sessionName };
+      const data = {
+        mapName: mapName,
+        sessionName: sessionName,
+        maximumPlayerCount: maximumPlayerCount,
+        npcsActivated: npcsActivated
+      };
 
       const id = setTimeout(() => controller.abort(), 8000);
 
@@ -95,12 +103,12 @@ export function useGame(): any {
     }
   }
 
-  async function joinGame(instanceId: number, user: string, type: string) {
+  async function joinGame(instanceId: number, user: string, type: string, xPos:number, yPos:number) {
     try {
       const controller = new AbortController();
       const URL = "/api/game/" + instanceId + "/join-game";
 
-      const data = { user: user, type: type };
+      const data = { user: user, type: type, xPos:xPos, yPos:yPos};
 
       const id = setTimeout(() => controller.abort(), 8000);
 
@@ -112,13 +120,12 @@ export function useGame(): any {
         signal: controller.signal,
         body: JSON.stringify(data),
       });
-
-      clearTimeout(id);
-
       if (!response.ok) {
         return false;
       }
-      return true;
+      const jsonData = await response.json();
+      return jsonData;
+      clearTimeout(id);
     } catch (reason) {
       console.log(`ERROR: Sending Command failed: ${reason}`);
       return false;
@@ -164,7 +171,8 @@ export function useGame(): any {
   }
 
   async function receiveGameUpdate(instanceid: number) {
-    const wsurl = `ws://${window.location.host}/stompbroker`;
+    const proto = location.protocol == 'https:' ? "wss" : "ws";
+    const wsurl = `${proto}://${window.location.host}/stompbroker`;
     const DEST = `/topic/game/${instanceid}`;
 
     const stompClient = new Client({ brokerURL: wsurl });
@@ -178,6 +186,8 @@ export function useGame(): any {
       stompClient.subscribe(DEST, (message: { body: string }) => {
         const gameUpdate: IGameUpdate = JSON.parse(message.body);
         gameState.moveableUpdates = gameUpdate.moveableUpdates;
+        gameState.trafficLightState = gameUpdate.trafficLightState;
+        console.log(gameState.trafficLightState);
       });
     };
 
@@ -188,11 +198,40 @@ export function useGame(): any {
     stompClient.activate();
   }
 
+
+
+
   function getUserMoveable(user: string) {
     for (const moveable of gameState.moveableUpdates) {
       if (moveable.user === user) {
         return moveable;
       }
+    }
+  }
+
+  async function isSpawnPointValid(instanceId: number, moveableObject: string, xPos: number, yPos: number) {
+    try {
+      const controller = new AbortController();
+
+      const URL = `/api/game/${instanceId}/validate-spawnpoint?moveableObject=${moveableObject}&xPos=${xPos}&yPos=${yPos}`;
+
+      const id = setTimeout(() => controller.abort(), 8000);
+
+      const response = await fetch(URL, {
+        method: "GET",
+        signal: controller.signal
+      });
+
+      clearTimeout(id);
+
+      if (!response.ok) {
+        return false;
+      }
+
+      return await response.json();
+    } catch (reason) {
+      console.log(`ERROR: Something went wrong: ${reason}`);
+      return false;
     }
   }
 
@@ -205,5 +244,6 @@ export function useGame(): any {
     getUserMoveable,
     createGameInstance,
     leaveGame,
+    isSpawnPointValid
   };
 }

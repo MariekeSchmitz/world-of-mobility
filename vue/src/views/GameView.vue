@@ -11,20 +11,21 @@ import router from "@/router";
 
 const props = withDefaults(
   defineProps<{
-    instanceID: number;
+    instanceID: string;
   }>(),
-  { instanceID: 1 }
+  { instanceID: "1" }
 );
 
+const instanceID = Number(props.instanceID);
 const { leaveGame } = useGame();
 const { loginData } = useLogin();
 
 onUnmounted(() => {
-  leaveGame(props.instanceID, loginData.username, "MOTORIZED_OBJECT");
+  leaveGame(instanceID, loginData.username, "MOTORIZED_OBJECT");
 });
 
 function leave() {
-  router.push("/joingame/" + props.instanceID);
+  router.push("/gameintro");
 }
 </script>
 
@@ -32,9 +33,9 @@ function leave() {
   <div>
     <div>
       <button id="exitButton" @click="leave()">
-        <img src="../buttons/editor/close.png" alt="" />
+        <img src="@/buttons/editor/close.png" alt="" />
       </button>
     </div>
-    <Game :instanceID="props.instanceID"></Game>
+    <Game :instanceID="instanceID"></Game>
   </div>
 </template>

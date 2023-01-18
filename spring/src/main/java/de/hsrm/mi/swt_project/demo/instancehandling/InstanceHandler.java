@@ -21,6 +21,8 @@ import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObjectType;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;
+import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLightState;
+import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLogicLoopTask;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
 /**
@@ -36,6 +38,12 @@ public class InstanceHandler implements Updateable {
     @Autowired
     protected UpdateloopService loopservice;
 
+    @Autowired
+    protected TrafficLogicLoopTask trafficTask;
+    
+    private UpdateloopInstanceInfo loopInstanceInfo;
+
+
     @Value("${instance.lifetime:1200}")
     protected long instanceLifetimeCycles;
 
@@ -45,8 +53,8 @@ public class InstanceHandler implements Updateable {
 
     // TODO think of another solution because long can reach limit
     protected long idCounter = 1;
-    // @Value("${map.savedir:maps}")
-    protected String mapSavePath = "maps";
+    @Value("${map.savedir:maps}")
+    protected String mapSavePath;
 
     /**
      * Creates a new instance handler.
@@ -62,7 +70,7 @@ public class InstanceHandler implements Updateable {
      * @param sessionName the name of the session
      * @return the id of the new instance
      */
-    public long createGameInstance(String mapName, String sessionName) {
+    public long createGameInstance(String mapName, String sessionName, int maximumPlayerCount, boolean npcsActivated) {
 
         GameMap map;
 
@@ -87,7 +95,7 @@ public class InstanceHandler implements Updateable {
 
         }
 
-        Instance instance = new GameInstance(map, sessionName, idCounter);
+        Instance instance = new GameInstance(map, sessionName, idCounter, mapSavePath, maximumPlayerCount, npcsActivated);
 
         instance.setLifetime(instanceLifetimeCycles);
         instances.add(instance);
@@ -123,7 +131,7 @@ public class InstanceHandler implements Updateable {
             map.setName(mapName);
         }
 
-        Instance instance = new EditorInstance(map, idCounter);
+        Instance instance = new EditorInstance(map, idCounter, mapSavePath);
         instance.setLifetime(instanceLifetimeCycles);
         instances.add(instance);
 
@@ -223,6 +231,7 @@ public class InstanceHandler implements Updateable {
         }
 
         for (Instance instance : toDelete) {
+            loopInstanceInfo.publishInstanceInfoState(instance, "DELETE");
             this.instances.remove(instance);
         }
 
@@ -376,5 +385,9 @@ public class InstanceHandler implements Updateable {
         }
 
         return true;
+    }
+
+    public TrafficLightState getTrafficLightState() {
+        return trafficTask.getTrafficLightState();
     }
 }
