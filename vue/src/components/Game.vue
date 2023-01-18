@@ -34,38 +34,28 @@ let thirdPerson = ref(true);
 let freeCam = ref(true);
 let switchedMode = false;
 
-const UPVECTOR = new THREE.Vector3(0, 1, 0);
 const HOVERHEIGHT = 2;
 
 const thirdPersonOffset = new THREE.Vector3(0, 8, 15);
 const firstPersonOffset = new THREE.Vector3(0, 0, 2);
 const cameraOffset = reactive(new THREE.Vector3(0, 8, 15));
 
-const firstPersonLookAtOffSet = new THREE.Vector3(0, 0, 0)
-const cameraLookAt = reactive(new THREE.Vector3(0, 0, 0));
+const UPVECTOR = new THREE.Vector3(0, 1, 0);
 
 let movementVector = new THREE.Vector3(0, 0, 0);
-let oldPosition = new THREE.Vector3( 0, 0, 0)
-let newPosition = new THREE.Vector3( 0, 0 ,0)
+const lookAt = reactive(new THREE.Vector3(0, 0, 0));
+
+let playerPosition = new THREE.Vector3(0, 0, 0);
+let oldPosition = new THREE.Vector3(0, 0, 0);
 
 /**
  * returns the moveable object of the logged in user.
  */
-const userMoveable = computed(() => {
-  const newUserMoveable = getUserMoveable(loginData.username);
-  oldPosition.copy(newPosition)
-  if (userMoveable.value != undefined) {
-    newPosition.copy(new THREE.Vector3(
-      newUserMoveable.value.xPos * SIZE,
-      0,
-      -newUserMoveable.value.yPos * SIZE)
-    );
-    movementVector = newPosition.clone().sub(oldPosition);
-  }
-  return newUserMoveable
+const userMovable = computed(() => {
+  return getUserMoveable(loginData.username);
 });
 
-watch(userMoveable, () => {
+watch(userMovable, () => {
   setAzimuthAngle();
 });
 
@@ -73,15 +63,15 @@ watch(userMoveable, () => {
  * returns the position of the camera.
  */
 const cameraPosition = computed(() => {
-  const vecTempTarget = cameraLookAt.clone();
+  const vecTempTarget = lookAt.clone();
   const vecTempOffset = cameraOffset.clone();
   if (freeCam.value && camera.value && !switchedMode) {
     return camera.value.camera.position.add(movementVector);
   } else {
-    if (userMoveable.value != undefined) {
+    if (userMovable.value != undefined) {
       vecTempOffset.applyAxisAngle(
         UPVECTOR,
-        -orientations[userMoveable.value.orientation]
+        -orientations[userMovable.value.orientation]
       );
     }
     switchedMode = false;
@@ -93,17 +83,21 @@ const cameraPosition = computed(() => {
  * keeps every playerobject up to date.
  */
 const allMoveables = computed(() => {
-  oldPosition.copy(newPosition)
-  if (userMoveable.value != undefined) {
-    newPosition.copy(new THREE.Vector3(
-      userMoveable.value.xPos * SIZE,
-      0,
-      -userMoveable.value.yPos * SIZE)
-    );
-    movementVector = newPosition.clone().sub(oldPosition);
-  }
+  computeLookAt();
   return mapUpdates.moveableUpdates;
 });
+
+function computeLookAt(){
+  if (userMovable.value != undefined) {
+    const newLookAt = new THREE.Vector3(
+      userMovable.value.xPos * SIZE,
+      HOVERHEIGHT,
+      -userMovable.value.yPos * SIZE
+    );
+    movementVector = newLookAt.clone().sub(lookAt);
+    lookAt.copy(newLookAt);
+  }
+}
 
 /**
  * switches from the Follower Cam to the Freecam and vica versa.
@@ -128,22 +122,15 @@ function switchPerspective() {
   }
   switchedMode = true;
 }
-function onReady(model: any) {
-  console.log("model Ready", model);
-}
-
-function setLookAt(){
-  
-}
 
 function setAzimuthAngle() {
-  if (!renderer.value || !userMoveable.value) return;
+  if (!renderer.value || !userMovable.value) return;
   const orbitControls = renderer.value.three.cameraCtrl;
   if (freeCam.value && !thirdPerson.value) {
     orbitControls.minAzimuthAngle =
-      -orientations[userMoveable.value.orientation] - Math.PI / 2;
+      -orientations[userMovable.value.orientation] - Math.PI / 2;
     orbitControls.maxAzimuthAngle =
-      -orientations[userMoveable.value.orientation] + Math.PI / 2;
+      -orientations[userMovable.value.orientation] + Math.PI / 2;
   } else {
     orbitControls.minAzimuthAngle = Infinity;
     orbitControls.maxAzimuthAngle = Infinity;
@@ -178,7 +165,7 @@ function handleKeyEvent(e: KeyboardEvent) {
  */
 onMounted(() => {
   const orbitControls = renderer.value.three.cameraCtrl;
-  orbitControls.target = cameraLookAt;
+  orbitControls.target = lookAt;
   orbitControls.enablePan = false;
   orbitControls.enableRotate = true;
   orbitControls.screenSpacePanning = false;
