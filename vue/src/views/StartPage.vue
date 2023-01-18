@@ -73,7 +73,7 @@ watch(avatarData, (neu, alt) => {
           class="text-greenDark text-xl font-bold text-left"
           v-if="loginData.loggedIn"
         >
-          {{ loginData.username }}
+          Hallo {{ loginData.username }}!
         </p>
 
         <div v-if="loginData.error !== ''">

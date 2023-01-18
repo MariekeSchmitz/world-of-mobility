@@ -27,7 +27,7 @@
 
   body,
   #app {
-    @apply h-screen;
+    @apply h-full;
   }
 
   input {

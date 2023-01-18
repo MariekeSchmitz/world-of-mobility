@@ -55,8 +55,10 @@ async function getWorldAndForwardToEditor(name: string) {
 
 <template>
 
-  
-  <div class="grid grid-cols-2 mx-12 mt-12 mb-12">
+<div class="grid grid-cols-8 h-full w-full box-border bg-[url('/src/assets/images/home_Blur.png')] bg-cover border-0">
+
+
+  <div class="grid col-span-8 grid-cols-2 mx-12 mt-12">
     <RouterLink to="/login" class="">
       <font-awesome-icon
         icon="fa-solid fa-arrow-left"
@@ -71,10 +73,10 @@ async function getWorldAndForwardToEditor(name: string) {
     ></Avatar>
   </div>
 
-  <div class="mx-40 mt-12 my-20">
+  <div class="col-start-2 col-end-8 p-20 bg-white">
 
     <div class="">
-      <div class="group mb-12">
+      <div class="grid group mb-20 justify-center">
         <RouterLink to="/createWorld">
           <button class="inline-flex items-center">
             <font-awesome-icon
@@ -88,7 +90,7 @@ async function getWorldAndForwardToEditor(name: string) {
         </RouterLink>
       </div>
 
-      <hr class="mb-12 border-2 border-greenDark bg-greenDark" />
+      <!-- <hr class="mb-12 border-2 border-greenDark bg-greenDark" /> -->
 
       <div id="selection">
         <div class="mb-12 inline-flex items-center">
@@ -137,4 +139,5 @@ async function getWorldAndForwardToEditor(name: string) {
       </div>
     </div>
   </div>
+</div>  
 </template>

@@ -22,8 +22,10 @@ const props = withDefaults(
 </script>
 
 <template>
+
+  <div class="group">
     <div>
-      <img src="@/assets/images/home.png" alt="" class="w-full"/>
+      <img src="@/assets/images/globe.png" alt="" class="w-2/3 group-hover:border-orange group-hover:border-8 rounded-full"/>
     </div>
     <div class="grid grid-cols-4 items-center">
       <div v-if="props.people != 0" class="w-8 h-8 rounded-full bg-orange col-span-1">
@@ -39,5 +41,6 @@ const props = withDefaults(
       </div>
 
     </div>
+  </div>
 </template>
 
