@@ -35,10 +35,10 @@ let freeCam = ref(true);
 let switchedMode = false;
 
 const THIRDPERSOFFSET = new THREE.Vector3(0, 8, 15);
-const FIRSTPERSONOFFSET = new THREE.Vector3(0, 0, 0.1);
+const FIRSTPERSONOFFSET = new THREE.Vector3(0, 0, 10);
 
-const FIRSTPERSONDRIVEROFFSET = new THREE.Vector3(-0.45, 2, 0.2);
-const cameraOffset = ref(new THREE.Vector3(0, 0, 0));
+const FIRSTPERSONDRIVEROFFSET = new THREE.Vector3(-0.3, 2, -0.4);
+const cameraOffset = ref(THIRDPERSOFFSET);
 
 const UPVECTOR = new THREE.Vector3(0, 1, 0);
 
@@ -58,53 +58,30 @@ const userMoveable = computed(() => {
   return getUserMoveable(loginData.username);
 });
 
-let oldPosition = ref(new THREE.Vector3(-1, -1, -1));
-let playerPosition = ref(new THREE.Vector3(0, 0, 0));
-
-watch(userMoveable, () => {
-  updatePlayerPositions();
-  computeMovementVector();
-  updatePlayerDirection();
-  computeLookAt();
-  computeCameraPosition();
+let oldPosition = new THREE.Vector3(0, 0, 0);
+const playerPosition = computed(() => {
+  oldPosition.copy(playerPosition.value);
+  return new THREE.Vector3(
+    userMoveable.value.xPos,
+    0,
+    -userMoveable.value.yPos
+  );
+});
+const movementVector = computed(() => {
+  return playerPosition.value.clone().sub(oldPosition);
+});
+let oldPlayerDirection = "NORTH";
+const playerDirection = computed(() => {
+  oldPlayerDirection = playerDirection.value;
+  return userMoveable.value.orientation;
 });
 
-function updatePlayerPositions() {
-  let tempPosition = new THREE.Vector3(0, 0, 0);
-  if (playerPosition.value) {
-    tempPosition = playerPosition.value.clone();
-  }
-  if (userMoveable.value != undefined) {
-    playerPosition.value = new THREE.Vector3(
-      userMoveable.value.xPos * SIZE,
-      0,
-      -userMoveable.value.yPos * SIZE
-    );
-  }
-  if (oldPosition.value.equals(new THREE.Vector3(-1, -1, -1))) {
-    oldPosition.value.copy(playerPosition.value);
-  } else {
-    oldPosition.value.copy(tempPosition);
-  }
-}
-
-function computeMovementVector() {
-  movementVector.value = playerPosition.value.clone().sub(oldPosition.value);
-}
-const movementVector = ref(new THREE.Vector3(0, 0, 0));
-
-let oldPlayerDirection = "NORTH";
-let playerDirection = "NORTH";
-
-function updatePlayerDirection() {
-  if (userMoveable.value != undefined) {
-    oldPlayerDirection = playerDirection;
-    playerDirection = userMoveable.value.orientation;
-  }
-}
+watch(playerPosition, () => {
+  computeLookAt();
+});
 
 watch(userMoveable, () => {
-  if (!(oldPlayerDirection == playerDirection)) {
+  if (!(oldPlayerDirection == playerDirection.value)) {
     setAzimuthAngle();
   }
 });
@@ -113,11 +90,7 @@ function computeLookAt() {
   if (userMoveable.value != undefined) {
     const newLookAt = playerPosition.value.clone();
     if (!thirdPerson.value) {
-      const turnedDriverOffset = FIRSTPERSONDRIVEROFFSET.clone().applyAxisAngle(
-        UPVECTOR,
-        -orientations[userMoveable.value.orientation]
-      );
-      newLookAt.add(turnedDriverOffset);
+      newLookAt.add(FIRSTPERSONDRIVEROFFSET);
     }
     lookAt.copy(newLookAt);
   }
@@ -126,36 +99,26 @@ function computeLookAt() {
 /**
  * returns the position of the camera.
  */
-const cameraPosition = ref(new THREE.Vector3(0, 0, 0));
+const cameraPosition = computed(() => {
+  return computeCameraPosition();
+});
 
 function computeCameraPosition() {
   if (freeCam.value && camera.value && !switchedMode) {
-    cameraPosition.value = camera.value.camera.position.add(
-      movementVector.value
-    );
-  } else {
-    if (userMoveable.value != undefined) {
-      const turnedOffset = cameraOffset.value
-        .clone()
-        .applyAxisAngle(
-          UPVECTOR,
-          -orientations[userMoveable.value.orientation]
-        );
-      switchedMode = false;
-      const newCameraPosition = playerPosition.value.clone().add(turnedOffset);
-      if (!thirdPerson.value) {
-        const turnedDriverOffset =
-          FIRSTPERSONDRIVEROFFSET.clone().applyAxisAngle(
-            UPVECTOR,
-            -orientations[userMoveable.value.orientation]
-          );
-        newCameraPosition.add(turnedDriverOffset);
-      }
-      cameraPosition.value = newCameraPosition;
-    }
+    return camera.value.camera.position.add(movementVector);
+  }
+  if (userMoveable.value != undefined) {
+    const turnedOffset = cameraOffset.value
+      .clone()
+      .applyAxisAngle(UPVECTOR, -orientations[userMoveable.value.orientation]);
+    switchedMode = false;
+    return lookAt.clone().add(turnedOffset);
   }
 }
 
+/**
+ * switches from the Follower Cam to the Freecam and vica versa.
+ */
 function switchCamMode() {
   freeCam.value = !freeCam.value;
   if (renderer.value) {
@@ -171,32 +134,22 @@ function switchCamMode() {
  */
 function switchPerspective() {
   thirdPerson.value = !thirdPerson.value;
-  updateCameraOffset();
-  updateMaxDistance();
-  setAzimuthAngle();
-  switchedMode = true;
-}
 
-function updateCameraOffset() {
   if (thirdPerson.value) {
     cameraOffset.value.copy(THIRDPERSOFFSET);
-  } else {
-    cameraOffset.value.copy(FIRSTPERSONOFFSET);
-  }
-}
-
-function updateMaxDistance() {
-  if (thirdPerson.value) {
     if (renderer.value) {
       const orbitControls = renderer.value.three.cameraCtrl;
       orbitControls.maxDistance = 20;
     }
   } else {
+    cameraOffset.value.copy(FIRSTPERSONOFFSET);
     if (renderer.value) {
       const orbitControls = renderer.value.three.cameraCtrl;
       orbitControls.maxDistance = 0.01;
     }
   }
+  setAzimuthAngle();
+  switchedMode = true;
 }
 
 function setAzimuthAngle() {
@@ -247,6 +200,7 @@ onMounted(() => {
   orbitControls.screenSpacePanning = false;
   orbitControls.maxPolarAngle = Math.PI / 2;
   orbitControls.maxDistance = 20;
+
   receiveGameUpdate(props.instanceID);
   document.addEventListener("keyup", handleKeyEvent);
 });
