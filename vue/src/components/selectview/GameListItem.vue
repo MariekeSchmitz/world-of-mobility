@@ -23,13 +23,39 @@ const props = withDefaults(
 
 <template>
 
-  <div class="group">
-    <div>
-      <img src="@/assets/images/globe.png" alt="" class="w-2/3 group-hover:border-orange group-hover:border-8 rounded-full"/>
+  <div class="grid group overflow-hidden w-52 h-full justify-items-center content-start">
+    <img src="@/assets/images/globe.png" alt="" class="block my-auto w-2/3 group-hover:border-orange group-hover:border-8 rounded-full"/>
+
+    <div class="mt-4">
+
+      <div v-if="props.people != 0" class="grid grid-cols-4 items-center">
+        <div class="w-8 h-8 rounded-full bg-orange col-span-1"></div>
+        <div class="col-span-3">
+          <p class="gameName" v-if="props.gamename != ''">{{ props.gamename }} </p>
+          <p class="gameName">{{ props.worldname }}</p>
+          <p v-if="props.people > 1" >
+            {{ props.people }} Personen online
+          </p>
+          <p v-else >
+            {{ props.people }} Person online
+          </p>
+        </div>
+      </div>
+    
+    
+      <div v-else class="text-center">
+          <p class="gameName">{{ props.worldname }}</p>
+      </div>
     </div>
-    <div class="grid grid-cols-4 items-center">
+
+
+
+    <!-- <div class="grid grid-cols-4 items-center">
+
+      
+
+
       <div v-if="props.people != 0" class="w-8 h-8 rounded-full bg-orange col-span-1">
-        <!-- <img class="frameimg" src="../../buttons/gameintro/rec.png" alt="" /> -->
       </div>
 
       <div class="mt-2 col-span-3">
@@ -40,7 +66,7 @@ const props = withDefaults(
         </p>
       </div>
 
-    </div>
+    </div> -->
   </div>
 </template>
 

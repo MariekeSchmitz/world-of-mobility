@@ -73,14 +73,37 @@ async function getWorldAndForwardToEditor(name: string) {
   joinEditor(id, loginData.username);
   router.push(`/editor/${id}`);
 }
+
+function scrollingLeft() {
+  console.log("links")
+  const boxwrapper = document.getElementById("worldWrapper");
+  if (boxwrapper != null) {
+    boxwrapper.scrollLeft -= 50;
+        console.log(boxwrapper.scrollLeft)
+
+  }
+}
+
+function scrollingRight() {
+  console.log("links")
+  
+
+  const boxwrapper = document.getElementById("worldWrapper");
+  if (boxwrapper != null) {
+    boxwrapper.scrollLeft += 50;
+    console.log(boxwrapper.scrollLeft)
+  }
+  
+}
 </script>
 
 <template>
 
-<div class="grid grid-cols-8 h-full w-full box-border bg-[url('/src/assets/images/home_Blur.png')] bg-cover border-0">
+<div class="grid grid-cols-8 grid-rows-6 h-screen w-screen box-border bg-[url('/src/assets/images/home_Blur.png')] bg-cover">
 
 
-  <div class="grid col-span-8 grid-cols-2 mx-12 mt-12">
+  <!-- navigation -->
+  <div class="grid col-span-8 row-span-1 grid-cols-2 mx-12 mt-12">
     <RouterLink to="/login" class="">
       <font-awesome-icon
         icon="fa-solid fa-arrow-left"
@@ -95,9 +118,10 @@ async function getWorldAndForwardToEditor(name: string) {
     ></Avatar>
   </div>
 
-  <div class="col-start-2 col-end-8 p-20 bg-white">
-
-    <div class="">
+  <!-- white box -->
+  <div class="grid content-center col-start-2 col-end-8 row-span-4 p-20 bg-white">
+    <div>
+      <!-- Create World -->
       <div class="grid group mb-20 justify-center">
         <RouterLink to="/createWorld">
           <button class="inline-flex items-center">
@@ -114,8 +138,9 @@ async function getWorldAndForwardToEditor(name: string) {
 
       <!-- <hr class="mb-12 border-2 border-greenDark bg-greenDark" /> -->
 
-      <div id="selection">
-        <div class="mb-12 inline-flex items-center">
+      <!-- World Selection -->
+      <div>
+        <div class="mb-20 inline-flex items-center">
           <h2 class="inline mb-0 mr-20">Welt editieren</h2>
           <fieldset class="inline-flex items-center">
             <div class="mr-12 inline-flex items-center">
@@ -143,23 +168,44 @@ async function getWorldAndForwardToEditor(name: string) {
             </div>
           </fieldset>
         </div>
-        <div class="grid grid-cols-5">
-          <div class="gameListItem" v-for="ele in instancelist" @click="addUserAndJoin(ele.id)">
-            
-            <GameListItem 
-              :worldname="ele.worldname"
-              :people="ele.playeramount"
-              
-            ></GameListItem>
-          
+        
+        <!-- world slider -->
+        <div class="grid grid-cols-7">
+          <button class="relative bottom-6" @click="scrollingLeft">
+            <font-awesome-icon
+              icon="fa-solid fa-plus"
+              size="xl"
+              color="white"
+              class="w-4 h-4 p-4 inline bg-greenDark rounded-full group-hover:bg-orange"
+            />
+          </button>
+
+          <div class="flex overflow-x-scroll scrollbar-hide col-span-5" id="worldWrapper">
+            <div class="flex flex-nowrap">
+              <div class="gameListItem" v-for="ele in instancelist" @click="addUserAndJoin(ele.id)">
+                <GameListItem 
+                  :worldname="ele.worldname"
+                  :people="ele.playeramount"
+                ></GameListItem>
+              </div>
+              <div class="gameListItem" v-if="showAll" v-for="ele in maplistState.maplist" @click="getWorldAndForwardToEditor(ele)">
+                <GameListItem :worldname="ele" class="gameListItem"></GameListItem>
+              </div>
+            </div>
           </div>
 
-          <div class="gameListItem" v-if="showAll" v-for="ele in maplistState.maplist" @click="getWorldAndForwardToEditor(ele)">
-            <GameListItem :worldname="ele" class="gameListItem"></GameListItem>
-          </div>
+          <button class="relative bottom-6" @click="scrollingRight">
+            <font-awesome-icon
+              icon="fa-solid fa-plus"
+              size="xl"
+              color="white"
+              class="w-4 h-4 p-4 inline bg-greenDark rounded-full group-hover:bg-orange"
+            />
+          </button>
+
         </div>
       </div>
-    </div>
   </div>
+</div>
 </div>  
 </template>
