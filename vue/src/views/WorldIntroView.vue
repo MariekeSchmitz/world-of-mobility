@@ -75,137 +75,146 @@ async function getWorldAndForwardToEditor(name: string) {
 }
 
 function scrollingLeft() {
-  console.log("links")
   const boxwrapper = document.getElementById("worldWrapper");
   if (boxwrapper != null) {
     boxwrapper.scrollLeft -= 50;
-        console.log(boxwrapper.scrollLeft)
-
   }
 }
 
 function scrollingRight() {
-  console.log("links")
-  
-
   const boxwrapper = document.getElementById("worldWrapper");
   if (boxwrapper != null) {
     boxwrapper.scrollLeft += 50;
-    console.log(boxwrapper.scrollLeft)
   }
-  
 }
 </script>
 
 <template>
+  <div
+    class="grid grid-cols-8 grid-rows-6 h-screen w-screen box-border bg-[url('/src/assets/images/home_Blur.png')] bg-cover"
+  >
+    <!-- navigation -->
+    <div class="grid col-span-8 row-span-1 grid-cols-2 mx-12 mt-12">
+      <RouterLink to="/login" class="">
+        <font-awesome-icon
+          icon="fa-solid fa-arrow-left"
+          size="3xl"
+          color="white"
+          class="bg-greenLight rounded-full p-2 w-8 h-8 inline justify-self-start"
+        />
+      </RouterLink>
+      <Avatar
+        :avatarPicture="avatarData.avatar"
+        class="justify-self-end w-16"
+      ></Avatar>
+    </div>
 
-<div class="grid grid-cols-8 grid-rows-6 h-screen w-screen box-border bg-[url('/src/assets/images/home_Blur.png')] bg-cover">
-
-
-  <!-- navigation -->
-  <div class="grid col-span-8 row-span-1 grid-cols-2 mx-12 mt-12">
-    <RouterLink to="/login" class="">
-      <font-awesome-icon
-        icon="fa-solid fa-arrow-left"
-        size="3xl"
-        color="white"
-        class="bg-greenLight rounded-full p-2 w-8 h-8 inline justify-self-start"
-      />
-    </RouterLink>
-    <Avatar
-      :avatarPicture="avatarData.avatar"
-      class="justify-self-end"
-    ></Avatar>
-  </div>
-
-  <!-- white box -->
-  <div class="grid content-center col-start-2 col-end-8 row-span-4 p-20 bg-white">
-    <div>
-      <!-- Create World -->
-      <div class="grid group mb-20 justify-center">
-        <RouterLink to="/createWorld">
-          <button class="inline-flex items-center">
-            <font-awesome-icon
-              icon="fa-solid fa-plus"
-              size="xl"
-              color="white"
-              class="w-8 h-8 p-4 inline bg-greenDark rounded-full group-hover:bg-orange"
-            />
-            <h2 class="ml-6 mb-0 inline group-hover:text-orange">Welt erstellen</h2>
-          </button>
-        </RouterLink>
-      </div>
-
-      <!-- <hr class="mb-12 border-2 border-greenDark bg-greenDark" /> -->
-
-      <!-- World Selection -->
+    <!-- white box -->
+    <div
+      class="grid content-center col-start-2 col-end-8 row-span-4 p-20 bg-white"
+    >
       <div>
-        <div class="mb-20 inline-flex items-center">
-          <h2 class="inline mb-0 mr-20">Welt editieren</h2>
-          <fieldset class="inline-flex items-center">
-            <div class="mr-12 inline-flex items-center">
-              <input
-                type="radio"
-                id="editmode"
-                name="selectmode"
-                value="Wird gerade editiert"
-                class="radioButton"
-                @click="switchScene('edit')"
+        <!-- Create World -->
+        <div class="grid group mb-20 justify-center">
+          <RouterLink to="/createWorld">
+            <button class="inline-flex items-center">
+              <font-awesome-icon
+                icon="fa-solid fa-plus"
+                size="xl"
+                color="white"
+                class="w-8 h-8 p-4 inline bg-greenDark rounded-full group-hover:bg-orange"
               />
-              <label for="editmode">Wird gerade editiert</label>
-            </div>
-            <div class="inline-flex items-center">
-              <input
-                type="radio"
-                id="allmode"
-                name="selectmode"
-                checked
-                value="Alle"
-                class="radioButton"
-                @click="switchScene('all')"
-              />
-              <label for="allmode">Alle</label>
-            </div>
-          </fieldset>
+              <h2 class="ml-6 mb-0 inline group-hover:text-orange">
+                Welt erstellen
+              </h2>
+            </button>
+          </RouterLink>
         </div>
-        
-        <!-- world slider -->
-        <div class="grid grid-cols-7">
-          <button class="relative bottom-6" @click="scrollingLeft">
-            <font-awesome-icon
-              icon="fa-solid fa-plus"
-              size="xl"
-              color="white"
-              class="w-4 h-4 p-4 inline bg-greenDark rounded-full group-hover:bg-orange"
-            />
-          </button>
 
-          <div class="flex overflow-x-scroll scrollbar-hide col-span-5" id="worldWrapper">
-            <div class="flex flex-nowrap">
-              <div class="gameListItem" v-for="ele in instancelist" @click="addUserAndJoin(ele.id)">
-                <GameListItem 
-                  :worldname="ele.worldname"
-                  :people="ele.playeramount"
-                ></GameListItem>
+        <!-- <hr class="mb-12 border-2 border-greenDark bg-greenDark" /> -->
+
+        <!-- World Selection -->
+        <div>
+          <div class="mb-20 inline-flex items-center">
+            <h2 class="inline mb-0 mr-20">Welt editieren</h2>
+            <fieldset class="inline-flex items-center">
+              <div class="mr-12 inline-flex items-center">
+                <input
+                  type="radio"
+                  id="editmode"
+                  name="selectmode"
+                  value="Wird gerade editiert"
+                  class="radioButton"
+                  @click="switchScene('edit')"
+                />
+                <label for="editmode">Wird gerade editiert</label>
               </div>
-              <div class="gameListItem" v-if="showAll" v-for="ele in maplistState.maplist" @click="getWorldAndForwardToEditor(ele)">
-                <GameListItem :worldname="ele" class="gameListItem"></GameListItem>
+              <div class="inline-flex items-center">
+                <input
+                  type="radio"
+                  id="allmode"
+                  name="selectmode"
+                  checked
+                  value="Alle"
+                  class="radioButton"
+                  @click="switchScene('all')"
+                />
+                <label for="allmode">Alle</label>
               </div>
-            </div>
+            </fieldset>
           </div>
 
-          <button class="relative bottom-6" @click="scrollingRight">
-            <font-awesome-icon
-              icon="fa-solid fa-plus"
-              size="xl"
-              color="white"
-              class="w-4 h-4 p-4 inline bg-greenDark rounded-full group-hover:bg-orange"
-            />
-          </button>
+          <!-- world slider -->
+          <div class="grid grid-cols-7">
+            <button class="relative bottom-6" @click="scrollingLeft">
+              <font-awesome-icon
+                icon="fa-solid fa-plus"
+                size="xl"
+                color="white"
+                class="w-4 h-4 p-4 inline bg-greenDark rounded-full group-hover:bg-orange"
+              />
+            </button>
 
+            <div
+              class="flex overflow-x-scroll scrollbar-hide col-span-5"
+              id="worldWrapper"
+            >
+              <div class="flex flex-nowrap">
+                <div
+                  class="gameListItem"
+                  v-for="ele in instancelist"
+                  @click="addUserAndJoin(ele.id)"
+                >
+                  <GameListItem
+                    :worldname="ele.worldname"
+                    :people="ele.playeramount"
+                  ></GameListItem>
+                </div>
+                <div
+                  class="gameListItem"
+                  v-if="showAll"
+                  v-for="ele in maplistState.maplist"
+                  @click="getWorldAndForwardToEditor(ele)"
+                >
+                  <GameListItem
+                    :worldname="ele"
+                    class="gameListItem"
+                  ></GameListItem>
+                </div>
+              </div>
+            </div>
+
+            <button class="relative bottom-6" @click="scrollingRight">
+              <font-awesome-icon
+                icon="fa-solid fa-plus"
+                size="xl"
+                color="white"
+                class="w-4 h-4 p-4 inline bg-greenDark rounded-full group-hover:bg-orange"
+              />
+            </button>
+          </div>
         </div>
       </div>
+    </div>
   </div>
-</div>
-</div>  
 </template>
