@@ -7,14 +7,24 @@ package de.hsrm.mi.swt_project.demo.objecthandling;
 public enum TrafficLightState {
     NORTHSOUTH{
         public TrafficLightState next() {
-            return EASTWEST;
+            return NORTHSOUTHEASTWEST;
         }
     },
     EASTWEST {
         public TrafficLightState next() {
+            return EASTWESTNORHSOUTH;
+        }
+    },
+    EASTWESTNORHSOUTH{
+        public TrafficLightState next() {
             return NORTHSOUTH;
         }
-    };
+    },
+    NORTHSOUTHEASTWEST{
+        public TrafficLightState next() {
+            return EASTWEST;
+        }
+    }; 
 
     public abstract TrafficLightState next();
 }

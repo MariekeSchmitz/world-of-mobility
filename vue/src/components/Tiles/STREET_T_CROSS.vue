@@ -28,43 +28,87 @@ const trafficLightStraight = "trafficLightStraight";
 
 const trafficLight = computed(() => {
   if (props.trafficLightState == "NORTHSOUTH") {
-    if (props.orientation == "WEST" || props.orientation == "EAST") {
+    if (props.orientation == "WEST") {
       return {
-        redOn1: true,
+        redOn1: false,
         redOn2: true,
-        redOn3: true,
-        greenOn1: false,
+        redOn3: false,
+        greenOn1: true,
         greenOn2: false,
-        greenOn3: false,
+        greenOn3: true,
+        yellowOn: false,
       };
-    } else if (props.orientation == "NORTH" || props.orientation == "SOUTH") {
+    } else if (props.orientation == "EAST") {
       return {
         redOn1: false,
         redOn2: false,
-        redOn3: false,
+        redOn3: true,
         greenOn1: true,
         greenOn2: true,
-        greenOn3: true,
+        greenOn3: false,
+        yellowOn: false,
+      };
+    } else if (props.orientation == "NORTH") {
+      return {
+        redOn1: false,
+        redOn2: true,
+        redOn3: true,
+        greenOn1: true,
+        greenOn2: false,
+        greenOn3: false,
+        yellowOn: false,
+      };
+    } else if (props.orientation == "SOUTH") {
+      return {
+        redOn1: true,
+        redOn2: false,
+        redOn3: true,
+        greenOn1: false,
+        greenOn2: true,
+        greenOn3: false,
+        yellowOn: false,
       };
     }
   } else if (props.trafficLightState == "EASTWEST") {
-    if (props.orientation == "WEST" || props.orientation == "EAST") {
+    if (props.orientation == "WEST") {
       return {
-        redOn1: false,
+        redOn1: true,
         redOn2: false,
-        redOn3: false,
-        greenOn1: true,
+        redOn3: true,
+        greenOn1: false,
         greenOn2: true,
-        greenOn3: true,
+        greenOn3: false,
+        yellowOn: false,
       };
-    } else if (props.orientation == "NORTH" || props.orientation == "SOUTH") {
+    } else if (props.orientation == "EAST") {
       return {
         redOn1: true,
         redOn2: true,
-        redOn3: true,
+        redOn3: false,
         greenOn1: false,
         greenOn2: false,
-        greenOn3: false,
+        greenOn3: true,
+        yellowOn: false,
+      };
+    } else if (props.orientation == "NORTH") {
+      return {
+        redOn1: true,
+        redOn2: false,
+        redOn3: false,
+        greenOn1: false,
+        greenOn2: true,
+        greenOn3: true,
+        yellowOn: false,
+      };
+    } else if (props.orientation == "SOUTH") {
+      return {
+        redOn1: false,
+        redOn2: true,
+        redOn3: false,
+        greenOn1: true,
+        greenOn2: false,
+        greenOn3: true,
+        yellowOn: false,
       };
     }
   }
@@ -72,9 +116,10 @@ const trafficLight = computed(() => {
     redOn1: false,
     redOn2: false,
     redOn3: false,
-    greenOn1: true,
-    greenOn2: true,
-    greenOn3: true,
+    greenOn1: false,
+    greenOn2: false,
+    greenOn3: false,
+    yellowOn: true,
   };
 });
 
@@ -178,7 +223,7 @@ function setRotation(orientation: string, name: string): THREE.Vector3 {
     "
     :angle="3"
     :red="trafficLight.redOn1"
-    :yellow="false"
+    :yellow="trafficLight.yellowOn"
     :green="trafficLight.greenOn1"
   />
   <TRAFFIC_LIGHT
@@ -200,7 +245,7 @@ function setRotation(orientation: string, name: string): THREE.Vector3 {
     "
     :angle="3"
     :red="trafficLight.redOn2"
-    :yellow="false"
+    :yellow="trafficLight.yellowOn"
     :green="trafficLight.greenOn2"
   />
   <TRAFFIC_LIGHT
@@ -222,7 +267,7 @@ function setRotation(orientation: string, name: string): THREE.Vector3 {
     "
     :angle="3"
     :red="trafficLight.redOn3"
-    :yellow="false"
+    :yellow="trafficLight.yellowOn"
     :green="trafficLight.greenOn3"
   />
 </template>

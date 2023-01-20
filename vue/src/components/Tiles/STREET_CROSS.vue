@@ -30,6 +30,7 @@ const trafficLight = computed(() => {
       redOnPair2: false,
       greenOnPair1: false,
       greenOnPair2: true,
+      yellowOn: false,
     };
   } else if (props.trafficLightState == "EASTWEST") {
     return {
@@ -37,13 +38,15 @@ const trafficLight = computed(() => {
       redOnPair2: true,
       greenOnPair1: true,
       greenOnPair2: false,
+      yellowOn: false,
     };
   }
   return {
-    redOnPair1: true,
-    redOnPair2: true,
+    redOnPair1: false,
+    redOnPair2: false,
     greenOnPair1: false,
     greenOnPair2: false,
+    yellowOn: true,
   };
 });
 
@@ -70,7 +73,7 @@ const trafficLightPair1bOffset = new THREE.Vector3(6.5, 0, -6.5);
     :position="props.position.clone().add(trafficLightPair1aOffset)"
     :angle="3"
     :red="trafficLight.redOnPair1"
-    :yellow="false"
+    :yellow="trafficLight.yellowOn"
     :green="trafficLight.greenOnPair1"
   />
   <TRAFFIC_LIGHT
@@ -84,7 +87,7 @@ const trafficLightPair1bOffset = new THREE.Vector3(6.5, 0, -6.5);
     :position="props.position.clone().add(trafficLightPair2bOffset)"
     :angle="3"
     :red="trafficLight.redOnPair2"
-    :yellow="false"
+    :yellow="trafficLight.yellowOn"
     :green="trafficLight.greenOnPair2"
   />
   <TRAFFIC_LIGHT
@@ -98,7 +101,7 @@ const trafficLightPair1bOffset = new THREE.Vector3(6.5, 0, -6.5);
     :position="props.position.clone().add(trafficLightPair2aOffset)"
     :angle="3"
     :red="trafficLight.redOnPair2"
-    :yellow="false"
+    :yellow="trafficLight.yellowOn"
     :green="trafficLight.greenOnPair2"
   />
   <TRAFFIC_LIGHT
@@ -112,7 +115,7 @@ const trafficLightPair1bOffset = new THREE.Vector3(6.5, 0, -6.5);
     :position="props.position.clone().add(trafficLightPair1bOffset)"
     :angle="3"
     :red="trafficLight.redOnPair1"
-    :yellow="false"
+    :yellow="trafficLight.yellowOn"
     :green="trafficLight.greenOnPair1"
   />
 </template>

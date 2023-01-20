@@ -30,11 +30,13 @@ const trafficLight = computed(() => {
       return {
         redOn: true,
         greenOn: false,
+        yellowOn: false,
       };
     } else if (props.orientation == "NORTH" || props.orientation == "SOUTH") {
       return {
         redOn: false,
         greenOn: true,
+        yellowOn: false,
       };
     }
   } else if (props.trafficLightState == "EASTWEST") {
@@ -42,17 +44,20 @@ const trafficLight = computed(() => {
       return {
         redOn: false,
         greenOn: true,
+        yellowOn: false,
       };
     } else if (props.orientation == "NORTH" || props.orientation == "SOUTH") {
       return {
         redOn: true,
         greenOn: false,
+        yellowOn: false,
       };
     }
   }
   return {
-    redOn: true,
+    redOn: false,
     greenOn: false,
+    yellowOn: true,
   };
 });
 
@@ -128,7 +133,7 @@ function setRotation(orientation: string, name: string): THREE.Vector3 {
     "
     :angle="3"
     :red="trafficLight.redOn"
-    :yellow="false"
+    :yellow="trafficLight.yellowOn"
     :green="trafficLight.greenOn"
   />
   <TRAFFIC_LIGHT
@@ -150,7 +155,7 @@ function setRotation(orientation: string, name: string): THREE.Vector3 {
     "
     :angle="3"
     :red="trafficLight.redOn"
-    :yellow="false"
+    :yellow="trafficLight.yellowOn"
     :green="trafficLight.greenOn"
   />
   <GAS_STATION
