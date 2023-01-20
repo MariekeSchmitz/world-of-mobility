@@ -7,6 +7,7 @@ import TRAFFIC_LIGHT from "@/components/objects/TRAFFIC_LIGHT.vue";
 import { ObjectEnum } from "@/services/ObjectEnum";
 import STREET_T_CROSS_URL from "@/assets/models/STREET_T_CROSS.glb?url";
 import TRAFFIC_LIGHT_LIGHT from "@/components/objects/TRAFFIC_LIGHT_LIGHT.vue";
+import { computed } from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -17,12 +18,65 @@ const props = withDefaults(
     type: string;
     placedObject: any;
     orientation: string;
+    trafficLightState: any;
   }>(),
   { width: 10, height: 10 }
 );
 const trafficLightLeft = "trafficLightLeft";
 const trafficLightRight = "trafficLightRight";
 const trafficLightStraight = "trafficLightStraight";
+
+const trafficLight = computed(() => {
+  if (props.trafficLightState == "NORTHSOUTH") {
+    if (props.orientation == "WEST" || props.orientation == "EAST") {
+      return {
+        redOn1: true,
+        redOn2: true,
+        redOn3: true,
+        greenOn1: false,
+        greenOn2: false,
+        greenOn3: false,
+      };
+    } else if (props.orientation == "NORTH" || props.orientation == "SOUTH") {
+      return {
+        redOn1: false,
+        redOn2: false,
+        redOn3: false,
+        greenOn1: true,
+        greenOn2: true,
+        greenOn3: true,
+      };
+    }
+  } else if (props.trafficLightState == "EASTWEST") {
+    if (props.orientation == "WEST" || props.orientation == "EAST") {
+      return {
+        redOn1: false,
+        redOn2: false,
+        redOn3: false,
+        greenOn1: true,
+        greenOn2: true,
+        greenOn3: true,
+      };
+    } else if (props.orientation == "NORTH" || props.orientation == "SOUTH") {
+      return {
+        redOn1: true,
+        redOn2: true,
+        redOn3: true,
+        greenOn1: false,
+        greenOn2: false,
+        greenOn3: false,
+      };
+    }
+  }
+  return {
+    redOn1: false,
+    redOn2: false,
+    redOn3: false,
+    greenOn1: true,
+    greenOn2: true,
+    greenOn3: true,
+  };
+});
 
 function setPosition(orientation: string, name: string): THREE.Vector3 {
   if (orientation == "WEST") {
@@ -123,9 +177,9 @@ function setRotation(orientation: string, name: string): THREE.Vector3 {
         .add(setPosition(props.orientation, trafficLightLeft))
     "
     :angle="3"
-    :red="false"
+    :red="trafficLight.redOn1"
     :yellow="false"
-    :green="true"
+    :green="trafficLight.greenOn1"
   />
   <TRAFFIC_LIGHT
     v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
@@ -145,9 +199,9 @@ function setRotation(orientation: string, name: string): THREE.Vector3 {
         .add(setPosition(props.orientation, trafficLightRight))
     "
     :angle="3"
-    :red="false"
-    :yellow="true"
-    :green="false"
+    :red="trafficLight.redOn2"
+    :yellow="false"
+    :green="trafficLight.greenOn2"
   />
   <TRAFFIC_LIGHT
     v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
@@ -167,8 +221,8 @@ function setRotation(orientation: string, name: string): THREE.Vector3 {
         .add(setPosition(props.orientation, trafficLightStraight))
     "
     :angle="3"
-    :red="true"
+    :red="trafficLight.redOn3"
     :yellow="false"
-    :green="false"
+    :green="trafficLight.greenOn3"
   />
 </template>

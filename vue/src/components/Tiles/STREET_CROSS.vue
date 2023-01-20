@@ -7,6 +7,7 @@ import { ObjectEnum } from "@/services/ObjectEnum";
 import TRAFFIC_LIGHT from "@/components/objects/TRAFFIC_LIGHT.vue";
 import STREET_CROSS_URL from "@/assets/models/STREET_CROSS.glb?url";
 import TRAFFIC_LIGHT_LIGHT from "@/components/objects/TRAFFIC_LIGHT_LIGHT.vue";
+import { computed } from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -17,9 +18,34 @@ const props = withDefaults(
     type: string;
     placedObject: any;
     orientation: string;
+    trafficLightState: any;
   }>(),
   { width: 10, height: 10 }
 );
+
+const trafficLight = computed(() => {
+  if (props.trafficLightState == "NORTHSOUTH") {
+    return {
+      redOnPair1: true,
+      redOnPair2: false,
+      greenOnPair1: false,
+      greenOnPair2: true,
+    };
+  } else if (props.trafficLightState == "EASTWEST") {
+    return {
+      redOnPair1: false,
+      redOnPair2: true,
+      greenOnPair1: true,
+      greenOnPair2: false,
+    };
+  }
+  return {
+    redOnPair1: true,
+    redOnPair2: true,
+    greenOnPair1: false,
+    greenOnPair2: false,
+  };
+});
 
 const trafficLightPair1aOffset = new THREE.Vector3(-6.5, 0, 6.5);
 const trafficLightPair2bOffset = new THREE.Vector3(6.5, 0, 6.5);
@@ -43,9 +69,9 @@ const trafficLightPair1bOffset = new THREE.Vector3(6.5, 0, -6.5);
     v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
     :position="props.position.clone().add(trafficLightPair1aOffset)"
     :angle="3"
-    :red="true"
+    :red="trafficLight.redOnPair1"
     :yellow="false"
-    :green="false"
+    :green="trafficLight.greenOnPair1"
   />
   <TRAFFIC_LIGHT
     v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
@@ -57,9 +83,9 @@ const trafficLightPair1bOffset = new THREE.Vector3(6.5, 0, -6.5);
     v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
     :position="props.position.clone().add(trafficLightPair2bOffset)"
     :angle="3"
-    :red="false"
+    :red="trafficLight.redOnPair2"
     :yellow="false"
-    :green="true"
+    :green="trafficLight.greenOnPair2"
   />
   <TRAFFIC_LIGHT
     v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
@@ -71,9 +97,9 @@ const trafficLightPair1bOffset = new THREE.Vector3(6.5, 0, -6.5);
     v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
     :position="props.position.clone().add(trafficLightPair2aOffset)"
     :angle="3"
-    :red="false"
+    :red="trafficLight.redOnPair2"
     :yellow="false"
-    :green="true"
+    :green="trafficLight.greenOnPair2"
   />
   <TRAFFIC_LIGHT
     v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
@@ -85,8 +111,8 @@ const trafficLightPair1bOffset = new THREE.Vector3(6.5, 0, -6.5);
     v-if:="props.placedObject === ObjectEnum.TRAFFIC_LIGHT"
     :position="props.position.clone().add(trafficLightPair1bOffset)"
     :angle="3"
-    :red="true"
+    :red="trafficLight.redOnPair1"
     :yellow="false"
-    :green="false"
+    :green="trafficLight.greenOnPair1"
   />
 </template>
