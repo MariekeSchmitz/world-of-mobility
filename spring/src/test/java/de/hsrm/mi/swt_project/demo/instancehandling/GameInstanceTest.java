@@ -28,13 +28,13 @@ class GameInstanceTest {
     /**
      * Sets up following scenario
      * 
-     * ------------- -------------
-     * | STREET | STREET |
-     * | | Car v |
-     * ------------- -------------
-     * | SIDEWAY | SIDEWAY |
-     * | Passenger ^ | |
-     * ------------- -------------
+     *  --------------- ---------------
+     * |    STREET     |    STREET     |
+     * |               |     Car v     |
+     *  --------------- ---------------
+     * |    SIDEWAY    |    SIDEWAY    |
+     * |  Passenger ^  |               |
+     *  --------------- ---------------
      * 
      * IMPORTANT: To test position change of MoveableObjects,
      * you need to add them manually to the GameInstance
@@ -105,11 +105,11 @@ class GameInstanceTest {
         assertEquals(startPosYCar, car.getYPos());
         assertEquals(0, passenger.getCurrentVelocity());
 
-        passenger.turn(Direction.LEFT);
-        passenger.turn(Direction.LEFT);
+        passenger.turn(Direction.RIGHT);
+        passenger.turn(Direction.RIGHT);
         passenger.setCurrentVelocity(1);
 
-        car.turn(Direction.LEFT);
+        car.turn(Direction.RIGHT);
         car.setCurrentVelocity(1);
 
         gameInstance.update();
