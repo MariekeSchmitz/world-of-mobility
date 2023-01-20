@@ -7,6 +7,8 @@ import de.hsrm.mi.swt_project.demo.controls.Orientation;
 
 public class Passenger extends MoveableObject {
 
+    protected static final float HITBOX_RADIUS = 0.05f;
+
     /**
      * Creates an instance of Passenger
      */
@@ -38,7 +40,6 @@ public class Passenger extends MoveableObject {
         this.setYPos(yPos);
         this.maxVelocity = maxVelocity;
         this.orientation = orientation;
-        this.hitboxRadius = 0.05f;
     }
 
     @Override

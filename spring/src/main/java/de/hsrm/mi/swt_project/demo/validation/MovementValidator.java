@@ -47,31 +47,31 @@ public class MovementValidator implements Validator {
     @Override
     public boolean validate() {
 
-        float startPosX = this.moveableCopy.getxPos();
-        float startPosY = this.moveableCopy.getyPos();
+        float startPosX = this.moveableCopy.getXPos();
+        float startPosY = this.moveableCopy.getYPos();
 	
         moveableCopy.move();
         
-        float endPosX = this.moveableCopy.getxPos();
-        float endPosY = this.moveableCopy.getyPos();
+        float endPosX = this.moveableCopy.getXPos();
+        float endPosY = this.moveableCopy.getYPos();
 
         if (!insideMap(endPosX, endPosY)) {
             return false;
         }
 
-        for (int[] crossedTilePos : this.approximateCrossedTiles(startPosX, startPosY, endPosX, endPosY)) {
-	
-            int tileRow = crossedTilePos[0];
-            int tileCol = crossedTilePos[1];
-	
-            Tile crossedTile = this.map[tileRow][tileCol];
-	
-            if (!tileAllowsMovementFromPostion(crossedTile) || !canDriveOnTile(crossedTile) || !canWalkOnTile(crossedTile)) {
-                return false;
-            }
-        }
-       	
-        return true;
+        return this.approximateCrossedTiles(startPosX, startPosY, endPosX, endPosY)
+            .stream()
+            .allMatch(tilePos -> {
+
+                int tileRow = tilePos[0];
+                int tileCol = tilePos[1];
+        
+                Tile crossedTile = this.map[tileRow][tileCol];
+
+                return tileAllowsMovementFromPostion(crossedTile) 
+                    && canDriveOnTile(crossedTile) 
+                    && canWalkOnTile(crossedTile);
+            });
     }
 
     /**

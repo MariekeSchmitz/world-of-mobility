@@ -82,11 +82,11 @@ class GameInstanceTest {
         gameInstance.addPlayer("Test1", passenger);
         gameInstance.addPlayer("Test2", car);
 
-        float startPosXPassenger = passenger.getxPos();
-        float startPosYPassenger = passenger.getyPos();
+        float startPosXPassenger = passenger.getXPos();
+        float startPosYPassenger = passenger.getYPos();
 
-        float startPosXCar = car.getxPos();
-        float startPosYCar = car.getyPos();
+        float startPosXCar = car.getXPos();
+        float startPosYCar = car.getYPos();
 
         // Moving forward in default setup should result
         // in invalid moves for passenger and car
@@ -96,13 +96,13 @@ class GameInstanceTest {
         gameInstance.update();
 
         // passenger should not be moved and velocity should be reset
-        assertEquals(startPosXPassenger, passenger.getxPos());
-        assertEquals(startPosYPassenger, passenger.getyPos());
+        assertEquals(startPosXPassenger, passenger.getXPos());
+        assertEquals(startPosYPassenger, passenger.getYPos());
         assertEquals(0, passenger.getCurrentVelocity());
 
         // car should not be moved and velocity should be reset
-        assertEquals(startPosXCar, car.getxPos());
-        assertEquals(startPosYCar, car.getyPos());
+        assertEquals(startPosXCar, car.getXPos());
+        assertEquals(startPosYCar, car.getYPos());
         assertEquals(0, passenger.getCurrentVelocity());
 
         passenger.turn(Direction.LEFT);
@@ -115,8 +115,8 @@ class GameInstanceTest {
         gameInstance.update();
 
         // car and passenger should have changed position after valid move
-        assertFalse(startPosXPassenger == passenger.getxPos() && startPosYPassenger == passenger.getyPos());
-        assertFalse(startPosXCar == car.getxPos() && startPosYCar == car.getyPos());
+        assertFalse(startPosXPassenger == passenger.getXPos() && startPosYPassenger == passenger.getYPos());
+        assertFalse(startPosXCar == car.getXPos() && startPosYCar == car.getYPos());
     }
 
     @Test
@@ -124,8 +124,8 @@ class GameInstanceTest {
 
         gameInstance.addPlayer("Test1", passenger);
 
-        float startX = passenger.getyPos();
-        float startY = passenger.getxPos();
+        float startX = passenger.getYPos();
+        float startY = passenger.getXPos();
 
         passenger.setCurrentVelocity(0.2f);
 
@@ -137,13 +137,13 @@ class GameInstanceTest {
 
             // Always away from start position before last step
             if (i < Orientation.values().length - 1) {
-                assertFalse(startX == passenger.getxPos() && startY == passenger.getyPos());
+                assertFalse(startX == passenger.getXPos() && startY == passenger.getYPos());
             }
         }
 
         // Be at start position after full circle
-        assertEquals(startX, passenger.getxPos());
-        assertEquals(startY, passenger.getyPos());
+        assertEquals(startX, passenger.getXPos());
+        assertEquals(startY, passenger.getYPos());
     }
 
     @Test 

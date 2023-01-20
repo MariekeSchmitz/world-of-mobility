@@ -50,8 +50,8 @@ class MotorizedObjectTest {
             }
         }
 
-        assertEquals(55, vehicle.getxPos());
-        assertEquals(55, vehicle.getyPos());
+        assertEquals(55, vehicle.getXPos());
+        assertEquals(55, vehicle.getYPos());
     }
 
     @Test

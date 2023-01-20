@@ -7,6 +7,8 @@ import de.hsrm.mi.swt_project.demo.controls.Orientation;
 
 public class MotorizedObject extends MoveableObject {
 
+    protected static final float HITBOX_RADIUS = 0.15f;
+
     public MotorizedObject() {
         this(0, 0);
     }
@@ -36,7 +38,6 @@ public class MotorizedObject extends MoveableObject {
         this.setYPos(yPos);
         this.maxVelocity = maxVelocity;
         this.orientation = adjustOrientation(orientation);
-        this.hitboxRadius = 0.15f;
     }
 
     @Override
