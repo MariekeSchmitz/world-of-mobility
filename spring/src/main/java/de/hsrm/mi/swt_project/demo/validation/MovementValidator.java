@@ -62,17 +62,9 @@ public class MovementValidator implements Validator {
 
         return this.approximateCrossedTiles(startPosX, startPosY, endPosX, endPosY)
             .stream()
-            .allMatch(position -> {
-
-                int tileRow = position.getYPos();
-                int tileCol = position.getXPos();
-        
-                Tile crossedTile = this.map[tileRow][tileCol];
-
-                return tileAllowsMovementFromPostion(crossedTile) 
-                    && canDriveOnTile(crossedTile) 
-                    && canWalkOnTile(crossedTile);
-            });
+            .allMatch(
+                position -> this.canMoveToPosition(position)
+            );
     }
 
     /**
@@ -121,6 +113,24 @@ public class MovementValidator implements Validator {
         boolean yPosValid = (yPos < mapSize) && (yPos >= 0);
 
         return xPosValid && yPosValid;
+    }
+
+    /**
+     * Checks if movement to the position is allowed.
+     * @param position Position to move to
+     * 
+     * @return True if movement is allowed, else false
+     */
+    protected boolean canMoveToPosition(Position position) {
+        
+        int tileRow = position.getYPos();
+        int tileCol = position.getXPos();
+
+        Tile crossedTile = this.map[tileRow][tileCol];
+
+        return this.tileAllowsMovementFromPostion(crossedTile) 
+            && this.canDriveOnTile(crossedTile) 
+            && this.canWalkOnTile(crossedTile);
     }
 
 
