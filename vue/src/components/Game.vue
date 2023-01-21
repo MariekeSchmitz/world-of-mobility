@@ -93,7 +93,7 @@ function computeMovementVector() {
 }
 const movementVector = ref(new THREE.Vector3(0, 0, 0));
 
-let oldPlayerDirection = "NORTH";
+let oldPlayerDirection = "";
 let playerDirection = "NORTH";
 
 function updatePlayerDirection() {
@@ -162,6 +162,7 @@ function switchCamMode() {
     renderer.value.three.cameraCtrl.enabled =
       !renderer.value.three.cameraCtrl.enabled;
   }
+  setAzimuthAngle();
 }
 
 /**
@@ -204,7 +205,7 @@ function setAzimuthAngle() {
   const orbitControls = renderer.value.three.cameraCtrl;
   if (freeCam.value && !thirdPerson.value) {
     orbitControls.minAzimuthAngle =
-      -orientations[userMoveable.value.orientation] - Math.PI / 2;
+      -orientations[userMoveable.value.orientation] - Math.PI / 2+0.1;
     orbitControls.maxAzimuthAngle =
       -orientations[userMoveable.value.orientation] + Math.PI / 2;
   } else {
@@ -247,6 +248,9 @@ onMounted(() => {
   orbitControls.screenSpacePanning = false;
   orbitControls.maxPolarAngle = Math.PI / 2;
   orbitControls.maxDistance = 20;
+
+  switchPerspective();
+  switchPerspective();
   receiveGameUpdate(props.instanceID);
   document.addEventListener("keyup", handleKeyEvent);
 });
