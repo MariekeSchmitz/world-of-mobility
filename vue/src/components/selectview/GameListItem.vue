@@ -36,10 +36,10 @@ const props = withDefaults(
             'font-semibold text-greenDark text-base': props.gamename != '',
             'font-semibold text-greenDark text-xl': props.gamename == ''
           }">{{ props.worldname }}</p>
-          <p v-if="props.people > 1" >
+          <p v-if="props.people > 1" class="text-greenDark">
             {{ props.people }} Personen online
           </p>
-          <p v-else >
+          <p v-else class="text-greenDark">
             {{ props.people }} Person online
           </p>
         </div>
