@@ -23,6 +23,7 @@ const props = defineProps<{
 }>();
 
 async function checkValidation(name: string) {
+  console.log(avatarData.avatar)
   await sendConfig(props.mapName, name, playerLimit.value, npcs.value);
   if (valSuccess.validationSuccess) {
     await createGameInstance(props.mapName, name, playerLimit.value, npcs.value);
@@ -37,99 +38,83 @@ async function checkValidation(name: string) {
 
 <template>
   <div
-    class="grid grid-cols-8 grid-rows-6 h-screen w-screen box-border bg-[url('/src/assets/images/home_Blur.png')] bg-cover"
-  >
+    class="h-screen w-screen box-border bg-[url('/src/assets/images/home_Blur.png')] bg-cover"
+    >
     <!-- navigation -->
-    <div class="grid col-span-8 row-span-1 grid-cols-2 mx-12 mt-12">
+    <div class="grid grid-cols-3 mx-12 pt-12 h-1/6">
+
       <RouterLink to="/worldSelection" class="">
         <font-awesome-icon
           icon="fa-solid fa-arrow-left"
-          size="3xl"
+          size="xl"
           color="white"
-          class="bg-greenLight rounded-full p-2 w-8 h-8 inline justify-self-start"
+          class="bg-greenLight rounded-full p-3 w-6 h-6 inline justify-self-start white hover:bg-greenDark"
         />
       </RouterLink>
+      <div class="text-center">
+        <h1>Spielmodus</h1>
+      </div>
       <Avatar
         :avatarPicture="avatarData.avatar"
         class="justify-self-end w-16"
       ></Avatar>
     </div>
 
-    <!-- white box -->
-    <div
-      class="grid content-center col-start-2 col-end-8 row-span-4 p-20 bg-white"
-    >
-      <div class="mb-20 inline-flex items-center">
-        <h2 class="ml-6 mb-0 inline">Neues Spiel in der Welt:</h2>
-        <h2 class="ml-6 mb-0 inline text-orange">
-          {{ props.mapName }}
-        </h2>
-      </div>
-      <div class="w-40 h-40 bg-greenDark"></div>
-      <p>Spielname</p>
-      <input id="gamename" v-model="name" placeholder="Spielname eingeben" />
-      <p>Spieleranzahl</p>
-      <input id="playerLimit" type="number" :min="1" v-model="playerLimit" />
-      <p>NPCs platzieren</p>
-      <label class="relative inline-block w-16 h-8">
-        <input
-          if="npcSwitch"
-          type="checkbox"
-          v-model="npcs"
-          class="opacity-0"
-        />
-        <span
-          class="slider round rounded-full bg-greenLight transition duration-300 absolute inset-0 checked:bg-greenDark"
-        ></span>
-      </label>
+    <div class="grid grid-cols-8 h-5/6">
 
-      <button
-        @click="checkValidation(name)"
-        class="rounded-full font-poppins bg-orange text-white p-3"
-      >
-        Erstellen
-      </button>
-      <div v-if="showError">
-        <ErrorWarning errorMsg="Der Name {{ name }} wurde schon vergeben.">
-        </ErrorWarning>
+      <!-- white box -->
+      <div
+        class="grid col-start-2 col-end-8 content-center p-20 bg-white h-5/6 mt-8"
+        >
+        <div class="grid content-center">
+          
+          <!-- Headline -->
+          <div class="grid content-center mb-5 mt-10 text-center">
+            <h2 class="">Neues Spiel in der <br/> Welt {{ props.mapName }} erstellen</h2>              
+          </div>
+
+          
+          <div class="grid grid-cols-[30%_70%]">
+            <!-- globe and label -->
+            <div class="gird content-center text-center">
+              <img src="@/assets/images/globe.png" alt="" class="mx-auto w-1/2 group-hover:border-orange group-hover:border-8 rounded-full"/>
+              <h2 class="mt-5 text-orange">{{ props.mapName }}</h2>
+            </div>
+
+            <div class="grid grid-cols-[40%_60%] grid-rows-3 items-center pb-10 pr-10">
+              
+                <label class="text-right mr-12 " >Spielname</label>
+                <input class="inline mr-10" id="gamename" v-model="name" placeholder="Spielname eingeben" />
+                <label class="text-right mr-12">Spieleranzahl</label>
+                <input class="inline w-1/3" id="playerLimit" type="number" :min="1" v-model="playerLimit" />
+                <label class="text-right mr-12">NPCs platzieren</label>
+                <label class="relative inline-flex items-center cursor-pointer">
+                 
+                  <input type="checkbox" v-model="npcs" value="" class="sr-only peer">
+                  <div class="w-11 h-6 bg-greenLight outline-none peer-focus:outline-none peer-focus:ring-transparent peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange"></div>
+
+                </label>
+                
+
+            </div>
+
+          </div>
+
+          <button
+            @click="checkValidation(name)"
+            class="buttonOrange w-1/6 mx-auto"
+          >
+            Erstellen
+          </button>
+
+          <div v-if="showError">
+            <ErrorWarning errorMsg="Der Name {{ name }} wurde schon vergeben.">
+            </ErrorWarning>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
 </template>
-<style scoped>
-/* The slider */
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
-}
 
-input:checked + .slider {
-  background-color: #2196f3;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196f3;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
-</style>

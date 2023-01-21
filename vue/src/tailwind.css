@@ -62,7 +62,7 @@
   }
 
   label {
-    @apply font-poppins text-lg;
+    @apply font-poppins text-base text-greenDark font-semibold;
   }
 
 }

@@ -152,7 +152,7 @@ function scrollingRight() {
                     class="radioButton"
                     @click="switchScene('edit')"
                   />
-                  <label for="editmode">Wird gerade editiert</label>
+                  <label class="font-light" for="editmode">Wird gerade editiert</label>
                 </div>
                 <div class="inline-flex items-center">
                   <input
@@ -164,7 +164,7 @@ function scrollingRight() {
                     class="radioButton"
                     @click="switchScene('all')"
                   />
-                  <label for="allmode">Alle</label>
+                  <label class="font-light" for="allmode">Alle</label>
                 </div>
               </fieldset>
             </div>
