@@ -24,6 +24,10 @@ dependencies {
 	implementation 'org.python:jython-slim:2.7.3'
 }
 
+tasks.named("bootJar") {
+	requiresUnpack '**/jython*.jar'
+}
+
 test {
 	useJUnitPlatform()
 	finalizedBy jacocoTestReport
