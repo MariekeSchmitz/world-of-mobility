@@ -5,6 +5,8 @@ module.exports = {
     colors: {
       greenOverlay: "#2e362e",
       greenDark: "#2F8265",
+      greendark: "#2F8265",
+
       greenLight: "#CDDDD7",
       orange: "#FFB72E",
       orangeLight: "#F6E8CD",

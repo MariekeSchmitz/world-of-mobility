@@ -10,7 +10,7 @@
   }
 
   h2 {
-    @apply text-2xl mb-8 text-greenDark font-fredoka uppercase;
+    @apply text-2xl mb-8 text-greenDark font-fredoka uppercase leading-9;
   }
 
   h3 {
@@ -27,7 +27,7 @@
 
   body,
   #app {
-    @apply h-full;
+    @apply h-fit;
   }
 
   input {
@@ -35,11 +35,19 @@
   }
 
   button:hover {
-    @apply bg-greenOverlay cursor-pointer;
+    @apply cursor-pointer;
   }
 
   .buttonStartPage {
     @apply text-white rounded-full w-full uppercase block font-fredoka mb-4 p-3 text-xl;
+  }
+
+  .buttonOrange {
+    @apply text-white rounded-full w-full uppercase block font-fredoka mb-4 p-3 text-xl bg-orange hover:bg-orangeLight;
+  }
+
+  .buttonGreen {
+    @apply text-white rounded-full w-full uppercase block font-fredoka mb-4 p-3 text-xl bg-greenDark hover:bg-greenLight;
   }
 
   .buttonEditor {
@@ -58,11 +66,19 @@
     @apply mb-8 mr-8 inline-block;
   }
 
-  .gameName {
+  .worldName {
     @apply font-semibold text-greenDark;
   }
 
   .bottomMenuListStyle {
     @apply list-none inline-block mx-4;
+  }
+
+  .gameName {
+    @apply font-semibold text-greenDark text-2xl;
+  }
+
+  label {
+    @apply font-poppins text-base text-greenDark font-semibold;
   }
 }

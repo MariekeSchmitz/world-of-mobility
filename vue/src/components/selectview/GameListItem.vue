@@ -9,7 +9,7 @@
 const props = withDefaults(
   defineProps<{
     gamename?: string;
-    worldname: string;
+    worldname?: string;
     people?: number;
     picture?: string;
   }>(),
@@ -29,14 +29,17 @@ const props = withDefaults(
     <div class="mt-4">
 
       <div v-if="props.people != 0" class="grid grid-cols-4 items-center">
-        <div class="w-8 h-8 rounded-full bg-orange col-span-1"></div>
+        <div class="w-8 h-8 mr-5 rounded-full bg-orange col-span-1"></div>
         <div class="col-span-3">
           <p class="gameName" v-if="props.gamename != ''">{{ props.gamename }} </p>
-          <p class="gameName">{{ props.worldname }}</p>
-          <p v-if="props.people > 1" >
+          <p :class="{
+            'font-semibold text-greenDark text-base': props.gamename != '',
+            'font-semibold text-greenDark text-xl': props.gamename == ''
+          }">{{ props.worldname }}</p>
+          <p v-if="props.people > 1" class="text-greenDark">
             {{ props.people }} Personen online
           </p>
-          <p v-else >
+          <p v-else class="text-greenDark">
             {{ props.people }} Person online
           </p>
         </div>
@@ -44,29 +47,14 @@ const props = withDefaults(
     
     
       <div v-else class="text-center">
-          <p class="gameName">{{ props.worldname }}</p>
+          <p class="gameName" v-if="props.gamename != ''">{{ props.gamename }} </p>
+          <p :class="{
+            'font-semibold text-greenDark text-base': props.gamename != '',
+            'font-semibold text-greenDark text-xl': props.gamename == ''
+          }">{{ props.worldname }}</p>
       </div>
     </div>
 
-
-
-    <!-- <div class="grid grid-cols-4 items-center">
-
-      
-
-
-      <div v-if="props.people != 0" class="w-8 h-8 rounded-full bg-orange col-span-1">
-      </div>
-
-      <div class="mt-2 col-span-3">
-        <p class="gameName" v-if="props.gamename != ''">{{ props.gamename }} </p>
-        <p class="gameName">{{ props.worldname }}</p>
-        <p v-if="props.people != 0">
-          {{ props.people }} Person online
-        </p>
-      </div>
-
-    </div> -->
   </div>
 </template>
 

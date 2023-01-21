@@ -8,8 +8,9 @@ import router from "@/router";
 import { useLogin } from "@/services/login/useLogin";
 import Avatar from "@/components/User/Avatar.vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-library.add(faArrowLeft);
+import { faPlus, faArrowLeft, faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+library.add(faPlus, faArrowLeft, faChevronRight, faChevronLeft);
+
 
 const { mapsOverview, getMaps } = useMapOverview();
 const { avatarData } = useLogin();
@@ -39,67 +40,73 @@ function scrollingRight() {
 
 <template>
   <div
-    class="grid grid-cols-8 grid-rows-6 h-screen w-screen box-border bg-[url('/src/assets/images/home_Blur.png')] bg-cover"
+    class="h-screen w-screen box-border bg-[url('/src/assets/images/home_Blur.png')] bg-cover"
   >
     <!-- navigation -->
-    <div class="grid col-span-8 row-span-1 grid-cols-2 mx-12 mt-12">
+    <div class="grid grid-cols-3 mx-12 pt-12 h-1/6">
       <RouterLink to="/gameintro" class="">
         <font-awesome-icon
           icon="fa-solid fa-arrow-left"
-          size="3xl"
+          size="xl"
           color="white"
-          class="bg-greenLight rounded-full p-2 w-8 h-8 inline justify-self-start"
+          class="bg-greenLight rounded-full p-3 w-6 h-6 inline justify-self-start white hover:bg-greenDark"
         />
       </RouterLink>
+      <div class="text-center">
+        <h1>Spielmodus</h1>
+      </div>
       <Avatar
         :avatarPicture="avatarData.avatar"
         class="justify-self-end w-16"
       ></Avatar>
     </div>
 
-    <!-- white box -->
-    <div
-      class="grid content-center col-start-2 col-end-8 row-span-4 p-20 bg-white"
-    >
-      <div class="mb-20 inline-flex items-center">
-        <h2 class="ml-6 mb-0 inline group-hover:text-orange">
-          Welt für neues Spiel wählen
-        </h2>
-      </div>
+    <div class="grid grid-cols-8 h-5/6">
 
-      <!-- world slider -->
-      <div class="grid grid-cols-7">
-        <button class="relative bottom-6" @click="scrollingLeft">
-          <font-awesome-icon
-            icon="fa-solid fa-plus"
-            size="xl"
-            color="white"
-            class="w-4 h-4 p-4 inline bg-greenDark rounded-full group-hover:bg-orange"
-          />
-        </button>
+      <div class="grid col-start-2 col-end-8 content-center p-20 bg-white h-5/6 mt-8">
+      <!-- white box -->
+        <div>
+          <div class="mb-12 text-center">
+            <h2 >
+              Welt für neues<br/>Spiel wählen
+            </h2>
+          </div>
 
-        <div
-          class="flex overflow-x-scroll scrollbar-hide col-span-5"
-          id="worldWrapper"
-        >
-          <div class="flex flex-nowrap">
-            <div class="gameListItem" v-for="map in mapsOverview.allMaps">
-              <GameListItem
-                @click="changeView(map.mapName)"
-                :worldname="map.mapName"
-              ></GameListItem>
+          <!-- world slider -->
+          <div class="grid grid-cols-7">
+            <button class="group relative bottom-6" @click="scrollingLeft">
+                <font-awesome-icon
+                  icon="fa-solid fa-chevron-left"
+                  size="2xl"
+                  color="white"
+                  class="w-5 h-5 p-3 inline rounded-full bg-greenLight hover:bg-greenDark"
+                />
+              </button>
+
+            <div
+              class="flex overflow-x-scroll scrollbar-hide col-span-5"
+              id="worldWrapper"
+            >
+              <div class="flex flex-nowrap">
+                <div class="gameListItem" v-for="map in mapsOverview.allMaps">
+                  <GameListItem
+                    @click="changeView(map.mapName)"
+                    :worldname="map.mapName"
+                  ></GameListItem>
+                </div>
+              </div>
             </div>
+
+            <button class="relative bottom-6" @click="scrollingRight">
+              <font-awesome-icon
+                icon="fa-solid fa-chevron-right"
+                size="s"
+                color="white"
+                class="w-5 h-5 p-3 inline rounded-full bg-greenLight hover:bg-greenDark"
+              />
+            </button>
           </div>
         </div>
-
-        <button class="relative bottom-6" @click="scrollingRight">
-          <font-awesome-icon
-            icon="fa-solid fa-plus"
-            size="xl"
-            color="white"
-            class="w-4 h-4 p-4 inline bg-greenDark rounded-full group-hover:bg-orange"
-          />
-        </button>
       </div>
     </div>
   </div>

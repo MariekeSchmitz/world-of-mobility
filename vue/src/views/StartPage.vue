@@ -75,23 +75,16 @@ watch(avatarData, (neu, alt) => {
         >
           Hallo {{ loginData.username }}!
         </p>
-
-        <div v-if="loginData.error !== ''">
-          <ErrorWarning :errorMsg="loginData.error"> </ErrorWarning>
-        </div>
+        
+        <ErrorWarning :errorMsg="loginData.error" v-if="loginData.error !== ''"> </ErrorWarning>
+        
       </div>
 
       <div class="w-1/2 mt-8">
-        <button
-          class="buttonStartPage bg-orange"
-          @click="loginAndRedirect('/gameintro')"
-        >
+        <button class="buttonOrange" @click="loginAndRedirect('/gameintro')">
           Spielmodus
         </button>
-        <button
-          class="buttonStartPage bg-greenDark"
-          @click="loginAndRedirect('/worldintro')"
-        >
+        <button class="buttonGreen" @click="loginAndRedirect('/worldintro')">
           Baumodus
         </button>
       </div>

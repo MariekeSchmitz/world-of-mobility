@@ -21,6 +21,12 @@ onMounted(async () => {
 });
 
 const instancelist = computed(() => {
+  // const gameSelection = document.getElementById("gameSelection");
+  // if ((instanceState.instancelist.length == 0) && (gameSelection != null)) {
+  //   gameSelection.style.display = "none";
+  // } else if (gameSelection != null) {
+  //   gameSelection.style.display = "grid";
+  // }
   return instanceState.instancelist;
 });
 
@@ -41,87 +47,93 @@ function scrollingRight() {
 
 <template>
   <div
-    class="grid grid-cols-8 grid-rows-6 h-screen w-screen box-border bg-[url('/src/assets/images/home_Blur.png')] bg-cover"
+    class="h-screen w-screen box-border bg-[url('/src/assets/images/home_Blur.png')] bg-cover"
   >
     <!-- navigation -->
-    <div class="grid col-span-8 row-span-1 grid-cols-2 mx-12 mt-12">
+    <div class="grid grid-cols-3 mx-12 pt-12 h-1/6">
       <RouterLink to="/login" class="">
         <font-awesome-icon
           icon="fa-solid fa-arrow-left"
-          size="3xl"
+          size="xl"
           color="white"
-          class="bg-greenLight rounded-full p-2 w-8 h-8 inline justify-self-start"
+          class="bg-greenLight rounded-full p-3 w-6 h-6 inline justify-self-start white hover:bg-greenDark"
         />
       </RouterLink>
+      <div class="text-center">
+        <h1>Spielmodus</h1>
+      </div>
       <Avatar
         :avatarPicture="avatarData.avatar"
         class="justify-self-end w-16"
       ></Avatar>
     </div>
 
-    <!-- white box -->
-    <div
-      class="grid content-center col-start-2 col-end-8 row-span-4 p-20 bg-white"
-    >
-      <!-- Create Game -->
-      <div class="grid group mb-20 justify-center">
-        <RouterLink to="/worldSelection">
-          <button class="inline-flex items-center">
-            <font-awesome-icon
-              icon="fa-solid fa-plus"
-              size="xl"
-              color="white"
-              class="w-8 h-8 p-4 inline bg-greenDark rounded-full group-hover:bg-orange"
-            />
-            <h2 class="ml-6 mb-0 inline group-hover:text-orange">
-              Neues Spiel erstellen
-            </h2>
-          </button>
-        </RouterLink>
-      </div>
+    <div class="grid grid-cols-8 h-5/6">
 
-      <!-- World Selection -->
-      <div>
-        <div class="mb-20 inline-flex items-center">
-          <h2 class="inline mb-0 mr-20">Spiel beitreten</h2>
+      <!-- white box -->
+      <div
+        class="grid col-start-2 col-end-8 content-center p-20 bg-white h-4/5 mt-8"
+        >
+        <!-- Create Game -->
+        <div class="grid group mb-12 mt-8 justify-center">
+          <RouterLink to="/worldSelection">
+            <button class="inline-flex items-center">
+              <font-awesome-icon
+                icon="fa-solid fa-plus"
+                size="xl"
+                color="white"
+                class="w-8 h-8 p-3 inline bg-greenDark rounded-full group-hover:bg-orange"
+              />
+              <h2 class="ml-6 mb-0 inline group-hover:text-orange">
+                Neues Spiel erstellen
+              </h2>
+            </button>
+          </RouterLink>
         </div>
 
-        <!-- world slider -->
-        <div class="grid grid-cols-7">
-          <button class="relative bottom-6" @click="scrollingLeft">
-            <font-awesome-icon
-              icon="fa-solid fa-plus"
-              size="xl"
-              color="white"
-              class="w-4 h-4 p-4 inline bg-greenDark rounded-full group-hover:bg-orange"
-            />
-          </button>
-
-          <div
-            class="flex overflow-x-scroll scrollbar-hide col-span-5"
-            id="worldWrapper"
-          >
-            <div class="flex flex-nowrap">
-              <div class="gameListItem" v-for="ele in instancelist">
-                <RouterLink :to="{ path: '/joingame/' + ele.id }">
-                  <GameListItem
-                    :gamename="ele.gamename"
-                    :worldname="ele.worldname"
-                    :people="ele.playeramount"
-                  ></GameListItem>
-                </RouterLink>
-              </div>
-            </div>
+        <!-- Game Selection -->
+        <div class="" id="gameSelection">
+          <div class="mb-10 inline-flex items-center">
+            <h2 class="inline mb-0 mr-20">Spiel beitreten</h2>
           </div>
 
-          <button class="relative bottom-6" @click="scrollingRight">
-            <font-awesome-icon
-              icon="fa-solid fa-plus"
-              size="xl"
-              color="white"
-              class="w-4 h-4 p-4 inline bg-greenDark rounded-full group-hover:bg-orange"
-            />
-          </button>
+          <!-- game slider -->
+          <div class="grid grid-cols-7">
+            <button class="relative bottom-6" @click="scrollingLeft">
+              <font-awesome-icon
+                  icon="fa-solid fa-chevron-left"
+                  size="2xl"
+                  color="white"
+                  class="w-5 h-5 p-3 inline rounded-full bg-greenLight hover:bg-greenDark"
+                />
+            </button>
+
+            <div
+              class="flex overflow-x-scroll scrollbar-hide col-span-5"
+              id="worldWrapper"
+            >
+              <div class="flex flex-nowrap">
+                <div class="gameListItem" v-for="ele in instancelist">
+                  <RouterLink :to="{ path: '/joingame/' + ele.id }">
+                    <GameListItem
+                      :gamename="ele.gamename"
+                      :worldname="ele.worldname"
+                      :people="ele.playeramount"
+                    ></GameListItem>
+                  </RouterLink>
+                </div>
+              </div>
+            </div>
+
+            <button class="relative bottom-6" @click="scrollingRight">
+              <font-awesome-icon
+                  icon="fa-solid fa-chevron-right"
+                  size="s"
+                  color="white"
+                  class="w-5 h-5 p-3 inline rounded-full bg-greenLight hover:bg-greenDark"
+                />
+            </button>
+          </div>
         </div>
       </div>
     </div>
