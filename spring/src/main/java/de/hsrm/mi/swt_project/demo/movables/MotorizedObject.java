@@ -86,11 +86,6 @@ public class MotorizedObject extends MoveableObject {
         }
     }
 
-    public void move(Tile t) {
-        RailingBehaviour rb = new RailingBehaviour();
-        rb.railCoordinates(this, t, null);               
-    }
-
     /**
      * Turns motorized object to the given direction.
      * Inverts the turn if the object is moving backwards.

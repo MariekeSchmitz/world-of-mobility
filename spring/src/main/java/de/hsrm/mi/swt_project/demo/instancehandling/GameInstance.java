@@ -12,6 +12,7 @@ import de.hsrm.mi.swt_project.demo.controls.GameControl;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.movables.MotorizedObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
+import de.hsrm.mi.swt_project.demo.railingsystem.RailingBehaviour;
 import de.hsrm.mi.swt_project.demo.scripting.JythonFactory;
 import de.hsrm.mi.swt_project.demo.scripting.ScriptContext;
 import de.hsrm.mi.swt_project.demo.scripting.ScriptContextCache;
@@ -141,11 +142,19 @@ public class GameInstance extends Instance {
             
             if (/*movementValidator.validate() &&*/ collisionValidator.validate()) {
                 if(/*key.contains("NPC")&&*/moveableObject instanceof MotorizedObject){
-                    MotorizedObject m = (MotorizedObject)moveableObject;
-                    m.move(this.map.getTiles()[(int)moveableObject.getyPos()][(int)moveableObject.getxPos()]);
-                } else{
-                    moveableObject.move();
+
+                    int xPos = (int) moveableObject.getxPos();
+                    int yPos = (int) moveableObject.getyPos();
+
+                    Tile[][] allTiles = this.map.getTiles();
+                    Tile t = allTiles[yPos][xPos];
+
+                    RailingBehaviour rb = new RailingBehaviour();
+                    rb.railCoordinates(moveableObject, t, null);
                 }
+                    
+                moveableObject.move();
+
             } else {
                 moveableObject.setCurrentVelocity(0);
             }
