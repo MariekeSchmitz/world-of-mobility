@@ -12,7 +12,7 @@ import { useSpawnPoint } from "@/components/spawnpoint/useSpawnPoint";
 const { spawnState, setMoveableObject, setInstanceId } = useSpawnPoint();
 const { joinGame } = useGame();
 const { userList, getUserList } = useUser();
-const { loginData } = useLogin();
+const { loginData, avatarData } = useLogin();
 
 const joinSuccessfull = ref(false);
 const showError = ref(false);
@@ -55,12 +55,40 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="wrapper">
-    <RouterLink to="/gameintro">
-      <button>
-        <img src="@/buttons/editor/arrow-left.png" alt="" />
-      </button>
-    </RouterLink>
+  <div class="h-screen w-screen box-border bg-[url('/src/assets/images/home_Blur.png')] bg-cover"
+>
+
+    <!-- navigation -->
+    <div class="grid grid-cols-3 mx-12 pt-12 h-1/6">
+      <RouterLink to="/gameintro" class="">
+        <font-awesome-icon
+          icon="fa-solid fa-arrow-left"
+          size="xl"
+          color="white"
+          class="bg-greenLight rounded-full p-3 w-6 h-6 inline justify-self-start white hover:bg-greenDark"
+        />
+      </RouterLink>
+      <div class="text-center">
+        <h1>Baumodus</h1>
+      </div>
+      <Avatar
+        :avatarPicture="avatarData.avatar"
+        class="justify-self-end w-16"
+      ></Avatar>
+    </div>
+
+
+    <div class="grid grid-cols-8 h-5/6">
+
+      <!-- white box -->
+      <div
+        class="grid col-start-2 col-end-8 content-center p-20 bg-white h-5/6 mt-8"
+      >
+      </div>
+
+    </div>
+
+    
     <div id="personal-config-container">
       <div id="car-select">
         <h1>Fortbewegungsmittel wählen</h1>
@@ -82,7 +110,7 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped>
+<!-- <style scoped>
 #personal-config-container {
   display: flex;
   box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.47);
@@ -123,4 +151,4 @@ onMounted(() => {
   overflow: auto;
   height: 20vh;
 }
-</style>
+</style> -->
