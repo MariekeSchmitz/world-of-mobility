@@ -21,12 +21,12 @@ onMounted(async () => {
 });
 
 const instancelist = computed(() => {
-  // const gameSelection = document.getElementById("gameSelection");
-  // if ((instanceState.instancelist.length == 0) && (gameSelection != null)) {
-  //   gameSelection.style.display = "none";
-  // } else if (gameSelection != null) {
-  //   gameSelection.style.display = "grid";
-  // }
+  const gameSelection = document.getElementById("gameSelection");
+  if (instanceState.instancelist.length == 0 && gameSelection != null) {
+    gameSelection.style.display = "none";
+  } else if (gameSelection != null) {
+    gameSelection.style.display = "grid";
+  }
   return instanceState.instancelist;
 });
 
@@ -69,11 +69,10 @@ function scrollingRight() {
     </div>
 
     <div class="grid grid-cols-8 h-5/6">
-
       <!-- white box -->
       <div
         class="grid col-start-2 col-end-8 content-center p-20 bg-white h-4/5 mt-8"
-        >
+      >
         <!-- Create Game -->
         <div class="grid group mb-12 mt-8 justify-center">
           <RouterLink to="/worldSelection">
@@ -101,11 +100,11 @@ function scrollingRight() {
           <div class="grid grid-cols-7">
             <button class="relative bottom-6" @click="scrollingLeft">
               <font-awesome-icon
-                  icon="fa-solid fa-chevron-left"
-                  size="2xl"
-                  color="white"
-                  class="w-5 h-5 p-3 inline rounded-full bg-greenLight hover:bg-greenDark"
-                />
+                icon="fa-solid fa-chevron-left"
+                size="2xl"
+                color="white"
+                class="w-5 h-5 p-3 inline rounded-full bg-greenLight hover:bg-greenDark"
+              />
             </button>
 
             <div
@@ -127,11 +126,11 @@ function scrollingRight() {
 
             <button class="relative bottom-6" @click="scrollingRight">
               <font-awesome-icon
-                  icon="fa-solid fa-chevron-right"
-                  size="s"
-                  color="white"
-                  class="w-5 h-5 p-3 inline rounded-full bg-greenLight hover:bg-greenDark"
-                />
+                icon="fa-solid fa-chevron-right"
+                size="s"
+                color="white"
+                class="w-5 h-5 p-3 inline rounded-full bg-greenLight hover:bg-greenDark"
+              />
             </button>
           </div>
         </div>
