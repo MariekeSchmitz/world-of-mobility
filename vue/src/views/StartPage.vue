@@ -75,10 +75,9 @@ watch(avatarData, (neu, alt) => {
         >
           Hallo {{ loginData.username }}!
         </p>
-
-        <div v-if="loginData.error !== ''">
-          <ErrorWarning :errorMsg="loginData.error"> </ErrorWarning>
-        </div>
+        
+        <ErrorWarning :errorMsg="loginData.error" v-if="loginData.error !== ''"> </ErrorWarning>
+        
       </div>
 
       <div class="w-1/2 mt-8">

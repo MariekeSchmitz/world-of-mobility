@@ -27,7 +27,7 @@
 
   body,
   #app {
-    @apply h-full;
+    @apply h-fit;
   }
 
   input {
