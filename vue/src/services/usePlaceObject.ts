@@ -1,3 +1,7 @@
+
+import { useEditorError } from "./editor/useEditorError";
+
+
 export function usePlaceObject(): any {
   interface IPlaceObject {
     type: string;
@@ -5,6 +9,8 @@ export function usePlaceObject(): any {
     xPos: number;
     yPos: number;
   }
+
+  const {setEditorError} = useEditorError()
 
   /**
    * Check in backend if object can be placed on tile
@@ -47,12 +53,22 @@ export function usePlaceObject(): any {
 
       clearTimeout(id);
 
-      if (!response.ok) {
-        return false;
+      const json = await response.json()
+
+      if(!json.validationSuccess){
+        setEditorError("Das Objekt darf hier nicht platziert werden")
+
+      } else{
+        setEditorError("")
       }
+
+      if (!response.ok) {
+        setEditorError(response.statusText)
+        return false;
+      } 
       return true;
     } catch (reason) {
-      console.log(`ERROR: Sending Command failed: ${reason}`);
+      setEditorError(`ERROR: Sending Command failed: ` + reason)
       return false;
     }
   }

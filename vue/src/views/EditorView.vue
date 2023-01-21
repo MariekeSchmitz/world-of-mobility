@@ -24,6 +24,7 @@
   import { useLogin } from "@/services/login/useLogin";
 import ScriptField from "@/components/editor/ScriptField.vue";
   import ServerChat from "@/components/ServerChat.vue";
+import { useEditorError } from "@/services/editor/useEditorError";
 
  
   const props = defineProps<{
@@ -55,12 +56,13 @@ import ScriptField from "@/components/editor/ScriptField.vue";
     var mouse = new THREE.Vector2();
 
     const {saveMap} = useMap();
+    const {errorMessage, setEditorError} = useEditorError()
 
     let npcx= ref(0);
     let npcy = ref(0);
+
     
     const npcNeedsScript = ref(false)
-
 
 
   function setNpcValues(x:number,y:number) {
@@ -81,8 +83,8 @@ import ScriptField from "@/components/editor/ScriptField.vue";
     <p>Farmerama Map</p>
     <button @click="saveMap('testMap2', editorID)">save</button>
   </div>
-  <div id="exitButton">
-    <button class="roundButton">
+  <div id="exitButton" >
+    <button class="roundButton" @click="setEditorError('')">
       <RouterLink to="/worldintro">
         <img src="@/buttons/editor/close.png" />
       </RouterLink>
@@ -92,6 +94,7 @@ import ScriptField from "@/components/editor/ScriptField.vue";
   <div class="buttonMenuRight">
     <button><img src="@/buttons/editor/plus.png" /><br />Starte Spiel</button>
     <button><img src="@/buttons/editor/plus.png" /><br />Welt testen</button>
+    <p v-if="errorMessage">{{ errorMessage }}</p>
   </div>
 
   <LeftMenu />
@@ -99,13 +102,13 @@ import ScriptField from "@/components/editor/ScriptField.vue";
   <UserListMenu :instanceID="editorID"></UserListMenu>
 
   <ScriptField
-    v-if="npcNeedsScript"
+    v-if="npcNeedsScript && !errorMessage"
     :id="editorID"
     :x="npcx"
     :y="npcy"
     @script-window-closed="setNpcScriptView(false)"
   ></ScriptField>
-  <BottomMenu v-if="!npcNeedsScript"></BottomMenu>
+  <BottomMenu v-if="!npcNeedsScript || errorMessage"></BottomMenu>
 
   <!--
   sends msg on every instance, should only be in one instance for all; first player gets all msg shown as many times as there are players
@@ -136,6 +139,9 @@ import ScriptField from "@/components/editor/ScriptField.vue";
       ></EditorMap>
     </Scene>
   </Renderer>
+
+  
+
 </template>
 
 <style>
