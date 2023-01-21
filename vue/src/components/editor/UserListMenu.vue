@@ -32,14 +32,14 @@ onMounted(() => {
 function scrollingLeft() {
   const boxwrapper = document.getElementById("user-wrapper");
   if (boxwrapper != null) {
-    boxwrapper.scrollLeft -= 200;
+    boxwrapper.scrollLeft -= 50;
   }
 }
 
 function scrollingRight() {
   const boxwrapper = document.getElementById("user-wrapper");
   if (boxwrapper != null) {
-    boxwrapper.scrollLeft += 200;
+    boxwrapper.scrollLeft += 50;
   }
 }
 
@@ -60,8 +60,11 @@ function toggle() {
 </script>
 
 <template>
-  <div id="userListMenu" class="menuOff">
-    <div id="itemList">
+  <div
+    id="userListMenu"
+    class="grid grid-cols-[90%_10%] w-1/4 h-[10%] fixed top-0 right-[8%] p-3"
+  >
+    <div class="grid grid-cols-[10%_80%_10%] my-auto">
       <button id="scrollLeft" @mousedown="scrollingLeft">
         <font-awesome-icon
           icon="fa-solid fa-angle-left"
@@ -71,11 +74,9 @@ function toggle() {
         />
       </button>
 
-      <ul id="user-wrapper">
-        <li v-for="user in userList.users">
-          <button class="itemButton" v-if="user != loginData.username">
-            <User :name="user"></User>
-          </button>
+      <ul id="user-wrapper" class="h-full whitespace-nowrap overflow-hidden">
+        <li v-for="user in userList.users" class="bottomMenuListStyle">
+          <User :name="user" v-if="user != loginData.username"></User>
         </li>
       </ul>
 
@@ -98,7 +99,11 @@ function toggle() {
       />
     </button>
   </div>
-  <button id="showElementUser" @click="toggle">
+  <button
+    id="showElementUser"
+    class="hidden fixed top-2 right-[8.5%]"
+    @click="toggle"
+  >
     <font-awesome-icon
       icon="fa-solid fa-angle-down"
       size="3xl"
@@ -107,41 +112,3 @@ function toggle() {
     />
   </button>
 </template>
-
-<style scoped>
-#userListMenu {
-  display: grid;
-  grid-template-columns: 90% 10%;
-  position: fixed;
-  width: 20%;
-  height: 10%;
-  background-color: rgb(221, 221, 221);
-  padding: 10px;
-  top: 0px;
-  right: 5%;
-}
-
-#showElementUser {
-  display: none;
-  position: fixed;
-  width: 40px;
-  height: 40px;
-  top: 2%;
-  left: 92%;
-}
-
-ul {
-  height: 100%;
-  width: 85%;
-  overflow-y: hidden;
-  overflow-x: hidden;
-  white-space: nowrap;
-}
-
-li {
-  list-style-type: none;
-  display: inline-block;
-  background-color: lightblue;
-  margin: 0 10px;
-}
-</style>

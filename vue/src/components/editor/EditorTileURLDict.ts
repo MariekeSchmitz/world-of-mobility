@@ -14,10 +14,10 @@ import SHEEP_URL from "@/assets/objects/SHEEP.png";
 import TRAFFIC_LIGHT_URL from "@/assets/objects/TRAFFIC_LIGHT.png";
 import TREE_URL from "@/assets/objects/TREE.png";
 import PEDESTRIAN_CROSSING_URL from "@/textures/editor/PEDESTRIAN_CROSSING.jpg";
-import CAR_URL from "@/textures/objects/CAR.png";
-import TRUCK_URL from "@/textures/objects/TRUCK.png";
-import TRACTOR_URL from "@/textures/objects/TRACTOR.png";
-import TUPEL_URL from "@/textures/objects/TUPEL.png";
+import CAR_URL from "@/assets/objects/CAR.png";
+import TRUCK_URL from "@/assets/objects/TRUCK.png";
+import TRACTOR_URL from "@/assets/objects/TRACTOR.png";
+import TUPEL_URL from "@/assets/objects/TUPEL.png";
 
 export const editorTileURLs: { [id: string]: string } = {
   GRASSTILE: GRASSTILE_URL,

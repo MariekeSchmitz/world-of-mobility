@@ -61,4 +61,8 @@
   .gameName {
     @apply font-semibold text-greenDark;
   }
+
+  .bottomMenuListStyle {
+    @apply list-none inline-block mx-4;
+  }
 }

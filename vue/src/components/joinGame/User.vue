@@ -1,35 +1,12 @@
 <script setup lang="ts">
-
-const props = 
-  defineProps<{
-    name: String;
-  }>();
-
+const props = defineProps<{
+  name: String;
+}>();
 </script>
 
 <template>
-  <div class="wrapper">
-    <div class="flex-box">
-        <div class="square"></div>
-        <p> {{name}} </p>
-    </div>
+  <div class="flex flex-row">
+    <div class="w-10 h-10 bg-greenOverlay"></div>
+    <p class="pl-1 self-center">{{ name }}</p>
   </div>
 </template>
-
-<style scoped>
-.square {
-    width: 2.5rem;
-    height: 2.5rem;
-    background-color: gray;
-}
-.wrapper {
-  display: grid;
-  place-items: center;
-}
-
-.flex-box {
-	display:flex; 
-	justify-content: space-around;
-}
-
-</style>

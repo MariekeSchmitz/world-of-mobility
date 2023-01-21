@@ -27,9 +27,10 @@ import ScriptField from "@/components/editor/ScriptField.vue";
   import { library } from "@fortawesome/fontawesome-svg-core";
   import {
     faPlus,
-    faXmark
+    faXmark,
+    faFileArrowDown
   } from "@fortawesome/free-solid-svg-icons";
-  library.add(faXmark, faPlus);
+  library.add(faXmark, faPlus, faFileArrowDown);
 
   const props = defineProps<{
     editorID: string;
@@ -82,24 +83,21 @@ import ScriptField from "@/components/editor/ScriptField.vue";
 </script>
 
 <template>
-  <div class="mapTitle">
-    <p>Farmerama Map</p>
-    <button @click="saveMap('testMap2', editorID)">save</button>
+  <div class="fixed left-1/2 -translate-y-1/2 -translate-x-1/2 top-12">
+    <h2>Farmerama Map</h2>
   </div>
   <div id="exitButton">
-    <button class="roundButton">
-      <RouterLink to="/worldintro">
-        <font-awesome-icon
-          icon="fa-solid fa-xmark"
-          size="3xl"
-          color="#2F8265"
-          class="p-2 w-8 h-8"
-        />
-      </RouterLink>
-    </button>
+    <RouterLink to="/worldintro" class="fixed top-4 left-4">
+      <font-awesome-icon
+        icon="fa-solid fa-xmark"
+        size="3xl"
+        color="#2F8265"
+        class="p-2 w-8 h-8"
+      />
+    </RouterLink>
   </div>
 
-  <div class="buttonMenuRight">
+  <div class="grid grid-rows-2 fixed top-1/4 right-6 gap-16 font-poppins">
     <button>
       <font-awesome-icon
         icon="fa-solid fa-plus"
@@ -108,7 +106,14 @@ import ScriptField from "@/components/editor/ScriptField.vue";
         class="w-5 h-5"
       /><br />Starte Spiel
     </button>
-    <button><img src="@/buttons/editor/plus.png" /><br />Welt testen</button>
+    <button @click="saveMap('testMap2', editorID)">
+      <font-awesome-icon
+        icon="fa-solid fa-file-arrow-down"
+        size="3xl"
+        color="#2F8265"
+        class="w-5 h-5"
+      /><br />speichern
+    </button>
   </div>
 
   <UserListMenu :instanceID="editorID"></UserListMenu>
@@ -152,56 +157,3 @@ import ScriptField from "@/components/editor/ScriptField.vue";
     </Scene>
   </Renderer>
 </template>
-
-<style>
-button > img {
-  width: 15px;
-  height: 15px;
-}
-
-.mapTitle {
-  background-color: rgb(221, 221, 221);
-  position: fixed;
-  left: 50%;
-  top: -20px;
-  height: auto;
-  transform: translate(-50%, 0);
-  padding: 0px 20px;
-}
-
-#exitButton {
-  position: fixed;
-  left: 10px;
-  top: 20px;
-  width: 30px;
-  aspect-ratio: 1/1;
-  border: none;
-  border-radius: 100%;
-}
-
-.mapTitle > p {
-  font-size: 24pt;
-}
-.roundButton {
-  width: 60%;
-  aspect-ratio: 1/1;
-  border: none;
-  border-radius: 100%;
-}
-
-.buttonMenuRight {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(2, 1fr);
-  position: fixed;
-  bottom: 60%;
-  right: -10px;
-  width: 100px;
-  height: 20%;
-  row-gap: 10%;
-}
-.buttonMenuRight > button {
-  margin: 10px;
-  padding: 20px;
-}
-</style>

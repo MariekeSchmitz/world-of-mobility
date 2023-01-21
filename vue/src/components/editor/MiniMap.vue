@@ -25,8 +25,11 @@ function toggle() {
 </script>
 
 <template>
-  <div id="minimap">
-    <div class="minimapButtons">
+  <div
+    id="minimap"
+    class="fixed bottom-3 right-3 h-1/5 aspect-square bg-orange"
+  >
+    <div class="fixed bottom-[22%] right-3">
       <button>
         <font-awesome-icon
           icon="fa-solid fa-plus"
@@ -58,7 +61,7 @@ function toggle() {
     </p>
   </div>
 
-  <button id="showMap" @click="toggle">
+  <button id="showMap" class="hidden fixed bottom-1 right-3" @click="toggle">
     <font-awesome-icon
       icon="fa-solid fa-angle-up"
       size="3xl"
@@ -67,27 +70,3 @@ function toggle() {
     />
   </button>
 </template>
-
-<style scoped>
-#minimap {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  height: 20%;
-  aspect-ratio: 1/1;
-  background-color: wheat;
-}
-
-.minimapButtons {
-  position: fixed;
-  bottom: 22%;
-  right: 10px;
-}
-
-#showMap {
-  display: none;
-  position: fixed;
-  bottom: 2%;
-  right: 10px;
-}
-</style>
