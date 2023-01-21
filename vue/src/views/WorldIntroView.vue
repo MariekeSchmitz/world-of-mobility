@@ -54,7 +54,6 @@ const instancelist = computed(() => {
 
 const showAll = ref(true);
 
-const scrollingValue = ref(0)
 
 function switchScene(mode: string) {
   if (mode == "all") {
@@ -80,7 +79,6 @@ function scrollingLeft() {
   const boxwrapper = document.getElementById("worldWrapper");
   if (boxwrapper != null) {
     boxwrapper.scrollLeft -= 50;
-    scrollingValue.value -= 50;
   }
 
 }
@@ -89,8 +87,6 @@ function scrollingRight() {
   const boxwrapper = document.getElementById("worldWrapper");
   if (boxwrapper != null) {
     boxwrapper.scrollLeft += 50;
-    scrollingValue.value += 50;
-
   }
 }
 </script>
@@ -141,9 +137,7 @@ function scrollingRight() {
               </button>
             </RouterLink>
           </div>
-  
-          <!-- <hr class="mb-12 border-2 border-greenDark bg-greenDark" /> -->
-  
+    
           <!-- World Selection -->
           <div>
             <div class="mb-16 inline-flex items-center">
@@ -178,7 +172,6 @@ function scrollingRight() {
             <!-- world slider -->
             <div class="grid grid-cols-7">
               <button class="group relative bottom-6" @click="scrollingLeft">
-
                 <font-awesome-icon
                   icon="fa-solid fa-chevron-left"
                   size="2xl"
@@ -213,7 +206,10 @@ function scrollingRight() {
                       class="gameListItem"
                     ></GameListItem>
                   </div>
-                </div>
+                    <GameListItem
+                      class="gameListItem invisible"
+                    ></GameListItem>
+                  </div>
               </div>
   
               <button class="relative bottom-6" @click="scrollingRight">

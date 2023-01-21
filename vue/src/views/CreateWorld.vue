@@ -31,51 +31,57 @@ async function createWorldAndForwardToEditor(name: string) {
 
 <template>
   <div
-    class="grid grid-cols-8 grid-rows-6 h-screen w-screen box-border bg-[url('/src/assets/images/home_Blur.png')] bg-cover"
+    class="h-screen w-screen box-border bg-[url('/src/assets/images/home_Blur.png')] bg-cover"
   >
     <!-- navigation -->
-    <div class="grid col-span-8 row-span-1 grid-cols-3 mx-12 mt-12">
-      <RouterLink to="/worldintro" class="col-span-1">
+    <div class="grid grid-cols-3 mx-12 pt-12 h-1/6">
+      <RouterLink to="/login" class="">
         <font-awesome-icon
           icon="fa-solid fa-arrow-left"
-          size="3xl"
+          size="xl"
           color="white"
-          class="bg-greenLight rounded-full p-2 w-8 h-8"
-          @click="resetError"
+          class="bg-greenLight rounded-full p-3 w-6 h-6 inline justify-self-start white hover:bg-greenDark"
         />
       </RouterLink>
-      <h1 class="col-span-1 place-self-center">Baumodus</h1>
-
+      <div class="text-center">
+        <h1>Baumodus</h1>
+      </div>
       <Avatar
         :avatarPicture="avatarData.avatar"
-        class="w-16 justify-self-end"
+        class="justify-self-end w-16"
       ></Avatar>
     </div>
-    <!-- white box -->
 
-    <div class="grid col-start-2 col-end-8 row-span-4 p-20 bg-white gap-8">
-      <h2 class="place-self-center leading-9">
-        Neue Welt <br />
-        erstellen
-      </h2>
+    <div class="grid grid-cols-8 h-5/6">
 
-      <!-- input mit Beschriftung-->
-      <div class="flex gap-20 place-self-center">
-        <label for="name" class="text-greenDark text-xl font-bold text-left"
-          >Weltname</label
-        >
-        <input type="text" id="name" v-model="name" />
+      <!-- white box -->
+
+      <div class="grid col-start-2 col-end-8 p-20 bg-white h-5/6 mt-8 content-center">
+
+        <div class="grid content-center text-center">
+          <h2 class="place-self-center mb-14">
+            Neue Welt <br/>erstellen
+          </h2>
+
+          <!-- world name input -->
+          <div class="flex gap-20 place-self-center">
+            <label for="name" class="text-greenDark font-bold text-left"
+              >Weltname</label
+            >
+            <input type="text" id="name" v-model="name" />
+          </div>
+
+          <button
+            @click="createWorldAndForwardToEditor(name)"
+            class="buttonOrange w-3/12 p-4 place-self-center mt-16"
+          >
+            Erstellen
+          </button>
+          <ErrorWarning :errorMsg="worldCreateData.error" v-if="worldCreateData.error"> </ErrorWarning>
+        </div>
+
       </div>
 
-      <button
-        @click="createWorldAndForwardToEditor(name)"
-        class="buttonOrange w-3/12 p-4 place-self-center"
-      >
-        Erstellen
-      </button>
-      <div v-if="worldCreateData.error">
-        <ErrorWarning :errorMsg="worldCreateData.error"> </ErrorWarning>
-      </div>
     </div>
   </div>
 </template>

@@ -53,7 +53,16 @@
     @apply mb-8 mr-8 inline-block;
   }
 
-  .gameName {
+  .worldName {
     @apply font-semibold text-greenDark;
   }
+
+  .gameName {
+    @apply font-semibold text-greenDark text-2xl;
+  }
+
+  label {
+    @apply font-poppins text-lg;
+  }
+
 }
