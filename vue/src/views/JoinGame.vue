@@ -9,6 +9,9 @@ import { useLogin } from "@/services/login/useLogin";
 import router from "@/router";
 import SpawnPoint from "@/components/spawnpoint/SpawnPoint.vue";
 import { useSpawnPoint } from "@/components/spawnpoint/useSpawnPoint";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faPlus, faArrowLeft, faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+library.add(faPlus, faArrowLeft, faChevronRight, faChevronLeft);
 const { spawnState, setMoveableObject, setInstanceId } = useSpawnPoint();
 const { joinGame } = useGame();
 const { userList, getUserList } = useUser();
@@ -23,6 +26,8 @@ const props = defineProps<{
 
 const instanceID = Number(props.instanceID);
 let moveableType = "";
+
+const spawnPointSet = ref(false)
 
 async function join() {
   if (
@@ -46,12 +51,19 @@ async function join() {
 function updateMoveable(type: string) {
   moveableType = type;
   setMoveableObject(type);
+  spawnPointSet.value = false
+
 }
 
 onMounted(() => {
   getUserList(instanceID);
   setInstanceId(instanceID);
 });
+
+function toggleButton() {
+  spawnPointSet.value = true
+}
+
 </script>
 
 <template>
@@ -69,7 +81,7 @@ onMounted(() => {
         />
       </RouterLink>
       <div class="text-center">
-        <h1>Baumodus</h1>
+        <h1>Spielmodus</h1>
       </div>
       <Avatar
         :avatarPicture="avatarData.avatar"
@@ -78,40 +90,55 @@ onMounted(() => {
     </div>
 
 
-    <div class="grid grid-cols-8 h-5/6">
+    <div :class="{
+      'grid grid-cols-[1fr,10fr,1fr] h-5/6' : userList.users.length != 0,
+      'grid grid-cols-8 h-5/6' : userList.users.length == 0,
+      }">
 
       <!-- white box -->
       <div
-        class="grid col-start-2 col-end-8 content-center p-20 bg-white h-5/6 mt-8"
-      >
+        :class="{
+          'grid col-start-2 grid-cols-[75%_25%] content-center p-20 bg-white h-5/6 mt-8': userList.users.length != 0,
+          'grid col-start-2 col-end-8 content-center p-20 bg-white h-5/6 mt-8': userList.users.length == 0,
+          }"
+        >
 
         <div grid="grid content-center">
           <!-- Settings -->
-          <div class="grid grid-cols-2 ">
+          <div class="grid grid-cols-2 mt-10">
 
             <!-- Choose Moveable -->
             <div class="grid text-center content-start ">
               <div class="grid content-start">
                 <h2>Fortbewegungsmittel<br/>wählen</h2>
               </div>
-              <CarSelection @change-moveable="updateMoveable" class="h-2/3"></CarSelection>
+              <CarSelection @change-moveable="updateMoveable" class="grid items-center h-2/3"></CarSelection>
             </div>
 
             <!-- Choose Spawnpoint -->
-            <div class="grid text-center items-start">
-              
-              <h2>Spawnpoint wählen</h2>
-              <SpawnPoint :instance-id="instanceID" class="h-1/2" />
+            <div class="text-center">
+              <h2 class="">Startpunkt<br v-if="userList.users.length != 0"/>wählen</h2>
+                <SpawnPoint @set-spawn-point="toggleButton" :instance-id="instanceID" class=""/>
             </div>
           </div>
 
-          <button class="buttonOrange w-1/6 mx-auto" @click="join()" >Beitreten</button>
-
+          <button :class="{
+            'buttonOrange w-3/12 mx-auto mt-8':spawnPointSet,
+            'buttonOrange w-3/12 mx-auto bg-black bg-opacity-10 hover:bg-black hover:bg-opacity-10 mt-8': !spawnPointSet
+          }" @click="join()" >Spiel starten</button>
         </div>
 
+        <div v-if="userList.users.length != 0" class=" grid bg-greenLight bg-opacity-60 p-11 h-96">
+          <h3 class="text-greenDark text-center h-3/12">Beigetretene <br/>Spieler</h3>
+          <div class="overflow-y-scroll h-9/12">
+            <div >
+              <div v-for="user in ['user1', 'user2', 'user3', 'user1', 'user2', 'user3', 'user1', 'user2', 'user3', 'user1', 'user2', 'user3', 'user1']">
+                <User :name="user"></User>
+              </div>
 
-
-
+            </div>
+          </div> 
+        </div>
       </div>
 
     </div>
@@ -128,12 +155,7 @@ onMounted(() => {
         <SpawnPoint :instance-id="instanceID" />
       </div>
     
-    <h2>Beigetretene Spieler</h2>
-    <div class="userlist">
-      <div v-for="user in userList.users">
-        <User :name="user"></User>
-      </div>
-    </div>
+    
     <button @click="join()">Beitreten</button>
     <p v-if="showError">Spielerlimit ausgeschöpft.</p> -->
   </div>

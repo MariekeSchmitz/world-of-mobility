@@ -20,7 +20,7 @@ interface ISpawnPoint {
 /**
  * this changes the size of the displayed minimap
  */
-const SCALING_FACTOR = 5;
+const SCALING_FACTOR = 7;
 
 const windowState: IState = reactive({
     boxSizing: '0px',

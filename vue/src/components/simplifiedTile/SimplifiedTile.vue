@@ -1,25 +1,12 @@
-<template>
-  <div>
-    <div
-      id="simplifiedContainer"
-      :class="{ selected: isSelected }"
-      @click="setSpawnPoint(props.xIndex, props.yIndex)"
-    ></div>
-    <div
-      :class="[{ rotateSelected: isSelected }, { marker: isSelected }]"
-    ></div>
-    <div
-      id="simplified-tile"
-      :class="[tileType, orientation, { selected: isSelected }]"
-    ></div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
 import { useSpawnPoint } from "@/components/spawnpoint/useSpawnPoint";
 
 const { miniMapScalingState, setSpawnPoint, spawnState } = useSpawnPoint();
+
+const emit = defineEmits<{
+  (e: "setSpawnPoint"): void;
+}>();
 
 const props = withDefaults(
   defineProps<{
@@ -36,6 +23,11 @@ const props = withDefaults(
   }
 );
 
+function setSpawnPointEvent() {
+  setSpawnPoint(props.xIndex, props.yIndex)
+  emit("setSpawnPoint");
+}
+
 const isSelected = computed(() => {
   return (
     spawnState.tileNumber ==
@@ -43,6 +35,23 @@ const isSelected = computed(() => {
   );
 });
 </script>
+
+<template>
+  <div>
+    <div
+      id="simplifiedContainer"
+      :class="{ selected: isSelected }"
+      @click="setSpawnPointEvent()"
+    ></div>
+    <div
+      :class="[{ rotateSelected: isSelected }, { marker: isSelected }]"
+    ></div>
+    <div
+      id="simplified-tile"
+      :class="[tileType, orientation, { selected: isSelected }]"
+    ></div>
+  </div>
+</template>
 
 <style scoped>
 #simplifiedContainer {

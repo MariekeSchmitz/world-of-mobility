@@ -62,7 +62,7 @@ function nextMoveable() {
 </script>
 
 <template>
-  <div class="grid grid-cols-[1fr_2fr_1fr] text-center h-2/3">
+  <div class="grid grid-cols-[1fr_2fr_1fr] text-center">
     <button class="relative bottom-6" @click="prevMoveable()">
       <font-awesome-icon
         icon="fa-solid fa-chevron-left"
@@ -71,8 +71,8 @@ function nextMoveable() {
         class="w-5 h-5 p-3 inline rounded-full bg-greenLight hover:bg-greenDark"
       />
     </button>
-    <div class="h-80 mx-auto">
-      <img v-bind:src="moveable.src" class="h-1/2" />
+    <div class="h-50 mx-auto">
+      <img v-bind:src="moveable.src" class="object-scale-down h-48 w-30" />
       <h3 class="text-orange mt-5">{{ moveable.type }}</h3>
     </div>
     <button class="relative bottom-6" @click="nextMoveable()">
@@ -85,21 +85,3 @@ function nextMoveable() {
     </button>
   </div>
 </template>
-
-<!-- <style scoped>
-.square {
-  width: 12.5rem;
-  height: 12.5rem;
-  background-color: gray;
-}
-.wrapper {
-  display: grid;
-  place-items: center;
-}
-
-.userlist {
-  overflow-y: scroll;
-  overflow: auto;
-  height: 200px;
-}
-</style> -->

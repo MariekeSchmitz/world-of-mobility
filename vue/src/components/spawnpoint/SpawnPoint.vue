@@ -20,6 +20,10 @@ const props = withDefaults(
   }
 );
 
+const emit = defineEmits<{
+  (e: "setSpawnPoint"): void;
+}>();
+
 const testObj = ref({
   tiles: [
     [
@@ -151,35 +155,25 @@ onMounted(async () => {
 onUnmounted(() => {
   removeWindowWIdthListener();
 });
+
+
 </script>
 
 <template>
-  <div id="spanwpoint-container" class="mx-auto">
-    <div v-for="(tileRow, y) in testObj.tiles" id="tile-row">
-      <div v-for="(tile, x) in tileRow" id="tile-column">
-        <SimplifiedTile
-          :tile-type="tile.type"
-          :orientation="tile.orientation"
-          :x-index="x"
-          :y-index="y"
-        />
+  <div >
+    <div class="flex flex-col-reverse">
+      <div v-for="(tileRow, y) in testObj.tiles" class="flex flex-row mx-auto bg-greenDark">
+        <div v-for="(tile, x) in tileRow" class="flex flex-row">
+          <SimplifiedTile
+            :tile-type="tile.type"
+            :orientation="tile.orientation"
+            :x-index="x"
+            :y-index="y"
+            @set-spawn-point="emit('setSpawnPoint')"
+          />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-#spanwpoint-container {
-  height: v-bind("miniMapScalingState.windowWidth");
-  width: v-bind("miniMapScalingState.windowWidth");
-  background-color: rgb(66, 66, 66);
-  display: flex;
-  flex-direction: column-reverse;
-}
-
-#tile-row {
-  display: flex;
-  flex-direction: row;
-}
-
-</style>
