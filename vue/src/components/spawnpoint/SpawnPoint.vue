@@ -1,18 +1,3 @@
-<template>
-  <div id="spanwpoint-container">
-    <div v-for="(tileRow, y) in testObj.tiles" id="tile-row">
-      <div v-for="(tile, x) in tileRow" id="tile-column">
-        <SimplifiedTile
-          :tile-type="tile.type"
-          :orientation="tile.orientation"
-          :x-index="x"
-          :y-index="y"
-        />
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from "vue";
 import SimplifiedTile from "@/components/simplifiedTile/SimplifiedTile.vue";
@@ -167,6 +152,21 @@ onUnmounted(() => {
   removeWindowWIdthListener();
 });
 </script>
+
+<template>
+  <div id="spanwpoint-container" class="mx-auto">
+    <div v-for="(tileRow, y) in testObj.tiles" id="tile-row">
+      <div v-for="(tile, x) in tileRow" id="tile-column">
+        <SimplifiedTile
+          :tile-type="tile.type"
+          :orientation="tile.orientation"
+          :x-index="x"
+          :y-index="y"
+        />
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 #spanwpoint-container {

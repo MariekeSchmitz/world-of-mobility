@@ -84,21 +84,50 @@ onMounted(() => {
       <div
         class="grid col-start-2 col-end-8 content-center p-20 bg-white h-5/6 mt-8"
       >
+
+        <div grid="grid content-center">
+          <!-- Settings -->
+          <div class="grid grid-cols-2 ">
+
+            <!-- Choose Moveable -->
+            <div class="grid text-center content-start ">
+              <div class="grid content-start">
+                <h2>Fortbewegungsmittel<br/>wählen</h2>
+              </div>
+              <CarSelection @change-moveable="updateMoveable" class="h-2/3"></CarSelection>
+            </div>
+
+            <!-- Choose Spawnpoint -->
+            <div class="grid text-center items-start">
+              
+              <h2>Spawnpoint wählen</h2>
+              <SpawnPoint :instance-id="instanceID" class="h-1/2" />
+            </div>
+          </div>
+
+          <button class="buttonOrange w-1/6 mx-auto" @click="join()" >Beitreten</button>
+
+        </div>
+
+
+
+
       </div>
 
     </div>
 
     
-    <div id="personal-config-container">
-      <div id="car-select">
+    
+      <!-- <div id="car-select">
         <h1>Fortbewegungsmittel wählen</h1>
         <CarSelection @change-moveable="updateMoveable"></CarSelection>
       </div>
+
       <div id="place-select">
         <h1>Spawnpoint wählen</h1>
         <SpawnPoint :instance-id="instanceID" />
       </div>
-    </div>
+    
     <h2>Beigetretene Spieler</h2>
     <div class="userlist">
       <div v-for="user in userList.users">
@@ -106,7 +135,7 @@ onMounted(() => {
       </div>
     </div>
     <button @click="join()">Beitreten</button>
-    <p v-if="showError">Spielerlimit ausgeschöpft.</p>
+    <p v-if="showError">Spielerlimit ausgeschöpft.</p> -->
   </div>
 </template>
 

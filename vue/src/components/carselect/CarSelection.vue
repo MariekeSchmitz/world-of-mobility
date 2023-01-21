@@ -4,6 +4,9 @@ import { useJoinGame } from "@/services/useJoinGame";
 import { forEach } from "mathjs";
 import { moveableImages } from "./MoveableImages";
 import grassTileUrl from "@/textures/tiles/GRASSTILE.jpg";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faPlus, faArrowLeft, faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+library.add(faPlus, faArrowLeft, faChevronRight, faChevronLeft);
 
 const { getMoveableTypes } = useJoinGame();
 
@@ -59,17 +62,31 @@ function nextMoveable() {
 </script>
 
 <template>
-  <div class="wrapper">
-    <div>
-      <img v-bind:src="moveable.src" />
-      <h3>{{ moveable.type }}</h3>
-      <button @click="prevMoveable()">prev</button>
-      <button @click="nextMoveable()">next</button>
+  <div class="grid grid-cols-[1fr_2fr_1fr] text-center h-2/3">
+    <button class="relative bottom-6" @click="prevMoveable()">
+      <font-awesome-icon
+        icon="fa-solid fa-chevron-left"
+        size="s"
+        color="white"
+        class="w-5 h-5 p-3 inline rounded-full bg-greenLight hover:bg-greenDark"
+      />
+    </button>
+    <div class="h-80 mx-auto">
+      <img v-bind:src="moveable.src" class="h-1/2" />
+      <h3 class="text-orange mt-5">{{ moveable.type }}</h3>
     </div>
+    <button class="relative bottom-6" @click="nextMoveable()">
+      <font-awesome-icon
+        icon="fa-solid fa-chevron-right"
+        size="s"
+        color="white"
+        class="w-5 h-5 p-3 inline rounded-full bg-greenLight hover:bg-greenDark"
+      />
+    </button>
   </div>
 </template>
 
-<style scoped>
+<!-- <style scoped>
 .square {
   width: 12.5rem;
   height: 12.5rem;
@@ -85,4 +102,4 @@ function nextMoveable() {
   overflow: auto;
   height: 200px;
 }
-</style>
+</style> -->
