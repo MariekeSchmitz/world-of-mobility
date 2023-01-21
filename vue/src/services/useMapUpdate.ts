@@ -2,8 +2,11 @@
 import { Client } from "@stomp/stompjs";
 import { reactive, readonly, ref } from "vue";
 import type { INpc } from "@/interfaces/INpc";
+import { useEditorError } from "./editor/useEditorError";
 
 export function useMapUpdate(editorId: number): any {
+
+  const {setEditorError} = useEditorError()
   interface IMapUpdate {
     tiletype: string;
     orientation: string;
@@ -84,8 +87,15 @@ export function useMapUpdate(editorId: number): any {
       });
 
       clearTimeout(id);
+
+      if(response.ok){
+        setEditorError("")
+      } else{
+        throw new Error()
+      }
+
     } catch (reason) {
-      console.log(`ERROR: POST MapUpdate failed: ${reason}`);
+      setEditorError(`ERROR: POST MapUpdate failed: ${reason}`);
     }
   }
 
