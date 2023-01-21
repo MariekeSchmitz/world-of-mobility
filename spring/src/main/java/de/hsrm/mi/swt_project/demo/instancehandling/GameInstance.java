@@ -10,6 +10,7 @@ import org.python.util.PythonInterpreter;
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.GameControl;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
+import de.hsrm.mi.swt_project.demo.movables.MotorizedObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 import de.hsrm.mi.swt_project.demo.scripting.JythonFactory;
 import de.hsrm.mi.swt_project.demo.scripting.ScriptContext;
@@ -31,6 +32,7 @@ public class GameInstance extends Instance {
     private String name;
     private int maximumPlayerCount;
     private int npcCount;
+    
     
     /**
      * Creates a new instance of the game.
@@ -128,13 +130,22 @@ public class GameInstance extends Instance {
         interpreter.set("tiles", this.map.getTiles());
         interpreter.set("moveables", this.moveableObjects);
 
-        for(MoveableObject moveableObject : moveableObjects.values()) {
-
+        for(String key : moveableObjects.keySet()) {
+            MoveableObject moveableObject = moveableObjects.get(key);
             Validator movementValidator = new MovementValidator(this.map.getTiles(), moveableObject);
             collisionValidator.setMoveableObject(moveableObject);
-
-            if (movementValidator.validate() && collisionValidator.validate()) {
-                moveableObject.move();
+            
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //TODO: VALIDATOR WIEDER ANMACHEN UND NUR FÜR NPCS ANMACHEN 
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////
+            
+            if (/*movementValidator.validate() &&*/ collisionValidator.validate()) {
+                if(/*key.contains("NPC")&&*/moveableObject instanceof MotorizedObject){
+                    MotorizedObject m = (MotorizedObject)moveableObject;
+                    m.move(this.map.getTiles()[(int)moveableObject.getyPos()][(int)moveableObject.getxPos()]);
+                } else{
+                    moveableObject.move();
+                }
             } else {
                 moveableObject.setCurrentVelocity(0);
             }
