@@ -10,7 +10,7 @@
   }
 
   h2 {
-    @apply text-2xl mb-8 text-greenDark font-fredoka uppercase;
+    @apply text-2xl mb-8 text-greenDark font-fredoka uppercase leading-9;
   }
 
   h3 {
@@ -34,8 +34,11 @@
     @apply border-orange border-b-2 text-greenDark focus:outline-none placeholder:text-orange pb-0 mb-0 font-semibold bg-transparent;
   }
 
-  .buttonStartPage {
-    @apply text-white rounded-full w-full uppercase block font-fredoka mb-4 p-3 text-xl;
+  .buttonOrange {
+    @apply text-white rounded-full w-full uppercase block font-fredoka mb-4 p-3 text-xl bg-orange hover:bg-orangeLight;
+  }
+  .buttonGreen {
+    @apply text-white rounded-full w-full uppercase block font-fredoka mb-4 p-3 text-xl bg-greenDark hover:bg-greenLight;
   }
 
   .radioButton {
@@ -53,6 +56,4 @@
   .gameName {
     @apply font-semibold text-greenDark;
   }
-
-  
 }
