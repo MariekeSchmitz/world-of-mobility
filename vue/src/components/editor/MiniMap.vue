@@ -1,4 +1,13 @@
 <script setup lang="ts">
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faPlus,
+  faMinus,
+  faAngleDown,
+  faAngleUp,
+} from "@fortawesome/free-solid-svg-icons";
+library.add(faPlus, faMinus, faAngleDown, faAngleUp);
+
 function toggle() {
   const minimap = document.getElementById("minimap");
   const showMap = document.getElementById("showMap");
@@ -18,10 +27,29 @@ function toggle() {
 <template>
   <div id="minimap">
     <div class="minimapButtons">
-      <button><img src="@/buttons/editor/minus.png" /></button>
-      <button><img src="@/buttons/editor/plus.png" /></button>
+      <button>
+        <font-awesome-icon
+          icon="fa-solid fa-plus"
+          size="3xl"
+          color="#2F8265"
+          class="w-5 h-5"
+        />
+      </button>
+      <button>
+        <font-awesome-icon
+          icon="fa-solid fa-minus"
+          size="3xl"
+          color="#2F8265"
+          class="w-5 h-5"
+        />
+      </button>
       <button @click="toggle">
-        <img src="@/buttons/editor/arrow-down.png" />
+        <font-awesome-icon
+          icon="fa-solid fa-angle-down"
+          size="3xl"
+          color="#2F8265"
+          class="w-8 h-8"
+        />
       </button>
     </div>
     <p>
@@ -31,11 +59,16 @@ function toggle() {
   </div>
 
   <button id="showMap" @click="toggle">
-    <img src="@/buttons/editor/arrow-up.png" />
+    <font-awesome-icon
+      icon="fa-solid fa-angle-up"
+      size="3xl"
+      color="#2F8265"
+      class="w-8 h-8"
+    />
   </button>
 </template>
 
-<style>
+<style scoped>
 #minimap {
   position: fixed;
   bottom: 10px;

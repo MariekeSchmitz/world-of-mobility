@@ -24,8 +24,13 @@
   import { useLogin } from "@/services/login/useLogin";
 import ScriptField from "@/components/editor/ScriptField.vue";
   import ServerChat from "@/components/ServerChat.vue";
+  import { library } from "@fortawesome/fontawesome-svg-core";
+  import {
+    faPlus,
+    faXmark
+  } from "@fortawesome/free-solid-svg-icons";
+  library.add(faXmark, faPlus);
 
- 
   const props = defineProps<{
     editorID: string;
   }>();
@@ -84,17 +89,27 @@ import ScriptField from "@/components/editor/ScriptField.vue";
   <div id="exitButton">
     <button class="roundButton">
       <RouterLink to="/worldintro">
-        <img src="@/buttons/editor/close.png" />
+        <font-awesome-icon
+          icon="fa-solid fa-xmark"
+          size="3xl"
+          color="#2F8265"
+          class="p-2 w-8 h-8"
+        />
       </RouterLink>
     </button>
   </div>
 
   <div class="buttonMenuRight">
-    <button><img src="@/buttons/editor/plus.png" /><br />Starte Spiel</button>
+    <button>
+      <font-awesome-icon
+        icon="fa-solid fa-plus"
+        size="3xl"
+        color="#2F8265"
+        class="w-5 h-5"
+      /><br />Starte Spiel
+    </button>
     <button><img src="@/buttons/editor/plus.png" /><br />Welt testen</button>
   </div>
-
-  <LeftMenu />
 
   <UserListMenu :instanceID="editorID"></UserListMenu>
 
@@ -138,25 +153,10 @@ import ScriptField from "@/components/editor/ScriptField.vue";
   </Renderer>
 </template>
 
-<style scoped>
-html {
-  overflow: hidden;
-}
-
-button {
-  background-color: rgba(161, 161, 161);
-  border: none;
-}
-
+<style>
 button > img {
   width: 15px;
   height: 15px;
-}
-
-button:hover {
-  cursor: pointer;
-  background-color: rgba(139, 139, 139, 0.7);
-  border: none;
 }
 
 .mapTitle {

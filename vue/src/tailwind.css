@@ -34,8 +34,16 @@
     @apply border-orange border-b-2 text-greenDark focus:outline-none placeholder:text-orange pb-0 mb-0 font-semibold bg-transparent;
   }
 
+  button:hover {
+    @apply bg-greenOverlay cursor-pointer;
+  }
+
   .buttonStartPage {
     @apply text-white rounded-full w-full uppercase block font-fredoka mb-4 p-3 text-xl;
+  }
+
+  .buttonEditor {
+    @apply w-4 h-4;
   }
 
   .radioButton {
@@ -53,6 +61,4 @@
   .gameName {
     @apply font-semibold text-greenDark;
   }
-
-  
 }
