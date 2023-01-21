@@ -69,7 +69,7 @@ async function createWorldAndForwardToEditor(name: string) {
 
       <button
         @click="createWorldAndForwardToEditor(name)"
-        class="buttonOrange w-2/6 p-4 place-self-center"
+        class="buttonOrange w-3/12 p-4 place-self-center"
       >
         Erstellen
       </button>
