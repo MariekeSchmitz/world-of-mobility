@@ -12,9 +12,11 @@ import { useUserEditor } from "@/services/useUserEditor";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Avatar from "@/components/User/Avatar.vue";
+import ErrorWarning from "@/components/ErrorWarning.vue";
+
 library.add(faArrowLeft);
 const name = ref("");
-const { createWorld, worldCreateData } = useEditor();
+const { createWorld, worldCreateData, resetError } = useEditor();
 const { joinEditor } = useUserEditor();
 const { loginData, avatarData } = useLogin();
 
@@ -39,6 +41,7 @@ async function createWorldAndForwardToEditor(name: string) {
           size="3xl"
           color="white"
           class="bg-greenLight rounded-full p-2 w-8 h-8"
+          @click="resetError"
         />
       </RouterLink>
       <h1 class="col-span-1 place-self-center">Baumodus</h1>
@@ -70,7 +73,9 @@ async function createWorldAndForwardToEditor(name: string) {
       >
         Erstellen
       </button>
-      <div v-if="worldCreateData.error">{{ worldCreateData.error }}</div>
+      <div v-if="worldCreateData.error">
+        <ErrorWarning :errorMsg="worldCreateData.error"> </ErrorWarning>
+      </div>
     </div>
   </div>
 </template>
