@@ -37,7 +37,7 @@ function scrollingRight() {
 
 function toggle() {
   const userListMenu = document.getElementById("userListMenu");
-  const showElement = document.getElementById("showElement");
+  const showElement = document.getElementById("showElementUser");
 
   if (userListMenu != null && showElement != null) {
     if (userListMenu.style.display == "none") {
@@ -75,7 +75,7 @@ function toggle() {
       <img src="@/buttons/editor/arrow-up.png" />
     </button>
   </div>
-  <button id="showElement" @click="toggle">
+  <button id="showElementUser" @click="toggle">
     <img src="@/buttons/editor/arrow-down.png" />
   </button>
 </template>
@@ -93,7 +93,7 @@ function toggle() {
   right: 5%;
 }
 
-#showElement {
+#showElementUser {
   display: none;
   position: fixed;
   width: 40px;
