@@ -72,7 +72,7 @@ function toggleButton() {
 
     <!-- navigation -->
     <div class="grid grid-cols-3 mx-12 pt-12 h-1/6">
-      <button @click="$router.go(-1)">
+      <button class="place-self-start" @click="$router.go(-1)">
         <font-awesome-icon
           icon="fa-solid fa-arrow-left"
           size="xl"
@@ -143,21 +143,7 @@ function toggleButton() {
       </div>
 
     </div>
-
-    
-    
-      <!-- <div id="car-select">
-        <h1>Fortbewegungsmittel wählen</h1>
-        <CarSelection @change-moveable="updateMoveable"></CarSelection>
-      </div>
-
-      <div id="place-select">
-        <h1>Spawnpoint wählen</h1>
-        <SpawnPoint :instance-id="instanceID" />
-      </div>
-    
-    
-    <button @click="join()">Beitreten</button>
-    <p v-if="showError">Spielerlimit ausgeschöpft.</p> -->
+ 
+    <!-- <p v-if="showError">Spielerlimit ausgeschöpft.</p> -->
   </div>
 </template>
