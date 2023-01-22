@@ -72,6 +72,10 @@ const cameraPosition = computed(() => {
   }
 });
 
+const trafficLightState = computed(() => {
+  return mapUpdates.trafficLightState;
+});
+
 /***
  * keeps every playerobject up to date.
  */
@@ -184,7 +188,10 @@ onUnmounted(() => {
       />
       <!-- <AmbientLight :intensity="0.85" color="#ffffff"></AmbientLight> -->
       <!-- Map -->
-      <Map :instanceID="props.instanceID"></Map>
+      <Map
+        :instanceID="props.instanceID"
+        :trafficLightState="trafficLightState"
+      ></Map>
       <!-- "Car" -->
       <!-- <Box
         :position="{ x: 1, y: 1, z: 2 }"
