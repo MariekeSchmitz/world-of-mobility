@@ -1,5 +1,8 @@
 package de.hsrm.mi.swt_project.demo.railingsystem;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +26,6 @@ public class RailingBehaviour {
     public void railCoordinates(MoveableObject moveable, Tile tile, Direction dir) {
 
         float movement = moveable.getCurrentVelocity() * moveable.getMaxVelocity();
-
         if (tile.getType().equals(Tiletype.STREET_STRAIGHT)) {
             straightBehaviour(moveable, tile, movement);
 
@@ -31,6 +33,37 @@ public class RailingBehaviour {
             curveBehaviour(moveable, tile, movement);
         }
 
+    }
+
+    public void crossBehaviour(MoveableObject moveable, Tile tile, float movement, Direction dir){
+        Tile straightConversionTile = Tiletype.STREET_STRAIGHT.createTile();
+        Tile curveConversionTile = Tiletype.STREET_CURVE.createTile();
+        Orientation orientation = moveable.getOrientation();
+        boolean alreadyTurned = false;
+        switch (dir) {
+            case LEFT:
+                if(alreadyTurned){
+                    straightConversionTile.setOrientation(orientation);
+                    straightBehaviour(moveable, straightConversionTile, movement);
+                } else{
+                    curveConversionTile.setOrientation(orientation);
+                    curveBehaviour(moveable, tile, movement);
+                }
+                break;
+            case RIGHT:
+                if(alreadyTurned){
+                    straightConversionTile.setOrientation(orientation);
+                    straightBehaviour(moveable, straightConversionTile, movement);
+                } else{
+                    curveConversionTile.setOrientation(orientation.prev().prev());
+                    curveBehaviour(moveable, tile, movement);
+                }
+                break;
+            default:
+                straightConversionTile.setOrientation(orientation);
+                straightBehaviour(moveable, straightConversionTile, movement);
+                break;
+        }
     }
 
     public void straightBehaviour(MoveableObject moveable, Tile tile, float movement) {
