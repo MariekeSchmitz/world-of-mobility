@@ -1,7 +1,7 @@
 package de.hsrm.mi.swt_project.demo.editor.tiles;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
@@ -39,6 +39,14 @@ public abstract class TrafficTile extends Tile {
             
         }
 
+    }
+
+    /**
+     * Adds allowed ori
+     * @param orientation
+     */
+    public void setAllowedDirections(List<Orientation> list) {
+        allowedDirections = list;
     }
     
 }

@@ -15,6 +15,8 @@ import RAIL_STRAIGHT from "@/components/Tiles/RAIL_STRAIGHT.vue";
 import FARM from "@/components/Tiles/FARM.vue";
 import GRASSTILE from "@/components/Tiles/GRASSTILE.vue";
 import { tileType } from "@/components/TileTypes";
+import { useGame } from "@/services/useGame";
+import { reactive } from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -25,6 +27,7 @@ const props = withDefaults(
     type: string;
     placedObject?: any;
     orientation: string;
+    trafficLightState?: any;
   }>(),
   { width: 10, height: 10 }
 );
@@ -85,6 +88,7 @@ const props = withDefaults(
     :type="props.type"
     :placedObject="props.placedObject"
     :orientation="props.orientation"
+    :traffic-light-state="props.trafficLightState"
   >
   </STREET_STRAIGHT>
 
@@ -97,6 +101,7 @@ const props = withDefaults(
     :type="props.type"
     :placedObject="props.placedObject"
     :orientation="props.orientation"
+    :trafficLightState="props.trafficLightState"
   >
   </STREET_CROSS>
 
@@ -109,6 +114,7 @@ const props = withDefaults(
     :type="props.type"
     :placedObject="props.placedObject"
     :orientation="props.orientation"
+    :trafficLightState="props.trafficLightState"
   >
   </STREET_T_CROSS>
   <PEDESTRIAN_CROSSING

@@ -147,8 +147,14 @@ function computeLookAt() {
   }
 }
 
+
+const trafficLightState = computed(() => {
+  return mapUpdates.trafficLightState;
+});
+
 /**
  * returns the position of the camera.
+ * keeps every playerobject up to date.
  */
 const cameraPosition = ref(new THREE.Vector3(0, 0, 0));
 
@@ -324,7 +330,18 @@ onUnmounted(() => {
       />
       <!-- <AmbientLight :intensity="0.85" color="#ffffff"></AmbientLight> -->
       <!-- Map -->
-      <Map :instanceID="props.instanceID"></Map>
+      <Map
+        :instanceID="props.instanceID"
+        :trafficLightState="trafficLightState"
+      ></Map>
+      <!-- "Car" -->
+      <!-- <Box
+        :position="{ x: 1, y: 1, z: 2 }"
+        :scale="{ x: 1, y: 1, z: 2 }"
+        ref="car"
+        ><ToonMaterial>
+          <Texture src="@/textures/Obsidian.jpg" /> </ToonMaterial
+      ></Box> -->
       <div v-for="(moveable, index) in allMoveables" :key="index">
         <CAR1
           v-if="moveable.classname == 'CAR'"

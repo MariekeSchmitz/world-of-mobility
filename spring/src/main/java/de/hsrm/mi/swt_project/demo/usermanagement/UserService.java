@@ -21,4 +21,5 @@ public interface UserService {
      * @author Tom Gouthier, Marie Bohnert
      */
     void removeUser(String username);
+
 }

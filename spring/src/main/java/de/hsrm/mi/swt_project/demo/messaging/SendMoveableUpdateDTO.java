@@ -23,8 +23,8 @@ public record SendMoveableUpdateDTO (
     public static SendMoveableUpdateDTO from(String username, MoveableObject moveableObject) {
         return new SendMoveableUpdateDTO(
                 username,
-                moveableObject.getxPos(),
-                moveableObject.getyPos(),
+                moveableObject.getXPos(),
+                moveableObject.getYPos(),
                 moveableObject.getType(),
                 moveableObject.getCapacity(),
                 moveableObject.getCurrentVelocity(),

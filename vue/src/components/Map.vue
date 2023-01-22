@@ -4,8 +4,7 @@
 import * as THREE from "three";
 import Tile from "@/components/Tile.vue";
 import type { I3DMap } from "@/services/I3DMap";
-import type { ITile } from "@/interfaces/ITile";
-import { computed, onMounted, reactive, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useMap } from "@/services/useMap";
 
 const squareSize = 16;
@@ -20,6 +19,7 @@ const defaultMap: I3DMap = {
 const props = withDefaults(
   defineProps<{
     instanceID: number;
+    trafficLightState: string;
   }>(),
   { instanceID: 1 }
 );
@@ -75,6 +75,7 @@ onMounted(async () => {
         :orientation="tile.orientation"
         v-if="tile.placedObject !== null"
         :placed-object="tile.placedObject.type"
+        :traffic-light-state="props.trafficLightState"
       >
       </Tile>
       <Tile

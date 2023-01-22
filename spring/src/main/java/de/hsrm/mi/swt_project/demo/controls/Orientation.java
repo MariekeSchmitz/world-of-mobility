@@ -22,6 +22,16 @@ public enum Orientation {
         public Orientation opposite() {
             return SOUTH;
         }
+
+        @Override
+        public int xSign() {
+            return 0;
+        }
+
+        @Override
+        public int ySign() {
+            return 1;
+        }
     },
 
     NORTH_EAST {
@@ -38,6 +48,16 @@ public enum Orientation {
         @Override
         public Orientation opposite() {
             return SOUTH_WEST;
+        }
+
+        @Override
+        public int xSign() {
+            return 1;
+        }
+
+        @Override
+        public int ySign() {
+            return 1;
         }
     },
 
@@ -56,6 +76,16 @@ public enum Orientation {
         public Orientation opposite() {
             return WEST;
         }
+
+        @Override
+        public int xSign() {
+            return 1;
+        }
+
+        @Override
+        public int ySign() {
+            return 0;
+        }
     },
 
     SOUTH_EAST {
@@ -72,6 +102,16 @@ public enum Orientation {
         @Override
         public Orientation opposite() {
             return NORTH_WEST;
+        }
+
+        @Override
+        public int xSign() {
+            return 1;
+        }
+
+        @Override
+        public int ySign() {
+            return -1;
         }
     },
 
@@ -90,6 +130,16 @@ public enum Orientation {
         public Orientation opposite() {
             return NORTH;
         }
+
+        @Override
+        public int xSign() {
+            return 0;
+        }
+
+        @Override
+        public int ySign() {
+            return -1;
+        }
     },
 
     SOUTH_WEST {
@@ -106,6 +156,16 @@ public enum Orientation {
         @Override
         public Orientation opposite() {
             return NORTH_EAST;
+        }
+
+        @Override
+        public int xSign() {
+            return -1;
+        }
+
+        @Override
+        public int ySign() {
+            return -1;
         }
     },
 
@@ -124,6 +184,16 @@ public enum Orientation {
         public Orientation opposite() {
             return EAST;
         }
+
+        @Override
+        public int xSign() {
+            return -1;
+        }
+
+        @Override
+        public int ySign() {
+            return 0;
+        }
     },
     
     NORTH_WEST {
@@ -140,6 +210,16 @@ public enum Orientation {
         @Override
         public Orientation opposite() {
             return SOUTH_EAST;
+        }
+
+        @Override
+        public int xSign() {
+            return -1;
+        }
+
+        @Override
+        public int ySign() {
+            return 1;
         }
     };
     
@@ -164,5 +244,27 @@ public enum Orientation {
      * @return Opposite orientation.
      */
     public abstract Orientation opposite();
+
+    /**
+     * Indicats if movement with this orientation
+     * increases, decresses or does not effect the
+     * x-coordinate.
+     * 
+     * @return +1 if increasing
+     *          0 if not affecting
+     *         -1 if decreasing
+     */
+    public abstract int xSign();
+
+    /**
+     * Indicats if movement with this orientation
+     * increases, decresses or does not effect the
+     * y-coordinate.
+     * 
+     * @return +1 if increasing
+     *          0 if not affecting
+     *         -1 if decreasing
+     */
+    public abstract int ySign();
 
 }

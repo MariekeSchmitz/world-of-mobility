@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * 
  * @author Marie Bohnert, Tom Gouthier
  */
-@ResponseStatus(HttpStatus.FORBIDDEN)
+@ResponseStatus(code=HttpStatus.FORBIDDEN, reason="NPC darf hier nicht platziert werden.")
 public class NpcNotPlaceableException extends RuntimeException {
 
 }

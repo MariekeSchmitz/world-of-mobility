@@ -7,6 +7,8 @@ import de.hsrm.mi.swt_project.demo.controls.Orientation;
 
 public class Passenger extends MoveableObject {
 
+    protected static final float HITBOX_RADIUS = 0.05f;
+
     /**
      * Creates an instance of Passenger
      */
@@ -38,7 +40,6 @@ public class Passenger extends MoveableObject {
         this.setYPos(yPos);
         this.maxVelocity = maxVelocity;
         this.orientation = orientation;
-        this.hitboxRadius = 0.05f;
     }
 
     @Override
@@ -66,40 +67,14 @@ public class Passenger extends MoveableObject {
         
         switch (this.orientation) {
 
-            case NORTH:
-                this.yPos += straightMovement;
+            case NORTH, EAST, SOUTH, WEST:
+                this.xPos += this.orientation.xSign() * straightMovement;
+                this.yPos += this.orientation.ySign() * straightMovement;
                 break;
 
-            case NORTH_EAST:
-                this.xPos += diagonalMovement;
-                this.yPos += diagonalMovement;
-                break;
-
-            case EAST:
-                this.xPos += straightMovement;
-                break;
-
-            case SOUTH_EAST:
-                this.xPos += diagonalMovement;
-                this.setYPos(this.yPos - diagonalMovement);
-                break;
-
-            case SOUTH:
-                this.setYPos(this.yPos - straightMovement);
-                break;
-
-            case SOUTH_WEST:
-                this.setXPos(this.xPos - diagonalMovement);
-                this.setYPos(this.yPos - diagonalMovement);
-                break;
-
-            case WEST:
-                this.setXPos(this.xPos - straightMovement);
-                break;
-
-            case NORTH_WEST:
-                this.setXPos(this.xPos - diagonalMovement);
-                this.yPos += diagonalMovement;
+            case NORTH_EAST, SOUTH_EAST, SOUTH_WEST, NORTH_WEST:
+                this.xPos += this.orientation.xSign() * diagonalMovement;
+                this.yPos += this.orientation.ySign() * diagonalMovement;
                 break;
 
             default:
