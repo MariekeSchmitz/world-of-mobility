@@ -160,7 +160,8 @@ public class MovementValidator implements Validator {
         }
 
         Streetile streetTile = (Streetile) tile;
-        Orientation headingTo = moveableCopy.getOrientation();
+
+        Orientation headingTo = (moveableCopy.getCurrentVelocity() >= 0) ? moveableCopy.getOrientation() : moveableCopy.getOrientation().opposite();
 
         return streetTile
             .getAllowedDirections()
