@@ -31,6 +31,7 @@ public class MovementValidator implements Validator {
 
     protected Tile[][] map;
     protected MoveableObject moveableCopy;
+    protected Position startPos;
 
     /**
      * Creates a new MovementValidator.
@@ -50,6 +51,8 @@ public class MovementValidator implements Validator {
 
         float startPosX = this.moveableCopy.getXPos();
         float startPosY = this.moveableCopy.getYPos();
+
+        this.startPos = new Position((int) startPosX, (int) startPosY);
 	
         moveableCopy.move();
         
@@ -122,6 +125,10 @@ public class MovementValidator implements Validator {
      * @return True if movement is allowed, else false
      */
     protected boolean canMoveToPosition(Position position) {
+
+        if (position.equals(this.startPos)) {
+            return true;
+        }
         
         int tileRow = position.getYPos();
         int tileCol = position.getXPos();
