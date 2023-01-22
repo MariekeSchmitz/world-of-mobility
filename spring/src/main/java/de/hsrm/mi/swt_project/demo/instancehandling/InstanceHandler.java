@@ -175,10 +175,11 @@ public class InstanceHandler implements Updateable {
                     }
                     if(tileObject.has("allowedDirections")) {
                         JSONArray allowedDirections = tileObject.getJSONArray("allowedDirections");
+                        List<Orientation> allowedDirectionsList = new ArrayList<>();
                         for (Object orientationObject : allowedDirections) {
-                            Orientation allowedDirectionsString = Orientation.valueOf((String) orientationObject);
-                            ((TrafficTile)(newTile)).addAllowedDirections(allowedDirectionsString);
+                            allowedDirectionsList.add(Orientation.valueOf((String) orientationObject));
                         }
+                        ((TrafficTile)(newTile)).setAllowedDirections(allowedDirectionsList);
                     }
                     map.setTile(newTile, xPos, yPos);
                 }
