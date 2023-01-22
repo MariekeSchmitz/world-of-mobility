@@ -22,7 +22,7 @@ public class Passenger extends MoveableObject {
      * @param maxVelocity Maximum velocity of the object.
      */
     public Passenger(float xPos, float yPos) {
-        this(Orientation.NORTH, xPos, yPos, 1);
+        this(Orientation.NORTH, xPos, yPos, 0.1f);
     }
 
     /**
@@ -38,6 +38,7 @@ public class Passenger extends MoveableObject {
         this.setYPos(yPos);
         this.maxVelocity = maxVelocity;
         this.orientation = orientation;
+        this.hitboxRadius = 0.05f;
     }
 
     @Override
@@ -52,6 +53,7 @@ public class Passenger extends MoveableObject {
         copy.capacity = this.capacity;
         copy.script = this.script;
         copy.orientation = this.orientation;
+        copy.type = this.type;
 
         return copy;
     }
@@ -106,14 +108,24 @@ public class Passenger extends MoveableObject {
         }
     }
 
+    /**
+     * Turns passenger object to the given direction.
+     * Inverts the turn if the object is moving backwards.
+     */
     @Override
     public void turn(Direction direction) {
         switch (direction) {
             case LEFT:
-                this.orientation = this.orientation.prev();
+                if(this.currentVelocity < 0) 
+                    this.orientation = this.orientation.next();
+                else
+                    this.orientation = this.orientation.prev();
                 break;
             case RIGHT:
-                this.orientation = this.orientation.next();
+            if (this.currentVelocity < 0)
+                    this.orientation = this.orientation.prev();
+                else
+                    this.orientation = this.orientation.next();
                 break;
             default:
                 break;

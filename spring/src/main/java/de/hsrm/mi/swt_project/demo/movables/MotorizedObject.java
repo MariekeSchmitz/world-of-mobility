@@ -19,7 +19,7 @@ public class MotorizedObject extends MoveableObject {
      * @param maxVelocity Maximum velocity of the object.
      */
     public MotorizedObject(float xPos, float yPos) {
-        this(Orientation.NORTH, xPos, yPos, 1);
+        this(Orientation.NORTH, xPos, yPos, 0.2f);
     }
 
     /**
@@ -36,6 +36,7 @@ public class MotorizedObject extends MoveableObject {
         this.setYPos(yPos);
         this.maxVelocity = maxVelocity;
         this.orientation = adjustOrientation(orientation);
+        this.hitboxRadius = 0.15f;
     }
 
     @Override
@@ -49,6 +50,7 @@ public class MotorizedObject extends MoveableObject {
         copy.capacity = this.capacity;
         copy.script = this.script;
         copy.orientation = this.orientation;
+        copy.type = this.type;
 
         return copy;
     }
@@ -82,15 +84,25 @@ public class MotorizedObject extends MoveableObject {
         }
     }
 
+    /**
+     * Turns motorized object to the given direction.
+     * Inverts the turn if the object is moving backwards.
+     */
     @Override
     public void turn(Direction direction) {
 
         switch (direction) {
             case LEFT:
-                this.orientation = this.orientation.prev().prev();  // can only turn 90 degrees
+                if(this.currentVelocity < 0) 
+                    this.orientation = this.orientation.next().next();
+                else
+                    this.orientation = this.orientation.prev().prev();  // can only turn 90 degrees
                 break;
             case RIGHT:
-                this.orientation = this.orientation.next().next();  // can only turn 90 degrees
+            if (this.currentVelocity < 0)
+                    this.orientation = this.orientation.prev().prev();
+                else
+                    this.orientation = this.orientation.next().next();  // can only turn 90 degrees
                 break;
             default:
                 break;

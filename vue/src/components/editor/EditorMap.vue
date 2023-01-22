@@ -1,22 +1,21 @@
 <script setup lang="ts">
 //@ts-ignore
 import { orientations } from "@/services/Orientations";
-import { onMounted, ref, watch, computed, toRef } from "vue";
+import { onMounted, ref, watch, computed } from "vue";
 import { useMapUpdate } from "@/services/useMapUpdate";
 import { useMap } from "@/services/useMap";
 import { number } from "mathjs";
 import EditorTile from "@/components/editor/EditorTile.vue";
 import * as THREE from "three";
 import type { MapInterface } from "@/services/editor/MapInterface";
+import type { INpc } from "@/interfaces/INpc";
 
-const props = defineProps({
-  editorID: {
-    default: 0,
-    type: number,
-  },
-});
-
-let editorID: number = props.editorID;
+const props = withDefaults(
+  defineProps<{
+    editorID: number;
+  }>(),
+  { editorID: 0 }
+);
 
 const { receiveMapUpdates, mapUpdates } = useMapUpdate(props.editorID);
 const { getMapEditor } = useMap();
@@ -33,20 +32,33 @@ const mapDefault: MapInterface = {
   tiles: [
     [
       {
-        type: "Default",
+        type: "GRASSTILE",
         orientation: "NORTH",
         placedObject: { type: "TREE" },
       },
     ],
   ],
-  NPCS: [],
+  npcs: [],
 };
 
 const mapReactive = ref(mapDefault);
 
+/**
+ * checks whether there is a npc on specific tile position
+ * @param x x coordinate of tile
+ * @param y y coordinate of tile
+ * @returns npc (undefined if none is found)
+ */
+function findNpc(x: number, y: number): INpc | undefined {
+  const npc: INpc | undefined = mapReactive.value.npcs.find((npc: INpc) => {
+    return npc.xPos === x && npc.yPos === y;
+  });
+
+  return npc;
+}
+
 watch(mapUpdates.value, () => {
   mapReactive.value = mapUpdates.value.map;
-  console.log(mapReactive.value);
 });
 
 onMounted(() => {
@@ -69,6 +81,8 @@ onMounted(() => {
           :placedObject="tile.placedObject.type"
           :editorID="editorID"
           :cmVisible="false"
+          :placedNpc="findNpc(row, column)"
+          @npc-added="$emit('npc-added', $event)"
         >
         </EditorTile>
       </div>
@@ -84,6 +98,8 @@ onMounted(() => {
           placedObject="none"
           :editorID="editorID"
           :cmVisible="false"
+          :placedNpc="findNpc(row, column)"
+          @npc-added="$emit('npc-added', $event)"
         >
         </EditorTile>
       </div>

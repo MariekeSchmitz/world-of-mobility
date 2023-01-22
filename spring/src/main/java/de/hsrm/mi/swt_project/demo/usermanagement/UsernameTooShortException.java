@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * Exception that is thrown if Username is not long enough
  * 
- * @author Tom Gouthier
+ * @author Tom Gouthier, Marie Bohnert
  * 
  */
 @ResponseStatus(code = HttpStatus.FORBIDDEN, reason = "Username is too short. Three or more letters needed.")

@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Client } from "@stomp/stompjs";
 import { reactive, readonly, ref } from "vue";
+import type { INpc } from "@/interfaces/INpc";
 
 export function useMapUpdate(editorId: number): any {
   interface IMapUpdate {
@@ -11,6 +12,11 @@ export function useMapUpdate(editorId: number): any {
     newXPos: number;
     newYPos: number;
     placedObject: IPlacedObject;
+  }
+
+  interface IMapDTO {
+    tiles: Array<Array<ITile>>;
+    npcs: Array<INpc>;
   }
 
   interface IMapState {
@@ -27,29 +33,17 @@ export function useMapUpdate(editorId: number): any {
     type: string;
   }
 
-  interface INpc {
-    user: string;
-    xPos: number;
-    yPos: number;
-    classname: string;
-  }
-
-  interface IMapDTO {
-    tiles: Array<Array<ITile>>;
-    NPCS: Array<any>;
-  }
-
   const mapState = ref<IMapState>({
     map: {
       tiles: [[]],
-      NPCS: [],
+      npcs: [],
     },
   });
 
   function receiveMapUpdates() {
-    const wsurl = `ws://${window.location.host}/stompbroker`;
+    const proto = location.protocol == "https:" ? "wss" : "ws";
+    const wsurl = `${proto}://${window.location.host}/stompbroker`;
     const DEST = `/topic/editor/${editorId}`;
-    console.log("UPDAAAAAAAAAAAATE");
     const stompClient = new Client({ brokerURL: wsurl });
     stompClient.onWebSocketError = (event) =>
       console.log(`ERROR: WebSocket-Error in MapUpdate: ${event}`);
@@ -79,7 +73,6 @@ export function useMapUpdate(editorId: number): any {
       const id = setTimeout(() => controller.abort(), 8000);
 
       const data: IMapUpdate = mapUpdateObj;
-      console.log(data);
 
       const response = await fetch(URL, {
         method: "POST",

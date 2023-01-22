@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
  * userList is active.
  * Also makes userList autowireable with dependency injection
  * 
- * @author Tom Gouthier
+ * @author Tom Gouthier, Marie Bohnert
  */
 @Configuration
 public class UserListConfig {

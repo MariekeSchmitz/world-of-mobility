@@ -6,12 +6,16 @@
 
 import { useInstanceList } from "@/services/useInstanceList";
 import GameListItem from "@/components/selectview/GameListItem.vue";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 
 const { instanceState, getInstanceList } = useInstanceList();
 
-onMounted(() => {
-  getInstanceList("game");
+onMounted(async () => {
+  await getInstanceList("game");
+});
+
+const instancelist = computed(() => {
+  return instanceState.instancelist;
 });
 </script>
 
@@ -37,7 +41,7 @@ onMounted(() => {
       <h1>Spiel beitreten</h1>
     </div>
 
-    <div v-for="ele in instanceState.instancelist.instancelist">
+    <div v-for="ele in instancelist">
       <RouterLink :to="{ path: '/joingame/' + ele.id }">
         <GameListItem
           :gamename="ele.gamename"

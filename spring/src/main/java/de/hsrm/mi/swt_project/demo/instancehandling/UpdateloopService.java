@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import de.hsrm.mi.swt_project.demo.messaging.SendGameUpdateDTO;
 import de.hsrm.mi.swt_project.demo.messaging.SendMapDTO;
+import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLogicLoopTask;
 
 /**
  * This class provides methods for publishing
@@ -30,6 +31,9 @@ public class UpdateloopService {
     
     @Autowired
     private SimpMessagingTemplate messaging;
+
+    @Autowired
+    private TrafficLogicLoopTask trafficLogicLoopTask;
 
     /**
      * This method initiates sending the state of an instance
@@ -59,7 +63,7 @@ public class UpdateloopService {
 
         final long id = instance.getId();
         
-        final SendGameUpdateDTO dto = SendGameUpdateDTO.from(instance.getMoveableObjects());
+        final SendGameUpdateDTO dto = SendGameUpdateDTO.from(instance.getMoveableObjects(),trafficLogicLoopTask.getTrafficLightState());
         final String destination = String.format("%s/%d", GAME_TOPIC, id);
        
         messaging.convertAndSend(destination, dto);    

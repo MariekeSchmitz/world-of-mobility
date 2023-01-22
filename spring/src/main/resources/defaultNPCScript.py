@@ -1,7 +1,15 @@
-npc = NPC()
+import random
 
-npc.setSpeed(0.1)
+velocity = random.randint(3, 7)
 
-npc.accelerate()
-npc.turnLeft()
-npc.brake()
+if npc.currentVelocity() == 0:
+    while npc.currentVelocity() * 10 < velocity:
+        npc.accelerate()
+
+for user in npc.nearbyRoadUsers():
+    if npc.distanceTo(user) < 0.5:
+        npc.brake()
+        break
+
+if random.randint(0, 1):
+    npc.turnLeft()

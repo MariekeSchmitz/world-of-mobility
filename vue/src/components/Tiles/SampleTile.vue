@@ -11,6 +11,7 @@ const props = withDefaults(
     position: THREE.Vector3;
     rotation: THREE.Vector3;
     type: string;
+    placedObject: any;
   }>(),
   { width: 10, height: 10 }
 );
@@ -22,8 +23,6 @@ const props = withDefaults(
     :rotation="props.rotation"
     :position="props.position"
   >
-    <ToonMaterial>
-      <Texture src="/src/textures/tiles/SAMPLE.jpg"
-    /></ToonMaterial>
+    <ToonMaterial> <Texture src="@/textures/tiles/SAMPLE.jpg" /></ToonMaterial>
   </Plane>
 </template>

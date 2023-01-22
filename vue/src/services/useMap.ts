@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 
+import type { INpc } from "@/interfaces/INpc";
 import { reactive } from "vue";
 
 export function useMap(): any {
@@ -13,16 +14,9 @@ export function useMap(): any {
     placedObject: IPlacedObject;
   }
 
-  interface INpc {
-    user: string;
-    xPos: number;
-    yPos: number;
-    classname: string;
-  }
-
   interface IMapDTO {
     tiles: Array<Array<ITile>>;
-    NPCS: Array<any>;
+    NPCS: Array<INpc>;
   }
 
   // const mapState = reactive<IMapDTO> ({
@@ -46,7 +40,6 @@ export function useMap(): any {
       });
 
       const jsonData: IMapDTO = await response.json();
-
       clearTimeout(id);
       return jsonData;
     } catch (reason) {
@@ -79,7 +72,6 @@ export function useMap(): any {
       const URL = "/api/editor/savemap";
 
       const data = { mapName, mapId };
-      console.log(data);
       const id = setTimeout(() => controller.abort(), 8000);
 
       const response = await fetch(URL, {
