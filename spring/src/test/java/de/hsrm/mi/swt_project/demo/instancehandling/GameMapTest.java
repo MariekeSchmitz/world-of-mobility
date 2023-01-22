@@ -38,36 +38,36 @@ class GameMapTest {
         gameMap.addTile(tile, currentSize / 2, currentSize / 2);
         currentSize = gameMap.getTiles().length;
         assertEquals(startSize, currentSize);
-        assertEquals(0, moveable.getxPos());
-        assertEquals(0, moveable.getyPos());
+        assertEquals(0, moveable.getXPos());
+        assertEquals(0, moveable.getYPos());
 
         // Adding a tile to the left edge should trigger expansion
         gameMap.addTile(tile, 1, 0);
         currentSize = gameMap.getTiles().length;
         assertEquals(startSize + (GameMap.MAP_EXPANSION_PER_SITE * 2), currentSize);
-        assertEquals(GameMap.MAP_EXPANSION_PER_SITE, moveable.getxPos());
-        assertEquals(GameMap.MAP_EXPANSION_PER_SITE, moveable.getyPos());
+        assertEquals(GameMap.MAP_EXPANSION_PER_SITE, moveable.getXPos());
+        assertEquals(GameMap.MAP_EXPANSION_PER_SITE, moveable.getYPos());
 
         // Adding a tile to the top edge should trigger expansion
         gameMap.addTile(tile, 0, 1);
         currentSize = gameMap.getTiles().length;
         assertEquals(startSize + GameMap.MAP_EXPANSION_PER_SITE * 4, currentSize);
-        assertEquals(GameMap.MAP_EXPANSION_PER_SITE * 2, moveable.getxPos());
-        assertEquals(GameMap.MAP_EXPANSION_PER_SITE * 2, moveable.getyPos());
+        assertEquals(GameMap.MAP_EXPANSION_PER_SITE * 2, moveable.getXPos());
+        assertEquals(GameMap.MAP_EXPANSION_PER_SITE * 2, moveable.getYPos());
 
         // Adding a tile to the right edge should trigger expansion
         gameMap.addTile(tile, currentSize - 1, 1);
         currentSize = gameMap.getTiles().length;
         assertEquals(startSize + GameMap.MAP_EXPANSION_PER_SITE * 6, currentSize);
-        assertEquals(GameMap.MAP_EXPANSION_PER_SITE * 3, moveable.getxPos());
-        assertEquals(GameMap.MAP_EXPANSION_PER_SITE * 3, moveable.getyPos());
+        assertEquals(GameMap.MAP_EXPANSION_PER_SITE * 3, moveable.getXPos());
+        assertEquals(GameMap.MAP_EXPANSION_PER_SITE * 3, moveable.getYPos());
 
         // Adding a tile to the bottom edge should trigger expansion
         gameMap.addTile(tile, 1, currentSize - 1);
         currentSize = gameMap.getTiles().length;
         assertEquals(startSize + GameMap.MAP_EXPANSION_PER_SITE * 8, currentSize);
-        assertEquals(GameMap.MAP_EXPANSION_PER_SITE * 4, moveable.getxPos());
-        assertEquals(GameMap.MAP_EXPANSION_PER_SITE * 4, moveable.getyPos());
+        assertEquals(GameMap.MAP_EXPANSION_PER_SITE * 4, moveable.getXPos());
+        assertEquals(GameMap.MAP_EXPANSION_PER_SITE * 4, moveable.getYPos());
 
     }
 

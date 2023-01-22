@@ -263,8 +263,8 @@ public class GameMap {
             .stream()
             .map(npc -> {
 
-                float xPos = npc.getxPos() + MAP_EXPANSION_PER_SITE;
-                float yPos = npc.getyPos() + MAP_EXPANSION_PER_SITE;
+                float xPos = npc.getXPos() + MAP_EXPANSION_PER_SITE;
+                float yPos = npc.getYPos() + MAP_EXPANSION_PER_SITE;
 
                 npc.setXPos(xPos);
                 npc.setYPos(yPos);
