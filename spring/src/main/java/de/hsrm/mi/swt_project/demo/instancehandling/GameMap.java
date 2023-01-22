@@ -36,7 +36,7 @@ import de.hsrm.mi.swt_project.demo.util.ArrayHelpers;
 public class GameMap {
 
     public static final int DEFAULT_SIZE = 8;
-    public static final int MAP_EXPANSION_STEP = 2;
+    public static final int MAP_EXPANSION_PER_SITE = 2;
 
     private Tile[][] tiles = new Tile[DEFAULT_SIZE][DEFAULT_SIZE];
     private String name;
@@ -253,7 +253,7 @@ public class GameMap {
      */
     private void expandMap() {
 
-        int size = this.tiles.length + MAP_EXPANSION_STEP;
+        int size = this.tiles.length + (MAP_EXPANSION_PER_SITE * 2);
         Tile[][] newTiles = new Tile[size][size];
 
         fillMapWithDefaultTiles(newTiles, size);
@@ -263,15 +263,15 @@ public class GameMap {
             .stream()
             .map(npc -> {
 
-            float xPos = npc.getxPos() + MAP_EXPANSION_STEP;
-            float yPos = npc.getyPos() + MAP_EXPANSION_STEP;
+                float xPos = npc.getxPos() + MAP_EXPANSION_PER_SITE;
+                float yPos = npc.getyPos() + MAP_EXPANSION_PER_SITE;
 
-            npc.setXPos(xPos);
-            npc.setYPos(yPos);
+                npc.setXPos(xPos);
+                npc.setYPos(yPos);
 
-            return npc;
+                return npc;
 
-        }).toList();
+            }).toList();
 
         this.tiles = newTiles;
     }
