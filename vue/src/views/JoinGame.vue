@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useUser } from "@/services/useUser";
-import { ref } from "vue";
+import { ref,watch } from "vue";
 import User from "@/components/joinGame/User.vue";
 import CarSelection from "@/components/carselect/CarSelection.vue";
 import { onMounted } from "vue";
@@ -12,6 +12,9 @@ import { useSpawnPoint } from "@/components/spawnpoint/useSpawnPoint";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faPlus, faArrowLeft, faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import Avatar from "@/components/User/Avatar.vue";
+import ErrorWarning from "@/components/ErrorWarning.vue";
+import { animateErrorWarning } from "@/components/ErrorAnimation";
+
 
 library.add(faPlus, faArrowLeft, faChevronRight, faChevronLeft);
 const { spawnState, setMoveableObject, setInstanceId } = useSpawnPoint();
@@ -32,6 +35,11 @@ let moveableType = "";
 const spawnPointSet = ref(false)
 
 async function join() {
+
+  if(!spawnPointSet.value) {
+    showError.value = true
+  }
+  
   if (
     instanceID != undefined &&
     spawnState.xPos != -1 &&
@@ -64,7 +72,13 @@ onMounted(() => {
 
 function toggleButton() {
   spawnPointSet.value = true
+  showError.value = false
 }
+
+watch(showError, (neu, alt) => {
+  const errorBox = document.getElementById("errorBox");
+  animateErrorWarning(neu, errorBox)
+});
 
 </script>
 
@@ -121,7 +135,7 @@ function toggleButton() {
             <!-- Choose Spawnpoint -->
             <div class="text-center">
               <h2 class="">Startpunkt<br v-if="userList.users.length != 0"/>wählen</h2>
-                <SpawnPoint @set-spawn-point="toggleButton" :instance-id="instanceID" class=""/>
+              <SpawnPoint @set-spawn-point="toggleButton" :instance-id="instanceID" class=""/>
             </div>
           </div>
 
@@ -145,6 +159,7 @@ function toggleButton() {
       </div>
 
     </div>
+    <ErrorWarning :errorMsg="'Du musst erst einen Startpunkt wählen.'"></ErrorWarning>
  
     <!-- <p v-if="showError">Spielerlimit ausgeschöpft.</p> -->
   </div>

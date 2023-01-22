@@ -77,7 +77,7 @@ async function createWorldAndForwardToEditor(name: string) {
           >
             Erstellen
           </button>
-          <ErrorWarning :errorMsg="worldCreateData.error" v-if="worldCreateData.error"> </ErrorWarning>
+          <ErrorWarning> </ErrorWarning>
         </div>
 
       </div>

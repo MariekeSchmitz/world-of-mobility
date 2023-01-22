@@ -8,12 +8,17 @@ import router from "@/router";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import ErrorWarning from "@/components/ErrorWarning.vue";
+import { animateErrorWarning } from "@/components/ErrorAnimation";
+
 // Then add it to library
 library.add(faPen);
 
 const { loginData, login, logout, avatarData } = useLogin();
 
 const name = ref(loginData.username);
+
+const errorExisting = ref(false)
+
 const choosingAvatar = ref(false);
 
 const toggleAvatarSelection = () => {
@@ -30,6 +35,27 @@ async function loginAndRedirect(url: string) {
 watch(avatarData, (neu, alt) => {
   toggleAvatarSelection();
 });
+
+watch(loginData, (neu, alt) => {
+
+  const errorBox = document.getElementById("errorBox");
+  if (neu.error == "" && errorExisting.value) {
+    errorExisting.value = false;
+
+  } else if (neu.error != "" && !errorExisting.value) {
+    if (errorBox != null) {
+    errorExisting.value = true;
+   
+    }
+  }
+});
+ 
+
+watch(errorExisting, (neu, alt) => {
+  const errorBox = document.getElementById("errorBox");
+  animateErrorWarning(neu, errorBox)
+});
+
 </script>
 
 <template>
@@ -76,7 +102,6 @@ watch(avatarData, (neu, alt) => {
           Hallo {{ loginData.username }}!
         </p>
         
-        <ErrorWarning :errorMsg="loginData.error" v-if="loginData.error !== ''"> </ErrorWarning>
         
       </div>
 
@@ -99,6 +124,9 @@ watch(avatarData, (neu, alt) => {
     >
       Logout
     </button>
+    <ErrorWarning :errorMsg="loginData.error"> </ErrorWarning>
+    <!-- <ErrorWarning :errorMsg="loginData.error" v-if="loginData.error != ''"> </ErrorWarning> -->
+
 
     <!-- <div class="fixed block inset-0 bg-orange bg-opacity-50 overflow-y-auto h-full w-full" id="my-modal"></div> -->
   </div>

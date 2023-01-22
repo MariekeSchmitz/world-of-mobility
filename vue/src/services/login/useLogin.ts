@@ -107,5 +107,6 @@ export function useLogin() {
     login,
     logout,
     avatarData: readonly(avatarState),
+    loginDataError: readonly(loginState)
   };
 }
