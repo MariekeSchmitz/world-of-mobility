@@ -5,20 +5,41 @@
  * @author Astrid Klemmer & Marieke Schmitz
  */
 
-import { useUserEditor } from "@/services/useUserEditor";
 import User from "@/components/joinGame/User.vue";
-import { onMounted } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useLogin } from "@/services/login/useLogin";
-
-const { userList, getUserlistEditor } = useUserEditor();
-const { loginData } = useLogin();
+import { useInstanceList } from "@/services/useInstanceList";
+import { useRemoveInstanceState } from "@/services/useRemoveInstanceState";
+import router from "@/router";
+import type { IInstanceInfo } from "@/services/IInstanceInfo";
+import { remove } from "@vue/shared";
 
 const props = defineProps<{
-  instanceID: number;
+  instanceId: number;
+  type: string;
 }>();
 
-onMounted(() => {
-  getUserlistEditor(props.instanceID);
+const { instanceState, getInstanceList, deleteState } = useInstanceList();
+const { setRemoveState } = useRemoveInstanceState();
+const { loginData } = useLogin();
+
+onMounted(async () => {
+  await getInstanceList(props.type);
+});
+
+const userlist = computed(() => {
+  if (deleteState.id == props.instanceId) {
+    setRemoveState(props.type, props.instanceId, true);
+    router.push("/worldintro");
+  } else {
+    console.log("search users");
+    instanceState.instancelist.forEach(function (item: IInstanceInfo) {
+      if (item.id == props.instanceId) {
+        console.log("found users", item.users);
+        return item.users;
+      }
+    });
+  }
 });
 
 function scrollingLeft() {
@@ -57,9 +78,10 @@ function toggle() {
       <button id="scrollLeft" @mousedown="scrollingLeft">
         <img src="@/buttons/editor/arrow-left.png" />
       </button>
-
+      <p>Liste: {{ userlist }}</p>
       <ul id="user-wrapper">
-        <li v-for="user in userList.users">
+        <li v-for="user in userlist">
+          <p>User: {{ user }}</p>
           <button class="itemButton" v-if="user != loginData.username">
             <User :name="user"></User>
           </button>

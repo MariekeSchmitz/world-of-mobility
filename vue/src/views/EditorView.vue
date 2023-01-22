@@ -2,7 +2,7 @@
 <script setup lang="ts">
 //@ts-ignore
 
-  import { ref, onMounted, reactive, watch, onUnmounted } from "vue";
+  import { ref, onMounted, reactive, watch, onUnmounted, computed } from "vue";
 
   import * as THREE from 'three'
   import {
@@ -24,19 +24,27 @@
   import { useLogin } from "@/services/login/useLogin";
 import ScriptField from "@/components/editor/ScriptField.vue";
   import ServerChat from "@/components/ServerChat.vue";
-
+import type { IInstanceInfo } from "@/services/IInstanceInfo";
+import { useRemoveInstanceState } from "@/services/useRemoveInstanceState";
+import { RouterLink } from "vue-router";
+import router from "@/router";
  
   const props = defineProps<{
     editorID: string;
   }>();
 
-
   const editorID = Number(props.editorID);
   const { loginData } = useLogin();
   const { leaveEditor } = useUserEditor();
-
+  const { removeInstanceState, setRemoveState } = useRemoveInstanceState();
+  
+  const remove = ref(false)
+  
   onUnmounted(() => {
+    if(removeInstanceState.value.id == editorID && removeInstanceState.value.type == "editor" && removeInstanceState.value.remove == true){
+    }else{
       leaveEditor(editorID, loginData.username);
+    }
   });
 
     /**
@@ -96,7 +104,7 @@ import ScriptField from "@/components/editor/ScriptField.vue";
 
   <LeftMenu />
 
-  <UserListMenu :instanceID="editorID"></UserListMenu>
+  <UserListMenu :instanceId="editorID" type="editor"></UserListMenu>
 
   <ScriptField
     v-if="npcNeedsScript"
