@@ -2,11 +2,14 @@
 
 import type { INpc } from "@/interfaces/INpc";
 import { reactive } from "vue";
+import { useUserFeedback } from "./editor/useUserFeedback";
 
 export function useMap(): any {
   interface IPlacedObject {
     type: string;
   }
+
+  const {setUserFeedback} = useUserFeedback()
 
   interface ITile {
     type: string;
@@ -86,8 +89,10 @@ export function useMap(): any {
       clearTimeout(id);
 
       if (!response.ok) {
+        setUserFeedback("Die Map konnte nicht gespeichert werden")
         return false;
       }
+      setUserFeedback("Die Map wurde erfolgreich gespeichert.")
       return true;
     } catch (reason) {
       console.log(`ERROR: Saving Map failed: ${reason}`);

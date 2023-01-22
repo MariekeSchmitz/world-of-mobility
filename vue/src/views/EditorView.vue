@@ -25,6 +25,7 @@
 import ScriptField from "@/components/editor/ScriptField.vue";
   import ServerChat from "@/components/ServerChat.vue";
 import { useEditorError } from "@/services/editor/useEditorError";
+import { useUserFeedback } from "@/services/editor/useUserFeedback";
 
  
   const props = defineProps<{
@@ -57,6 +58,7 @@ import { useEditorError } from "@/services/editor/useEditorError";
 
     const {saveMap} = useMap();
     const {errorMessage, setEditorError} = useEditorError()
+    const {feedbackMessage, setUserFeedback} = useUserFeedback()
 
     let npcx= ref(0);
     let npcy = ref(0);
@@ -95,6 +97,8 @@ import { useEditorError } from "@/services/editor/useEditorError";
     <button><img src="@/buttons/editor/plus.png" /><br />Starte Spiel</button>
     <button><img src="@/buttons/editor/plus.png" /><br />Welt testen</button>
     <p v-if="errorMessage">{{ errorMessage }}</p>
+    <p v-if="feedbackMessage">{{ feedbackMessage }}</p>
+
   </div>
 
   <LeftMenu />
