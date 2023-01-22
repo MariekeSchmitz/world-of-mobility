@@ -72,14 +72,15 @@ function toggleButton() {
 
     <!-- navigation -->
     <div class="grid grid-cols-3 mx-12 pt-12 h-1/6">
-      <RouterLink to="/gameintro" class="">
+      <button @click="$router.go(-1)">
         <font-awesome-icon
           icon="fa-solid fa-arrow-left"
           size="xl"
           color="white"
           class="bg-greenLight rounded-full p-3 w-6 h-6 inline justify-self-start white hover:bg-greenDark"
         />
-      </RouterLink>
+      </button>
+      
       <div class="text-center">
         <h1>Spielmodus</h1>
       </div>
@@ -160,46 +161,3 @@ function toggleButton() {
     <p v-if="showError">Spielerlimit ausgeschöpft.</p> -->
   </div>
 </template>
-
-<!-- <style scoped>
-#personal-config-container {
-  display: flex;
-  box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.47);
-  margin-top: 2%;
-}
-
-#car-select,
-#place-select {
-  padding: 20px;
-  padding-top: 0;
-}
-
-#car-select {
-  border-right: 3px solid rgba(0, 0, 0, 0.455);
-}
-
-#car-select h1,
-#place-select h1 {
-  width: 50%;
-}
-
-#car-select h1 {
-  margin-bottom: 20%;
-}
-
-.square {
-  width: 12.5rem;
-  height: 12.5rem;
-  background-color: gray;
-}
-.wrapper {
-  display: grid;
-  place-items: center;
-}
-
-.userlist {
-  overflow-y: scroll;
-  overflow: auto;
-  height: 20vh;
-}
-</style> -->
