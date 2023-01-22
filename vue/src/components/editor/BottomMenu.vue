@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { TileName } from "@/services/editor/TileNameEnum";
-import TileSelection from "@/components/editor/bottomElements/TileSelection.vue";
 import { usePlaceState } from "@/services/editor/usePlaceState";
 import { NaturObjectEnum } from "@/services/NaturObjectEnum";
 import { ObjectEnum } from "@/services/ObjectEnum";

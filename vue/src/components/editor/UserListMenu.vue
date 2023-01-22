@@ -46,7 +46,6 @@ function scrollingRight() {
 function toggle() {
   const userListMenu = document.getElementById("userListMenu");
   const showElement = document.getElementById("showElementUser");
-  const showElement = document.getElementById("showElementUser");
 
   if (userListMenu != null && showElement != null) {
     if (userListMenu.style.display == "none") {
@@ -114,40 +113,3 @@ function toggle() {
   </button>
 </template>
 
-<style scoped>
-#userListMenu {
-  display: grid;
-  grid-template-columns: 90% 10%;
-  position: fixed;
-  width: 20%;
-  height: 10%;
-  background-color: rgb(221, 221, 221);
-  padding: 10px;
-  top: 0px;
-  right: 5%;
-}
-
-#showElement {
-  display: none;
-  position: fixed;
-  width: 40px;
-  height: 40px;
-  top: 2%;
-  left: 92%;
-}
-
-ul {
-  height: 100%;
-  width: 85%;
-  overflow-y: hidden;
-  overflow-x: hidden;
-  white-space: nowrap;
-}
-
-li {
-  list-style-type: none;
-  display: inline-block;
-  background-color: lightblue;
-  margin: 0 10px;
-}
-</style>
