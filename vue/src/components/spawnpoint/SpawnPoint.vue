@@ -1,7 +1,7 @@
 <template>
   <div id="spanwpoint-container">
-    <div v-for="(tileRow, y) in testObj.tiles" id="tile-row">
-      <div v-for="(tile, x) in tileRow" id="tile-column">
+    <div v-for="(tileRow, y) in testObj.tiles" :key="testObj.name" id="tile-row">
+      <div v-for="(tile, x) in tileRow" :key="tile.type" id="tile-column">
         <SimplifiedTile
         :tile-type="tile.type"
         :orientation="tile.orientation"

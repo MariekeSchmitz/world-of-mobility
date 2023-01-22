@@ -37,9 +37,7 @@ const props = withDefaults(
   }
 );
 const tileTexturePath =`url('${editorTileURLs[props.tileType]}')`;
-// if(props.tileType === "STREET_CROSS") {
-//   console.log(props.tileType);
-// }
+
 const isSelected = computed(() => {
   return (
     spawnState.tileNumber ==
