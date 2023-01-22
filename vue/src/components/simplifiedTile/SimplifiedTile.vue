@@ -9,8 +9,8 @@
       :class="[{ rotateSelected: isSelected }, { marker: isSelected }]"
     ></div>
     <div
-      id="simplified-tile"
-      :class="[tileType, orientation, { selected: isSelected }]"
+      id="simplifiedTile"
+      :class="[orientation, { selected: isSelected }]"
     ></div>
   </div>
 </template>
@@ -18,6 +18,7 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
 import { useSpawnPoint } from "@/components/spawnpoint/useSpawnPoint";
+import { editorTileURLs } from "../editor/EditorTileURLDict";
 
 const { miniMapScalingState, setSpawnPoint, spawnState } = useSpawnPoint();
 
@@ -35,7 +36,10 @@ const props = withDefaults(
     yIndex: 0,
   }
 );
-
+const tileTexturePath =`url('${editorTileURLs[props.tileType]}')`;
+// if(props.tileType === "STREET_CROSS") {
+//   console.log(props.tileType);
+// }
 const isSelected = computed(() => {
   return (
     spawnState.tileNumber ==
@@ -53,8 +57,8 @@ const isSelected = computed(() => {
   z-index: 1;
 }
 
-#simplified-tile {
-  /* background-image: url('@/textures/tiles/GRASSTILE.jpg'); */
+#simplifiedTile {
+  background-image: v-bind(tileTexturePath);
   box-sizing: border-box;
   background-repeat: no-repeat;
   background-size: contain;

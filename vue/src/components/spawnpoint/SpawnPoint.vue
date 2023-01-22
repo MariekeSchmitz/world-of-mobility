@@ -3,10 +3,10 @@
     <div v-for="(tileRow, y) in testObj.tiles" id="tile-row">
       <div v-for="(tile, x) in tileRow" id="tile-column">
         <SimplifiedTile
-          :tile-type="tile.type"
-          :orientation="tile.orientation"
-          :x-index="x"
-          :y-index="y"
+        :tile-type="tile.type"
+        :orientation="tile.orientation"
+        :x-index="x"
+        :y-index="y"
         />
       </div>
     </div>
