@@ -27,8 +27,8 @@ const props = withDefaults(
   >
   </ISLAND>
   <SKYBALLON
-    :position="props.position.clone().add(new THREE.Vector3(500, 130, -400))"
+    :position="props.position.clone().add(new THREE.Vector3(500, 100, -400))"
     :rotation="120"
-    :scale="new THREE.Vector3(1, 1, 1)">
+    :scale="new THREE.Vector3(4, 4, 4)">
   </SKYBALLON>
 </template>
