@@ -1,6 +1,5 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-//@ts-ignore
 import * as THREE from "three";
 import { ref, computed, onMounted, reactive, onUnmounted, watch } from "vue";
 import { Camera, Scene, HemisphereLight, Renderer } from "troisjs";
@@ -33,6 +32,7 @@ const camera = ref();
 let thirdPerson = ref(true);
 let freeCam = ref(true);
 let switchedMode = false;
+let switchedDirection = false;
 
 const THIRDPERSOFFSET = new THREE.Vector3(0, 8, 15);
 const FIRSTPERSONOFFSET = new THREE.Vector3(0, 0, 0.1);
@@ -100,6 +100,9 @@ function updatePlayerDirection() {
   if (userMoveable.value != undefined) {
     oldPlayerDirection = playerDirection;
     playerDirection = userMoveable.value.orientation;
+    if (oldPlayerDirection != playerDirection) {
+      switchedDirection = true;
+    }
   }
 }
 
@@ -129,7 +132,7 @@ function computeLookAt() {
 const cameraPosition = ref(new THREE.Vector3(0, 0, 0));
 
 function computeCameraPosition() {
-  if (freeCam.value && camera.value && !switchedMode) {
+  if (freeCam.value && camera.value && !switchedMode && !switchedDirection) {
     cameraPosition.value = camera.value.camera.position.add(
       movementVector.value
     );
@@ -141,7 +144,7 @@ function computeCameraPosition() {
           UPVECTOR,
           -orientations[userMoveable.value.orientation]
         );
-      switchedMode = false;
+
       const newCameraPosition = playerPosition.value.clone().add(turnedOffset);
       if (!thirdPerson.value) {
         const turnedDriverOffset =
@@ -153,6 +156,8 @@ function computeCameraPosition() {
       }
       cameraPosition.value = newCameraPosition;
     }
+    switchedMode = false;
+    switchedDirection = false;
   }
 }
 
@@ -176,6 +181,10 @@ function switchPerspective() {
   updateMaxDistance();
   setAzimuthAngle();
   switchedMode = true;
+}
+
+function switchDirection() {
+  switchedDirection = !switchedDirection;
 }
 
 function updateCameraOffset() {
@@ -205,7 +214,7 @@ function setAzimuthAngle() {
   const orbitControls = renderer.value.three.cameraCtrl;
   if (freeCam.value && !thirdPerson.value) {
     orbitControls.minAzimuthAngle =
-      -orientations[userMoveable.value.orientation] - Math.PI / 2+0.1;
+      -orientations[userMoveable.value.orientation] - Math.PI / 2 + 0.1;
     orbitControls.maxAzimuthAngle =
       -orientations[userMoveable.value.orientation] + Math.PI / 2;
   } else {
