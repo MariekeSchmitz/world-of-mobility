@@ -43,9 +43,9 @@ async function startGame(name: string) {
 
 <template>
   <div class="wrapper">
-    <RouterLink to="/worldSelection">
+    <button @click="$router.go(-1)">
       <img src="../buttons/editor/arrow-left.png" alt="" />
-    </RouterLink>
+    </button>
     <h1>Neues Spiel in der Welt {{ props.mapName }}</h1>
     <div class="square"></div>
     <p>Spielname</p>
