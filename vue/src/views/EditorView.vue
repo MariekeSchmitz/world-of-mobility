@@ -22,7 +22,7 @@
   import { number } from "mathjs";
   import { useUserEditor } from "@/services/useUserEditor";
   import { useLogin } from "@/services/login/useLogin";
-import ScriptField from "@/components/editor/ScriptField.vue";
+  import ScriptField from "@/components/editor/ScriptField.vue";
   import ServerChat from "@/components/ServerChat.vue";
   import { library } from "@fortawesome/fontawesome-svg-core";
   import {
@@ -30,6 +30,7 @@ import ScriptField from "@/components/editor/ScriptField.vue";
     faXmark,
     faFileArrowDown
   } from "@fortawesome/free-solid-svg-icons";
+  import { useEditorError } from "@/services/editor/useEditorError";
   library.add(faXmark, faPlus, faFileArrowDown);
 
   const props = defineProps<{
@@ -61,12 +62,13 @@ import ScriptField from "@/components/editor/ScriptField.vue";
     var mouse = new THREE.Vector2();
 
     const {saveMap} = useMap();
+    const {errorMessage, setEditorError} = useEditorError()
 
     let npcx= ref(0);
     let npcy = ref(0);
+
     
     const npcNeedsScript = ref(false)
-
 
 
   function setNpcValues(x:number,y:number) {
@@ -86,7 +88,7 @@ import ScriptField from "@/components/editor/ScriptField.vue";
   <div class="fixed left-1/2 -translate-y-1/2 -translate-x-1/2 top-12">
     <h2>Farmerama Map</h2>
   </div>
-  <div id="exitButton">
+  <div id="exitButton" @click="setEditorError('')">
     <RouterLink to="/worldintro" class="fixed top-4 left-4">
       <font-awesome-icon
         icon="fa-solid fa-xmark"
@@ -116,16 +118,19 @@ import ScriptField from "@/components/editor/ScriptField.vue";
     </button>
   </div>
 
+  <p v-if="errorMessage">{{ errorMessage }}</p>
+  
+
   <UserListMenu :instanceID="editorID"></UserListMenu>
 
   <ScriptField
-    v-if="npcNeedsScript"
+    v-if="npcNeedsScript && !errorMessage"
     :id="editorID"
     :x="npcx"
     :y="npcy"
     @script-window-closed="setNpcScriptView(false)"
   ></ScriptField>
-  <BottomMenu v-if="!npcNeedsScript"></BottomMenu>
+  <BottomMenu v-if="!npcNeedsScript || errorMessage"></BottomMenu>
 
   <!--
   sends msg on every instance, should only be in one instance for all; first player gets all msg shown as many times as there are players
@@ -156,4 +161,7 @@ import ScriptField from "@/components/editor/ScriptField.vue";
       ></EditorMap>
     </Scene>
   </Renderer>
+
+  
+
 </template>
