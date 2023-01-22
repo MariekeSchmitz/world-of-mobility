@@ -79,10 +79,10 @@ const router = createRouter({
 /**
  * if user is not logged in, always root to login page
  */
-// router.beforeEach(async (to, from) => {
-//   if (!loginData.loggedIn && to.name !== "Login") {
-//     return { name: "Login" };
-//   }
-// });
+router.beforeEach(async (to, from) => {
+  if (!loginData.loggedIn && to.name !== "Login") {
+    return { name: "Login" };
+  }
+});
 
 export default router;

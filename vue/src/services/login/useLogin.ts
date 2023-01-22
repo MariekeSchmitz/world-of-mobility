@@ -3,6 +3,8 @@ import type { IAvatarState } from "./IAvatarState";
 import type { ILoginResponse } from "./ILoginResponse";
 import type { ILoginState } from "./ILoginState";
 import type { ISendLogin } from "./ISendLogin";
+import { avatarImages } from "@/components/User/AvatarURLDict";
+
 
 /**
  * global State for user
@@ -16,7 +18,7 @@ const loginState: ILoginState = reactive({
 });
 
 const avatarState: IAvatarState = reactive({
-  avatar: "src/assets/avatar/avatar.png",
+  avatar: avatarImages["GOCKEL"],
 });
 
 /**

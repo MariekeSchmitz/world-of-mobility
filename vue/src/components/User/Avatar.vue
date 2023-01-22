@@ -6,11 +6,14 @@
  * @author Marie Bohnert
  * @author Tom Gouthier
  * */
+
+import { avatarImages } from "@/components/User/AvatarURLDict";
+
 const props = withDefaults(
   defineProps<{
     avatarPicture: string;
   }>(),
-  { avatarPicture: "src/assets/avatar/Gockel.png" }
+  { avatarPicture: avatarImages["Gockel"] }
 );
 </script>
 

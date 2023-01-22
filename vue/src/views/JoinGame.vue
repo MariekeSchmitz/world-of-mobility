@@ -11,6 +11,8 @@ import SpawnPoint from "@/components/spawnpoint/SpawnPoint.vue";
 import { useSpawnPoint } from "@/components/spawnpoint/useSpawnPoint";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faPlus, faArrowLeft, faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import Avatar from "@/components/User/Avatar.vue";
+
 library.add(faPlus, faArrowLeft, faChevronRight, faChevronLeft);
 const { spawnState, setMoveableObject, setInstanceId } = useSpawnPoint();
 const { joinGame } = useGame();

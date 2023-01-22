@@ -16,11 +16,10 @@ const { loginData, login, logout } = useLogin();
  * @author Tom Gouthier
  */
 const avatarPictures: string[] = [
-  "src/assets/avatar/Gockel.png",
-  "src/assets/avatar/Huhn.png",
-  "src/assets/avatar/Kuh.png",
-  "src/assets/avatar/Schwein.png",
-  "src/assets/avatar/avatar.png",
+  "PIG",
+  "GOCKEL",
+  "CHICKEN",
+  "COW",
 ];
 </script>
 
