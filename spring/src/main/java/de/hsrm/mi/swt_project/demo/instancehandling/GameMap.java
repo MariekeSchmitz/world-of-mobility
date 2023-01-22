@@ -87,7 +87,7 @@ public class GameMap {
         logger.info("trying to remove npc with coordinates: {} {}", x, y);
 
         for (MoveableObject npc : npcs) {
-            if (npc.getxPos() == x && npc.getyPos() == y) {
+            if (npc.getXPos() == x && npc.getYPos() == y) {
                 npcs.remove(npc);
                 logger.info("removed following npc: {}", npc);
                 return;
@@ -278,8 +278,8 @@ public class GameMap {
      */
     public boolean validateNpcPlacement(MoveableObject moveableObject) {
 
-        int xPos = (int) moveableObject.getxPos();
-        int yPos = (int) moveableObject.getyPos();
+        int xPos = (int) moveableObject.getXPos();
+        int yPos = (int) moveableObject.getYPos();
 
         if (moveableObject instanceof Passenger) {
 
@@ -297,7 +297,7 @@ public class GameMap {
 
         for (MoveableObject npc : npcs) {
 
-            if (xPos == npc.getxPos() && yPos == npc.getyPos()) {
+            if (xPos == npc.getXPos() && yPos == npc.getYPos()) {
                 return false;
             }
         }

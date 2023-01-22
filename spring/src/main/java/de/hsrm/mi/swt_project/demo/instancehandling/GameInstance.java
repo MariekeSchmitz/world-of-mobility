@@ -5,13 +5,10 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import org.python.util.PythonInterpreter;
-
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.GameControl;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
-import de.hsrm.mi.swt_project.demo.scripting.JythonFactory;
 import de.hsrm.mi.swt_project.demo.scripting.ScriptContext;
 import de.hsrm.mi.swt_project.demo.scripting.ScriptContextCache;
 import de.hsrm.mi.swt_project.demo.validation.CollisionValidator;
@@ -122,16 +119,11 @@ public class GameInstance extends Instance {
     public void update() {
 
         super.update();
-        
-        CollisionValidator collisionValidator = new CollisionValidator(moveableObjects);
-        PythonInterpreter interpreter = JythonFactory.getInterpreter();
-        interpreter.set("tiles", this.map.getTiles());
-        interpreter.set("moveables", this.moveableObjects);
 
-        for(MoveableObject moveableObject : moveableObjects.values()) {
-
+        for (MoveableObject moveableObject : moveableObjects.values()) {
+            
+            Validator collisionValidator = new CollisionValidator(moveableObject, moveableObjects.values());
             Validator movementValidator = new MovementValidator(this.map.getTiles(), moveableObject);
-            collisionValidator.setMoveableObject(moveableObject);
 
             if (movementValidator.validate() && collisionValidator.validate()) {
                 moveableObject.move();
@@ -190,7 +182,6 @@ public class GameInstance extends Instance {
      */
     public boolean playerSlotAvailable(){
         int playerCount = moveableObjects.size()- npcCount;
-        if(playerCount < maximumPlayerCount) return true;
-        else return false;
+        return playerCount < maximumPlayerCount;
     }
 }

@@ -51,13 +51,13 @@ class PassengerTest {
 
             // Always away from start position before last step
             if (i < Orientation.values().length - 1) {
-                assertFalse(startX == passenger.getxPos() && startY == passenger.getyPos());
+                assertFalse(startX == passenger.getXPos() && startY == passenger.getYPos());
             }
         }
 
         // Be at start position after full circle
-        assertEquals(startX, passenger.getxPos());
-        assertEquals(startY, passenger.getyPos());
+        assertEquals(startX, passenger.getXPos());
+        assertEquals(startY, passenger.getYPos());
     }
 
     @Test
