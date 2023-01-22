@@ -42,7 +42,8 @@ public class InstanceHandler implements Updateable {
     @Autowired
     protected TrafficLogicLoopTask trafficTask;
     
-    private UpdateloopInstanceInfo loopInstanceInfo;
+    @Autowired
+    protected UpdateloopInstanceInfo loopInstanceInfo;
 
 
     @Value("${instance.lifetime:1200}")
