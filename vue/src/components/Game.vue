@@ -1,5 +1,11 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
+/**
+ * @fileoverview This file contains the Game component.
+ * it is the main component of the gamevue.
+ * it contains the map, the camera and the renderer.
+ * it also contains the logic for the camera.
+ */
 import * as THREE from "three";
 import { ref, computed, onMounted, reactive, onUnmounted, watch } from "vue";
 import { Camera, Scene, HemisphereLight, Renderer } from "troisjs";
@@ -37,6 +43,9 @@ let switchedDirection = false;
 const THIRDPERSOFFSET = new THREE.Vector3(0, 8, 15);
 const FIRSTPERSONOFFSET = new THREE.Vector3(0, 0, 0.1);
 
+/**
+ * the specific offset of the driver in first person mode.
+ */
 const FIRSTPERSONDRIVEROFFSET = new THREE.Vector3(-0.45, 2, 0.2);
 const cameraOffset = ref(new THREE.Vector3(0, 0, 0));
 
@@ -61,10 +70,17 @@ const userMoveable = computed(() => {
 let oldPosition = ref(new THREE.Vector3(-1, -1, -1));
 let playerPosition = ref(new THREE.Vector3(0, 0, 0));
 
+/**
+ *  watches for incoming changes in the userMovable object.
+ *  calls functions that update everything needed for the camera and the camera itself.
+ */
 watch(userMoveable, () => {
   updatePlayerPositions();
   computeMovementVector();
   updatePlayerDirection();
+  if (!(oldPlayerDirection == playerDirection)) {
+    updateAzimuthAngle();
+  }
   computeLookAt();
   computeCameraPosition();
 });
@@ -88,6 +104,10 @@ function updatePlayerPositions() {
   }
 }
 
+
+/**
+ * computes the new movement vector.
+ */
 function computeMovementVector() {
   movementVector.value = playerPosition.value.clone().sub(oldPosition.value);
 }
@@ -96,22 +116,23 @@ const movementVector = ref(new THREE.Vector3(0, 0, 0));
 let oldPlayerDirection = "";
 let playerDirection = "NORTH";
 
+/**
+ * updates the player direction.
+ * oldPlayerDirection is needed to check if the direction has changed.
+ */
 function updatePlayerDirection() {
   if (userMoveable.value != undefined) {
     oldPlayerDirection = playerDirection;
     playerDirection = userMoveable.value.orientation;
     if (oldPlayerDirection != playerDirection) {
-      switchedDirection = true;
+      switchDirection();
     }
   }
 }
 
-watch(userMoveable, () => {
-  if (!(oldPlayerDirection == playerDirection)) {
-    setAzimuthAngle();
-  }
-});
-
+/**
+ * computes the new lookAt for the camera.
+ */
 function computeLookAt() {
   if (userMoveable.value != undefined) {
     const newLookAt = playerPosition.value.clone();
@@ -131,6 +152,10 @@ function computeLookAt() {
  */
 const cameraPosition = ref(new THREE.Vector3(0, 0, 0));
 
+
+/**
+ * computes the new camera position.
+ */
 function computeCameraPosition() {
   if (freeCam.value && camera.value && !switchedMode && !switchedDirection) {
     cameraPosition.value = camera.value.camera.position.add(
@@ -161,13 +186,16 @@ function computeCameraPosition() {
   }
 }
 
+/**
+ * switches the cam Mode
+ */
 function switchCamMode() {
   freeCam.value = !freeCam.value;
   if (renderer.value) {
     renderer.value.three.cameraCtrl.enabled =
       !renderer.value.three.cameraCtrl.enabled;
   }
-  setAzimuthAngle();
+  updateAzimuthAngle();
 }
 
 /**
@@ -179,14 +207,20 @@ function switchPerspective() {
   thirdPerson.value = !thirdPerson.value;
   updateCameraOffset();
   updateMaxDistance();
-  setAzimuthAngle();
+  updateAzimuthAngle();
   switchedMode = true;
 }
 
+/**
+ * switches the switchedDirection-flag of the player.
+ */
 function switchDirection() {
   switchedDirection = !switchedDirection;
 }
 
+/**
+ * updates the cameraOffset.
+ */
 function updateCameraOffset() {
   if (thirdPerson.value) {
     cameraOffset.value.copy(THIRDPERSOFFSET);
@@ -195,6 +229,9 @@ function updateCameraOffset() {
   }
 }
 
+/**
+ * updates the maxDistance of the OrbitControls.
+ */
 function updateMaxDistance() {
   if (thirdPerson.value) {
     if (renderer.value) {
@@ -209,7 +246,10 @@ function updateMaxDistance() {
   }
 }
 
-function setAzimuthAngle() {
+/**
+ * updates the azimuthAngle of the OrbitControls.
+ */
+function updateAzimuthAngle() {
   if (!renderer.value || !userMoveable.value) return;
   const orbitControls = renderer.value.three.cameraCtrl;
   if (freeCam.value && !thirdPerson.value) {
@@ -263,6 +303,10 @@ onMounted(() => {
   receiveGameUpdate(props.instanceID);
   document.addEventListener("keyup", handleKeyEvent);
 });
+
+/**
+ * removes the keylistener.
+ */
 onUnmounted(() => {
   document.removeEventListener("keyup", handleKeyEvent);
 });
@@ -281,14 +325,6 @@ onUnmounted(() => {
       <!-- <AmbientLight :intensity="0.85" color="#ffffff"></AmbientLight> -->
       <!-- Map -->
       <Map :instanceID="props.instanceID"></Map>
-      <!-- "Car" -->
-      <!-- <Box
-        :position="{ x: 1, y: 1, z: 2 }"
-        :scale="{ x: 1, y: 1, z: 2 }"
-        ref="car"
-        ><ToonMaterial>
-          <Texture src="@/textures/Obsidian.jpg" /> </ToonMaterial
-      ></Box> -->
       <div v-for="(moveable, index) in allMoveables" :key="index">
         <CAR1
           v-if="moveable.classname == 'CAR'"
