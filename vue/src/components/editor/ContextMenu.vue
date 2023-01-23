@@ -10,6 +10,8 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(["turnRight", "turnLeft", "removeTile"]);
+
+const rightPath = "@/assets/objects/REMOVE.png";
 </script>
 <template>
   <!--Background-->
@@ -24,7 +26,9 @@ const emit = defineEmits(["turnRight", "turnLeft", "removeTile"]);
     :height="props.height * (2 / 3)"
     :position="props.position.clone().add(new THREE.Vector3(0.25, 0, 0.01))"
   >
-    <BasicMaterial color="blue" />
+    <BasicMaterial :props="{ transparent: true }">
+      <Texture v-bind:src="rightPath" />
+    </BasicMaterial>
   </Plane>
 
   <!--Left Turn-->

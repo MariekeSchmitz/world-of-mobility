@@ -14,24 +14,23 @@
   } from "troisjs";
 
   import BottomMenu from "@/components/editor/BottomMenu.vue";
-  import LeftMenu from "@/components/editor/LeftMenu.vue";
   import EditorMap from "@/components/editor/EditorMap.vue";
   import MiniMap from "@/components/editor/MiniMap.vue";
   import UserListMenu from "@/components/editor/UserListMenu.vue";
   import {useMap} from "@/services/useMap"
-  import { number } from "mathjs";
   import { useUserEditor } from "@/services/useUserEditor";
   import { useLogin } from "@/services/login/useLogin";
   import ScriptField from "@/components/editor/ScriptField.vue";
   import ServerChat from "@/components/ServerChat.vue";
+  import Avatar from "@/components/User/Avatar.vue";
   import { library } from "@fortawesome/fontawesome-svg-core";
   import {
     faPlus,
-    faXmark,
-    faFileArrowDown
+    faFileArrowDown,
+    faArrowLeft
   } from "@fortawesome/free-solid-svg-icons";
   import { useEditorError } from "@/services/editor/useEditorError";
-  library.add(faXmark, faPlus, faFileArrowDown);
+  library.add(faPlus, faFileArrowDown, faArrowLeft);
 
   const props = defineProps<{
     editorID: string;
@@ -39,7 +38,8 @@
 
 
   const editorID = Number(props.editorID);
-  const { loginData } = useLogin();
+  const backgroundPath = "@/assets/images/home_Blur.png";
+  const { loginData, avatarData } = useLogin();
   const { leaveEditor } = useUserEditor();
 
   onUnmounted(() => {
@@ -85,41 +85,49 @@
 </script>
 
 <template>
-  <div class="fixed left-1/2 -translate-y-1/2 -translate-x-1/2 top-12">
-    <h2>Farmerama Map</h2>
+  <div class="fixed left-1/2 -translate-y-1/2 -translate-x-1/2 top-16">
+    <h1>Farmerama Map</h1>
   </div>
-  <div id="exitButton" @click="setEditorError('')">
-    <RouterLink to="/worldintro" class="fixed top-4 left-4">
-      <font-awesome-icon
-        icon="fa-solid fa-xmark"
-        size="3xl"
-        color="#2F8265"
-        class="p-2 w-8 h-8"
-      />
-    </RouterLink>
-  </div>
+  <RouterLink
+    to="/worldintro"
+    class="fixed top-7 left-7"
+    @click="setEditorError('')"
+  >
+    <font-awesome-icon
+      icon="fa-solid fa-arrow-left"
+      size="3xl"
+      color="#2F8265"
+      class="p-3 w-10 h-10 rounded-full bg-white"
+    />
+  </RouterLink>
 
-  <div class="grid grid-rows-2 fixed top-1/4 right-6 gap-16 font-poppins">
-    <button>
+  <Avatar
+    :avatarPicture="avatarData.avatar"
+    class="w-16 h-16 fixed top-7 right-7"
+  ></Avatar>
+
+  <div
+    class="grid grid-rows-2 fixed top-[20%] left-0 gap-4 font-poppins text-sm font-semibold text-greenDark"
+  >
+    <button class="bg-white p-5">
       <font-awesome-icon
         icon="fa-solid fa-plus"
         size="3xl"
         color="#2F8265"
         class="w-5 h-5"
-      /><br />Starte Spiel
+      /><br />Spiel<br />starten
     </button>
-    <button @click="saveMap('testMap2', editorID)">
+    <button @click="saveMap('testMap2', editorID)" class="bg-white">
       <font-awesome-icon
         icon="fa-solid fa-file-arrow-down"
         size="3xl"
         color="#2F8265"
         class="w-5 h-5"
-      /><br />speichern
+      /><br />Welt<br />speichern
     </button>
   </div>
 
   <p v-if="errorMessage">{{ errorMessage }}</p>
-  
 
   <UserListMenu :instanceID="editorID"></UserListMenu>
 
@@ -161,7 +169,4 @@
       ></EditorMap>
     </Scene>
   </Renderer>
-
-  
-
 </template>

@@ -11,12 +11,12 @@ import { onMounted } from "vue";
 import { useLogin } from "@/services/login/useLogin";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
-  faAngleRight,
+  faXmark,
   faAngleLeft,
   faAngleDown,
   faAngleUp,
 } from "@fortawesome/free-solid-svg-icons";
-library.add(faAngleRight, faAngleLeft, faAngleDown, faAngleUp);
+library.add(faXmark, faAngleLeft, faAngleDown, faAngleUp);
 
 const { userList, getUserlistEditor } = useUserEditor();
 const { loginData } = useLogin();
@@ -53,7 +53,7 @@ function toggle() {
       showElement.style.display = "none";
     } else {
       userListMenu.style.display = "none";
-      showElement.style.display = "block";
+      showElement.style.display = "grid";
     }
   }
 }
@@ -62,19 +62,31 @@ function toggle() {
 <template>
   <div
     id="userListMenu"
-    class="grid grid-cols-[90%_10%] w-1/4 h-[10%] fixed top-0 right-[8%] p-3"
+    class="grid grid-rows-[10%_90%] w-[13%] h-1/5 bg-white fixed top-1/4 right-0 p-3 pb-5"
   >
-    <div class="grid grid-cols-[10%_80%_10%] my-auto">
-      <button id="scrollLeft" @mousedown="scrollingLeft">
+    <button id="hideElement" @click="toggle" class="grid">
+      <font-awesome-icon
+        icon="fa-solid fa-xmark"
+        size="3xl"
+        color="#242526"
+        class="w-5 h-5 justify-self-end"
+      />
+    </button>
+
+    <div class="grid grid-rows-[10%_80%_10%]">
+      <button id="scrollLeft" @mousedown="scrollingLeft" class="h-full">
         <font-awesome-icon
-          icon="fa-solid fa-angle-left"
+          icon="fa-solid fa-angle-up"
           size="3xl"
-          color="#2F8265"
-          class="w-8 h-8"
+          color="#242526"
+          class="w-4 h-4"
         />
       </button>
 
-      <ul id="user-wrapper" class="h-full whitespace-nowrap overflow-hidden">
+      <ul
+        id="user-wrapper"
+        class="h-full pt-4 whitespace-nowrap overflow-hidden"
+      >
         <li v-for="user in userList.users" class="bottomMenuListStyle">
           <User :name="user" v-if="user != loginData.username"></User>
         </li>
@@ -82,34 +94,25 @@ function toggle() {
 
       <button id="scrollRight" @click="scrollingRight">
         <font-awesome-icon
-          icon="fa-solid fa-angle-right"
+          icon="fa-solid fa-angle-down"
           size="3xl"
-          color="#2F8265"
-          class="w-8 h-8"
+          color="#242526"
+          class="w-4 h-4"
         />
       </button>
     </div>
-
-    <button id="hideElement" @click="toggle">
-      <font-awesome-icon
-        icon="fa-solid fa-angle-up"
-        size="3xl"
-        color="#2F8265"
-        class="w-8 h-8"
-      />
-    </button>
   </div>
   <button
     id="showElementUser"
-    class="hidden fixed top-2 right-[8.5%]"
+    class="editorLabel text-greenDark grid-cols-[20%_80%] items-center hidden fixed top-1/4 right-2"
     @click="toggle"
   >
     <font-awesome-icon
-      icon="fa-solid fa-angle-down"
+      icon="fa-solid fa-angle-left"
       size="3xl"
       color="#2F8265"
-      class="w-8 h-8"
+      class="w-5 h-5 pr-2"
     />
+    <div class="inline">Userliste</div>
   </button>
 </template>
-

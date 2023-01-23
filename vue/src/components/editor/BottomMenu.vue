@@ -11,10 +11,25 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faAngleRight,
   faAngleLeft,
-  faAngleDown,
   faAngleUp,
+  faXmark,
+  faRoad,
+  faCar,
+  faTree,
+  faTrafficLight,
+  faPersonWalking,
 } from "@fortawesome/free-solid-svg-icons";
-library.add(faAngleRight, faAngleLeft, faAngleDown, faAngleUp);
+library.add(
+  faAngleRight,
+  faAngleLeft,
+  faAngleUp,
+  faXmark,
+  faRoad,
+  faCar,
+  faTree,
+  faTrafficLight,
+  faPersonWalking
+);
 
 const { setPlaceState } = usePlaceState();
 
@@ -140,37 +155,99 @@ function switchContent(element: string) {
 <template>
   <div
     id="bottomMenu"
-    class="grid grid-cols-[20%_75%_5%] w-1/2 h-1/5 fixed bottom-0 left-1/4 font-poppins"
+    class="bg-whiteOverlay grid grid-cols-[25%_70%_5%] w-3/5 h-1/5 py-3 px-6 fixed bottom-0 left-[20%] font-poppins"
   >
-    <div class="grid grid-rows-2">
-      <button @click="switchContent('landscapeMenu')">
-        Infrastruktur, Landschaft
-      </button>
-      <button @click="switchContent('npcMenu')">NPCs</button>
-    </div>
-    <div>
-      <div id="landscapeMenu" class="grid grid-cols-[20%_80%] h-full">
-        <div class="grid grid-rows-3">
-          <button @click="switchItems('streetItems')">
-            <img
-              src="@/textures/editor/STREET_STRAIGHT.jpg"
-              class="w-10 h-10 inline justify-center"
-            />
-          </button>
-          <button @click="switchItems('componentItems')">
-            Natur/<br />Tiere
-          </button>
-          <button @click="switchItems('otherItems')">
-            Gegenstände/<br />Tankstelle
-          </button>
+    <fieldset class="grid grid-rows-2 editorLabel text-greenDark">
+      <label class="grid grid-cols-[30%_70%] items-center">
+        <input
+          type="radio"
+          name="selectMenu"
+          checked
+          @click="switchContent('landscapeMenu')"
+          class="hidden peer"
+        />
+        <font-awesome-icon
+          icon="fa-solid fa-road"
+          size="3xl"
+          color="#2F8265 "
+          class="w-5 h-5 bg-white rounded-full p-2 mr-1 justify-self-end peer-checked:text-orange"
+        />
+        <div class="pl-2 text-left peer-checked:text-orange">
+          Infrastruktur,<br />
+          Landschaft
         </div>
+      </label>
+      <label class="grid grid-cols-[30%_70%] items-center">
+        <input
+          type="radio"
+          name="selectMenu"
+          @click="switchContent('npcMenu')"
+          class="hidden peer"
+        />
+        <font-awesome-icon
+          icon="fa-solid fa-car"
+          size="3xl"
+          color="#2F8265"
+          class="w-5 h-5 bg-white rounded-full p-2 mr-1 justify-self-end peer-checked:text-orange"
+        />
+        <div class="pl-2 text-left peer-checked:text-orange">NPCs</div>
+      </label>
+    </fieldset>
+
+    <div class="bg-white pr-5 py-5">
+      <div id="landscapeMenu" class="grid grid-cols-[15%_85%] h-full">
+        <fieldset class="grid grid-rows-3">
+          <label class="grid items-center">
+            <input
+              type="radio"
+              name="selectObject"
+              checked
+              class="hidden peer"
+              @click="switchItems('streetItems')"
+            />
+            <font-awesome-icon
+              icon="fa-solid fa-road"
+              size="3xl"
+              color="#2F826575"
+              class="w-5 h-5 justify-self-center peer-checked:text-orange"
+            />
+          </label>
+          <label class="grid items-center">
+            <input
+              type="radio"
+              name="selectObject"
+              class="hidden peer"
+              @click="switchItems('componentItems')"
+            />
+            <font-awesome-icon
+              icon="fa-solid fa-tree"
+              size="3xl"
+              color="#2F826575"
+              class="w-5 h-5 justify-self-center peer-checked:text-orange"
+            />
+          </label>
+          <label class="grid items-center">
+            <input
+              type="radio"
+              name="selectObject"
+              class="hidden peer"
+              @click="switchItems('otherItems')"
+            />
+            <font-awesome-icon
+              icon="fa-solid fa-traffic-light"
+              size="3xl"
+              color="#2F826575"
+              class="w-5 h-5 justify-self-center peer-checked:text-orange"
+            />
+          </label>
+        </fieldset>
 
         <div class="grid grid-cols-[10%_80%_10%] my-auto">
           <button id="scrollLeft" @mousedown="scrollingLeft">
             <font-awesome-icon
               icon="fa-solid fa-angle-left"
               size="3xl"
-              color="#2F8265"
+              color="#242526"
               class="w-8 h-8"
             />
           </button>
@@ -229,25 +306,52 @@ function switchContent(element: string) {
             <font-awesome-icon
               icon="fa-solid fa-angle-right"
               size="3xl"
-              color="#2F8265"
+              color="#242526"
               class="w-8 h-8"
             />
           </button>
         </div>
       </div>
 
-      <div id="npcMenu" class="h-full hidden grid-cols-[20%_80%]">
-        <div class="h-full grid grid-rows-2">
-          <button @click="switchItems('motorized')">Fahrzeuge</button>
-          <button @click="switchItems('passenger')">Fußgänger</button>
-        </div>
+      <div id="npcMenu" class="h-full hidden grid-cols-[15%_85%]">
+        <fieldset class="h-full grid grid-rows-2">
+          <label class="grid items-center">
+            <input
+              type="radio"
+              name="selectNpc"
+              checked
+              class="hidden peer"
+              @click="switchItems('motorized')"
+            />
+            <font-awesome-icon
+              icon="fa-solid fa-car"
+              size="3xl"
+              color="#2F826575"
+              class="w-5 h-5 justify-self-center peer-checked:text-orange"
+            />
+          </label>
+          <label class="grid items-center">
+            <input
+              type="radio"
+              name="selectNpc"
+              class="hidden peer"
+              @click="switchItems('passenger')"
+            />
+            <font-awesome-icon
+              icon="fa-solid fa-person-walking"
+              size="3xl"
+              color="#2F826575"
+              class="w-6 h-6 justify-self-center peer-checked:text-orange"
+            />
+          </label>
+        </fieldset>
 
         <div class="grid grid-cols-[10%_80%_10%] my-auto">
           <button id="scrollLeft" @mousedown="scrollingLeft">
             <font-awesome-icon
               icon="fa-solid fa-angle-left"
               size="3xl"
-              color="#2F8265"
+              color="#242526"
               class="w-8 h-8"
             />
           </button>
@@ -301,7 +405,7 @@ function switchContent(element: string) {
             <font-awesome-icon
               icon="fa-solid fa-angle-right"
               size="3xl"
-              color="#2F8265"
+              color="#242526"
               class="w-8 h-8"
             />
           </button>
@@ -309,26 +413,27 @@ function switchContent(element: string) {
       </div>
     </div>
 
-    <button id="hideElement" @click="toggle">
+    <button id="hideElement" @click="toggle" class="grid items-start">
       <font-awesome-icon
-        icon="fa-solid fa-angle-down"
+        icon="fa-solid fa-xmark"
         size="3xl"
-        color="#2F8265"
-        class="w-8 h-8"
+        color="#242526"
+        class="w-6 h-6 justify-self-end"
       />
     </button>
   </div>
 
   <button
     id="showElement"
-    class="hidden fixed bottom-2 right-1/4"
+    class="editorLabel hidden fixed bottom-2 right-[20%]"
     @click="toggle"
   >
     <font-awesome-icon
       icon="fa-solid fa-angle-up"
       size="3xl"
-      color="#2F8265"
-      class="w-8 h-8"
-    />
+      color="white"
+      class="w-5 h-5"
+    /><br />
+    Welt bearbeiten
   </button>
 </template>

@@ -11,6 +11,7 @@ module.exports = {
       orange: "#FFB72E",
       orangeLight: "#F6E8CD",
       white: "#ffffff",
+      whiteOverlay: "#ffffff95",
       black: "#000000",
       transparent: "transparent",
     },
@@ -24,7 +25,5 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require("tailwind-scrollbar-hide")
-  ]
+  plugins: [require("tailwind-scrollbar-hide")],
 };

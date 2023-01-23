@@ -59,7 +59,7 @@
   }
 
   label {
-    @apply font-poppins;
+    @apply font-poppins hover:cursor-pointer;
   }
 
   .gameListItem {
@@ -80,5 +80,8 @@
 
   label {
     @apply font-poppins text-base text-greenDark font-semibold;
+  }
+  .editorLabel {
+    @apply font-poppins text-white font-bold text-sm;
   }
 }
