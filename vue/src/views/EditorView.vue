@@ -25,6 +25,9 @@
 import ScriptField from "@/components/editor/ScriptField.vue";
   import ServerChat from "@/components/ServerChat.vue";
 import { useEditorError } from "@/services/editor/useEditorError";
+import type { MapInterface } from "@/services/editor/MapInterface";
+import router from "@/router";
+
 
  
   const props = defineProps<{
@@ -35,6 +38,8 @@ import { useEditorError } from "@/services/editor/useEditorError";
   const editorID = Number(props.editorID);
   const { loginData } = useLogin();
   const { leaveEditor } = useUserEditor();
+
+  
 
   onUnmounted(() => {
       leaveEditor(editorID, loginData.username);
@@ -55,8 +60,15 @@ import { useEditorError } from "@/services/editor/useEditorError";
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();
 
-    const {saveMap} = useMap();
+    const {saveMap, getMapEditor} = useMap();
     const {errorMessage, setEditorError} = useEditorError()
+
+    const loadedMap = getMapEditor(props.editorID);
+    const name = ref();
+    onMounted(() => {
+    loadedMap.then((result: MapInterface) => (name.value = result.name));
+	
+});
 
     let npcx= ref(0);
     let npcy = ref(0);
@@ -76,11 +88,18 @@ import { useEditorError } from "@/services/editor/useEditorError";
     npcNeedsScript.value = val;
   }
 
+  function startGame(){
+  saveMap(props.editorID)
+  router.push("/gameConfig/" + name.value);
+  }
+	
+
+
 </script>
 
 <template>
   <div class="mapTitle">
-    <p>Farmerama Map</p>
+    <p>{{name}}</p>
     <button @click="saveMap(editorID)">save</button>
   </div>
   <div id="exitButton" >
@@ -92,7 +111,7 @@ import { useEditorError } from "@/services/editor/useEditorError";
   </div>
 
   <div class="buttonMenuRight">
-    <button><img src="@/buttons/editor/plus.png" /><br />Starte Spiel</button>
+    <button @click="startGame()"><img src="@/buttons/editor/plus.png" /><br />Starte Spiel</button>
     <button><img src="@/buttons/editor/plus.png" /><br />Welt testen</button>
     <p v-if="errorMessage">{{ errorMessage }}</p>
   </div>
