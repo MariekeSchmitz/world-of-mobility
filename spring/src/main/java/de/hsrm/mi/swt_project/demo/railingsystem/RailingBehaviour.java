@@ -24,12 +24,20 @@ public class RailingBehaviour {
     private Map<String, RailingMemoryCell> railingMemory = new HashMap<>();
 
     Logger logger = LoggerFactory.getLogger(getClass());
+    Direction testDirectionDeleteLater = (int)Math.random()*100 < 50 ? Direction.LEFT : Direction.RIGHT; 
 
     public void railCoordinates(String key, MoveableObject moveable, Tile tile, Direction dir) {
         if(railingMemory.containsKey(key)){
-            railingMemory.get(key).leftTile((int)moveable.getxPos(), (int)moveable.getyPos());
+            RailingMemoryCell memoryCell = railingMemory.get(key);
+            if(memoryCell.leftTile((int)moveable.getXPos(), (int)moveable.getYPos())){
+                memoryCell.setAlreadyTurned(false);
+                railingMemory.put(key, memoryCell);
+                testDirectionDeleteLater = (int)(Math.random()*100) < 50 ? Direction.LEFT : Direction.RIGHT;
+                logger.info(""+testDirectionDeleteLater);
+            }
         } else {
-
+            RailingMemoryCell memoryCell = new RailingMemoryCell((int)moveable.getXPos(), (int)moveable.getYPos());
+            railingMemory.put(key, memoryCell);
         }
 
         float movement = moveable.getCurrentVelocity() * moveable.getMaxVelocity();
@@ -37,16 +45,20 @@ public class RailingBehaviour {
             straightBehaviour(moveable, tile, movement);
 
         } else if (tile.getType().equals(Tiletype.STREET_CURVE)) {
-            curveBehaviour(moveable, tile, movement);
-        }
+            curveBehaviour(key, moveable, tile, movement);
+
+        } else if(tile.getType().equals(Tiletype.STREET_CROSS)){
+            crossBehaviour(key, moveable, tile, movement, testDirectionDeleteLater);
+
+        } 
 
     }
 
-    public void crossBehaviour(MoveableObject moveable, Tile tile, float movement, Direction dir){
+    public void crossBehaviour(String key, MoveableObject moveable, Tile tile, float movement, Direction dir){
         Tile straightConversionTile = Tiletype.STREET_STRAIGHT.createTile();
         Tile curveConversionTile = Tiletype.STREET_CURVE.createTile();
         Orientation orientation = moveable.getOrientation();
-        boolean alreadyTurned = false;
+        boolean alreadyTurned = railingMemory.get(key).isAlreadyTurned();
         switch (dir) {
             case LEFT:
                 if(alreadyTurned){
@@ -54,7 +66,7 @@ public class RailingBehaviour {
                     straightBehaviour(moveable, straightConversionTile, movement);
                 } else{
                     curveConversionTile.setOrientation(orientation);
-                    curveBehaviour(moveable, tile, movement);
+                    curveBehaviour(key, moveable, curveConversionTile, movement);
                 }
                 break;
             case RIGHT:
@@ -63,7 +75,7 @@ public class RailingBehaviour {
                     straightBehaviour(moveable, straightConversionTile, movement);
                 } else{
                     curveConversionTile.setOrientation(orientation.prev().prev());
-                    curveBehaviour(moveable, tile, movement);
+                    curveBehaviour(key, moveable, curveConversionTile, movement);
                 }
                 break;
             default:
@@ -75,8 +87,8 @@ public class RailingBehaviour {
 
     public void straightBehaviour(MoveableObject moveable, Tile tile, float movement) {
 
-        float xPos = moveable.getxPos();
-        float yPos = moveable.getyPos();
+        float xPos = moveable.getXPos();
+        float yPos = moveable.getYPos();
 
         Orientation orientation = moveable.getOrientation();
 
@@ -110,12 +122,13 @@ public class RailingBehaviour {
         }
     }  
 
-    public void curveBehaviour(MoveableObject moveable, Tile tile, float movement) {
+    public void curveBehaviour(String key, MoveableObject moveable, Tile tile, float movement) {
 
-        float xPos = moveable.getxPos();
-        float yPos = moveable.getyPos();
-
+        float xPos = moveable.getXPos();
+        float yPos = moveable.getYPos();
         Orientation orientation = moveable.getOrientation();
+
+        RailingMemoryCell memoryCell = railingMemory.get(key);
 
         if (tile.getOrientation() == Orientation.NORTH) {
 
@@ -124,10 +137,8 @@ public class RailingBehaviour {
                 moveable.setXPos((int) xPos + RIGHT_ALIGNMENT_OFFSET);
 
                 if (yPos + movement > ((int) yPos + UP_ALIGNMENT_OFFSET)) {
-
                     moveable.setYPos((int) yPos + UP_ALIGNMENT_OFFSET);
-                    moveable.turn(Direction.LEFT);
-                    curveBehaviour(moveable, tile, APPROXIMATION_STEP);
+                    doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.LEFT);
 
                 } else {
                     moveable.setYPos(yPos + movement);
@@ -135,16 +146,15 @@ public class RailingBehaviour {
 
             } else if (orientation == Orientation.EAST) {
 
-                moveable.setXPos((int) xPos + RIGHT_ALIGNMENT_OFFSET);
+                moveable.setYPos((int) yPos + DOWN_ALIGNMENT_OFFSET);
 
-                if (yPos + movement > (int) yPos + DOWN_ALIGNMENT_OFFSET) {
+                if (xPos + movement > (int) xPos + LEFT_ALIGNMENT_OFFSET) {
 
-                    moveable.setYPos((int) yPos + DOWN_ALIGNMENT_OFFSET);
-                    moveable.turn(Direction.RIGHT);
-                    curveBehaviour(moveable, tile, APPROXIMATION_STEP);
+                    moveable.setXPos((int) xPos + LEFT_ALIGNMENT_OFFSET);
+                    doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.RIGHT);
 
                 } else {
-                    moveable.setYPos(yPos + movement);
+                    moveable.setXPos(xPos + movement);
                 }
 
             } else if (orientation == Orientation.SOUTH) {
@@ -173,8 +183,7 @@ public class RailingBehaviour {
                 if (xPos + movement > (int) xPos + RIGHT_ALIGNMENT_OFFSET) {
 
                     moveable.setXPos((int) xPos + RIGHT_ALIGNMENT_OFFSET);
-                    moveable.turn(Direction.LEFT);
-                    curveBehaviour(moveable, tile, APPROXIMATION_STEP);
+                    doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.LEFT);
 
                 } else {
                     moveable.setXPos(xPos + movement);
@@ -184,11 +193,10 @@ public class RailingBehaviour {
 
                 moveable.setXPos((int) xPos + LEFT_ALIGNMENT_OFFSET);
 
-                if (yPos + movement > (int) yPos + DOWN_ALIGNMENT_OFFSET) {
+                if (yPos - movement < (int) yPos + UP_ALIGNMENT_OFFSET) {
 
-                    moveable.setXPos((int) xPos + LEFT_ALIGNMENT_OFFSET);
-                    moveable.turn(Direction.RIGHT);
-                    curveBehaviour(moveable, tile, APPROXIMATION_STEP);
+                    moveable.setYPos((int) yPos + UP_ALIGNMENT_OFFSET);
+                    doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.RIGHT);
 
                 } else {
                     moveable.setYPos(yPos - movement);
@@ -220,8 +228,7 @@ public class RailingBehaviour {
                 if (yPos - movement < (int) yPos + DOWN_ALIGNMENT_OFFSET) {
 
                     moveable.setYPos((int) yPos + DOWN_ALIGNMENT_OFFSET);
-                    moveable.turn(Direction.LEFT);
-                    curveBehaviour(moveable, tile, APPROXIMATION_STEP);
+                    doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.LEFT);
 
                 } else {
                     moveable.setYPos(yPos - movement);
@@ -234,8 +241,7 @@ public class RailingBehaviour {
                 if (xPos - movement < (int) xPos + RIGHT_ALIGNMENT_OFFSET) {
 
                     moveable.setYPos((int) yPos + UP_ALIGNMENT_OFFSET);
-                    moveable.turn(Direction.RIGHT);
-                    curveBehaviour(moveable, tile, APPROXIMATION_STEP);
+                    doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.RIGHT);
 
                 } else {
                     moveable.setXPos(xPos - movement);
@@ -251,8 +257,7 @@ public class RailingBehaviour {
                 if (yPos + movement > (int) yPos + DOWN_ALIGNMENT_OFFSET) {
 
                     moveable.setYPos((int) yPos + DOWN_ALIGNMENT_OFFSET);
-                    moveable.turn(Direction.RIGHT);
-                    curveBehaviour(moveable, tile, APPROXIMATION_STEP);
+                    doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.RIGHT);
 
                 } else {
                     moveable.setYPos(yPos + movement);
@@ -275,8 +280,7 @@ public class RailingBehaviour {
                 if (xPos - movement < (int) xPos + LEFT_ALIGNMENT_OFFSET) {
 
                     moveable.setYPos((int) yPos + UP_ALIGNMENT_OFFSET);
-                    moveable.turn(Direction.LEFT);
-                    curveBehaviour(moveable, tile, APPROXIMATION_STEP);
+                    doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.LEFT);
 
                 } else {
                     moveable.setXPos(xPos - movement);
@@ -284,5 +288,12 @@ public class RailingBehaviour {
             }
         }
     }  
+
+    private void doCurveAproximationStep(String key, RailingMemoryCell memoryCell, MoveableObject moveable, Tile tile, Direction d){
+        moveable.turn(d);
+        memoryCell.setAlreadyTurned(true);
+        railingMemory.put(key, memoryCell);
+        curveBehaviour(key, moveable, tile, APPROXIMATION_STEP);
+    }
 
 }

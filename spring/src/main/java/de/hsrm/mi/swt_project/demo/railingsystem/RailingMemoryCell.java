@@ -4,6 +4,13 @@ public class RailingMemoryCell {
     private int xPos;
     private int yPos;
     private boolean alreadyTurned;
+
+    public RailingMemoryCell(int xPos, int yPos){
+        this.xPos = xPos;
+        this.yPos = yPos;
+        this.alreadyTurned = false;
+    }
+
     public int getXPos() {
         return xPos;
     }
