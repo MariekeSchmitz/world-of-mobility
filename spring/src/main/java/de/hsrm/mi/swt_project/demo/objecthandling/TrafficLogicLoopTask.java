@@ -17,6 +17,13 @@ public class TrafficLogicLoopTask {
     @Scheduled(fixedDelayString = "${trafficLight.tickrate:7000}")
     public void switchTrafficLight() {
         trafficLightState = trafficLightState.next();
+        try {
+            Thread.sleep(1000, 0);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        trafficLightState = trafficLightState.next();
     }
 
     public TrafficLightState getTrafficLightState(){

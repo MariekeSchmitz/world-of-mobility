@@ -1,4 +1,5 @@
 import { reactive, readonly } from "vue";
+import { useEditorError } from "./editor/useEditorError";
 
 /**
  * interface that represents a script to be loaded for npc on specific coordinates
@@ -8,6 +9,8 @@ interface ISendScript {
   x: number;
   y: number;
 }
+
+const {setEditorError} = useEditorError()
 
 /**
  * posts script for npc on specific coordinates
@@ -24,6 +27,8 @@ async function postScript(id: number, script: string, x: number, y: number) {
   };
   const url: string = `/api/editor/${id}/loadScript`;
 
+  try{
+
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -34,9 +39,16 @@ async function postScript(id: number, script: string, x: number, y: number) {
 
   if (!response.ok) {
     const jsondata = await response.json();
-    console.log(jsondata.message);
+    setEditorError(jsondata.message)
+  } else{
+    setEditorError("")
   }
+} catch(error:any){
+  setEditorError(error.toString())
+  
 }
+}
+
 
 export function useScript() {
   return postScript;

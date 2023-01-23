@@ -21,9 +21,16 @@ public class RailingBehaviour {
 
     public static final float APPROXIMATION_STEP = 0.002f;
 
+    private Map<String, RailingMemoryCell> railingMemory = new HashMap<>();
+
     Logger logger = LoggerFactory.getLogger(getClass());
 
-    public void railCoordinates(MoveableObject moveable, Tile tile, Direction dir) {
+    public void railCoordinates(String key, MoveableObject moveable, Tile tile, Direction dir) {
+        if(railingMemory.containsKey(key)){
+            railingMemory.get(key).leftTile((int)moveable.getxPos(), (int)moveable.getyPos());
+        } else {
+
+        }
 
         float movement = moveable.getCurrentVelocity() * moveable.getMaxVelocity();
         if (tile.getType().equals(Tiletype.STREET_STRAIGHT)) {

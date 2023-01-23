@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import org.python.util.PythonInterpreter;
-
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.GameControl;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
@@ -33,6 +31,7 @@ public class GameInstance extends Instance {
     private String name;
     private int maximumPlayerCount;
     private int npcCount;
+    private RailingBehaviour rb = new RailingBehaviour();
     
     
     /**
@@ -125,16 +124,11 @@ public class GameInstance extends Instance {
     public void update() {
 
         super.update();
-        
-        CollisionValidator collisionValidator = new CollisionValidator(moveableObjects);
-        PythonInterpreter interpreter = JythonFactory.getInterpreter();
-        interpreter.set("tiles", this.map.getTiles());
-        interpreter.set("moveables", this.moveableObjects);
 
         for(String key : moveableObjects.keySet()) {
             MoveableObject moveableObject = moveableObjects.get(key);
+            Validator collisionValidator = new CollisionValidator(moveableObject, moveableObjects.values());
             Validator movementValidator = new MovementValidator(this.map.getTiles(), moveableObject);
-            collisionValidator.setMoveableObject(moveableObject);
             
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
             //TODO: VALIDATOR WIEDER ANMACHEN UND NUR FÜR NPCS ANMACHEN 
@@ -143,14 +137,14 @@ public class GameInstance extends Instance {
             if (/*movementValidator.validate() &&*/ collisionValidator.validate()) {
                 if(/*key.contains("NPC")&&*/moveableObject instanceof MotorizedObject){
 
-                    int xPos = (int) moveableObject.getxPos();
-                    int yPos = (int) moveableObject.getyPos();
+                    int xPos = (int) moveableObject.getXPos();
+                    int yPos = (int) moveableObject.getYPos();
 
                     Tile[][] allTiles = this.map.getTiles();
                     Tile t = allTiles[yPos][xPos];
 
-                    RailingBehaviour rb = new RailingBehaviour();
-                    rb.railCoordinates(moveableObject, t, null);
+
+                    rb.railCoordinates(key, moveableObject, t, null);
                 }
                     
                 moveableObject.move();
@@ -210,7 +204,6 @@ public class GameInstance extends Instance {
      */
     public boolean playerSlotAvailable(){
         int playerCount = moveableObjects.size()- npcCount;
-        if(playerCount < maximumPlayerCount) return true;
-        else return false;
+        return playerCount < maximumPlayerCount;
     }
 }

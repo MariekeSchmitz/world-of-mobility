@@ -13,7 +13,7 @@ public record SendNpcDTO(Orientation orientation, float xPos, float yPos, float 
         float currentVelocity, String script, MoveableType type) {
 
     public static SendNpcDTO from(MoveableObject moveableObject) {
-        return new SendNpcDTO(moveableObject.getOrientation(), moveableObject.getxPos(), moveableObject.getyPos(),
+        return new SendNpcDTO(moveableObject.getOrientation(), moveableObject.getXPos(), moveableObject.getYPos(),
                 moveableObject.getMaxVelocity(),
                 moveableObject.getCapacity(), moveableObject.getCurrentVelocity(), moveableObject.getScript(),
                 moveableObject.getType());
