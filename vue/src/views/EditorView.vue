@@ -17,28 +17,27 @@
   import LeftMenu from "@/components/editor/LeftMenu.vue";
   import EditorMap from "@/components/editor/EditorMap.vue";
   import MiniMap from "@/components/editor/MiniMap.vue";
+  import UserListMenu from "@/components/editor/UserListMenu.vue";
   import {useMap} from "@/services/useMap"
+  import { number } from "mathjs";
   import { useUserEditor } from "@/services/useUserEditor";
   import { useLogin } from "@/services/login/useLogin";
-  import type { MapInterface } from "@/services/editor/MapInterface";
-  import router from "@/router";
+import ScriptField from "@/components/editor/ScriptField.vue";
+  import ServerChat from "@/components/ServerChat.vue";
+import { useEditorError } from "@/services/editor/useEditorError";
 
  
   const props = defineProps<{
-    editorID: number;
+    editorID: string;
   }>();
 
+
+  const editorID = Number(props.editorID);
   const { loginData } = useLogin();
   const { leaveEditor } = useUserEditor();
-  const { getMapEditor } = useMap();
-  const loadedMap = getMapEditor(props.editorID);
-  const name = ref();
-  onMounted(() => {
-  loadedMap.then((result: MapInterface) => (name.value = result.name));
-});
 
   onUnmounted(() => {
-      leaveEditor(props.editorID, loginData.username);
+      leaveEditor(editorID, loginData.username);
   });
 
     /**
@@ -57,21 +56,35 @@
     var mouse = new THREE.Vector2();
 
     const {saveMap} = useMap();
+    const {errorMessage, setEditorError} = useEditorError()
 
-function startGame(){
-  saveMap(props.editorID)
-  router.push("/gameConfig/" + name.value);
-}
+    let npcx= ref(0);
+    let npcy = ref(0);
+
+    
+    const npcNeedsScript = ref(false)
+
+
+  function setNpcValues(x:number,y:number) {
+    npcx.value = x;
+    npcy.value = y;
+    setNpcScriptView(true)
+  } 
+
+  
+  function setNpcScriptView(val:boolean) {
+    npcNeedsScript.value = val;
+  }
 
 </script>
 
 <template>
   <div class="mapTitle">
-    <p>{{name}}</p>
-    <button @click="saveMap(props.editorID)">save</button>
+    <p>Farmerama Map</p>
+    <button @click="saveMap(editorID)">save</button>
   </div>
-  <div id="exitButton">
-    <button class="roundButton">
+  <div id="exitButton" >
+    <button class="roundButton" @click="setEditorError('')">
       <RouterLink to="/worldintro">
         <img src="@/buttons/editor/close.png" />
       </RouterLink>
@@ -79,14 +92,29 @@ function startGame(){
   </div>
 
   <div class="buttonMenuRight">
-    <button @click="startGame()"><img src="@/buttons/editor/plus.png" /><br />Starte Spiel</button>
+    <button><img src="@/buttons/editor/plus.png" /><br />Starte Spiel</button>
     <button><img src="@/buttons/editor/plus.png" /><br />Welt testen</button>
+    <p v-if="errorMessage">{{ errorMessage }}</p>
   </div>
 
   <LeftMenu />
 
-  <BottomMenu></BottomMenu>
+  <UserListMenu :instanceID="editorID"></UserListMenu>
 
+  <ScriptField
+    v-if="npcNeedsScript && !errorMessage"
+    :id="editorID"
+    :x="npcx"
+    :y="npcy"
+    @script-window-closed="setNpcScriptView(false)"
+  ></ScriptField>
+  <BottomMenu v-if="!npcNeedsScript || errorMessage"></BottomMenu>
+
+  <!--
+  sends msg on every instance, should only be in one instance for all; first player gets all msg shown as many times as there are players
+        
+  <ServerChat :instanceId="editorID"></ServerChat>
+  -->
   <MiniMap />
 
   <Renderer
@@ -105,9 +133,15 @@ function startGame(){
       <PointLight :position="{ x: 0, y: 0, z: 10 }" />
       <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
 
-      <EditorMap :editorID="editorID"></EditorMap>
+      <EditorMap
+        :editorID="editorID"
+        @npc-added="setNpcValues($event.x, $event.y)"
+      ></EditorMap>
     </Scene>
   </Renderer>
+
+  
+
 </template>
 
 <style>

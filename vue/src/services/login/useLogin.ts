@@ -23,7 +23,6 @@ const loginState: ILoginState = reactive({
 
 const setAvatar = (avatar: string) => {
   loginState.avatar = avatar;
-  console.log(avatar);
 };
 
 /**

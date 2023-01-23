@@ -7,6 +7,8 @@ import de.hsrm.mi.swt_project.demo.controls.Orientation;
 
 public class Passenger extends MoveableObject {
 
+    protected static final float HITBOX_RADIUS = 0.05f;
+
     /**
      * Creates an instance of Passenger
      */
@@ -22,7 +24,7 @@ public class Passenger extends MoveableObject {
      * @param maxVelocity Maximum velocity of the object.
      */
     public Passenger(float xPos, float yPos) {
-        this(Orientation.NORTH, xPos, yPos, 1);
+        this(Orientation.NORTH, xPos, yPos, 0.1f);
     }
 
     /**
@@ -65,40 +67,14 @@ public class Passenger extends MoveableObject {
         
         switch (this.orientation) {
 
-            case NORTH:
-                this.yPos += straightMovement;
+            case NORTH, EAST, SOUTH, WEST:
+                this.xPos += this.orientation.xSign() * straightMovement;
+                this.yPos += this.orientation.ySign() * straightMovement;
                 break;
 
-            case NORTH_EAST:
-                this.xPos += diagonalMovement;
-                this.yPos += diagonalMovement;
-                break;
-
-            case EAST:
-                this.xPos += straightMovement;
-                break;
-
-            case SOUTH_EAST:
-                this.xPos += diagonalMovement;
-                this.setYPos(this.yPos - diagonalMovement);
-                break;
-
-            case SOUTH:
-                this.setYPos(this.yPos - straightMovement);
-                break;
-
-            case SOUTH_WEST:
-                this.setXPos(this.xPos - diagonalMovement);
-                this.setYPos(this.yPos - diagonalMovement);
-                break;
-
-            case WEST:
-                this.setXPos(this.xPos - straightMovement);
-                break;
-
-            case NORTH_WEST:
-                this.setXPos(this.xPos - diagonalMovement);
-                this.yPos += diagonalMovement;
+            case NORTH_EAST, SOUTH_EAST, SOUTH_WEST, NORTH_WEST:
+                this.xPos += this.orientation.xSign() * diagonalMovement;
+                this.yPos += this.orientation.ySign() * diagonalMovement;
                 break;
 
             default:
@@ -107,14 +83,24 @@ public class Passenger extends MoveableObject {
         }
     }
 
+    /**
+     * Turns passenger object to the given direction.
+     * Inverts the turn if the object is moving backwards.
+     */
     @Override
     public void turn(Direction direction) {
         switch (direction) {
             case LEFT:
-                this.orientation = this.orientation.prev();
+                if(this.currentVelocity < 0) 
+                    this.orientation = this.orientation.next();
+                else
+                    this.orientation = this.orientation.prev();
                 break;
             case RIGHT:
-                this.orientation = this.orientation.next();
+            if (this.currentVelocity < 0)
+                    this.orientation = this.orientation.prev();
+                else
+                    this.orientation = this.orientation.next();
                 break;
             default:
                 break;

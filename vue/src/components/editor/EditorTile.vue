@@ -12,7 +12,11 @@ import { useMapUpdate } from "@/services/useMapUpdate";
 import type { ExportTile } from "@/services/editor/ExportTileInterface";
 import { usePlaceObject } from "@/services/usePlaceObject";
 import { ControlEnum } from "@/services/ControlEnum";
-import { editorTileURLs } from "@/components/editor/EditorTileURLDict"
+import { editorTileURLs } from "@/components/editor/EditorTileURLDict";
+import { NpcType } from "@/services/editor/NpcType";
+import { usePlaceNpc } from "@/services/editor/usePlaceNpc";
+import type { INpc } from "@/interfaces/INpc";
+import { useEditorError } from "@/services/editor/useEditorError";
 
 const props = withDefaults(
   defineProps<{
@@ -24,17 +28,20 @@ const props = withDefaults(
     placedObject: string;
     editorID: number;
     cmVisible: boolean;
+    placedNpc?: INpc;
   }>(),
   { width: 0.99, height: 0.99, cmVisible: false }
 );
 
 const cmVisible = ref(false);
 let texturePath = editorTileURLs[props.type];
+const {setEditorError} = useEditorError()
 
 const { readPlaceState } = usePlaceState();
 const { readCMState, setCMState } = useContextMenu();
 const { sendMapUpdates } = useMapUpdate(props.editorID);
 const { placeObject } = usePlaceObject();
+const { placeNpc, removeNpc } = usePlaceNpc();
 
 const mapWidth = ref(8);
 const mapHeight = ref(8);
@@ -45,8 +52,15 @@ watch(readCMState.value, () => {
   cmVisible.value = false;
 });
 
+const emit = defineEmits<{
+  (e: "npc-added", npc: { x: number; y: number }): void;
+}>();
+
+function npcAdded(x: number, y: number): void {
+  emit("npc-added", { x, y });
+}
+
 function tileHover(event: any) {
-  //console.log("tileHover: ",event);
   event.component.mesh.material.color.set(event.over ? "#dddddd" : "#ffffff");
 }
 
@@ -68,7 +82,7 @@ function placeItem() {
       setTimeout(() => {
         cmVisible.value = true;
       }, 10);
-    } else if (props.placedObject == "none") {
+    } else if (props.placedObject == "none" && !props.placedNpc) {
       let toSendObj: ExportTile = {
         type: readPlaceState.value.type,
         orientation: "NORTH",
@@ -78,9 +92,21 @@ function placeItem() {
       };
 
       sendMapUpdates(toSendObj);
+    } else if(props.placedObject == "none"){
+      setEditorError("Tile kann hier nicht gesetzt werden. Lösche zuerst das Objekt")
+    } else if(!props.placedNpc){
+      setEditorError("Tile kann hier nicht gesetzt werden. Lösche zuerst den NPC.")
+
     }
-  } else if (!readPlaceState.value.isTile) {
+  } else if (readPlaceState.value.isNpc) {
+    // @ts-expect-error
+
+    placeNpc(posX, posY, readPlaceState.value.type, props.editorID);
+    npcAdded(posX, posY);
+  } else if (readPlaceState.value.isPlaceable) {
     sendPlaceObject(posX, posY, props.placedObject);
+  } else if (readPlaceState.value.type === ControlEnum.REMOVE_NPC) {
+    removeNpc(posX, posY, props.editorID);
   }
 }
 
@@ -144,7 +170,6 @@ function turnLeft() {
 function turnRight() {
   let posX = props.position.x - offsetx.value - 1;
   let posY = props.position.y - offsety.value - 1;
-  console.log("POSX=", posX, " POSY=", posY);
   let turnrightDTO: ExportTile = {
     type: "SIDEWAY",
     orientation: "NORTH",
@@ -161,7 +186,7 @@ function turnRight() {
  *
  * Author: Timothy Doukhin
  */
-function removeTile() {
+ async function removeTile() {
   let posX = props.position.x - offsetx.value - 1;
   let posY = props.position.y - offsety.value - 1;
   let removeDTO: ExportTile = {
@@ -171,6 +196,8 @@ function removeTile() {
     yPos: posY,
     control: "REMOVE",
   };
+  await removeNpc(posX, posY, props.editorID);
+  setEditorError("");
   sendMapUpdates(removeDTO);
 }
 </script>
@@ -206,4 +233,14 @@ function removeTile() {
     :rotation="props.rotation"
     :position="props.position.clone().add(new THREE.Vector3(0.1, -0.1, 0.02))"
   ></PlacedObject>
+
+  <PlacedObject
+    v-if="props.placedNpc"
+    :type="props.placedNpc.type"
+    :width="props.width"
+    :height="props.height"
+    :rotation="props.rotation"
+    :position="props.position.clone().add(new THREE.Vector3(0.1, -0.1, 0.02))"
+  >
+  </PlacedObject>
 </template>

@@ -2,12 +2,14 @@ package de.hsrm.mi.swt_project.demo.scripting;
 
 import java.util.List;
 
+import de.hsrm.mi.swt_project.demo.collision.Collidable;
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
+import de.hsrm.mi.swt_project.demo.util.MathHelpers;
 
 /**
- * This class is a proxy for a moveable object.
+ * This class is a facade for a moveable object.
  * It is used to provide a more restricted and
  * higher level API that can be used when providing
  * scripts for moveable objects.
@@ -24,18 +26,18 @@ public class MoveableFacade {
     protected ScriptContext context;
 
     /**
-     * Static factory method for MoveableProxy.
+     * Static factory method for MoveableFacade.
      * 
      * @param moveable Moveable that will be proxied
      * @param context Context that can be provided
-     * @return new instance of MoveableProxy 
+     * @return new instance of MoveableFacade 
      */
     public static MoveableFacade createFor(MoveableObject moveableObject, ScriptContext context) {
         return new MoveableFacade(moveableObject, context);
     }
 
     /**
-     * Creates a new MoveableProxy.
+     * Creates a new MoveableFacade.
      * 
      * @param moveable Moveable that will be controlled
      * @param context Context that can be provided
@@ -43,6 +45,17 @@ public class MoveableFacade {
     protected MoveableFacade(MoveableObject moveable, ScriptContext context) {
         this.moveable = moveable;
         this.context = context;
+    }
+
+    public float currentVelocity(){
+        return moveable.getCurrentVelocity();
+    }
+
+    public Tile getFrontTile(){
+        Tile[][] mapContext = context.provideMapContext();
+        int pos = mapContext.length / 2;
+
+        return mapContext[pos + 1][pos];
     }
 
     /**
@@ -105,17 +118,20 @@ public class MoveableFacade {
     }
 
     /**
-     * Calculates distance to another moveable.
+     * Calculates distance to another collidable.
      * 
-     * @param other Moveable to get the distance to
-     * @return Distance to the other moveable
+     * @param other Collidable to get the distance to
+     * @return Distance to the other collidable.
      */
-    public float distanceTo(MoveableObject other) {        
+    public float distanceTo(Collidable other) {        
 
-        float xdist = this.moveable.getXPos() - other.getXPos();
-        float ydist = this.moveable.getYPos() - other.getYPos();
+        float thisXPos = this.moveable.getXPos();
+        float thisYPos = this.moveable.getYPos();
 
-        return (float) Math.sqrt(xdist * xdist + ydist * ydist);
+        float otherXPos = other.getXPos();
+        float otherYPos = other.getYPos();
+
+        return MathHelpers.euclideanDistance(thisXPos, thisYPos, otherXPos, otherYPos);
     }    
     
 }

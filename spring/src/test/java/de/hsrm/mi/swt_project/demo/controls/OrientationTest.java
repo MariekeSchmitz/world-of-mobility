@@ -52,4 +52,53 @@ class OrientationTest {
         }
     }
 
+    @Test
+    void testOpposite() {
+
+        Orientation[] orientations = {
+            Orientation.NORTH,
+            Orientation.NORTH_EAST,
+            Orientation.EAST,
+            Orientation.SOUTH_EAST,
+            Orientation.NORTH_WEST,
+            Orientation.WEST,
+            Orientation.SOUTH_WEST,
+            Orientation.SOUTH,
+        };
+
+        for (int i = 0; i < orientations.length; i++) {
+            int oppositeIndex = orientations.length - 1 - i;
+            assertEquals(orientations[oppositeIndex], orientations[i].opposite());
+        }
+    }
+
+    @Test
+    void testXSign() {
+
+        Orientation orientation = Orientation.NORTH;
+        int[] expectedSigns = { 0, 1, 1, 1, 0, -1, -1, -1 };
+
+        for (int sign : expectedSigns) {
+            assertEquals(sign, orientation.xSign());
+            orientation = orientation.next();
+        }
+
+        // assert full cycle check
+        assertEquals(Orientation.NORTH, orientation);
+    }
+
+    @Test
+    void testYSign() {
+
+        Orientation orientation = Orientation.NORTH;
+        int[] expectedSigns = { 1, 1, 0, -1, -1, -1, 0, 1 };
+
+        for (int sign : expectedSigns) {
+            assertEquals(sign, orientation.ySign());
+            orientation = orientation.next();
+        }
+
+        // assert full cycle check
+        assertEquals(Orientation.NORTH, orientation);
+    }
 }

@@ -5,38 +5,26 @@ import { useGameConfig } from "@/services/useGameConfig";
 import { useGame } from "@/services/useGame";
 import { useLogin } from "@/services/login/useLogin";
 
-const { instanceId, createGameInstance, receiveGameUpdate, joinGame } =
-  useGame();
+const { instanceId, createGameInstance } = useGame();
 const { sendConfig, valSuccess } = useGameConfig();
-const { loginData } = useLogin();
 
 let name = "";
-let playerLimit = 0;
-const npcs = false;
-const validationChecked = ref(false);
-const validationPassed = ref(false);
-
+let playerLimit = ref(1);
+const npcs = ref(false);
+const showError = ref(false);
 const props = defineProps<{
   mapName: string;
 }>();
 
 async function checkValidation(name: string) {
-  await sendConfig(props.mapName, name);
-
-  validationChecked.value = true;
-
+  await sendConfig(props.mapName, name, playerLimit.value, npcs.value);
   if (valSuccess.validationSuccess) {
-    await createGameInstance(props.mapName, name);
+    await createGameInstance(props.mapName, name, playerLimit.value, npcs.value);
     if (instanceId.id != -1) {
       router.push("/joingame/" + instanceId.id);
     }
-  }
-}
-
-async function startGame(name: string) {
-  if (instanceId.id != -1) {
-    joinGame(instanceId.id, loginData.username, "MOTORIZED_OBJECT");
-    router.push("/gameview/" + instanceId.id);
+  } else {
+    showError.value = true;
   }
 }
 </script>
@@ -49,35 +37,19 @@ async function startGame(name: string) {
     <h1>Neues Spiel in der Welt {{ props.mapName }}</h1>
     <div class="square"></div>
     <p>Spielname</p>
-    <input
-      id="gamename"
-      v-model="name"
-      placeholder="Spielname eingeben"
-      :disabled="validationPassed"
-    />
+    <input id="gamename" v-model="name" placeholder="Spielname eingeben" />
     <p>Spieleranzahl</p>
-    <input
-      id="playerLimit"
-      type="number"
-      v-model="playerLimit"
-      :disabled="validationPassed"
-    />
+    <input id="playerLimit" type="number" :min="1" v-model="playerLimit" />
     <p>NPCs platzieren</p>
     <label class="switch">
-      <input if="npcSwitch" type="checkbox" :disabled="validationPassed" />
+      <input if="npcSwitch" type="checkbox" v-model="npcs" />
       <span class="slider round"></span>
     </label>
 
-    <button
-      v-if="!(validationChecked && validationPassed)"
-      @click="checkValidation(name)"
-    >
-      Erstellen
-    </button>
-    <p v-if="validationChecked && !validationPassed">
+    <button @click="checkValidation(name)">Erstellen</button>
+    <p v-if="showError">
       Der Name {{ name }} wurde schon vergeben.
     </p>
-    <p v-if="validationChecked && validationPassed">Name {{ name }} ok</p>
   </div>
 </template>
 

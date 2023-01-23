@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 /**
  * Implementation of a UserService. Handles all actions on the List of users
  * 
- * @author Tom Gouthier
+ * @author Tom Gouthier, Marie Bohnert
  */
 @Service
 public class UserServiceImpl implements UserService {
@@ -48,4 +48,5 @@ public class UserServiceImpl implements UserService {
             logger.info("User {} is not logged in and could not be logged out", username);
         }
     }
+
 }

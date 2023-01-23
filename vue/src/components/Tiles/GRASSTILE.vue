@@ -5,7 +5,6 @@ import * as THREE from "three";
 import { NaturObjectEnum } from "@/services/NaturObjectEnum";
 import Tree from "@/components/objects/Tree.vue";
 import { GltfModel } from "troisjs";
-import { withDefaults, defineProps } from "vue";
 import SHEEP from "@/components/objects/SHEEP.vue";
 import PIG from "@/components/objects/PIG.vue";
 import { Texture, ToonMaterial } from "troisjs";

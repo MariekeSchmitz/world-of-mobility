@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 
+import type { INpc } from "@/interfaces/INpc";
 import { reactive } from "vue";
 
 export function useMap(): any {
@@ -13,17 +14,10 @@ export function useMap(): any {
     placedObject: IPlacedObject;
   }
 
-  interface INpc {
-    user: string;
-    xPos: number;
-    yPos: number;
-    classname: string;
-  }
-
   interface IMapDTO {
     name: string
     tiles: Array<Array<ITile>>;
-    NPCS: Array<any>;
+    NPCS: Array<INpc>;
   }
 
   // const mapState = reactive<IMapDTO> ({

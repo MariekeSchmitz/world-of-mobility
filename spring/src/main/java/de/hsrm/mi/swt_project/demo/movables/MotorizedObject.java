@@ -7,6 +7,8 @@ import de.hsrm.mi.swt_project.demo.controls.Orientation;
 
 public class MotorizedObject extends MoveableObject {
 
+    protected static final float HITBOX_RADIUS = 0.15f;
+
     public MotorizedObject() {
         this(0, 0);
     }
@@ -19,7 +21,7 @@ public class MotorizedObject extends MoveableObject {
      * @param maxVelocity Maximum velocity of the object.
      */
     public MotorizedObject(float xPos, float yPos) {
-        this(Orientation.NORTH, xPos, yPos, 1);
+        this(Orientation.NORTH, xPos, yPos, 0.2f);
     }
 
     /**
@@ -56,43 +58,34 @@ public class MotorizedObject extends MoveableObject {
 
     @Override
     public void move() {
-
         float movement = this.currentVelocity * this.maxVelocity;
-
-        switch (this.orientation) {
-            
-            case NORTH:
-                this.yPos += movement;
-                break;
-
-            case EAST:
-                this.xPos += movement;
-                break;
-
-            case SOUTH:
-                this.yPos -= movement;
-                break;
-
-            case WEST:
-                this.xPos -= movement;
-                break;
-
-            default:
-                break;
-                       
-        }
+        this.xPos += this.orientation.xSign() * movement;
+        this.yPos += this.orientation.ySign() * movement;
     }
 
+    /**
+     * Turns motorized object to the given direction.
+     * Inverts the turn if the object is moving backwards.
+     */
     @Override
     public void turn(Direction direction) {
 
         switch (direction) {
+
             case LEFT:
-                this.orientation = this.orientation.prev().prev();  // can only turn 90 degrees
+                if(this.currentVelocity < 0) 
+                    this.orientation = this.orientation.next().next();
+                else
+                    this.orientation = this.orientation.prev().prev();  // can only turn 90 degrees
                 break;
+
             case RIGHT:
-                this.orientation = this.orientation.next().next();  // can only turn 90 degrees
+                if (this.currentVelocity < 0)
+                    this.orientation = this.orientation.prev().prev();
+                else
+                    this.orientation = this.orientation.next().next();  // can only turn 90 degrees
                 break;
+                
             default:
                 break;
             
