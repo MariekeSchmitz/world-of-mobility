@@ -143,11 +143,11 @@ public class GameInstance extends Instance {
                     Tile[][] allTiles = this.map.getTiles();
                     Tile t = allTiles[yPos][xPos];
 
-
                     rb.railCoordinates(key, moveableObject, t, null);
                 }
-                    
-                moveableObject.move();
+                else{
+                    moveableObject.move();
+                }
 
             } else {
                 moveableObject.setCurrentVelocity(0);

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Streetile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
@@ -24,7 +25,6 @@ public class RailingBehaviour {
     private Map<String, RailingMemoryCell> railingMemory = new HashMap<>();
 
     Logger logger = LoggerFactory.getLogger(getClass());
-    Direction testDirectionDeleteLater = (int)Math.random()*100 < 50 ? Direction.LEFT : Direction.RIGHT; 
 
     public void railCoordinates(String key, MoveableObject moveable, Tile tile, Direction dir) {
         if(railingMemory.containsKey(key)){
@@ -32,8 +32,6 @@ public class RailingBehaviour {
             if(memoryCell.leftTile((int)moveable.getXPos(), (int)moveable.getYPos())){
                 memoryCell.setAlreadyTurned(false);
                 railingMemory.put(key, memoryCell);
-                testDirectionDeleteLater = (int)(Math.random()*100) < 50 ? Direction.LEFT : Direction.RIGHT;
-                logger.info(""+testDirectionDeleteLater);
             }
         } else {
             RailingMemoryCell memoryCell = new RailingMemoryCell((int)moveable.getXPos(), (int)moveable.getYPos());
@@ -48,40 +46,70 @@ public class RailingBehaviour {
             curveBehaviour(key, moveable, tile, movement);
 
         } else if(tile.getType().equals(Tiletype.STREET_CROSS)){
-            crossBehaviour(key, moveable, tile, movement, testDirectionDeleteLater);
+            crossBehaviour(key, moveable, tile, movement, railingMemory.get(key).getRandomDirection());
+
+        } else if(tile.getType().equals(Tiletype.STREET_T_CROSS)){
+            tCrossBehaviour(key, moveable, tile, movement, railingMemory.get(key).getRandomDirection());
 
         } 
 
     }
+
+    public void tCrossBehaviour(String key, MoveableObject moveable, Tile tile, float movement, Direction dir){
+        Orientation orientation = moveable.getOrientation();
+        Streetile sTile = (Streetile)tile;
+        if(dir != null){
+            switch (dir) {
+                case LEFT:
+                    if(!sTile.getAllowedDirections().contains(orientation.prev().prev())){
+                        dir = null;
+                    }
+                    break;
+                case RIGHT:
+                    if(!sTile.getAllowedDirections().contains(orientation.next().next())){
+                        dir = null;
+                    }
+                    break;
+                default:
+                    if(!sTile.getAllowedDirections().contains(orientation)){
+                        dir = railingMemory.get(key).getRandomDirection();
+                    } 
+                    break;
+            }
+        } 
+        crossBehaviour(key, moveable, tile, movement, dir);
+    }
+
 
     public void crossBehaviour(String key, MoveableObject moveable, Tile tile, float movement, Direction dir){
         Tile straightConversionTile = Tiletype.STREET_STRAIGHT.createTile();
         Tile curveConversionTile = Tiletype.STREET_CURVE.createTile();
         Orientation orientation = moveable.getOrientation();
         boolean alreadyTurned = railingMemory.get(key).isAlreadyTurned();
-        switch (dir) {
-            case LEFT:
-                if(alreadyTurned){
-                    straightConversionTile.setOrientation(orientation);
-                    straightBehaviour(moveable, straightConversionTile, movement);
-                } else{
-                    curveConversionTile.setOrientation(orientation);
-                    curveBehaviour(key, moveable, curveConversionTile, movement);
-                }
-                break;
-            case RIGHT:
-                if(alreadyTurned){
-                    straightConversionTile.setOrientation(orientation);
-                    straightBehaviour(moveable, straightConversionTile, movement);
-                } else{
-                    curveConversionTile.setOrientation(orientation.prev().prev());
-                    curveBehaviour(key, moveable, curveConversionTile, movement);
-                }
-                break;
-            default:
-                straightConversionTile.setOrientation(orientation);
-                straightBehaviour(moveable, straightConversionTile, movement);
-                break;
+        if(dir != null){
+            switch (dir) {
+                case LEFT:
+                    if(alreadyTurned){
+                        straightConversionTile.setOrientation(orientation);
+                        straightBehaviour(moveable, straightConversionTile, movement);
+                    } else{
+                        curveConversionTile.setOrientation(orientation);
+                        curveBehaviour(key, moveable, curveConversionTile, movement);
+                    }
+                    break;
+                case RIGHT:
+                    if(alreadyTurned){
+                        straightConversionTile.setOrientation(orientation);
+                        straightBehaviour(moveable, straightConversionTile, movement);
+                    } else{
+                        curveConversionTile.setOrientation(orientation.prev().prev());
+                        curveBehaviour(key, moveable, curveConversionTile, movement);
+                    }
+                    break;
+            }
+        } else {
+            straightConversionTile.setOrientation(orientation);
+            straightBehaviour(moveable, straightConversionTile, movement);
         }
     }
 
