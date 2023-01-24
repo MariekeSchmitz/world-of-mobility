@@ -3,10 +3,10 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faPlus,
   faMinus,
-  faAngleDown,
   faAngleUp,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-library.add(faPlus, faMinus, faAngleDown, faAngleUp);
+library.add(faPlus, faMinus, faXmark, faAngleUp);
 
 function toggle() {
   const minimap = document.getElementById("minimap");
@@ -27,46 +27,49 @@ function toggle() {
 <template>
   <div
     id="minimap"
-    class="fixed bottom-3 right-3 h-1/5 aspect-square bg-orange"
+    class="bg-white fixed bottom-5 left-3 h-[27%] aspect-square grid items-center pb-4"
   >
-    <div class="fixed bottom-[22%] right-3">
+    <div class="h-1/6 inline place-self-end self-start pt-2 pr-2">
       <button>
         <font-awesome-icon
           icon="fa-solid fa-plus"
-          size="3xl"
           color="#2F8265"
-          class="w-5 h-5"
+          class="w-2 h-2"
         />
       </button>
       <button>
         <font-awesome-icon
           icon="fa-solid fa-minus"
-          size="3xl"
           color="#2F8265"
-          class="w-5 h-5"
+          class="w-2 h-2"
         />
       </button>
       <button @click="toggle">
         <font-awesome-icon
-          icon="fa-solid fa-angle-down"
-          size="3xl"
+          icon="fa-solid fa-xmark"
           color="#2F8265"
-          class="w-8 h-8"
+          class="w-5 h-5"
         />
       </button>
     </div>
-    <p>
+    <p
+      class="bg-orangeLight h-4/5 aspect-square justify-self-center relative bottom-5"
+    >
       Minimap, separate camera view from further away, +- Buttons control
       minimap camera
     </p>
   </div>
 
-  <button id="showMap" class="hidden fixed bottom-1 right-3" @click="toggle">
+  <button
+    id="showMap"
+    class="editorLabel hidden fixed bottom-2 left-[13%]"
+    @click="toggle"
+  >
     <font-awesome-icon
       icon="fa-solid fa-angle-up"
-      size="3xl"
-      color="#2F8265"
-      class="w-8 h-8"
-    />
+      color="white"
+      class="w-5 h-5"
+    /><br />
+    Minimap
   </button>
 </template>

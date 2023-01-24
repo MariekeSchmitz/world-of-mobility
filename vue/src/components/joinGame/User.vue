@@ -12,7 +12,6 @@ const props = defineProps<{
   <div class="flex flex-row mb-3">
     <font-awesome-icon
         icon="fa-solid fa-user"
-        size="s"
         color="white"
         class="w-5 h-5 p-3 inline rounded-full bg-greenLight"
       />

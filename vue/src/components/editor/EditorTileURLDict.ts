@@ -18,6 +18,9 @@ import CAR_URL from "@/assets/objects/CAR.png";
 import TRUCK_URL from "@/assets/objects/TRUCK.png";
 import TRACTOR_URL from "@/assets/objects/TRACTOR.png";
 import TUPEL_URL from "@/assets/objects/TUPEL.png";
+import ROTATE_LEFT_URL from "@/assets/buttons/arrow-rotate-left-solid.svg";
+import ROTATE_RIGHT_URL from "@/assets/buttons/arrow-rotate-right-solid.svg";
+import TRASH_URL from "@/assets/buttons/trash-solid.svg";
 
 export const editorTileURLs: { [id: string]: string } = {
   GRASSTILE: GRASSTILE_URL,
@@ -40,4 +43,7 @@ export const editorTileURLs: { [id: string]: string } = {
   TRUCK: TRUCK_URL,
   TRACTOR: TRACTOR_URL,
   TUPEL: TUPEL_URL,
+  ROTATE_LEFT: ROTATE_LEFT_URL,
+  ROTATE_RIGHT: ROTATE_RIGHT_URL,
+  TRASH: TRASH_URL,
 };
