@@ -64,9 +64,8 @@ class MovementValidatorTest {
     @Test
     void testValidateWithInvalidMovementOnNonDriveableTile() {
 	
-        MoveableObject moveable = new MotorizedObject();
-        moveable.setXPos(2);
-        moveable.setYPos(2);
+        MoveableObject moveable = new MotorizedObject(Orientation.NORTH, 2, 1, 1);
+        moveable.setCurrentVelocity(1);
 	
         MovementValidator validator = new MovementValidator(map, moveable);
 	
@@ -80,9 +79,8 @@ class MovementValidatorTest {
     @Test
     void testValidateWithInvalidMovementOnNonWalkableTile() {
 	
-        MoveableObject moveable = new Passenger();
-        moveable.setXPos(2);
-        moveable.setYPos(2);
+        MoveableObject moveable = new Passenger(Orientation.NORTH, 2, 1, 1);
+        moveable.setCurrentVelocity(1);
 	
         MovementValidator validator = new MovementValidator(map, moveable);
 	

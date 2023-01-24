@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import de.hsrm.mi.swt_project.demo.api.editor.PlaceNpcDTO;
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.PlaceableControl;
 import de.hsrm.mi.swt_project.demo.controls.TileControl;
@@ -224,7 +223,7 @@ public class EditorInstance extends Instance {
         }
 
         for (MoveableObject npc : map.getNpcs()) {
-            if (npc.getxPos() == x && npc.getyPos() == y) {
+            if (npc.getXPos() == x && npc.getYPos() == y) {
                 npc.loadScript(script);
                 logger.info("script was loaded for npc");
                 return;

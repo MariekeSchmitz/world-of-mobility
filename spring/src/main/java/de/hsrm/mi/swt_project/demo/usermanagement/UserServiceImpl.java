@@ -48,4 +48,5 @@ public class UserServiceImpl implements UserService {
             logger.info("User {} is not logged in and could not be logged out", username);
         }
     }
+
 }
