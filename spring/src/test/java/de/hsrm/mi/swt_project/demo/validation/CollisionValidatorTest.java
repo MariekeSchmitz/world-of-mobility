@@ -18,7 +18,7 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 class CollisionValidatorTest {
     
     @Test
-    public void testWithoutOtherCollidables() {
+    void testWithoutOtherCollidables() {
 
         Collidable toValidate = new MotorizedObject();
         List<Collidable> collidables = new ArrayList<>();
@@ -28,7 +28,7 @@ class CollisionValidatorTest {
     }
 
     @Test
-    public void testWithValidatingObjectInCollidableCollection() {
+    void testWithValidatingObjectInCollidableCollection() {
 
         Collidable toValidate = new MotorizedObject();
 
@@ -40,7 +40,7 @@ class CollisionValidatorTest {
     }
 
     @Test
-    public void testWithCollidablesThatShouldNotCollide() {
+    void testWithCollidablesThatShouldNotCollide() {
 
         MoveableObject toValidate = new MotorizedObject(Orientation.NORTH, 0, 0, 1);
         toValidate.setCurrentVelocity(1);
@@ -55,7 +55,7 @@ class CollisionValidatorTest {
     }
 
     @Test
-    public void testWithCollidableInFront() {
+    void testWithCollidableInFront() {
 
         MoveableObject toValidate = new MotorizedObject(Orientation.NORTH, 0, 0, 1);
         toValidate.setCurrentVelocity(1);
