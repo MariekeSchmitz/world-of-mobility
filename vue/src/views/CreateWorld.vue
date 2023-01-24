@@ -3,7 +3,7 @@
  * view in which a  new world can be created
  * @author Marie Bohnert, Tom Gouthier, Victoria Thee
  */
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useEditor } from "@/services/useEditor";
 import { create } from "mathjs";
 import router from "@/router";
@@ -20,6 +20,10 @@ const { createWorld, worldCreateData, resetError } = useEditor();
 const { joinEditor } = useUserEditor();
 const { loginData, avatarData } = useLogin();
 
+const errorExisting = ref(false)
+
+
+
 async function createWorldAndForwardToEditor(name: string) {
   const id = await createWorld(name, "createNewWorld");
   if (worldCreateData.error === "") {
@@ -27,6 +31,44 @@ async function createWorldAndForwardToEditor(name: string) {
     router.push(`/editor/${id}`);
   }
 }
+
+watch(worldCreateData, (neu, alt) => {
+
+  const errorBox = document.getElementById("errorBox");
+  if (neu.error == "" && errorExisting.value) {
+    errorExisting.value = false;
+
+  } else if (neu.error != "" && !errorExisting.value) {
+    if (errorBox != null) {
+    errorExisting.value = true;
+  
+    }
+  }
+});
+
+
+watch(errorExisting, (neu, alt) => {
+  const errorBox = document.getElementById("errorBox");
+
+  if (neu) {
+        if (errorBox != null) {
+            errorBox.classList.toggle("opacity-0");
+            errorBox.classList.toggle("opacity-100");
+            errorBox.classList.toggle("right-0");
+            errorBox.classList.toggle("right-28");
+        }
+    } else {
+        if (errorBox != null) {
+        errorBox.classList.toggle("opacity-100");
+        errorBox.classList.toggle("opacity-0");
+        errorBox.classList.toggle("right-28");
+        errorBox.classList.toggle("right-0");
+        }
+    }
+
+});
+
+
 </script>
 
 <template>
@@ -77,7 +119,7 @@ async function createWorldAndForwardToEditor(name: string) {
           >
             Erstellen
           </button>
-          <ErrorWarning> </ErrorWarning>
+          <ErrorWarning :errorMsg="worldCreateData.error"> </ErrorWarning>
         </div>
 
       </div>

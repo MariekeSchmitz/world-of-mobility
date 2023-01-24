@@ -2,35 +2,38 @@
 <script setup lang="ts">
 //@ts-ignore
 
-  import { ref, onMounted, reactive, watch, onUnmounted } from "vue";
+import { ref, onMounted, reactive, watch, onUnmounted } from "vue";
 
-  import * as THREE from 'three'
-  import {
-    AmbientLight,
-    Camera,
-    PointLight,
-    Renderer,
-    Scene,
-  } from "troisjs";
+import * as THREE from 'three'
+import {
+  AmbientLight,
+  Camera,
+  PointLight,
+  Renderer,
+  Scene,
+} from "troisjs";
 
-  import BottomMenu from "@/components/editor/BottomMenu.vue";
-  import EditorMap from "@/components/editor/EditorMap.vue";
-  import MiniMap from "@/components/editor/MiniMap.vue";
-  import UserListMenu from "@/components/editor/UserListMenu.vue";
-  import {useMap} from "@/services/useMap"
-  import { useUserEditor } from "@/services/useUserEditor";
-  import { useLogin } from "@/services/login/useLogin";
-  import ScriptField from "@/components/editor/ScriptField.vue";
-  import ServerChat from "@/components/ServerChat.vue";
-  import Avatar from "@/components/User/Avatar.vue";
-  import ErrorWarning from "@/components/ErrorWarning.vue";
-  import { library } from "@fortawesome/fontawesome-svg-core";
-  import {
-    faPlus,
-    faFileArrowDown,
-    faArrowLeft
-  } from "@fortawesome/free-solid-svg-icons";
-  import { useEditorError } from "@/services/editor/useEditorError";
+import BottomMenu from "@/components/editor/BottomMenu.vue";
+import EditorMap from "@/components/editor/EditorMap.vue";
+import MiniMap from "@/components/editor/MiniMap.vue";
+import UserListMenu from "@/components/editor/UserListMenu.vue";
+import {useMap} from "@/services/useMap"
+import { useUserEditor } from "@/services/useUserEditor";
+import { useLogin } from "@/services/login/useLogin";
+import ScriptField from "@/components/editor/ScriptField.vue";
+import ServerChat from "@/components/ServerChat.vue";
+import Avatar from "@/components/User/Avatar.vue";
+import ErrorWarning from "@/components/ErrorWarning.vue";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faPlus,
+  faFileArrowDown,
+  faArrowLeft
+} from "@fortawesome/free-solid-svg-icons";
+import { useEditorError } from "@/services/editor/useEditorError";
+import { animateErrorWarning } from "@/components/ErrorAnimation";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { RouterLink } from "vue-router";
   library.add(faPlus, faFileArrowDown, faArrowLeft);
 
   const props = defineProps<{
@@ -47,29 +50,29 @@
       leaveEditor(editorID, loginData.username);
   });
 
-    /**
-     * in order to Execute THREE code in script tag, create a reactive item and add :ref="name" to the Vue Element
-     */
-    const rendererC = ref();
-    const camera = ref();
-    const scene = ref();
+  /**
+   * in order to Execute THREE code in script tag, create a reactive item and add :ref="name" to the Vue Element
+   */
+  const rendererC = ref();
+  const camera = ref();
+  const scene = ref();
 
-    //Texture Loader
-    const loadManager = new THREE.LoadingManager();
-    const loader = new THREE.TextureLoader(loadManager);
-    
-    //Raycaster for Hover & Click detection
-    var raycaster = new THREE.Raycaster();
-    var mouse = new THREE.Vector2();
+  //Texture Loader
+  const loadManager = new THREE.LoadingManager();
+  const loader = new THREE.TextureLoader(loadManager);
+  
+  //Raycaster for Hover & Click detection
+  var raycaster = new THREE.Raycaster();
+  var mouse = new THREE.Vector2();
 
-    const {saveMap} = useMap();
-    const {errorMessage, setEditorError} = useEditorError()
+  const {saveMap} = useMap();
+  const {errorMessage, setEditorError} = useEditorError()
 
-    let npcx= ref(0);
-    let npcy = ref(0);
+  let npcx= ref(0);
+  let npcy = ref(0);
 
-    
-    const npcNeedsScript = ref(false)
+  
+  const npcNeedsScript = ref(false)
 
 
   function setNpcValues(x:number,y:number) {
@@ -81,7 +84,30 @@
   
   function setNpcScriptView(val:boolean) {
     npcNeedsScript.value = val;
+    console.log("set NPCScriptView, Wert:", val)
   }
+
+  watch(errorMessage, (neu, alt) => {
+    const errorBox = document.getElementById("errorBox");
+    animateErrorWarning((errorMessage.value != ""), errorBox);
+
+  // if (neu) {
+  //       if (errorBox != null) {
+  //           errorBox.classList.toggle("opacity-0");
+  //           errorBox.classList.toggle("opacity-100");
+  //           errorBox.classList.toggle("right-0");
+  //           errorBox.classList.toggle("right-28");
+  //       }
+  //   } else {
+  //       if (errorBox != null) {
+  //       errorBox.classList.toggle("opacity-100");
+  //       errorBox.classList.toggle("opacity-0");
+  //       errorBox.classList.toggle("right-28");
+  //       errorBox.classList.toggle("right-0");
+  //       }
+  //   }
+
+});
 
 </script>
 
@@ -125,7 +151,7 @@
     </button>
   </div>
 
-  <ErrorWarning v-if="errorMessage" :errorMsg="errorMessage"></ErrorWarning>
+  <ErrorWarning :errorMsg="errorMessage"></ErrorWarning>
 
   <UserListMenu :instanceID="editorID"></UserListMenu>
 

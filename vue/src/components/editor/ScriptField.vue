@@ -43,7 +43,7 @@ const script = ref("");
         Submit
       </button>
       <button
-        @click="windowClosed"
+        @click="windowClosed()"
         class="buttonGreen w-1/2 justify-self-center"
       >
         Use Default
