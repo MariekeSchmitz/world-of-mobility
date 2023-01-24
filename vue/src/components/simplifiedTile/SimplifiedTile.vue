@@ -1,17 +1,9 @@
 <template>
   <div>
-    <div
-      id="simplifiedContainer"
-      :class="{ selected: isSelected }"
-      @click="setSpawnPoint(props.xIndex, props.yIndex)"
-    ></div>
-    <div
-      :class="[{ rotateSelected: isSelected }, { marker: isSelected }]"
-    ></div>
-    <div
-      id="simplifiedTile"
-      :class="[orientation, { selected: isSelected }]"
-    ></div>
+    <div id="simplifiedContainer" :class="{ selected: isSelected }" @click="setSpawnPoint(props.xIndex, props.yIndex)"></div>
+    <div :class="[{ rotateSelected: isSelected }, { marker: isSelected }]"></div>
+    <div id="objectAsset"></div>
+    <div id="simplifiedTile" :class="[orientation, { selected: isSelected }]"></div>
   </div>
 </template>
 
@@ -24,10 +16,11 @@ const { miniMapScalingState, setSpawnPoint, spawnState } = useSpawnPoint();
 
 const props = withDefaults(
   defineProps<{
-    tileType: string;
-    orientation: string;
-    xIndex: number;
-    yIndex: number;
+    tileType: string,
+    orientation: string,
+    xIndex: number,
+    yIndex: number,
+    asset: string
   }>(),
   {
     tileType: "GRASSTILE",
@@ -37,6 +30,7 @@ const props = withDefaults(
   }
 );
 const tileTexturePath =`url('${editorTileURLs[props.tileType]}')`;
+const objectAsset = `url('${props.asset ? editorTileURLs[props.asset] : ""}')`;
 
 const isSelected = computed(() => {
   return (
@@ -64,6 +58,17 @@ const isSelected = computed(() => {
   height: v-bind("miniMapScalingState.boxSizing");
   width: v-bind("miniMapScalingState.boxSizing");
   z-index: -2;
+}
+
+#objectAsset {
+  position: absolute;
+  background-image: v-bind(objectAsset);
+  box-sizing: border-box;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  height: v-bind("miniMapScalingState.boxSizing");
+  width: v-bind("miniMapScalingState.boxSizing");
 }
 
 .marker {
