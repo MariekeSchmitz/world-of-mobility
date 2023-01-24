@@ -168,7 +168,6 @@ function switchContent(element: string) {
         />
         <font-awesome-icon
           icon="fa-solid fa-road"
-          size="3xl"
           color="#2F8265 "
           class="w-5 h-5 bg-white rounded-full p-2 mr-1 justify-self-end peer-checked:text-orange"
         />
@@ -186,7 +185,6 @@ function switchContent(element: string) {
         />
         <font-awesome-icon
           icon="fa-solid fa-car"
-          size="3xl"
           color="#2F8265"
           class="w-5 h-5 bg-white rounded-full p-2 mr-1 justify-self-end peer-checked:text-orange"
         />
@@ -207,7 +205,6 @@ function switchContent(element: string) {
             />
             <font-awesome-icon
               icon="fa-solid fa-road"
-              size="3xl"
               color="#2F826575"
               class="w-5 h-5 justify-self-center peer-checked:text-orange"
             />
@@ -221,7 +218,6 @@ function switchContent(element: string) {
             />
             <font-awesome-icon
               icon="fa-solid fa-tree"
-              size="3xl"
               color="#2F826575"
               class="w-5 h-5 justify-self-center peer-checked:text-orange"
             />
@@ -235,7 +231,6 @@ function switchContent(element: string) {
             />
             <font-awesome-icon
               icon="fa-solid fa-traffic-light"
-              size="3xl"
               color="#2F826575"
               class="w-5 h-5 justify-self-center peer-checked:text-orange"
             />
@@ -246,15 +241,14 @@ function switchContent(element: string) {
           <button id="scrollLeft" @mousedown="scrollingLeft">
             <font-awesome-icon
               icon="fa-solid fa-angle-left"
-              size="3xl"
-              color="#242526"
+              color="#2F8265"
               class="w-8 h-8"
             />
           </button>
 
           <ul
             id="box-wrapper"
-            class="h-full w-4/5 whitespace-nowrap overflow-hidden"
+            class="h-full whitespace-nowrap overflow-hidden"
           >
             <div id="streetItems">
               <BottomSelectionLoop
@@ -305,8 +299,7 @@ function switchContent(element: string) {
           <button id="scrollRight" @click="scrollingRight">
             <font-awesome-icon
               icon="fa-solid fa-angle-right"
-              size="3xl"
-              color="#242526"
+              color="#2F8265"
               class="w-8 h-8"
             />
           </button>
@@ -325,7 +318,6 @@ function switchContent(element: string) {
             />
             <font-awesome-icon
               icon="fa-solid fa-car"
-              size="3xl"
               color="#2F826575"
               class="w-5 h-5 justify-self-center peer-checked:text-orange"
             />
@@ -339,7 +331,6 @@ function switchContent(element: string) {
             />
             <font-awesome-icon
               icon="fa-solid fa-person-walking"
-              size="3xl"
               color="#2F826575"
               class="w-6 h-6 justify-self-center peer-checked:text-orange"
             />
@@ -350,15 +341,14 @@ function switchContent(element: string) {
           <button id="scrollLeft" @mousedown="scrollingLeft">
             <font-awesome-icon
               icon="fa-solid fa-angle-left"
-              size="3xl"
-              color="#242526"
+              color="#2F8265"
               class="w-8 h-8"
             />
           </button>
 
           <ul
             id="box-wrapper-npc"
-            class="h-full w-4/5 whitespace-nowrap overflow-hidden"
+            class="h-full whitespace-nowrap overflow-hidden"
           >
             <div id="passenger" class="hidden">
               <li class="bottomMenuListStyle">
@@ -404,8 +394,7 @@ function switchContent(element: string) {
           <button id="scrollRight" @click="scrollingRight">
             <font-awesome-icon
               icon="fa-solid fa-angle-right"
-              size="3xl"
-              color="#242526"
+              color="#2F8265"
               class="w-8 h-8"
             />
           </button>
@@ -416,8 +405,7 @@ function switchContent(element: string) {
     <button id="hideElement" @click="toggle" class="grid items-start">
       <font-awesome-icon
         icon="fa-solid fa-xmark"
-        size="3xl"
-        color="#242526"
+        color="#2F8265"
         class="w-6 h-6 justify-self-end"
       />
     </button>
@@ -430,7 +418,6 @@ function switchContent(element: string) {
   >
     <font-awesome-icon
       icon="fa-solid fa-angle-up"
-      size="3xl"
       color="white"
       class="w-5 h-5"
     /><br />

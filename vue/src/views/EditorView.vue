@@ -23,6 +23,7 @@
   import ScriptField from "@/components/editor/ScriptField.vue";
   import ServerChat from "@/components/ServerChat.vue";
   import Avatar from "@/components/User/Avatar.vue";
+  import ErrorWarning from "@/components/ErrorWarning.vue";
   import { library } from "@fortawesome/fontawesome-svg-core";
   import {
     faPlus,
@@ -95,7 +96,6 @@
   >
     <font-awesome-icon
       icon="fa-solid fa-arrow-left"
-      size="3xl"
       color="#2F8265"
       class="p-3 w-10 h-10 rounded-full bg-white"
     />
@@ -112,7 +112,6 @@
     <button class="bg-white p-5">
       <font-awesome-icon
         icon="fa-solid fa-plus"
-        size="3xl"
         color="#2F8265"
         class="w-5 h-5"
       /><br />Spiel<br />starten
@@ -120,14 +119,13 @@
     <button @click="saveMap('testMap2', editorID)" class="bg-white">
       <font-awesome-icon
         icon="fa-solid fa-file-arrow-down"
-        size="3xl"
         color="#2F8265"
         class="w-5 h-5"
       /><br />Welt<br />speichern
     </button>
   </div>
 
-  <p v-if="errorMessage">{{ errorMessage }}</p>
+  <ErrorWarning v-if="errorMessage" :errorMsg="errorMessage"></ErrorWarning>
 
   <UserListMenu :instanceID="editorID"></UserListMenu>
 

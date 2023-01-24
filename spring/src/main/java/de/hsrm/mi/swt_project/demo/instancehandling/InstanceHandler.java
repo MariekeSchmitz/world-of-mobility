@@ -42,6 +42,7 @@ public class InstanceHandler implements Updateable {
     @Autowired
     protected TrafficLogicLoopTask trafficTask;
     
+    @Autowired
     private UpdateloopInstanceInfo loopInstanceInfo;
 
 

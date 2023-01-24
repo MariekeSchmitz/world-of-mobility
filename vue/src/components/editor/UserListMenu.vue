@@ -29,17 +29,17 @@ onMounted(() => {
   getUserlistEditor(props.instanceID);
 });
 
-function scrollingLeft() {
+function scrollingUp() {
   const boxwrapper = document.getElementById("user-wrapper");
   if (boxwrapper != null) {
-    boxwrapper.scrollLeft -= 50;
+    boxwrapper.scrollBy(0, -50);
   }
 }
 
-function scrollingRight() {
+function scrollingDown() {
   const boxwrapper = document.getElementById("user-wrapper");
   if (boxwrapper != null) {
-    boxwrapper.scrollLeft += 50;
+    boxwrapper.scrollBy(0, 50);
   }
 }
 
@@ -67,36 +67,33 @@ function toggle() {
     <button id="hideElement" @click="toggle" class="grid">
       <font-awesome-icon
         icon="fa-solid fa-xmark"
-        size="3xl"
-        color="#242526"
+        color="#2F8265"
         class="w-5 h-5 justify-self-end"
       />
     </button>
 
-    <div class="grid grid-rows-[10%_80%_10%]">
-      <button id="scrollLeft" @mousedown="scrollingLeft" class="h-full">
+    <div class="w-3/4 mx-auto grid grid-rows-[10%_80%_10%]">
+      <button id="scrollLeft" @mousedown="scrollingUp" class="h-full">
         <font-awesome-icon
           icon="fa-solid fa-angle-up"
-          size="3xl"
-          color="#242526"
+          color="#2F8265"
           class="w-4 h-4"
         />
       </button>
 
       <ul
         id="user-wrapper"
-        class="h-full pt-4 whitespace-nowrap overflow-hidden"
+        class="h-full pt-4 whitespace-nowrap overflow-y-scroll scrollbar-hide"
       >
-        <li v-for="user in userList.users" class="bottomMenuListStyle">
+        <li v-for="user in userList.users" class="list-none">
           <User :name="user" v-if="user != loginData.username"></User>
         </li>
       </ul>
 
-      <button id="scrollRight" @click="scrollingRight">
+      <button id="scrollRight" @click="scrollingDown">
         <font-awesome-icon
           icon="fa-solid fa-angle-down"
-          size="3xl"
-          color="#242526"
+          color="#2F8265"
           class="w-4 h-4"
         />
       </button>
@@ -109,7 +106,6 @@ function toggle() {
   >
     <font-awesome-icon
       icon="fa-solid fa-angle-left"
-      size="3xl"
       color="#2F8265"
       class="w-5 h-5 pr-2"
     />

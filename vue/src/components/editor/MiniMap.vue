@@ -33,7 +33,6 @@ function toggle() {
       <button>
         <font-awesome-icon
           icon="fa-solid fa-plus"
-          size="3xl"
           color="#2F8265"
           class="w-2 h-2"
         />
@@ -41,7 +40,6 @@ function toggle() {
       <button>
         <font-awesome-icon
           icon="fa-solid fa-minus"
-          size="3xl"
           color="#2F8265"
           class="w-2 h-2"
         />
@@ -49,8 +47,7 @@ function toggle() {
       <button @click="toggle">
         <font-awesome-icon
           icon="fa-solid fa-xmark"
-          size="3xl"
-          color="#242526"
+          color="#2F8265"
           class="w-5 h-5"
         />
       </button>
@@ -70,7 +67,6 @@ function toggle() {
   >
     <font-awesome-icon
       icon="fa-solid fa-angle-up"
-      size="3xl"
       color="white"
       class="w-5 h-5"
     /><br />
