@@ -4,7 +4,7 @@ import { readonly, ref } from "vue";
 const feedbackMessage = ref("")
 
 /**
- * function to replace ErrorMessage in editor
+ * function to give user feedback
  * @author Marie Bohnert
  * @param feedback feedbackMessage
  */
