@@ -6,7 +6,7 @@
  */
 
 import User from "@/components/joinGame/User.vue";
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch, type ComputedRef } from "vue";
 import { useLogin } from "@/services/login/useLogin";
 import { useInstanceList } from "@/services/useInstanceList";
 import { useRemoveInstanceState } from "@/services/useRemoveInstanceState";
@@ -28,6 +28,7 @@ onMounted(async () => {
 });
 
 const userlist = computed(() => {
+  let users: string[] = [];
   if (deleteState.id == props.instanceId) {
     setRemoveState(props.type, props.instanceId, true);
     router.push("/worldintro");
@@ -35,11 +36,12 @@ const userlist = computed(() => {
     console.log("search users");
     instanceState.instancelist.forEach(function (item: IInstanceInfo) {
       if (item.id == props.instanceId) {
-        console.log("found users", item.users);
-        return item.users;
+        users = item.users;
       }
     });
   }
+
+  return users;
 });
 
 function scrollingLeft() {
@@ -78,10 +80,8 @@ function toggle() {
       <button id="scrollLeft" @mousedown="scrollingLeft">
         <img src="@/buttons/editor/arrow-left.png" />
       </button>
-      <p>Liste: {{ userlist }}</p>
       <ul id="user-wrapper">
         <li v-for="user in userlist">
-          <p>User: {{ user }}</p>
           <button class="itemButton" v-if="user != loginData.username">
             <User :name="user"></User>
           </button>
