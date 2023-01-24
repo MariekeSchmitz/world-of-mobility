@@ -163,7 +163,7 @@ watch(showError, (neu, alt) => {
           <h3 class="text-greenDark text-center h-3/12">Beigetretene <br/>Spieler</h3>
           <div class="overflow-y-scroll h-9/12">
             <div >
-              <div v-for="user in ['user1', 'user2', 'user3', 'user1', 'user2', 'user3', 'user1', 'user2', 'user3', 'user1', 'user2', 'user3', 'user1']">
+              <div v-for="user in userList.users">
                 <User :name="user"></User>
               </div>
 
