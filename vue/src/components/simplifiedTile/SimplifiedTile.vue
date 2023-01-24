@@ -46,7 +46,7 @@ const isSelected = computed(() => {
   box-sizing: border-box;
   height: v-bind("miniMapScalingState.boxSizing");
   width: v-bind("miniMapScalingState.boxSizing");
-  z-index: 1;
+  z-index: 10;
 }
 
 #simplifiedTile {
@@ -69,6 +69,7 @@ const isSelected = computed(() => {
   background-position: center;
   height: v-bind("miniMapScalingState.boxSizing");
   width: v-bind("miniMapScalingState.boxSizing");
+  z-index: 5;
 }
 
 .marker {
@@ -78,7 +79,7 @@ const isSelected = computed(() => {
   position: absolute;
   background-color: rgb(105, 105, 105);
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  z-index: 2;
+  z-index: 10;
 }
 
 @keyframes innerGlow {
