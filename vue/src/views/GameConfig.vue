@@ -9,7 +9,7 @@ const { instanceId, createGameInstance } = useGame();
 const { sendConfig, valSuccess } = useGameConfig();
 
 let name = "";
-let playerLimit = 1;
+let playerLimit = ref(1);
 const npcs = ref(false);
 const showError = ref(false);
 const props = defineProps<{
@@ -17,9 +17,9 @@ const props = defineProps<{
 }>();
 
 async function checkValidation(name: string) {
-  await sendConfig(props.mapName, name, playerLimit, npcs.value);
+  await sendConfig(props.mapName, name, playerLimit.value, npcs.value);
   if (valSuccess.validationSuccess) {
-    await createGameInstance(props.mapName, name, playerLimit, npcs.value);
+    await createGameInstance(props.mapName, name, playerLimit.value, npcs.value);
     if (instanceId.id != -1) {
       router.push("/joingame/" + instanceId.id);
     }

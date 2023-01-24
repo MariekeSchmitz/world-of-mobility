@@ -1,89 +1,85 @@
 package de.hsrm.mi.swt_project.demo.validation;
 
-import java.util.Map;
+import java.util.Collection;
+import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import de.hsrm.mi.swt_project.demo.collision.Collidable;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
+import de.hsrm.mi.swt_project.demo.util.MathHelpers;
 
 /**
- * This class validates wheather two moveable objects collide.
+ * This class validates wheather a collidable object
+ * collides with any of the other .
  * 
  * @author Felix Ruf
  * @author Alexandra Müller
+ * @author Sascha Scheid
  */
-public class CollisionValidator implements Validator{
+public class CollisionValidator implements Validator {
 
-    Logger logger = LoggerFactory.getLogger(CollisionValidator.class);
-
-    private MoveableObject moveableObject;
-    private MoveableObject[] moveableObjects;
+    protected Collidable collidable;
+    protected List<? extends Collidable> otherCollidables;
 
     /**
      * Creates a new CollisionValidator.
-     * 
-     * @param moveableObjects Map of moveable objects which will be checked for collisions.
+     *
+     * @param collidableToValidate Collidable that will be checked for collision
+     * @param allCollidables Collection containing all collidables that will be checked.
      */
-    public CollisionValidator(Map<String, MoveableObject> moveableObjects) {
+    public CollisionValidator(Collidable collidableToValidate, Collection<? extends Collidable> allCollidables) {
 
-        this.moveableObjects = new MoveableObject[moveableObjects.size()];
-
-        MoveableObject[] moveableObjectValues = new MoveableObject[moveableObjects.size()];
-        moveableObjects.values().toArray(moveableObjectValues);
-        
-        for(int i = 0; i < moveableObjectValues.length; i++) {
-            this.moveableObjects[i] = moveableObjectValues[i].copy();
-            this.moveableObjects[i].move();
+        if (collidableToValidate instanceof MoveableObject moveable) {
+            MoveableObject copy = moveable.copy();
+            copy.move();
+            this.collidable = copy;
+        } else {
+            this.collidable = collidableToValidate;
         }
+
+        // No need to check collision with itself, so
+        // remove object to check from all collidables.
+        this.otherCollidables = allCollidables
+            .stream()
+            .filter(
+                aCollidable -> aCollidable != collidableToValidate
+            ).toList();
     }
 
     /**
-     * Checks if the moveable object collides with any other moveable object.
+     * Checks if the collidable object that will be validated
+     * collides with any of the other collidable objects.
      * 
-     * @return true if the moveable object does not collide with any other moveable object
+     * @return True if the collidable object does not collide with 
+     *         any other moveable object, else false
      */
     @Override
     public boolean validate() {
-        
-        for (MoveableObject moveableObject : moveableObjects) {
-            if (doObjectsHit(this.moveableObject, moveableObject)) {
-                return false;
-            }
-        }
-        
-        return true;
+        return this.otherCollidables
+            .stream()
+            .noneMatch(
+                aCollidable -> this.collidesWith(aCollidable)
+            );
     }
 
     /**
-     * Checks if two moveable objects collide.
+     * Checks if the collidable to validate collides with
+     * anouther collidable.
      * 
-     * @param object1 first moveable object
-     * @param object2 second moveable object
+     * @param other Collidable to check 
      * @return true if the moveable objects collide, else false
      */
-    public boolean doObjectsHit(MoveableObject object1, MoveableObject object2) {
-        float x = object1.getxPos() - object2.getxPos();
-        float y = object1.getyPos() - object2.getyPos();
+    protected boolean collidesWith(Collidable other) {
 
-        double distanceSqrt = x * x + y * y;
-        double maxDistanceSqrt = (object1.getHitboxRadius() + object2.getHitboxRadius()) * (object1.getHitboxRadius() + object2.getHitboxRadius());
+        float thisXPos = this.collidable.getXPos();
+        float thisYPos = this.collidable.getYPos();
+        float otherXPos = other.getXPos();
+        float otherYPos = other.getYPos();
 
-        if(distanceSqrt > 0 && distanceSqrt <= maxDistanceSqrt) {
-            return true;
-        }
+        float minDistance = this.collidable.getRadius() + other.getRadius();
 
-        return false;
-    }
+        float squaredDistance = MathHelpers.squaredEuclideanDistance(thisXPos, thisYPos, otherXPos, otherYPos);
+        float squaredMinDistance = minDistance * minDistance;
 
-    /**
-     * Sets the moveable object to be validated.
-     * 
-     * @param moveableObject moveable object to be validated
-     */
-    public void setMoveableObject(MoveableObject moveableObject) {
-        this.moveableObject = moveableObject.copy();
-        this.moveableObject.move();
-    }
-    
+        return squaredDistance <= squaredMinDistance;
+    }    
 }
