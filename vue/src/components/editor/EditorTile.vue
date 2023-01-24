@@ -16,6 +16,7 @@ import { editorTileURLs } from "@/components/editor/EditorTileURLDict";
 import { NpcType } from "@/services/editor/NpcType";
 import { usePlaceNpc } from "@/services/editor/usePlaceNpc";
 import type { INpc } from "@/interfaces/INpc";
+import { useEditorError } from "@/services/editor/useEditorError";
 
 const props = withDefaults(
   defineProps<{
@@ -34,6 +35,7 @@ const props = withDefaults(
 
 const cmVisible = ref(false);
 let texturePath = editorTileURLs[props.type];
+const {setEditorError} = useEditorError()
 
 const { readPlaceState } = usePlaceState();
 const { readCMState, setCMState } = useContextMenu();
@@ -90,6 +92,11 @@ function placeItem() {
       };
 
       sendMapUpdates(toSendObj);
+    } else if(props.placedObject == "none"){
+      setEditorError("Tile kann hier nicht gesetzt werden. Lösche zuerst das Objekt")
+    } else if(!props.placedNpc){
+      setEditorError("Tile kann hier nicht gesetzt werden. Lösche zuerst den NPC.")
+
     }
   } else if (readPlaceState.value.isNpc) {
     // @ts-expect-error
@@ -179,7 +186,7 @@ function turnRight() {
  *
  * Author: Timothy Doukhin
  */
-function removeTile() {
+ async function removeTile() {
   let posX = props.position.x - offsetx.value - 1;
   let posY = props.position.y - offsety.value - 1;
   let removeDTO: ExportTile = {
@@ -189,7 +196,8 @@ function removeTile() {
     yPos: posY,
     control: "REMOVE",
   };
-  removeNpc(posX, posY, props.editorID);
+  await removeNpc(posX, posY, props.editorID);
+  setEditorError("");
   sendMapUpdates(removeDTO);
 }
 </script>

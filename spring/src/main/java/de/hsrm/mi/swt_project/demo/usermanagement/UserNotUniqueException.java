@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
  * 
  * @author Tom Gouthier, Marie Bohnert
  */
-@ResponseStatus(code = HttpStatus.FORBIDDEN, reason = "User is not unique.")
+@ResponseStatus(code = HttpStatus.FORBIDDEN, reason = "Diesen Benutzer gibt es bereits")
 public class UserNotUniqueException extends RuntimeException {
 
 }
