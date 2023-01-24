@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import router from "@/router";
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useGameConfig } from "@/services/useGameConfig";
 import { useGame } from "@/services/useGame";
 import { useLogin } from "@/services/login/useLogin";
@@ -34,6 +34,25 @@ async function checkValidation(name: string) {
     showError.value = true;
   }
 }
+
+watch(showError, (neu, alt) => {
+  const errorBox = document.getElementById("errorBox");
+  if (neu) {
+        if (errorBox != null) {
+            errorBox.classList.toggle("opacity-0");
+            errorBox.classList.toggle("opacity-100");
+            errorBox.classList.toggle("-right-60");
+            errorBox.classList.toggle("right-28");
+        }
+    } else {
+        if (errorBox != null) {
+        errorBox.classList.toggle("opacity-100");
+        errorBox.classList.toggle("opacity-0");
+        errorBox.classList.toggle("right-28");
+        errorBox.classList.toggle("-right-60");
+        }
+    }
+});
 </script>
 
 <template>
@@ -107,10 +126,10 @@ async function checkValidation(name: string) {
             Erstellen
           </button>
 
-          <div v-if="showError">
-            <ErrorWarning errorMsg="Der Name {{ name }} wurde schon vergeben.">
-            </ErrorWarning>
-          </div>
+          
+          <ErrorWarning errorMsg="Der Name {{ name }} wurde schon vergeben.">
+          </ErrorWarning>
+          
         </div>
       </div>
     </div>
