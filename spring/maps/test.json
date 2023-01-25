@@ -112,40 +112,24 @@
         "type": "GRASSTILE"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "SOUTH"
-        ],
         "orientation": "NORTH",
-        "type": "STREET_STRAIGHT"
-      },
-      {
-        "allowedDirections": [
-          "NORTH",
-          "SOUTH"
-        ],
-        "orientation": "NORTH",
-        "type": "STREET_STRAIGHT"
-      },
-      {
-        "allowedDirections": [
-          "NORTH",
-          "SOUTH"
-        ],
-        "orientation": "NORTH",
-        "type": "STREET_STRAIGHT"
+        "type": "GRASSTILE"
       },
       {
         "orientation": "NORTH",
         "type": "GRASSTILE"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "SOUTH"
-        ],
         "orientation": "NORTH",
-        "type": "STREET_STRAIGHT"
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
       },
       {
         "orientation": "NORTH",
@@ -174,12 +158,8 @@
         "type": "GRASSTILE"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "SOUTH"
-        ],
         "orientation": "NORTH",
-        "type": "STREET_STRAIGHT"
+        "type": "GRASSTILE"
       },
       {
         "orientation": "NORTH",
@@ -196,14 +176,6 @@
         "type": "GRASSTILE"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "SOUTH"
-        ],
-        "orientation": "NORTH",
-        "type": "STREET_STRAIGHT"
-      },
-      {
         "orientation": "NORTH",
         "type": "GRASSTILE"
       },
@@ -212,12 +184,12 @@
         "type": "GRASSTILE"
       },
       {
-        "allowedDirections": [
-          "NORTH",
-          "SOUTH"
-        ],
         "orientation": "NORTH",
-        "type": "STREET_STRAIGHT"
+        "type": "GRASSTILE"
+      },
+      {
+        "orientation": "NORTH",
+        "type": "GRASSTILE"
       },
       {
         "orientation": "NORTH",
