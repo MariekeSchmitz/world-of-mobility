@@ -233,6 +233,7 @@ function turnRight() {
   <PlacedObject
     v-if="props.placedObject != 'none'"
     :type="props.placedObject"
+    :isNpc="false"
     :width="props.width"
     :height="props.height"
     :rotation="props.rotation"
@@ -242,6 +243,7 @@ function turnRight() {
   <PlacedObject
     v-if="props.placedNpc"
     :type="props.placedNpc.type"
+    :isNpc="true"
     :width="props.width"
     :height="props.height"
     :rotation="props.rotation"

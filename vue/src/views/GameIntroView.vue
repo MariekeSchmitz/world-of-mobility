@@ -51,14 +51,14 @@ function scrollingRight() {
   >
     <!-- navigation -->
     <div class="grid grid-cols-3 mx-12 pt-12 h-1/6">
-      <RouterLink to="/login" class="">
+      <button @click="$router.go(-1)" class="place-self-start">
         <font-awesome-icon
           icon="fa-solid fa-arrow-left"
           size="xl"
           color="white"
           class="bg-greenLight rounded-full p-3 w-6 h-6 inline justify-self-start white hover:bg-greenDark"
         />
-      </RouterLink>
+      </button>
       <div class="text-center">
         <h1>Spielmodus</h1>
       </div>

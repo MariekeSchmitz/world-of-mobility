@@ -13,7 +13,7 @@ import REMOVE_URL from "@/assets/objects/REMOVE.png";
 import SHEEP_URL from "@/assets/objects/SHEEP.png";
 import TRAFFIC_LIGHT_URL from "@/assets/objects/TRAFFIC_LIGHT.png";
 import TREE_URL from "@/assets/objects/TREE.png";
-import PEDESTRIAN_CROSSING_URL from "@/textures/editor/PEDESTRIAN_CROSSING.jpg";
+import PEDESTRIAN_CROSSING_URL from "@/textures/editor/PEDESTRIAN_CROSSING.png";
 import CAR_URL from "@/assets/objects/CAR.png";
 import TRUCK_URL from "@/assets/objects/TRUCK.png";
 import TRACTOR_URL from "@/assets/objects/TRACTOR.png";
@@ -22,6 +22,7 @@ import ROTATE_LEFT_URL from "@/assets/buttons/arrow-rotate-left-solid.svg";
 import ROTATE_RIGHT_URL from "@/assets/buttons/arrow-rotate-right-solid.svg";
 import TRASH_URL from "@/assets/buttons/trash-solid.svg";
 import BACKGROUND_URL from "@/assets/images/home_Blur.png";
+import NPC_LABEL_URL from "@/assets/objects/NPC_LABEL.png";
 
 export const editorTileURLs: { [id: string]: string } = {
   GRASSTILE: GRASSTILE_URL,
@@ -47,5 +48,6 @@ export const editorTileURLs: { [id: string]: string } = {
   ROTATE_LEFT: ROTATE_LEFT_URL,
   ROTATE_RIGHT: ROTATE_RIGHT_URL,
   TRASH: TRASH_URL,
-  BACKGROUND: BACKGROUND_URL
+  BACKGROUND: BACKGROUND_URL,
+  NPC_LABEL: NPC_LABEL_URL
 };

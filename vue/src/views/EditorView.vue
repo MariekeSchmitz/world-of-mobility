@@ -65,6 +65,7 @@ import { RouterLink } from "vue-router";
 
   onUnmounted(() => {
       leaveEditor(editorID, loginData.username);
+      setEditorError("")
   });
 
   /**
@@ -146,17 +147,13 @@ import { RouterLink } from "vue-router";
     <div class="fixed left-1/2 -translate-y-1/2 -translate-x-1/2 top-16">
       <h1>{{name}}</h1>
     </div>
-    <RouterLink
-      to="/worldintro"
-      class="fixed top-7 left-7"
-      @click="setEditorError('')"
-    >
+    <button @click="$router.go(-1)" class="fixed top-7 left-7">
       <font-awesome-icon
         icon="fa-solid fa-arrow-left"
         color="white"
         class="bg-greenLight rounded-full p-3 w-6 h-6 inline justify-self-start white hover:bg-greenDark"
       />
-    </RouterLink>
+    </button>
     
     <ErrorWarning :errorMsg="errorMessage"></ErrorWarning>
     <SaveFeedback :feedbackMsg="feedbackMessage"></SaveFeedback>
