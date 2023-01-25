@@ -15,6 +15,7 @@ export function useMap(): any {
   }
 
   interface IMapDTO {
+    name: string
     tiles: Array<Array<ITile>>;
     NPCS: Array<INpc>;
   }
@@ -66,12 +67,13 @@ export function useMap(): any {
     }
   }
 
-  async function saveMap(mapName: string, mapId: number) {
+  async function saveMap(mapId: number) {
     try {
       const controller = new AbortController();
       const URL = "/api/editor/savemap";
 
-      const data = { mapName, mapId };
+      const data = { mapId };
+      console.log(data);
       const id = setTimeout(() => controller.abort(), 8000);
 
       const response = await fetch(URL, {
