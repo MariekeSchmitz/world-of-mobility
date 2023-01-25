@@ -23,7 +23,6 @@ const { userList, getUserList } = useUser();
 const { loginData, avatarData } = useLogin();
 
 const joinSuccessfull = ref(false);
-const showError = ref(false);
 
 const {feedbackMessage} = useUserFeedback();
 
@@ -36,10 +35,12 @@ let moveableType = "";
 
 const spawnPointSet = ref(false)
 
+const errorMessage = ref("")
+
 async function join() {
 
   if(!spawnPointSet.value) {
-    showError.value = true
+    errorMessage.value = "Du musst erst einen Startpunkt wählen."
   }
   
   if (
@@ -56,14 +57,16 @@ async function join() {
       spawnState.yPos
     );
     if (joinSuccessfull.value) router.push("/gameview/" + instanceID);
-    else showError.value = true;
+    else   errorMessage.value = "Du musst erst einen Startpunkt wählen.";
+;
   }
 }
 
 function updateMoveable(type: string) {
   moveableType = type;
   setMoveableObject(type);
-  spawnPointSet.value = false
+  spawnPointSet.value = false;
+  errorMessage.value = "";
 
 }
 
@@ -74,13 +77,29 @@ onMounted(() => {
 
 function toggleButton() {
   spawnPointSet.value = true
-  showError.value = false
+  errorMessage.value = "";
 }
 
-watch(showError, (neu, alt) => {
+
+watch(errorMessage, (neu, alt) => {
   const errorBox = document.getElementById("errorBox");
-  animateHintBox(showError.value, errorBox);
+  animateHintBox(errorMessage.value != "", errorBox);
 });
+
+watch(feedbackMessage, (neu, alt) => {
+  errorMessage.value = feedbackMessage.value
+
+});
+
+watch(spawnState, (neu, alt) => {
+  if (spawnState.xPos == -1) {
+    spawnPointSet.value = false
+  } else {
+    spawnPointSet.value = true
+  }
+});
+
+
 
 </script>
 
@@ -137,7 +156,7 @@ watch(showError, (neu, alt) => {
             <!-- Choose Spawnpoint -->
             <div class="text-center">
               <h2 class="">Startpunkt<br v-if="userList.users.length != 0"/>wählen</h2>
-              <SpawnPoint @set-spawn-point="toggleButton" :instance-id="instanceID" class=""/>
+              <SpawnPoint :instance-id="instanceID" class=""/>
             </div>
           </div>
 
@@ -145,26 +164,23 @@ watch(showError, (neu, alt) => {
             'buttonOrange w-3/12 mx-auto mt-8':spawnPointSet,
             'buttonOrange w-3/12 mx-auto bg-black bg-opacity-10 hover:bg-black hover:bg-opacity-10 mt-8': !spawnPointSet
           }" @click="join()" >Spiel starten</button>
-          {{ spawnPointSet }}
         </div>
 
         <div v-if="userList.users.length != 0" class=" grid bg-greenLight bg-opacity-60 p-11 h-96">
           <h3 class="text-greenDark text-center h-3/12">Beigetretene <br/>Spieler</h3>
           <div class="overflow-y-scroll h-9/12">
-            <div >
+            <div>
               <div v-for="user in userList.users">
                 <User :name="user"></User>
               </div>
-
             </div>
           </div> 
         </div>
       </div>
 
     </div>
-    <ErrorWarning :errorMsg="'Du musst erst einen Startpunkt wählen.'"></ErrorWarning>
-    <!-- <ErrorWarning :errorMsg="feedbackMessage"></ErrorWarning> -->
-    <!-- <p v-if="feedbackMessage">{{ feedbackMessage }}</p> -->
+    <ErrorWarning :errorMsg="errorMessage"></ErrorWarning>
+    
  
   </div>
 </template>

@@ -8,6 +8,7 @@ import Avatar from "@/components/User/Avatar.vue";
 import ErrorWarning from "@/components/ErrorWarning.vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { animateHintBox } from "@/components/HintBoxAnimation";
 library.add(faArrowLeft);
 
 const { instanceId, createGameInstance } = useGame();
@@ -37,21 +38,7 @@ async function checkValidation(name: string) {
 
 watch(showError, (neu, alt) => {
   const errorBox = document.getElementById("errorBox");
-  if (neu) {
-        if (errorBox != null) {
-            errorBox.classList.toggle("opacity-0");
-            errorBox.classList.toggle("opacity-100");
-            errorBox.classList.toggle("-right-60");
-            errorBox.classList.toggle("right-28");
-        }
-    } else {
-        if (errorBox != null) {
-        errorBox.classList.toggle("opacity-100");
-        errorBox.classList.toggle("opacity-0");
-        errorBox.classList.toggle("right-28");
-        errorBox.classList.toggle("-right-60");
-        }
-    }
+  animateHintBox(showError.value, errorBox)
 });
 </script>
 
