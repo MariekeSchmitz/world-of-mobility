@@ -124,8 +124,8 @@ export function useGame(): any {
         return false;
       }
       const jsonData = await response.json();
-      return jsonData;
       clearTimeout(id);
+      return jsonData;
     } catch (reason) {
       console.log(`ERROR: Sending Command failed: ${reason}`);
       return false;
@@ -187,7 +187,6 @@ export function useGame(): any {
         const gameUpdate: IGameUpdate = JSON.parse(message.body);
         gameState.moveableUpdates = gameUpdate.moveableUpdates;
         gameState.trafficLightState = gameUpdate.trafficLightState;
-        console.log(gameState.trafficLightState);
       });
     };
 

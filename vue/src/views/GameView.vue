@@ -8,6 +8,7 @@ import { useGame } from "@/services/useGame";
 import { useLogin } from "@/services/login/useLogin";
 import Game from "@/components/Game.vue";
 import router from "@/router";
+import MiniMap from "@/components/miniMap/MiniMap.vue";
 
 const props = withDefaults(
   defineProps<{
@@ -36,6 +37,15 @@ function leave() {
         <img src="@/buttons/editor/close.png" alt="" />
       </button>
     </div>
+    <div id="miniMap-container">
+      <MiniMap :instanceId="instanceID" :user="loginData.username"/>
+    </div>
     <Game :instanceID="instanceID"></Game>
   </div>
 </template>
+
+<style scoped>
+#miniMap-container {
+  position: absolute;
+}
+</style>
