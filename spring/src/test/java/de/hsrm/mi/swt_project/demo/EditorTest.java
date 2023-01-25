@@ -43,7 +43,7 @@ class EditorTest {
 
         @BeforeEach
         void setUp() {
-                editorId = instanceHandler.createEditorInstance("test2");
+                editorId = instanceHandler.createEditorInstance("test");
                 editorInstance = instanceHandler.getEditorInstanceById(editorId);
         }
 

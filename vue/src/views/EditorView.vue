@@ -22,11 +22,12 @@
   import { number } from "mathjs";
   import { useUserEditor } from "@/services/useUserEditor";
   import { useLogin } from "@/services/login/useLogin";
-import ScriptField from "@/components/editor/ScriptField.vue";
+  import ScriptField from "@/components/editor/ScriptField.vue";
   import ServerChat from "@/components/ServerChat.vue";
-import { useEditorError } from "@/services/editor/useEditorError";
-import type { MapInterface } from "@/services/editor/MapInterface";
-import router from "@/router";
+  import { useEditorError } from "@/services/editor/useEditorError";
+  import { useUserFeedback } from "@/services/editor/useUserFeedback";
+  import type { MapInterface } from "@/services/editor/MapInterface";
+  import router from "@/router";
 
 
  
@@ -62,6 +63,7 @@ import router from "@/router";
 
     const {saveMap, getMapEditor} = useMap();
     const {errorMessage, setEditorError} = useEditorError()
+    const {feedbackMessage, setUserFeedback} = useUserFeedback()
 
     const loadedMap = getMapEditor(props.editorID);
     const name = ref();
@@ -114,6 +116,8 @@ import router from "@/router";
     <button @click="startGame()"><img src="@/buttons/editor/plus.png" /><br />Starte Spiel</button>
     <button><img src="@/buttons/editor/plus.png" /><br />Welt testen</button>
     <p v-if="errorMessage">{{ errorMessage }}</p>
+    <p v-if="feedbackMessage">{{ feedbackMessage }}</p>
+
   </div>
 
   <LeftMenu />
