@@ -11,7 +11,6 @@ import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.movables.MotorizedObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 import de.hsrm.mi.swt_project.demo.railingsystem.RailingBehaviour;
-import de.hsrm.mi.swt_project.demo.scripting.JythonFactory;
 import de.hsrm.mi.swt_project.demo.scripting.ScriptContext;
 import de.hsrm.mi.swt_project.demo.scripting.ScriptContextCache;
 import de.hsrm.mi.swt_project.demo.validation.CollisionValidator;
@@ -134,8 +133,8 @@ public class GameInstance extends Instance {
             //TODO: VALIDATOR WIEDER ANMACHEN UND NUR FÜR NPCS ANMACHEN 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
             
-            if (/*movementValidator.validate() &&*/ collisionValidator.validate()) {
-                if(/*key.contains("NPC")&&*/moveableObject instanceof MotorizedObject){
+            if (movementValidator.validate() && collisionValidator.validate()) {
+                if(key.contains("NPC") && moveableObject instanceof MotorizedObject){
 
                     int xPos = (int) moveableObject.getXPos();
                     int yPos = (int) moveableObject.getYPos();
@@ -143,7 +142,7 @@ public class GameInstance extends Instance {
                     Tile[][] allTiles = this.map.getTiles();
                     Tile t = allTiles[yPos][xPos];
 
-                    rb.railCoordinates(key, moveableObject, t, null);
+                    rb.railCoordinates(key, moveableObject, t, moveableObject.getNpcDirection());
                 }
                 else{
                     moveableObject.move();

@@ -11,22 +11,19 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class TrafficLogicLoopTask {
-    private TrafficLightState trafficLightState = TrafficLightState.NORTHSOUTH;
     Logger logger = LoggerFactory.getLogger(getClass());
+
+    private TrafficLightSingleTon trafficLightSingleTon = TrafficLightSingleTon.getInstance();
 
     @Scheduled(fixedDelayString = "${trafficLight.tickrate:7000}")
     public void switchTrafficLight() {
-        trafficLightState = trafficLightState.next();
+        trafficLightSingleTon.next();
         try {
             Thread.sleep(1000, 0);
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        trafficLightState = trafficLightState.next();
+        trafficLightSingleTon.next();
     }
 
-    public TrafficLightState getTrafficLightState(){
-        return trafficLightState;
-    }
 }

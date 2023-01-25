@@ -4,8 +4,6 @@ import java.util.Locale;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
-import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
-import de.hsrm.mi.swt_project.demo.railingsystem.RailingBehaviour;
 
 public class MotorizedObject extends MoveableObject {
 
