@@ -15,13 +15,14 @@ public class TrafficLogicLoopTask {
     Logger logger = LoggerFactory.getLogger(getClass());
 
     @Scheduled(fixedDelayString = "${trafficLight.tickrate:7000}")
-    public void switchTrafficLight() {
+    public void switchTrafficLight(){
         trafficLightState = trafficLightState.next();
         try {
             Thread.sleep(1000, 0);
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
+                    // TODO Auto-generated catch block
             e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
         trafficLightState = trafficLightState.next();
     }

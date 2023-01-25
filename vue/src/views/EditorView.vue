@@ -22,10 +22,13 @@
   import { number } from "mathjs";
   import { useUserEditor } from "@/services/useUserEditor";
   import { useLogin } from "@/services/login/useLogin";
-import ScriptField from "@/components/editor/ScriptField.vue";
+  import ScriptField from "@/components/editor/ScriptField.vue";
   import ServerChat from "@/components/ServerChat.vue";
-import { useEditorError } from "@/services/editor/useEditorError";
-import { useUserFeedback } from "@/services/editor/useUserFeedback";
+  import { useEditorError } from "@/services/editor/useEditorError";
+  import { useUserFeedback } from "@/services/editor/useUserFeedback";
+  import type { MapInterface } from "@/services/editor/MapInterface";
+  import router from "@/router";
+
 
  
   const props = defineProps<{
@@ -36,6 +39,8 @@ import { useUserFeedback } from "@/services/editor/useUserFeedback";
   const editorID = Number(props.editorID);
   const { loginData } = useLogin();
   const { leaveEditor } = useUserEditor();
+
+  
 
   onUnmounted(() => {
       leaveEditor(editorID, loginData.username);
@@ -56,9 +61,16 @@ import { useUserFeedback } from "@/services/editor/useUserFeedback";
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();
 
-    const {saveMap} = useMap();
+    const {saveMap, getMapEditor} = useMap();
     const {errorMessage, setEditorError} = useEditorError()
     const {feedbackMessage, setUserFeedback} = useUserFeedback()
+
+    const loadedMap = getMapEditor(props.editorID);
+    const name = ref();
+    onMounted(() => {
+    loadedMap.then((result: MapInterface) => (name.value = result.name));
+	
+});
 
     let npcx= ref(0);
     let npcy = ref(0);
@@ -78,12 +90,19 @@ import { useUserFeedback } from "@/services/editor/useUserFeedback";
     npcNeedsScript.value = val;
   }
 
+  function startGame(){
+  saveMap(props.editorID)
+  router.push("/gameConfig/" + name.value);
+  }
+	
+
+
 </script>
 
 <template>
   <div class="mapTitle">
-    <p>Farmerama Map</p>
-    <button @click="saveMap('testMap2', editorID)">save</button>
+    <p>{{name}}</p>
+    <button @click="saveMap(editorID)">save</button>
   </div>
   <div id="exitButton" >
     <button class="roundButton" @click="setEditorError('')">
@@ -94,7 +113,7 @@ import { useUserFeedback } from "@/services/editor/useUserFeedback";
   </div>
 
   <div class="buttonMenuRight">
-    <button><img src="@/buttons/editor/plus.png" /><br />Starte Spiel</button>
+    <button @click="startGame()"><img src="@/buttons/editor/plus.png" /><br />Starte Spiel</button>
     <button><img src="@/buttons/editor/plus.png" /><br />Welt testen</button>
     <p v-if="errorMessage">{{ errorMessage }}</p>
     <p v-if="feedbackMessage">{{ feedbackMessage }}</p>
