@@ -61,7 +61,7 @@ watch(errorExisting, (neu, alt) => {
   >
     <div class="grid text-center col-start-2 col-end-2 justify-items-center">
       <div class="">
-        <h1 class="">World of <br /><E-Mobility></E-Mobility></h1>
+        <h1 class="">World of <br />E-Mobility</h1>
       </div>
 
       <!-- small Avatar with change function -->
