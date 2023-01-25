@@ -102,11 +102,6 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable, 
         return maxVelocity;
     }
 
-    @Override
-    public float getRadius() {
-        return HITBOX_RADIUS;
-    }
-
     /**
      * Gets the moveable type of the object.
      * 

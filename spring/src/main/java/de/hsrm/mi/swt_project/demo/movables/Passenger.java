@@ -7,7 +7,7 @@ import de.hsrm.mi.swt_project.demo.controls.Orientation;
 
 public class Passenger extends MoveableObject {
 
-    protected static final float HITBOX_RADIUS = 0.05f;
+    protected static final float HITBOX_RADIUS = 0.04f;
 
     /**
      * Creates an instance of Passenger
@@ -146,6 +146,9 @@ public class Passenger extends MoveableObject {
         return String.format(Locale.ENGLISH, "Passenger[xPos=%.2f,yPos=%.2f,curV=%.2f,maxV=%.2f,cap=%.2f,orientation=%s]", this.xPos, this.yPos, this.currentVelocity, this.maxVelocity, this.capacity, this.orientation);
     }
 
-    
+    @Override
+    public float getRadius() {
+        return HITBOX_RADIUS;
+    }
     
 }
