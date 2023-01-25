@@ -62,9 +62,9 @@ function toggle() {
 <template>
   <div
     id="userListMenu"
-    class="grid grid-rows-[10%_90%] w-[13%] h-1/5 bg-white fixed top-1/4 right-0 p-3 pb-5"
+    class="grid grid-rows-[20%_80%] w-[13%] h-1/5 bg-white fixed top-1/4 right-0 p-3 pb-5"
   >
-    <button id="hideElement" @click="toggle" class="grid">
+    <button id="hideElement" @click="toggle" class="grid m-2 pb-10">
       <font-awesome-icon
         icon="fa-solid fa-xmark"
         color="#2F8265"
