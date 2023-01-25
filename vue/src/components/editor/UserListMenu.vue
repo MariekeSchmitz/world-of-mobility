@@ -33,7 +33,6 @@ const userlist = computed(() => {
     setRemoveState(props.type, props.instanceId, true);
     router.push("/worldintro");
   } else {
-    console.log("search users");
     instanceState.instancelist.forEach(function (item: IInstanceInfo) {
       if (item.id == props.instanceId) {
         users = item.users;

@@ -13,7 +13,6 @@ const removeState = ref<IRemoveInstance>({
 });
 
 function setRemoveState(type: string, id: number, remove: boolean) {
-  console.log(type);
   removeState.value.type = type;
   removeState.value.id = id;
   removeState.value.remove = remove;

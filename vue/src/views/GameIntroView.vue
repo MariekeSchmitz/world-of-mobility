@@ -18,14 +18,11 @@ onMounted(async () => {
 const instancelist = computed(() => {
   let list:IInstanceInfo[] = []
   list = instanceState.instancelist.filter((instance: IInstanceInfo) => {
-      console.log(instance)
-      console.log(instance.maxPlayerCount + " " + instance.playeramount)
       if(instance.maxPlayerCount != instance.playeramount){
         return instance
       }
     }
   );
-  console.log(list)
   return list;
 });
 </script>
