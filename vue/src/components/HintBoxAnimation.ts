@@ -1,4 +1,4 @@
-export function animateErrorWarning(show:boolean, errorBox:any) {
+export function animateHintBox(show:boolean, errorBox:any) {
 
     if (show) {
         if (errorBox != null) {
@@ -6,6 +6,8 @@ export function animateErrorWarning(show:boolean, errorBox:any) {
             errorBox.classList.toggle("opacity-100");
             errorBox.classList.toggle("right-0");
             errorBox.classList.toggle("right-28");
+
+
         }
     } else {
         if (errorBox != null) {

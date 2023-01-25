@@ -62,7 +62,7 @@ watch(showError, (neu, alt) => {
     <!-- navigation -->
     <div class="grid grid-cols-3 mx-12 pt-12 h-1/6">
 
-      <button @click="$router.go(-1)">
+      <button @click="$router.go(-1)" class="place-self-start">
         <font-awesome-icon
           icon="fa-solid fa-arrow-left"
           size="xl"

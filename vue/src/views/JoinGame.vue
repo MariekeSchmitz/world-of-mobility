@@ -14,7 +14,7 @@ import { faPlus, faArrowLeft, faChevronRight, faChevronLeft } from "@fortawesome
 import Avatar from "@/components/User/Avatar.vue";
 import ErrorWarning from "@/components/ErrorWarning.vue";
 import { useUserFeedback } from "@/services/editor/useUserFeedback";
-import { animateErrorWarning } from "@/components/ErrorAnimation";
+import { animateHintBox } from "@/components/HintBoxAnimation";
 
 library.add(faPlus, faArrowLeft, faChevronRight, faChevronLeft);
 const { spawnState, setMoveableObject, setInstanceId } = useSpawnPoint();
@@ -79,23 +79,7 @@ function toggleButton() {
 
 watch(showError, (neu, alt) => {
   const errorBox = document.getElementById("errorBox");
-  animateErrorWarning(showError.value, errorBox);
-
-  // if (neu) {
-  //       if (errorBox != null) {
-  //           errorBox.classList.toggle("opacity-0");
-  //           errorBox.classList.toggle("opacity-100");
-  //           errorBox.classList.toggle("-right-60");
-  //           errorBox.classList.toggle("right-28");
-  //       }
-  //   } else {
-  //       if (errorBox != null) {
-  //       errorBox.classList.toggle("opacity-100");
-  //       errorBox.classList.toggle("opacity-0");
-  //       errorBox.classList.toggle("right-28");
-  //       errorBox.classList.toggle("-right-60");
-  //       }
-  //   }
+  animateHintBox(showError.value, errorBox);
 });
 
 </script>
