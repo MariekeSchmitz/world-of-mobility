@@ -42,7 +42,7 @@ const isSelected = computed(() => {
 
 <template>
   <div>
-    <div id="simplifiedContainer" :class="{ selected: isSelected }" @click="setSpawnPoint(props.xIndex, props.yIndex)"></div>
+    <div id="simplifiedContainer" :class="{ selected: isSelected }" @click="setSpawnPointEvent()"></div>
     <div :class="[{ rotateSelected: isSelected }, { marker: isSelected }]"></div>
     <div id="objectAsset"></div>
     <div id="simplifiedTile" :class="[orientation, { selected: isSelected }]"></div>

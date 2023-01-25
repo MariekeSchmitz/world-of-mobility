@@ -27,6 +27,8 @@ import ScriptField from "@/components/editor/ScriptField.vue";
 import ServerChat from "@/components/ServerChat.vue";
 import Avatar from "@/components/User/Avatar.vue";
 import ErrorWarning from "@/components/ErrorWarning.vue";
+import SaveFeedback from "@/components/SaveFeedback.vue";
+
 import { useUserFeedback } from "@/services/editor/useUserFeedback";
 import type { MapInterface } from "@/services/editor/MapInterface";
 import { editorTileURLs } from "@/components/editor/EditorTileURLDict"
@@ -38,7 +40,7 @@ import {
   faArrowLeft
 } from "@fortawesome/free-solid-svg-icons";
 import { useEditorError } from "@/services/editor/useEditorError";
-import { animateErrorWarning } from "@/components/ErrorAnimation";
+import { animateHintBox } from "@/components/HintBoxAnimation";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { RouterLink } from "vue-router";
   library.add(faPlus, faFileArrowDown, faArrowLeft);
@@ -115,25 +117,15 @@ import { RouterLink } from "vue-router";
 
   watch(errorMessage, (neu, alt) => {
     const errorBox = document.getElementById("errorBox");
-    animateErrorWarning((errorMessage.value != ""), errorBox);
+    animateHintBox((errorMessage.value != ""), errorBox);
+  });
 
-  // if (neu) {
-  //       if (errorBox != null) {
-  //           errorBox.classList.toggle("opacity-0");
-  //           errorBox.classList.toggle("opacity-100");
-  //           errorBox.classList.toggle("right-0");
-  //           errorBox.classList.toggle("right-28");
-  //       }
-  //   } else {
-  //       if (errorBox != null) {
-  //       errorBox.classList.toggle("opacity-100");
-  //       errorBox.classList.toggle("opacity-0");
-  //       errorBox.classList.toggle("right-28");
-  //       errorBox.classList.toggle("right-0");
-  //       }
-  //   }
+  watch(feedbackMessage, (neu, alt) => {
+    const hintBox = document.getElementById("feedbackBox");
+    animateHintBox((feedbackMessage.value != ""), hintBox);
+    console.log(feedbackMessage.value)
+  });
 
-});
   function startGame(){
   saveMap(props.editorID)
   router.push("/gameConfig/" + name.value);
@@ -165,6 +157,9 @@ import { RouterLink } from "vue-router";
         class="bg-greenLight rounded-full p-3 w-6 h-6 inline justify-self-start white hover:bg-greenDark"
       />
     </RouterLink>
+    
+    <ErrorWarning :errorMsg="errorMessage"></ErrorWarning>
+    <SaveFeedback :feedbackMsg="feedbackMessage"></SaveFeedback>
 
     <Avatar
       :avatarPicture="avatarData.avatar"

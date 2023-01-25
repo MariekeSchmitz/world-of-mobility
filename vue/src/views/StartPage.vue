@@ -8,7 +8,7 @@ import router from "@/router";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import ErrorWarning from "@/components/ErrorWarning.vue";
-import { animateErrorWarning } from "@/components/ErrorAnimation";
+import { animateHintBox } from "@/components/HintBoxAnimation";
 
 // Then add it to library
 library.add(faPen);
@@ -53,7 +53,7 @@ watch(loginData, (neu, alt) => {
 
 watch(errorExisting, (neu, alt) => {
   const errorBox = document.getElementById("errorBox");
-  animateErrorWarning(errorExisting.value, errorBox);
+  animateHintBox(errorExisting.value, errorBox);
 
   // if (neu) {
   //       if (errorBox != null) {
