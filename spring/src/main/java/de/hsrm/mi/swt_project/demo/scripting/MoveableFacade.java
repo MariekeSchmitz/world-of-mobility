@@ -73,7 +73,9 @@ public class MoveableFacade {
     public boolean getFrontTrafficLight(){
         float xOnTile = moveable.getXPos() - (int) moveable.getXPos();
         float yOnTile = moveable.getYPos() - (int) moveable.getYPos();
-
+        if (getFrontTile() == null) {
+            return true;
+        }
         if(getFrontTile().getPlacedObject() instanceof TrafficLight){
             switch (moveable.getOrientation()) {
                 case NORTH:
