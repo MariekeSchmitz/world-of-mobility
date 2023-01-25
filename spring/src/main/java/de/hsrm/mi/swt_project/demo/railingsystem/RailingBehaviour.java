@@ -39,7 +39,7 @@ public class RailingBehaviour {
         }
 
         float movement = moveable.getCurrentVelocity() * moveable.getMaxVelocity();
-        if (tile.getType().equals(Tiletype.STREET_STRAIGHT)) {
+        if (tile.getType().equals(Tiletype.STREET_STRAIGHT) || tile.getType().equals(Tiletype.PEDESTRIAN_CROSSING)) {
             straightBehaviour(moveable, tile, movement);
 
         } else if (tile.getType().equals(Tiletype.STREET_CURVE)) {
