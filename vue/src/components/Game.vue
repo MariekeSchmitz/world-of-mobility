@@ -40,13 +40,26 @@ let freeCam = ref(true);
 let switchedMode = false;
 let switchedDirection = false;
 
+/**
+ * An offsetMap for every model.
+ * Every model has an own egoperspective.
+ */
+const offsetMap: { [id: string]: THREE.Vector3 } = {
+  CAR: new THREE.Vector3(-0.45, 2, 0.2),
+  SHEEP: new THREE.Vector3(0, 1.6, -1),
+  TRACTOR: new THREE.Vector3(0, 3, 0.8),
+  TUPEL: new THREE.Vector3(0, 4.8, -1.1),
+  PIG: new THREE.Vector3(0, 2.3, -0.6),
+  TRUCK: new THREE.Vector3(0, 0, 0),
+};
+
 const THIRDPERSOFFSET = new THREE.Vector3(0, 8, 15);
 const FIRSTPERSONOFFSET = new THREE.Vector3(0, 0, 0.1);
 
 /**
  * the specific offset of the driver in first person mode.
  */
-const FIRSTPERSONDRIVEROFFSET = new THREE.Vector3(-0.45, 2, 0.2);
+const FirstPersonDriverOffset = new THREE.Vector3(-0.45, 2, 0.2);
 const cameraOffset = ref(new THREE.Vector3(0, 0, 0));
 
 const UPVECTOR = new THREE.Vector3(0, 1, 0);
@@ -81,6 +94,7 @@ watch(userMoveable, () => {
   if (!(oldPlayerDirection == playerDirection)) {
     updateAzimuthAngle();
   }
+  updatePlayerModel();
   computeLookAt();
   computeCameraPosition();
 });
@@ -129,6 +143,18 @@ function updatePlayerDirection() {
   }
 }
 
+let oldPlayerModel = "";
+let playerModel = "";
+function updatePlayerModel() {
+  if (userMoveable.value != undefined) {
+    oldPlayerModel = playerModel;
+    playerModel = userMoveable.value.classname;
+    if (oldPlayerModel != playerModel) {
+      FirstPersonDriverOffset.copy(offsetMap[playerModel]);
+    }
+  }
+}
+
 /**
  * computes the new lookAt for the camera.
  */
@@ -136,7 +162,7 @@ function computeLookAt() {
   if (userMoveable.value != undefined) {
     const newLookAt = playerPosition.value.clone();
     if (!thirdPerson.value) {
-      const turnedDriverOffset = FIRSTPERSONDRIVEROFFSET.clone().applyAxisAngle(
+      const turnedDriverOffset = FirstPersonDriverOffset.clone().applyAxisAngle(
         UPVECTOR,
         -orientations[userMoveable.value.orientation]
       );
@@ -158,9 +184,25 @@ const cameraPosition = ref(new THREE.Vector3(0, 0, 0));
 
 /**
  * computes the new camera position.
+ * third person mode:
+ * we want the user to be able to look freely around his model.
+ * changing the camera position wont reset on switching the direction.
+ * first person mode:
+ * the user can look around, but changing the direction will reset the camera position.
+ * 
+ * free cam mode disabled will disable the ability to move the camera around.
+ * first person mode:
+ * its position will be set to the position of the player
+ * third person mode:
+ * its position will be set to the position of the player + the camera offset.
  */
 function computeCameraPosition() {
-  if (freeCam.value && camera.value && !switchedMode && !switchedDirection) {
+  if (
+    freeCam.value &&
+    camera.value &&
+    !switchedMode &&
+    ((!switchedDirection && !thirdPerson.value) || thirdPerson.value)
+  ) {
     cameraPosition.value = camera.value.camera.position.add(
       movementVector.value
     );
@@ -176,7 +218,7 @@ function computeCameraPosition() {
       const newCameraPosition = playerPosition.value.clone().add(turnedOffset);
       if (!thirdPerson.value) {
         const turnedDriverOffset =
-          FIRSTPERSONDRIVEROFFSET.clone().applyAxisAngle(
+          FirstPersonDriverOffset.clone().applyAxisAngle(
             UPVECTOR,
             -orientations[userMoveable.value.orientation]
           );
