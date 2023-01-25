@@ -29,6 +29,7 @@ const offsetx = computed(() => -(mapWidth.value + 1) / 2);
 const offsety = computed(() => -(mapHeight.value + 1) / 2);
 
 const mapDefault: MapInterface = {
+  name: "Default",
   tiles: [
     [
       {

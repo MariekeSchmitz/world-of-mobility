@@ -65,9 +65,7 @@ public class MovementValidator implements Validator {
 
         return this.approximateCrossedTiles(startPosX, startPosY, endPosX, endPosY)
             .stream()
-            .allMatch(
-                position -> this.canMoveToPosition(position)
-            );
+            .allMatch(this::canMoveToPosition);
     }
 
     /**
