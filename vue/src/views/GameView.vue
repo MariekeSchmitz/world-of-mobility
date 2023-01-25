@@ -9,6 +9,7 @@ import { useLogin } from "@/services/login/useLogin";
 import { useInstanceList } from "@/services/useInstanceList";
 import Game from "@/components/Game.vue";
 import Avatar from "@/components/User/Avatar.vue";
+import ServerChat from "@/components/ServerChat.vue";
 import router from "@/router";
 import { library } from "@fortawesome/fontawesome-svg-core";
   import {
@@ -58,6 +59,9 @@ onUnmounted(() => {
         :avatarPicture="avatarData.avatar"
         class="w-16 h-16 fixed top-7 right-7"
       ></Avatar>
+
+    <ServerChat :instanceId="instanceID" type="game" :username="loginData.username"></ServerChat>
+
     <Game :instanceID="instanceID"></Game>
   </div>
 </template>

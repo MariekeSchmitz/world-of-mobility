@@ -188,6 +188,8 @@ import { RouterLink } from "vue-router";
 
     <UserListMenu :instanceID="editorID"></UserListMenu>
 
+    <ServerChat :instanceId="editorID" type="editor" :username="loginData.username"></ServerChat>
+
     <ScriptField
       v-if="npcNeedsScript && !errorMessage"
       :id="editorID"

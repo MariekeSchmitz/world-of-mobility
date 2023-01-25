@@ -148,19 +148,21 @@ public class EditorRestController {
         return GetListInstanceDTO.from(editorlist);
     }
 
+
     /**
      * Post for Global Server Messages
      * 
      * @param newServerMsgDTO
      * @author Felix Ruf, Finn Schindel
      */
-    @PostMapping(value = "/servermessage", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void postServerMessage(@RequestBody ServerMessageDTO newServerMsgDTO) {
+    @PostMapping(value = "/servermessage/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void postServerMessage(@RequestBody ServerMessageDTO newServerMsgDTO, @PathVariable long id) {
         long now = System.currentTimeMillis();
         Timestamp currentTime = new Timestamp(now);
         String s = new SimpleDateFormat("HH:mm").format(currentTime);
-        String output = s + ": " + newServerMsgDTO.txt();
-        messaging.convertAndSend("/topic/servermessage", new ServerMessageDTO(newServerMsgDTO.usrId(), output));
+        String output = newServerMsgDTO.txt() + " " + s;
+        String dest = "/topic/editor/servermessage/"+id;
+        messaging.convertAndSend(dest, new ServerMessageDTO(newServerMsgDTO.usrId(), output));
     }
 
     /**
