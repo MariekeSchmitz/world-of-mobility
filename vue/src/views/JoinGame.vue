@@ -145,6 +145,7 @@ watch(showError, (neu, alt) => {
             'buttonOrange w-3/12 mx-auto mt-8':spawnPointSet,
             'buttonOrange w-3/12 mx-auto bg-black bg-opacity-10 hover:bg-black hover:bg-opacity-10 mt-8': !spawnPointSet
           }" @click="join()" >Spiel starten</button>
+          {{ spawnPointSet }}
         </div>
 
         <div v-if="userList.users.length != 0" class=" grid bg-greenLight bg-opacity-60 p-11 h-96">
@@ -162,7 +163,7 @@ watch(showError, (neu, alt) => {
 
     </div>
     <ErrorWarning :errorMsg="'Du musst erst einen Startpunkt wählen.'"></ErrorWarning>
-    <ErrorWarning :errorMsg="feedbackMessage"></ErrorWarning>
+    <!-- <ErrorWarning :errorMsg="feedbackMessage"></ErrorWarning> -->
     <!-- <p v-if="feedbackMessage">{{ feedbackMessage }}</p> -->
  
   </div>

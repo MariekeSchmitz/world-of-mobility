@@ -60,10 +60,12 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div id="spanwpoint-container">
-    <div v-for="(tileRow, y) in testObj.tiles" :key="testObj.name" id="tile-row">
-      <div v-for="(tile, x) in tileRow" :key="tile.type" id="tile-column">
-        <SimplifiedTile :tile-type="tile.type" :orientation="tile.orientation" :x-index="x" :y-index="y" :asset="nonNullTile(tile.placedObject)"/>
+  <div >
+    <div class="flex flex-col-reverse">
+      <div v-for="(tileRow, y) in testObj.tiles" :key="testObj.name" class="flex flex-row mx-auto bg-greenDark">
+        <div v-for="(tile, x) in tileRow" :key="tile.type" class="flex flex-row">
+          <SimplifiedTile :tile-type="tile.type" :orientation="tile.orientation" :x-index="x" :y-index="y" :asset="nonNullTile(tile.placedObject)" @set-spawn-point="emit('setSpawnPoint')"/>
+        </div>
       </div>
     </div>
   </div>
