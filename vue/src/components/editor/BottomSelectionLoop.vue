@@ -13,12 +13,12 @@ const { setPlaceState } = usePlaceState();
 </script>
 
 <template>
-  <li v-for="ele in enum" class="bottomMenuListStyle">
+  <li v-for="ele in enum" class="peer bottomMenuListStyle">
     <button
       class="itemButton"
       @click="setPlaceState(ele, boolTile, boolNpc, boolPlaceable)"
     >
-      <img :src="editorTileURLs[ele]" :alt="ele" class="w-20 h-20" />
+      <img :src="editorTileURLs[ele]" :alt="ele" class="w-20 h-20 hover:border-orange hover:border-4 checked:border-orange peer-checked:border-4" />
     </button>
   </li>
 </template>

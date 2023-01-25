@@ -112,6 +112,7 @@ import { RouterLink } from "vue-router";
 </script>
 
 <template>
+
   <div class="fixed left-1/2 -translate-y-1/2 -translate-x-1/2 top-16">
     <h1>Farmerama Map</h1>
   </div>
@@ -122,8 +123,8 @@ import { RouterLink } from "vue-router";
   >
     <font-awesome-icon
       icon="fa-solid fa-arrow-left"
-      color="#2F8265"
-      class="p-3 w-10 h-10 rounded-full bg-white"
+      color="white"
+      class="bg-greenLight rounded-full p-3 w-6 h-6 inline justify-self-start white hover:bg-greenDark"
     />
   </RouterLink>
 
@@ -135,14 +136,14 @@ import { RouterLink } from "vue-router";
   <div
     class="grid grid-rows-2 fixed top-[20%] left-0 gap-4 font-poppins text-sm font-semibold text-greenDark"
   >
-    <button class="bg-white p-5">
+    <button class="group bg-white p-5 hover:bg-greenLight">
       <font-awesome-icon
         icon="fa-solid fa-plus"
         color="#2F8265"
         class="w-5 h-5"
       /><br />Spiel<br />starten
     </button>
-    <button @click="saveMap('testMap2', editorID)" class="bg-white">
+    <button @click="saveMap('testMap2', editorID)" class="bg-white hover:bg-greenLight">
       <font-awesome-icon
         icon="fa-solid fa-file-arrow-down"
         color="#2F8265"

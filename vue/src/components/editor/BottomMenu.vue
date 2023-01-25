@@ -158,7 +158,7 @@ function switchContent(element: string) {
     class="bg-whiteOverlay grid grid-cols-[25%_70%_5%] w-3/5 h-1/5 py-3 px-6 fixed bottom-0 left-[20%] font-poppins"
   >
     <fieldset class="grid grid-rows-2 editorLabel text-greenDark">
-      <label class="grid grid-cols-[30%_70%] items-center">
+      <label class="group grid grid-cols-[30%_70%] items-center">
         <input
           type="radio"
           name="selectMenu"
@@ -169,14 +169,14 @@ function switchContent(element: string) {
         <font-awesome-icon
           icon="fa-solid fa-road"
           color="#2F8265 "
-          class="w-5 h-5 bg-white rounded-full p-2 mr-1 justify-self-end peer-checked:text-orange"
+          class="w-5 h-5 bg-white rounded-full p-2 mr-1 justify-self-end peer-checked:text-orange group-hover:bg-orangeLight"
         />
         <div class="pl-2 text-left peer-checked:text-orange">
           Infrastruktur,<br />
           Landschaft
         </div>
       </label>
-      <label class="grid grid-cols-[30%_70%] items-center">
+      <label class="group grid grid-cols-[30%_70%] items-center">
         <input
           type="radio"
           name="selectMenu"
@@ -186,7 +186,7 @@ function switchContent(element: string) {
         <font-awesome-icon
           icon="fa-solid fa-car"
           color="#2F8265"
-          class="w-5 h-5 bg-white rounded-full p-2 mr-1 justify-self-end peer-checked:text-orange"
+          class="w-5 h-5 bg-white rounded-full p-2 mr-1 justify-self-end peer-checked:text-orange group-hover:bg-greenLight"
         />
         <div class="pl-2 text-left peer-checked:text-orange">NPCs</div>
       </label>
@@ -195,7 +195,7 @@ function switchContent(element: string) {
     <div class="bg-white pr-5 py-5">
       <div id="landscapeMenu" class="grid grid-cols-[15%_85%] h-full">
         <fieldset class="grid grid-rows-3">
-          <label class="grid items-center">
+          <label class="group grid items-center">
             <input
               type="radio"
               name="selectObject"
@@ -206,10 +206,10 @@ function switchContent(element: string) {
             <font-awesome-icon
               icon="fa-solid fa-road"
               color="#2F826575"
-              class="w-5 h-5 justify-self-center peer-checked:text-orange"
+              class="w-5 h-5 justify-self-center peer-checked:text-orange group-hover:text-orange"
             />
           </label>
-          <label class="grid items-center">
+          <label class="group grid items-center">
             <input
               type="radio"
               name="selectObject"
@@ -219,10 +219,10 @@ function switchContent(element: string) {
             <font-awesome-icon
               icon="fa-solid fa-tree"
               color="#2F826575"
-              class="w-5 h-5 justify-self-center peer-checked:text-orange"
+              class="w-5 h-5 justify-self-center peer-checked:text-orange group-hover:text-orange"
             />
           </label>
-          <label class="grid items-center">
+          <label class="group grid items-center">
             <input
               type="radio"
               name="selectObject"
@@ -232,7 +232,7 @@ function switchContent(element: string) {
             <font-awesome-icon
               icon="fa-solid fa-traffic-light"
               color="#2F826575"
-              class="w-5 h-5 justify-self-center peer-checked:text-orange"
+              class="w-5 h-5 justify-self-center peer-checked:text-orange group-hover:text-orange"
             />
           </label>
         </fieldset>
@@ -300,7 +300,7 @@ function switchContent(element: string) {
             <font-awesome-icon
               icon="fa-solid fa-angle-right"
               color="#2F8265"
-              class="w-8 h-8"
+              class="w-8 h-8 hover:text-greenLight"
             />
           </button>
         </div>
@@ -308,7 +308,7 @@ function switchContent(element: string) {
 
       <div id="npcMenu" class="h-full hidden grid-cols-[15%_85%]">
         <fieldset class="h-full grid grid-rows-2">
-          <label class="grid items-center">
+          <label class="group grid items-center">
             <input
               type="radio"
               name="selectNpc"
@@ -319,10 +319,10 @@ function switchContent(element: string) {
             <font-awesome-icon
               icon="fa-solid fa-car"
               color="#2F826575"
-              class="w-5 h-5 justify-self-center peer-checked:text-orange"
+              class="w-5 h-5 justify-self-center peer-checked:text-orange group-hover:text-orange"
             />
           </label>
-          <label class="grid items-center">
+          <label class="group grid items-center">
             <input
               type="radio"
               name="selectNpc"
@@ -332,7 +332,7 @@ function switchContent(element: string) {
             <font-awesome-icon
               icon="fa-solid fa-person-walking"
               color="#2F826575"
-              class="w-6 h-6 justify-self-center peer-checked:text-orange"
+              class="w-6 h-6 justify-self-center peer-checked:text-orange group-hover:text-orange"
             />
           </label>
         </fieldset>
@@ -342,7 +342,7 @@ function switchContent(element: string) {
             <font-awesome-icon
               icon="fa-solid fa-angle-left"
               color="#2F8265"
-              class="w-8 h-8"
+              class="w-8 h-8 hover:text-greenLight"
             />
           </button>
 
@@ -391,22 +391,22 @@ function switchContent(element: string) {
             </div>
           </ul>
 
-          <button id="scrollRight" @click="scrollingRight">
+          <button id="scrollRight" @click="scrollingRight" class="group">
             <font-awesome-icon
               icon="fa-solid fa-angle-right"
               color="#2F8265"
-              class="w-8 h-8"
+              class="w-8 h-8 group-hover:text-greenLight"
             />
           </button>
         </div>
       </div>
     </div>
 
-    <button id="hideElement" @click="toggle" class="grid items-start">
+    <button id="hideElement" @click="toggle" class="group grid items-start">
       <font-awesome-icon
         icon="fa-solid fa-xmark"
         color="#2F8265"
-        class="w-6 h-6 justify-self-end"
+        class="w-6 h-6 justify-self-end group-hover:text-greenLight"
       />
     </button>
   </div>

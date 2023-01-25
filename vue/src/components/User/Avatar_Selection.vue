@@ -28,7 +28,7 @@ const avatarPictures: string[] = [
     class="fixed inset-0 bg-greenOverlay bg-opacity-50 overflow-y-auto h-full w-full grid grid-cols-3 content-center"
   >
     <div class="bg-white p-16 grid col-start-2 col-end-2">
-      <h2 class="">Choose <br />your Avatar</h2>
+      <h2 class="">Wähle <br />deinen Avatar</h2>
       <div class="grid grid-cols-3 justify-items-center">
         <div
           v-for="avatar in avatarPictures"

@@ -68,7 +68,7 @@ function toggle() {
       <font-awesome-icon
         icon="fa-solid fa-xmark"
         color="#2F8265"
-        class="w-5 h-5 justify-self-end"
+        class="w-5 h-5 justify-self-end hover:text-greenLight"
       />
     </button>
 
@@ -77,7 +77,7 @@ function toggle() {
         <font-awesome-icon
           icon="fa-solid fa-angle-up"
           color="#2F8265"
-          class="w-4 h-4"
+          class="w-4 h-4 hover:text-greenLight"
         />
       </button>
 
@@ -94,7 +94,7 @@ function toggle() {
         <font-awesome-icon
           icon="fa-solid fa-angle-down"
           color="#2F8265"
-          class="w-4 h-4"
+          class="w-4 h-4 hover:text-greenLight"
         />
       </button>
     </div>

@@ -98,7 +98,7 @@ watch(errorExisting, (neu, alt) => {
           ></Avatar>
           <button
             @click="toggleAvatarSelection"
-            class="bg-orange absolute rounded-full w-11 h-11"
+            class="bg-orange absolute rounded-full w-11 h-11 hover:bg-orangeLight"
           >
             <font-awesome-icon icon="fa-solid fa-pen" size="xl" color="white" />
           </button>
@@ -136,7 +136,7 @@ watch(errorExisting, (neu, alt) => {
     </div>
     <button
       v-if="loginData.loggedIn"
-      class="text-white absolute -right-0 m-10 py-3 px-5 bg-orange rounded-full font-poppins font-semibold"
+      class="text-white absolute -right-0 m-10 py-3 px-5 bg-orange rounded-full font-poppins font-semibold hover:bg-orangeLight"
       @click="logout()"
     >
       Logout
