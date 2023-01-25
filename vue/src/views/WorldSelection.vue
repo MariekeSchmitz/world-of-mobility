@@ -47,7 +47,6 @@ function scrollingRight() {
       <button @click="$router.go(-1)" class="place-self-start">
         <font-awesome-icon
           icon="fa-solid fa-arrow-left"
-          size="xl"
           color="white"
           class="bg-greenLight rounded-full p-3 w-6 h-6 inline justify-self-start white hover:bg-greenDark"
         />
@@ -77,7 +76,6 @@ function scrollingRight() {
             <button class="group relative bottom-6" @click="scrollingLeft">
                 <font-awesome-icon
                   icon="fa-solid fa-chevron-left"
-                  size="2xl"
                   color="white"
                   class="w-5 h-5 p-3 inline rounded-full bg-greenLight hover:bg-greenDark"
                 />
@@ -100,7 +98,6 @@ function scrollingRight() {
             <button class="relative bottom-6" @click="scrollingRight">
               <font-awesome-icon
                 icon="fa-solid fa-chevron-right"
-                size="s"
                 color="white"
                 class="w-5 h-5 p-3 inline rounded-full bg-greenLight hover:bg-greenDark"
               />

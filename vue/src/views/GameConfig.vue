@@ -18,27 +18,33 @@ const { avatarData } = useLogin();
 let name = "";
 let playerLimit = ref(1);
 const npcs = ref(false);
-const showError = ref(false);
+const errorMessage = ref("")
 const props = defineProps<{
   mapName: string;
 }>();
 
 async function checkValidation(name: string) {
   console.log(avatarData.avatar)
-  await sendConfig(props.mapName, name, playerLimit.value, npcs.value);
-  if (valSuccess.validationSuccess) {
-    await createGameInstance(props.mapName, name, playerLimit.value, npcs.value);
-    if (instanceId.id != -1) {
-      router.push("/joingame/" + instanceId.id);
-    }
+
+  if(name == ""){
+    errorMessage.value = "Bitte einen Namen eingeben.";
   } else {
-    showError.value = true;
+    await sendConfig(props.mapName, name, playerLimit.value, npcs.value);
+    if (valSuccess.validationSuccess) {
+      await createGameInstance(props.mapName, name, playerLimit.value, npcs.value);
+      if (instanceId.id != -1) {
+        router.push("/joingame/" + instanceId.id);
+      } 
+    } else {
+      errorMessage.value = `Der Name ${name} wurde schon vergeben.`;
+    }
   }
+
 }
 
-watch(showError, (neu, alt) => {
+watch(errorMessage, (neu, alt) => {
   const errorBox = document.getElementById("errorBox");
-  animateHintBox(showError.value, errorBox)
+  animateHintBox(errorMessage.value != "", errorBox)
 });
 </script>
 
@@ -52,7 +58,6 @@ watch(showError, (neu, alt) => {
       <button @click="$router.go(-1)" class="place-self-start">
         <font-awesome-icon
           icon="fa-solid fa-arrow-left"
-          size="xl"
           color="white"
           class="bg-greenLight rounded-full p-3 w-6 h-6 inline justify-self-start white hover:bg-greenDark"
         />
@@ -114,7 +119,7 @@ watch(showError, (neu, alt) => {
           </button>
 
           
-          <ErrorWarning errorMsg="Der Name {{ name }} wurde schon vergeben.">
+          <ErrorWarning :errorMsg="errorMessage">
           </ErrorWarning>
           
         </div>

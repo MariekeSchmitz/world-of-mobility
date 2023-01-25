@@ -80,7 +80,6 @@ watch(errorExisting, (neu, alt) => {
       <button @click="$router.go(-1)" class="place-self-start">
         <font-awesome-icon
           icon="fa-solid fa-arrow-left"
-          size="xl"
           color="white"
           class="bg-greenLight rounded-full p-3 w-6 h-6 inline justify-self-start white hover:bg-greenDark"
         />
