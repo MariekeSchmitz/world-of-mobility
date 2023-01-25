@@ -10,8 +10,8 @@ import { computed, onMounted, ref } from "vue";
 import { useLogin } from "@/services/login/useLogin";
 import Avatar from "@/components/User/Avatar.vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faPlus, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-library.add(faPlus, faArrowLeft);
+import { faPlus, faArrowLeft, faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+library.add(faPlus, faArrowLeft,  faChevronRight, faChevronLeft);
 
 const { instanceState, getInstanceList } = useInstanceList();
 const { avatarData } = useLogin();

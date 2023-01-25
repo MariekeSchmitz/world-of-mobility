@@ -5,12 +5,10 @@ import Avatar from "@/components/User/Avatar.vue";
 import { useLogin } from "@/services/login/useLogin";
 import { ref, watch } from "vue";
 import router from "@/router";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
 import ErrorWarning from "@/components/ErrorWarning.vue";
 import { animateHintBox } from "@/components/HintBoxAnimation";
-
-// Then add it to library
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
 library.add(faPen);
 
 const { loginData, login, logout, avatarData } = useLogin();
@@ -45,7 +43,6 @@ watch(loginData, (neu, alt) => {
   } else if (neu.error != "" && !errorExisting.value) {
     if (errorBox != null) {
     errorExisting.value = true;
-   
     }
   }
 });
@@ -54,23 +51,6 @@ watch(loginData, (neu, alt) => {
 watch(errorExisting, (neu, alt) => {
   const errorBox = document.getElementById("errorBox");
   animateHintBox(errorExisting.value, errorBox);
-
-  // if (neu) {
-  //       if (errorBox != null) {
-  //           errorBox.classList.toggle("opacity-0");
-  //           errorBox.classList.toggle("opacity-100");
-  //           errorBox.classList.toggle("right-0");
-  //           errorBox.classList.toggle("right-28");
-  //       }
-  //   } else {
-  //       if (errorBox != null) {
-  //       errorBox.classList.toggle("opacity-100");
-  //       errorBox.classList.toggle("opacity-0");
-  //       errorBox.classList.toggle("right-28");
-  //       errorBox.classList.toggle("right-0");
-  //       }
-  //   }
-
 });
 
 </script>
@@ -81,13 +61,8 @@ watch(errorExisting, (neu, alt) => {
   >
     <div class="grid text-center col-start-2 col-end-2 justify-items-center">
       <div class="">
-        <h1 class="">World of <br />E-Mobility</h1>
+        <h1 class="">World of <br /><E-Mobility></E-Mobility></h1>
       </div>
-
-      <!-- big Avatar
-      <div>
-        <Avatar :avatarPicture="loginData.avatar" :size="'l'"></Avatar>
-      </div> -->
 
       <!-- small Avatar with change function -->
       <div class="grid grid-cols-3 gap-6 items-center">
@@ -131,7 +106,6 @@ watch(errorExisting, (neu, alt) => {
         </button>
       </div>
 
-      <!-- Avatar Selection Mode -->
       <Avatar_Selection v-if="choosingAvatar"></Avatar_Selection>
     </div>
     <button
@@ -142,9 +116,6 @@ watch(errorExisting, (neu, alt) => {
       Logout
     </button>
     <ErrorWarning :errorMsg="loginData.error"> </ErrorWarning>
-    <!-- <ErrorWarning :errorMsg="loginData.error" v-if="loginData.error != ''"> </ErrorWarning> -->
 
-
-    <!-- <div class="fixed block inset-0 bg-orange bg-opacity-50 overflow-y-auto h-full w-full" id="my-modal"></div> -->
   </div>
 </template>
