@@ -4,6 +4,7 @@
 import * as THREE from "three";
 import { GltfModel, Text } from "troisjs";
 import TRACTOR_URL from "@/assets/models/TRACTOR.glb?url";
+import FONT_URL from "@/assets/fonts/helvetiker_regular.typeface.json?url";
 
 /**
  * Class for Tractor Components
@@ -23,7 +24,7 @@ const props = withDefaults(
 <template>
   <Text
     :text="props.name"
-    font-src="\src\assets\fonts\helvetiker_regular.typeface.json"
+    :font-src="FONT_URL"
     :position="props.position.clone().add(new THREE.Vector3(0, 4, 0))"
     align="center"
     :size="0.3"
