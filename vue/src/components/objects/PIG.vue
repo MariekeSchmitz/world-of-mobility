@@ -16,13 +16,13 @@ const props = withDefaults(
     position: THREE.Vector3;
     rotation: number;
     type: string;
-    name: string;
+    name?: string;
   }>(),
   { scale: new THREE.Vector3(1, 1, 1) }
 );
 </script>
 <template>
-  <Text
+  <Text v-if="props.name"
     :text="props.name"
     :font-src="FONT_URL"
     :position="props.position.clone().add(new THREE.Vector3(0, 2.5, 0))"
