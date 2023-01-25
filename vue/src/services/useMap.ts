@@ -3,29 +3,30 @@
 import type { INpc } from "@/interfaces/INpc";
 import { reactive } from "vue";
 
+export interface IPlacedObject {
+  type: string;
+}
+
+export interface ITile {
+  type: string;
+  orientation: string;
+  placedObject: IPlacedObject;
+}
+
+export interface IMapDTO {
+  tiles: Array<Array<ITile>>;
+  NPCS: Array<INpc>;
+  name: string
+}
+
 export function useMap(): any {
-  interface IPlacedObject {
-    type: string;
-  }
-
-  interface ITile {
-    type: string;
-    orientation: string;
-    placedObject: IPlacedObject;
-  }
-
-  interface IMapDTO {
-    name: string
-    tiles: Array<Array<ITile>>;
-    NPCS: Array<INpc>;
-  }
 
   // const mapState = reactive<IMapDTO> ({
   //     tiles: [[]],
   //     NPCS: []
   // });
 
-  async function getGameMap(instanceID: number) {
+  async function getGameMap(instanceID: number): Promise<IMapDTO | undefined> {
     try {
       const controller = new AbortController();
       const URL = `/api/game/getmap/${instanceID}`;

@@ -1,23 +1,18 @@
 <template>
   <div id="spanwpoint-container">
-    <div v-for="(tileRow, y) in testObj.tiles" id="tile-row">
-      <div v-for="(tile, x) in tileRow" id="tile-column">
-        <SimplifiedTile
-          :tile-type="tile.type"
-          :orientation="tile.orientation"
-          :x-index="x"
-          :y-index="y"
-        />
+    <div v-for="(tileRow, y) in testObj.tiles" :key="testObj.name" id="tile-row">
+      <div v-for="(tile, x) in tileRow" :key="tile.type" id="tile-column">
+        <SimplifiedTile :tile-type="tile.type" :orientation="tile.orientation" :x-index="x" :y-index="y" :asset="nonNullTile(tile.placedObject)"/>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, ref, type Ref } from "vue";
 import SimplifiedTile from "@/components/simplifiedTile/SimplifiedTile.vue";
 import { useSpawnPoint } from "@/components/spawnpoint/useSpawnPoint";
-import { useMap } from "@/services/useMap";
+import { useMap, type IMapDTO, type IPlacedObject } from "@/services/useMap";
 
 const {
   miniMapScalingState,
@@ -35,126 +30,26 @@ const props = withDefaults(
   }
 );
 
-const testObj = ref({
+function nonNullTile(str: IPlacedObject) {
+  return str ? str.type : "";
+}
+
+const testObj: Ref<IMapDTO> = ref({
   tiles: [
     [
       {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "SOUTH",
-        placedObjects: [],
-        type: "STREET_CROSS",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "GRASSTILE",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "RAIL_CURVE",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "RAIL_STRAIGHT",
-      },
-    ],
-    [
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "SIDEWAY",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "STREET_CURVE",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "STREET_STRAIGHT",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "STREET_T_CROSS",
-      },
-    ],
-    [
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "STREET_CROSS",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "GRASSTILE",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "RAIL_CURVE",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "RAIL_STRAIGHT",
-      },
-    ],
-    [
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "SIDEWAY",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "STREET_CURVE",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "STREET_STRAIGHT",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "STREET_T_CROSS",
-      },
-    ],
+        type: "",
+        orientation: "",
+        placedObject: {
+          type: ""
+        }
+      }
+    ]
   ],
-  name: "test",
-  npcs: [
-    {
-      orientation: "NORTH",
-      xPos: 0.0,
-      yPos: 0.0,
-      maxVelocity: 1.0,
-      capacity: 1.0,
-      currentVelocity: 0.0,
-      script: "",
-      type: "PASSANGER",
-    },
+  NPCS: [
+
   ],
+  name: ""
 });
 
 onMounted(async () => {
