@@ -11,6 +11,9 @@ import {
   PointLight,
   Renderer,
   Scene,
+  Plane,
+  BasicMaterial,
+  Texture
 } from "troisjs";
 
 import BottomMenu from "@/components/editor/BottomMenu.vue";
@@ -26,6 +29,7 @@ import Avatar from "@/components/User/Avatar.vue";
 import ErrorWarning from "@/components/ErrorWarning.vue";
 import { useUserFeedback } from "@/services/editor/useUserFeedback";
 import type { MapInterface } from "@/services/editor/MapInterface";
+import { editorTileURLs } from "@/components/editor/EditorTileURLDict"
 import { library } from "@fortawesome/fontawesome-svg-core";
 import router from "@/router";
 import {
@@ -46,11 +50,16 @@ import { RouterLink } from "vue-router";
 
 
   const editorID = Number(props.editorID);
-  const backgroundPath = "@/assets/images/home_Blur.png";
+  const backgroundPath = editorTileURLs['BACKGROUND'];
   const { loginData, avatarData } = useLogin();
   const { leaveEditor } = useUserEditor();
 
   
+  onMounted(() => {
+    const orbitControls = rendererC.value.three.cameraCtrl;
+    orbitControls.maxDistance = 100;
+    orbitControls.minDistance = 12;
+  });
 
   onUnmounted(() => {
       leaveEditor(editorID, loginData.username);
@@ -101,6 +110,9 @@ import { RouterLink } from "vue-router";
     console.log("set NPCScriptView, Wert:", val)
   }
 
+  let widthWindow = ref(window.innerWidth);
+  let heightWindow = ref(window.innerHeight);
+
   watch(errorMessage, (neu, alt) => {
     const errorBox = document.getElementById("errorBox");
     animateErrorWarning((errorMessage.value != ""), errorBox);
@@ -133,87 +145,104 @@ import { RouterLink } from "vue-router";
 
 <template>
 
-  <div class="fixed left-1/2 -translate-y-1/2 -translate-x-1/2 top-16">
-    <h1>{{name}}</h1>
-  </div>
-  <RouterLink
-    to="/worldintro"
-    class="fixed top-7 left-7"
-    @click="setEditorError('')"
-  >
-    <font-awesome-icon
-      icon="fa-solid fa-arrow-left"
-      color="white"
-      class="bg-greenLight rounded-full p-3 w-6 h-6 inline justify-self-start white hover:bg-greenDark"
-    />
-  </RouterLink>
-
-  <Avatar
-    :avatarPicture="avatarData.avatar"
-    class="w-16 h-16 fixed top-7 right-7"
-  ></Avatar>
-
-  <div
-    class="grid grid-rows-2 fixed top-[20%] left-0 gap-4 font-poppins text-sm font-semibold text-greenDark"
-  >
-    <button @click="startGame()" class="group bg-white p-5 hover:bg-greenLight">
-      <font-awesome-icon
-        icon="fa-solid fa-plus"
-        color="#2F8265"
-        class="w-5 h-5"
-      /><br />Spiel<br />starten
-    </button>
-    <button @click="saveMap(editorID)" class="bg-white hover:bg-greenLight">
-      <font-awesome-icon
-        icon="fa-solid fa-file-arrow-down"
-        color="#2F8265"
-        class="w-5 h-5"
-      /><br />Welt<br />speichern
-    </button>
+  <div class="absolute">
+    <img :src="backgroundPath" alt="background" class="w-screen h-screen "/>
   </div>
 
-  <ErrorWarning :errorMsg="errorMessage"></ErrorWarning>
-  <ErrorWarning :errorMsg="feedbackMessage"></ErrorWarning>
-    <!-- <p v-if="feedbackMessage">{{ feedbackMessage }}</p> -->
+  <div class="absolute">
+  
+    <div class="fixed left-1/2 -translate-y-1/2 -translate-x-1/2 top-16">
+      <h1>{{name}}</h1>
+    </div>
+    <RouterLink
+      to="/worldintro"
+      class="fixed top-7 left-7"
+      @click="setEditorError('')"
+    >
+      <font-awesome-icon
+        icon="fa-solid fa-arrow-left"
+        color="white"
+        class="bg-greenLight rounded-full p-3 w-6 h-6 inline justify-self-start white hover:bg-greenDark"
+      />
+    </RouterLink>
 
-  <UserListMenu :instanceID="editorID"></UserListMenu>
+    <Avatar
+      :avatarPicture="avatarData.avatar"
+      class="w-16 h-16 fixed top-7 right-7"
+    ></Avatar>
 
-  <ScriptField
-    v-if="npcNeedsScript && !errorMessage"
-    :id="editorID"
-    :x="npcx"
-    :y="npcy"
-    @script-window-closed="setNpcScriptView(false)"
-  ></ScriptField>
-  <BottomMenu v-if="!npcNeedsScript || errorMessage"></BottomMenu>
+    <div
+      class="grid grid-rows-2 fixed top-[20%] left-0 gap-4 font-poppins text-sm font-semibold text-greenDark"
+    >
+      <button @click="startGame()" class="group bg-white p-5 hover:bg-greenLight">
+        <font-awesome-icon
+          icon="fa-solid fa-plus"
+          color="#2F8265"
+          class="w-5 h-5"
+        /><br />Spiel<br />starten
+      </button>
+      <button @click="saveMap(editorID)" class="bg-white hover:bg-greenLight">
+        <font-awesome-icon
+          icon="fa-solid fa-file-arrow-down"
+          color="#2F8265"
+          class="w-5 h-5"
+        /><br />Welt<br />speichern
+      </button>
+    </div>
 
-  <!--
-  sends msg on every instance, should only be in one instance for all; first player gets all msg shown as many times as there are players
+    <ErrorWarning :errorMsg="errorMessage"></ErrorWarning>
+    <ErrorWarning :errorMsg="feedbackMessage"></ErrorWarning>
+      <!-- <p v-if="feedbackMessage">{{ feedbackMessage }}</p> -->
+
+    <UserListMenu :instanceID="editorID"></UserListMenu>
+
+    <ScriptField
+      v-if="npcNeedsScript && !errorMessage"
+      :id="editorID"
+      :x="npcx"
+      :y="npcy"
+      @script-window-closed="setNpcScriptView(false)"
+    ></ScriptField>
+    <BottomMenu v-if="!npcNeedsScript || errorMessage"></BottomMenu>
+
+    <!--
+    sends msg on every instance, should only be in one instance for all; first player gets all msg shown as many times as there are players
+          
+    <ServerChat :instanceId="editorID"></ServerChat>
+    -->
+    <MiniMap />
+
+    <Renderer
+      ref="rendererC"
+      antialias
+      :orbit-ctrl="{ enableDamping: true, enableRotate: false }"
+      resize="window"
+      :alpha="true"
+    >
+      <Camera
+        :position="{ x: 0, y: 0, z: 10 }"
+        :lookAt="{ x: 0, y: 0, z: 0 }"
+        ref="camera"
+      />
+
+      <Scene ref="scene">
+        <PointLight :position="{ x: 0, y: 0, z: 10 }" />
+        <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
+        <!-- <Plane
+            :width="widthWindow"
+            :height="heightWindow"
+            :position="{ x: 0, y: 0, z: 5 }"
+          >
+            <BasicMaterial>
+              <Texture v-bind:src="backgroundPath" />
+            </BasicMaterial >
+          </Plane> -->
         
-  <ServerChat :instanceId="editorID"></ServerChat>
-  -->
-  <MiniMap />
-
-  <Renderer
-    ref="rendererC"
-    antialias
-    :orbit-ctrl="{ enableDamping: true, enableRotate: false }"
-    resize="window"
-  >
-    <Camera
-      :position="{ x: 0, y: 0, z: 10 }"
-      :lookAt="{ x: 0, y: 0, z: 0 }"
-      ref="camera"
-    />
-
-    <Scene background="#97FFFF" ref="scene">
-      <PointLight :position="{ x: 0, y: 0, z: 10 }" />
-      <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
-
-      <EditorMap
+        <EditorMap
         :editorID="editorID"
         @npc-added="setNpcValues($event.x, $event.y)"
-      ></EditorMap>
-    </Scene>
-  </Renderer>
+        ></EditorMap>
+      </Scene>
+    </Renderer>
+  </div>
 </template>
