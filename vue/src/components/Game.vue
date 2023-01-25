@@ -104,7 +104,6 @@ function updatePlayerPositions() {
   }
 }
 
-
 /**
  * computes the new movement vector.
  */
@@ -147,7 +146,6 @@ function computeLookAt() {
   }
 }
 
-
 const trafficLightState = computed(() => {
   return mapUpdates.trafficLightState;
 });
@@ -157,7 +155,6 @@ const trafficLightState = computed(() => {
  * keeps every playerobject up to date.
  */
 const cameraPosition = ref(new THREE.Vector3(0, 0, 0));
-
 
 /**
  * computes the new camera position.
@@ -350,6 +347,7 @@ onUnmounted(() => {
             new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
           "
           :rotation="-orientations[moveable.orientation]"
+          :name="moveable.user"
         />
         <SHEEP
           v-if="moveable.classname == 'SHEEP'"
@@ -359,6 +357,7 @@ onUnmounted(() => {
           "
           :rotation="-orientations[moveable.orientation]"
           :type="moveable.classname"
+          :name="moveable.user"
         />
         <TRUCK
           v-if="moveable.classname == 'TRUCK'"
@@ -368,6 +367,7 @@ onUnmounted(() => {
           "
           :rotation="-orientations[moveable.orientation]"
           :type="moveable.classname"
+          :name="moveable.user"
         />
         <TRACTOR
           v-if="moveable.classname == 'TRACTOR'"
@@ -377,6 +377,7 @@ onUnmounted(() => {
           "
           :rotation="-orientations[moveable.orientation]"
           :type="moveable.classname"
+          :name="moveable.user"
         />
         <PIG
           v-if="moveable.classname == 'PIG'"
@@ -386,6 +387,7 @@ onUnmounted(() => {
           "
           :rotation="-orientations[moveable.orientation]"
           :type="moveable.classname"
+          :name="moveable.user"
         />
         <TUPEL
           v-if="moveable.classname == 'TUPEL'"
@@ -395,6 +397,7 @@ onUnmounted(() => {
           "
           :rotation="-orientations[moveable.orientation]"
           :type="moveable.classname"
+          :name="moveable.user"
         />
       </div>
     </Scene>
