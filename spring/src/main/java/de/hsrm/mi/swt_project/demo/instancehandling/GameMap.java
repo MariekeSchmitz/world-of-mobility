@@ -36,6 +36,7 @@ import de.hsrm.mi.swt_project.demo.util.ArrayHelpers;
 public class GameMap {
 
     public static final int DEFAULT_SIZE = 8;
+    public static final int MAP_EXPANSION_PER_SITE = 2;
 
     private Tile[][] tiles = new Tile[DEFAULT_SIZE][DEFAULT_SIZE];
     private String name;
@@ -241,17 +242,37 @@ public class GameMap {
     }
 
     /**
-     * Creates a new 2D tile array of double size and
+     * Creates a new 2D tile array of extended size and
      * centers values from current tile array inside the
      * created one.
      * 
      * Replaces current tile array with the new one.
+     * 
+     * Also adjusts position of npcs that are currently
+     * placed on the map.
      */
     private void expandMap() {
-        int size = this.tiles.length * 2;
+
+        int size = this.tiles.length + (MAP_EXPANSION_PER_SITE * 2);
         Tile[][] newTiles = new Tile[size][size];
+
         fillMapWithDefaultTiles(newTiles, size);
         ArrayHelpers.transfer2D(this.tiles, newTiles);
+
+        this.npcs = this.npcs
+            .stream()
+            .map(npc -> {
+
+                float xPos = npc.getXPos() + MAP_EXPANSION_PER_SITE;
+                float yPos = npc.getYPos() + MAP_EXPANSION_PER_SITE;
+
+                npc.setXPos(xPos);
+                npc.setYPos(yPos);
+
+                return npc;
+
+            }).toList();
+
         this.tiles = newTiles;
     }
 
