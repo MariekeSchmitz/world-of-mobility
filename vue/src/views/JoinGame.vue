@@ -13,8 +13,8 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { faPlus, faArrowLeft, faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import Avatar from "@/components/User/Avatar.vue";
 import ErrorWarning from "@/components/ErrorWarning.vue";
+import { useUserFeedback } from "@/services/editor/useUserFeedback";
 import { animateErrorWarning } from "@/components/ErrorAnimation";
-
 
 library.add(faPlus, faArrowLeft, faChevronRight, faChevronLeft);
 const { spawnState, setMoveableObject, setInstanceId } = useSpawnPoint();
@@ -24,6 +24,8 @@ const { loginData, avatarData } = useLogin();
 
 const joinSuccessfull = ref(false);
 const showError = ref(false);
+
+const {feedbackMessage} = useUserFeedback();
 
 const props = defineProps<{
   instanceID: string;
@@ -176,7 +178,8 @@ watch(showError, (neu, alt) => {
 
     </div>
     <ErrorWarning :errorMsg="'Du musst erst einen Startpunkt wählen.'"></ErrorWarning>
+    <ErrorWarning :errorMsg="feedbackMessage"></ErrorWarning>
+    <!-- <p v-if="feedbackMessage">{{ feedbackMessage }}</p> -->
  
-    <!-- <p v-if="showError">Spielerlimit ausgeschöpft.</p> -->
   </div>
 </template>

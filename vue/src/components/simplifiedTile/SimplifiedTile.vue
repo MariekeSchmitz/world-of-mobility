@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
 import { useSpawnPoint } from "@/components/spawnpoint/useSpawnPoint";
+import { editorTileURLs } from "../editor/EditorTileURLDict";
 
 const { miniMapScalingState, setSpawnPoint, spawnState } = useSpawnPoint();
 
@@ -10,10 +11,11 @@ const emit = defineEmits<{
 
 const props = withDefaults(
   defineProps<{
-    tileType: string;
-    orientation: string;
-    xIndex: number;
-    yIndex: number;
+    tileType: string,
+    orientation: string,
+    xIndex: number,
+    yIndex: number,
+    asset: string
   }>(),
   {
     tileType: "GRASSTILE",
@@ -22,6 +24,8 @@ const props = withDefaults(
     yIndex: 0,
   }
 );
+const tileTexturePath =`url('${editorTileURLs[props.tileType]}')`;
+const objectAsset = `url('${props.asset ? editorTileURLs[props.asset] : ""}')`;
 
 function setSpawnPointEvent() {
   setSpawnPoint(props.xIndex, props.yIndex)
@@ -38,18 +42,10 @@ const isSelected = computed(() => {
 
 <template>
   <div>
-    <div
-      id="simplifiedContainer"
-      :class="{ selected: isSelected }"
-      @click="setSpawnPointEvent()"
-    ></div>
-    <div
-      :class="[{ rotateSelected: isSelected }, { marker: isSelected }]"
-    ></div>
-    <div
-      id="simplified-tile"
-      :class="[tileType, orientation, { selected: isSelected }]"
-    ></div>
+    <div id="simplifiedContainer" :class="{ selected: isSelected }" @click="setSpawnPoint(props.xIndex, props.yIndex)"></div>
+    <div :class="[{ rotateSelected: isSelected }, { marker: isSelected }]"></div>
+    <div id="objectAsset"></div>
+    <div id="simplifiedTile" :class="[orientation, { selected: isSelected }]"></div>
   </div>
 </template>
 
@@ -59,11 +55,11 @@ const isSelected = computed(() => {
   box-sizing: border-box;
   height: v-bind("miniMapScalingState.boxSizing");
   width: v-bind("miniMapScalingState.boxSizing");
-  z-index: 1;
+  z-index: 10;
 }
 
-#simplified-tile {
-  /* background-image: url('@/textures/tiles/GRASSTILE.jpg'); */
+#simplifiedTile {
+  background-image: v-bind(tileTexturePath);
   box-sizing: border-box;
   background-repeat: no-repeat;
   background-size: contain;
@@ -73,6 +69,18 @@ const isSelected = computed(() => {
   z-index: -2;
 }
 
+#objectAsset {
+  position: absolute;
+  background-image: v-bind(objectAsset);
+  box-sizing: border-box;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  height: v-bind("miniMapScalingState.boxSizing");
+  width: v-bind("miniMapScalingState.boxSizing");
+  z-index: 5;
+}
+
 .marker {
   height: v-bind("miniMapScalingState.boxSizing");
   width: v-bind("miniMapScalingState.boxSizing");
@@ -80,7 +88,7 @@ const isSelected = computed(() => {
   position: absolute;
   background-color: rgb(105, 105, 105);
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  z-index: 2;
+  z-index: 10;
 }
 
 @keyframes innerGlow {

@@ -63,11 +63,8 @@ public class Position {
         if (getClass() != obj.getClass())
             return false;
         Position other = (Position) obj;
-        if (xPos != other.xPos)
-            return false;
-        if (yPos != other.yPos)
-            return false;
-        return true;
+        return xPos == other.xPos
+            && yPos == other.yPos;
     }
 
     @Override

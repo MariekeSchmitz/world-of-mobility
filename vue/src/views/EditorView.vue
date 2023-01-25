@@ -24,7 +24,10 @@ import ScriptField from "@/components/editor/ScriptField.vue";
 import ServerChat from "@/components/ServerChat.vue";
 import Avatar from "@/components/User/Avatar.vue";
 import ErrorWarning from "@/components/ErrorWarning.vue";
+import { useUserFeedback } from "@/services/editor/useUserFeedback";
+import type { MapInterface } from "@/services/editor/MapInterface";
 import { library } from "@fortawesome/fontawesome-svg-core";
+import router from "@/router";
 import {
   faPlus,
   faFileArrowDown,
@@ -36,6 +39,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { RouterLink } from "vue-router";
   library.add(faPlus, faFileArrowDown, faArrowLeft);
 
+
   const props = defineProps<{
     editorID: string;
   }>();
@@ -45,6 +49,8 @@ import { RouterLink } from "vue-router";
   const backgroundPath = "@/assets/images/home_Blur.png";
   const { loginData, avatarData } = useLogin();
   const { leaveEditor } = useUserEditor();
+
+  
 
   onUnmounted(() => {
       leaveEditor(editorID, loginData.username);
@@ -65,8 +71,16 @@ import { RouterLink } from "vue-router";
   var raycaster = new THREE.Raycaster();
   var mouse = new THREE.Vector2();
 
-  const {saveMap} = useMap();
-  const {errorMessage, setEditorError} = useEditorError()
+    const {saveMap, getMapEditor} = useMap();
+    const {errorMessage, setEditorError} = useEditorError()
+    const {feedbackMessage, setUserFeedback} = useUserFeedback()
+
+    const loadedMap = getMapEditor(props.editorID);
+    const name = ref();
+    onMounted(() => {
+    loadedMap.then((result: MapInterface) => (name.value = result.name));
+	
+});
 
   let npcx= ref(0);
   let npcy = ref(0);
@@ -108,13 +122,19 @@ import { RouterLink } from "vue-router";
   //   }
 
 });
+  function startGame(){
+  saveMap(props.editorID)
+  router.push("/gameConfig/" + name.value);
+  }
+	
+
 
 </script>
 
 <template>
 
   <div class="fixed left-1/2 -translate-y-1/2 -translate-x-1/2 top-16">
-    <h1>Farmerama Map</h1>
+    <h1>{{name}}</h1>
   </div>
   <RouterLink
     to="/worldintro"
@@ -136,14 +156,14 @@ import { RouterLink } from "vue-router";
   <div
     class="grid grid-rows-2 fixed top-[20%] left-0 gap-4 font-poppins text-sm font-semibold text-greenDark"
   >
-    <button class="group bg-white p-5 hover:bg-greenLight">
+    <button @click="startGame()" class="group bg-white p-5 hover:bg-greenLight">
       <font-awesome-icon
         icon="fa-solid fa-plus"
         color="#2F8265"
         class="w-5 h-5"
       /><br />Spiel<br />starten
     </button>
-    <button @click="saveMap('testMap2', editorID)" class="bg-white hover:bg-greenLight">
+    <button @click="saveMap(editorID)" class="bg-white hover:bg-greenLight">
       <font-awesome-icon
         icon="fa-solid fa-file-arrow-down"
         color="#2F8265"
@@ -153,6 +173,8 @@ import { RouterLink } from "vue-router";
   </div>
 
   <ErrorWarning :errorMsg="errorMessage"></ErrorWarning>
+  <ErrorWarning :errorMsg="feedbackMessage"></ErrorWarning>
+    <!-- <p v-if="feedbackMessage">{{ feedbackMessage }}</p> -->
 
   <UserListMenu :instanceID="editorID"></UserListMenu>
 
