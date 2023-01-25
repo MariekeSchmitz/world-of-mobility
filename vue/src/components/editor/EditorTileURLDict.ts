@@ -21,6 +21,7 @@ import TUPEL_URL from "@/assets/objects/TUPEL.png";
 import ROTATE_LEFT_URL from "@/assets/buttons/arrow-rotate-left-solid.svg";
 import ROTATE_RIGHT_URL from "@/assets/buttons/arrow-rotate-right-solid.svg";
 import TRASH_URL from "@/assets/buttons/trash-solid.svg";
+import BACKGROUND_URL from "@/assets/images/home_Blur.png";
 
 export const editorTileURLs: { [id: string]: string } = {
   GRASSTILE: GRASSTILE_URL,
@@ -46,4 +47,5 @@ export const editorTileURLs: { [id: string]: string } = {
   ROTATE_LEFT: ROTATE_LEFT_URL,
   ROTATE_RIGHT: ROTATE_RIGHT_URL,
   TRASH: TRASH_URL,
+  BACKGROUND: BACKGROUND_URL
 };
