@@ -19,12 +19,10 @@
   import MiniMap from "@/components/editor/MiniMap.vue";
   import UserListMenu from "@/components/editor/UserListMenu.vue";
   import {useMap} from "@/services/useMap"
-  import { number } from "mathjs";
   import { useUserEditor } from "@/services/useUserEditor";
   import { useLogin } from "@/services/login/useLogin";
 import ScriptField from "@/components/editor/ScriptField.vue";
   import ServerChat from "@/components/ServerChat.vue";
-import type { IInstanceInfo } from "@/services/IInstanceInfo";
 import { useRemoveInstanceState } from "@/services/useRemoveInstanceState";
 import { RouterLink } from "vue-router";
 import router from "@/router";

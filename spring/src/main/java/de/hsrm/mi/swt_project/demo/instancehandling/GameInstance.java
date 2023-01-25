@@ -193,4 +193,8 @@ public class GameInstance extends Instance {
         if(playerCount < maximumPlayerCount) return true;
         else return false;
     }
+
+    public int getMaximumPlayerCount(){
+        return maximumPlayerCount;
+    }
 }

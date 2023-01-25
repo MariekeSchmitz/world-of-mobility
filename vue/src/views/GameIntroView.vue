@@ -6,7 +6,8 @@
 
 import { useInstanceList } from "@/services/useInstanceList";
 import GameListItem from "@/components/selectview/GameListItem.vue";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted } from "vue";
+import type { IInstanceInfo } from "@/services/IInstanceInfo";
 
 const { instanceState, getInstanceList } = useInstanceList();
 
@@ -15,7 +16,17 @@ onMounted(async () => {
 });
 
 const instancelist = computed(() => {
-  return instanceState.instancelist;
+  let list:IInstanceInfo[] = []
+  list = instanceState.instancelist.filter((instance: IInstanceInfo) => {
+      console.log(instance)
+      console.log(instance.maxPlayerCount + " " + instance.playeramount)
+      if(instance.maxPlayerCount != instance.playeramount){
+        return instance
+      }
+    }
+  );
+  console.log(list)
+  return list;
 });
 </script>
 
@@ -41,14 +52,16 @@ const instancelist = computed(() => {
       <h1>Spiel beitreten</h1>
     </div>
 
-    <div v-for="ele in instancelist">
-      <RouterLink :to="{ path: '/joingame/' + ele.id }">
-        <GameListItem
-          :gamename="ele.gamename"
-          :worldname="ele.worldname"
-          :people="ele.playeramount"
-        ></GameListItem>
-      </RouterLink>
+    <div v-if="instancelist.length > 0">
+      <div v-for="ele in instancelist">
+        <RouterLink :to="{ path: '/joingame/' + ele.id }">
+          <GameListItem
+            :gamename="ele.gamename"
+            :worldname="ele.worldname"
+            :people="ele.playeramount"
+          ></GameListItem>
+        </RouterLink>
+      </div>
     </div>
   </div>
 </template>

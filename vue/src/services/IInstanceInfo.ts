@@ -3,6 +3,7 @@ export interface IInstanceInfo {
   gamename: string;
   worldname: string;
   playeramount: number;
+  maxPlayerCount: number;
   users: string[];
   command: string;
 }

@@ -8,6 +8,7 @@ import { useGame } from "@/services/useGame";
 import { useLogin } from "@/services/login/useLogin";
 import Game from "@/components/Game.vue";
 import router from "@/router";
+import UserListMenu from "@/components/editor/UserListMenu.vue";
 
 const props = withDefaults(
   defineProps<{
@@ -37,5 +38,6 @@ function leave() {
       </button>
     </div>
     <Game :instanceID="instanceID"></Game>
+    <UserListMenu :instanceId="instanceID" type="game"></UserListMenu>
   </div>
 </template>
