@@ -44,7 +44,7 @@ const trashPath = editorTileURLs["TRASH"];
 
   <!--Left Turn-->
   <Circle
-    @click="$emit('turnRight')"
+    @click="$emit('turnLeft')"
     :radius="props.width/4" :segments=40
     :position="props.position.clone().add(new THREE.Vector3(-0.5, 0, 0.01))"
   >
@@ -63,7 +63,7 @@ const trashPath = editorTileURLs["TRASH"];
 
   <!--Remove-->
   <Circle
-    @click="$emit('turnRight')"
+    @click="$emit('removeTile')"
     :radius="props.width/4" :segments=40
     :position="props.position.clone().add(new THREE.Vector3(0, 0, 0.01))"
   >
