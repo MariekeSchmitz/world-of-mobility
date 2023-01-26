@@ -73,6 +73,6 @@ onUnmounted(() => {
 #miniMap-container {
   position: absolute;
   bottom: calc(15vw + 20px);
-  right: calc(15vw + 20px);
+  left: 20px;
 }
 </style>

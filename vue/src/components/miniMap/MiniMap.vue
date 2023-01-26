@@ -108,8 +108,7 @@ onMounted(async () => {
   position: absolute;
   width: 15vw;
   height: 15vw;
-  border: 2px solid rgb(29, 29, 29);
-  box-shadow: 0 0 20px 5px rgb(23, 23, 23);
+  box-shadow: 0 0 15px 5px rgb(23, 23, 23);
 }
 
 #positionIndicator {
@@ -138,15 +137,15 @@ onMounted(async () => {
 }
 
 #minimap-container {
-  box-sizing: border-box;
   position: absolute;
-  background-color: rgb(66, 66, 66);
+  background-color: rgb(27, 154, 61);
   display: flex;
   flex-direction: column-reverse;
   width: 15vw;
   height: 15vw;
   min-width: 100px;
   min-height: 100px;
+  border: 2px solid rgb(27, 154, 61);
 }
 
 #minimap-container > * {
