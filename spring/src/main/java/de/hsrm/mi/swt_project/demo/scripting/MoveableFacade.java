@@ -7,13 +7,11 @@ import org.slf4j.LoggerFactory;
 
 import de.hsrm.mi.swt_project.demo.collision.Collidable;
 import de.hsrm.mi.swt_project.demo.controls.Direction;
-import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.TrafficLight;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.movables.MotorizedObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
-import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLightSingleTon;
-import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLightState;
+import de.hsrm.mi.swt_project.demo.movables.Passenger;
 import de.hsrm.mi.swt_project.demo.util.MathHelpers;
 
 /**
@@ -30,9 +28,7 @@ public class MoveableFacade {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
-    protected static final float ACCELERATION_DELTA = 0.1f;
-
-    private TrafficLightSingleTon trafficLightSingleTon = TrafficLightSingleTon.getInstance();
+    protected static final float ACCELERATION_DELTA = 0.025F;
 
     protected MoveableObject moveable;
     protected ScriptContext context;
@@ -59,10 +55,26 @@ public class MoveableFacade {
         this.context = context;
     }
 
+    /**
+     * Became the CurrentVelocity of the moveable
+     * 
+     * @return the CurrentVelocity
+     */
     public float currentVelocity(){
         return moveable.getCurrentVelocity();
     }
 
+    public void start(){
+        if(moveable.getCurrentVelocity() == 0.0f){
+            moveable.setCurrentVelocity(0.1f);
+        }
+    }
+
+    /**
+     * Return the Fronttile of the moveable
+     * 
+     * @return the Fronttile of the moveable
+     */
     public Tile getFrontTile(){
         Tile[][] mapContext = context.provideMapContext();
         int pos = mapContext.length / 2;
@@ -70,7 +82,26 @@ public class MoveableFacade {
         return mapContext[pos + 1][pos];
     }
 
-    public boolean getFrontTrafficLight(){
+    /**
+     * Check if the moveable is a MotorizedObject or a Passenger
+     * 
+     * @return if moveable is a MotorizedObject
+     */
+    public boolean isMotorizedObject(){
+        if (moveable instanceof Passenger) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Return the state from the trafficlight
+     * 
+     * @return Return the state from the trafficlight
+     * 
+     */
+    public boolean isTrafficLightGreen(){
+        TrafficLight trafficLight = new TrafficLight();
         float xOnTile = moveable.getXPos() - (int) moveable.getXPos();
         float yOnTile = moveable.getYPos() - (int) moveable.getYPos();
         if (getFrontTile() == null) {
@@ -80,22 +111,22 @@ public class MoveableFacade {
             switch (moveable.getOrientation()) {
                 case NORTH:
                     if(yOnTile > 0.7f){
-                        return isTrafficLightRed();
+                        return trafficLight.isTrafficLightRed(moveable.getOrientation());
                     }
                     break;
                 case SOUTH:
                     if(yOnTile < 0.3f){
-                        return isTrafficLightRed(); 
+                        return trafficLight.isTrafficLightRed(moveable.getOrientation());
                     }
                     break;
                 case WEST:
                     if(xOnTile < 0.3f){
-                        return isTrafficLightRed();
+                        return trafficLight.isTrafficLightRed(moveable.getOrientation());
                     }
                     break;
                 case EAST:
                     if(xOnTile > 0.7f){
-                        return isTrafficLightRed();
+                        return trafficLight.isTrafficLightRed(moveable.getOrientation());
                     }
                     break;
                 default:
@@ -103,19 +134,6 @@ public class MoveableFacade {
             }
         }
         return true;
-
-
-    }
-
-    private boolean isTrafficLightRed(){
-        TrafficLightState trafficLightState = trafficLightSingleTon.getTrafficLightState();
-        Orientation orientation = moveable.getOrientation();
-        if(trafficLightState.equals(TrafficLightState.NORTHSOUTH) && (orientation.equals(Orientation.NORTH) || orientation.equals(Orientation.SOUTH))){
-            return true;
-        } else if(trafficLightState.equals(TrafficLightState.EASTWEST) && (orientation.equals(Orientation.EAST) || orientation.equals(Orientation.WEST))){
-            return true;
-        } 
-        return false;
     }
 
     /**

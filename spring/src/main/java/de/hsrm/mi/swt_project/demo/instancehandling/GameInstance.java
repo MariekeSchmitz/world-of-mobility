@@ -129,10 +129,6 @@ public class GameInstance extends Instance {
             Validator collisionValidator = new CollisionValidator(moveableObject, moveableObjects.values());
             Validator movementValidator = new MovementValidator(this.map.getTiles(), moveableObject);
             
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //TODO: VALIDATOR WIEDER ANMACHEN UND NUR FÜR NPCS ANMACHEN 
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////
-            
             if (movementValidator.validate() && collisionValidator.validate()) {
                 if(key.contains("NPC") && moveableObject instanceof MotorizedObject){
 
