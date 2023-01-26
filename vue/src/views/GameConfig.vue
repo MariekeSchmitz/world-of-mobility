@@ -9,7 +9,7 @@ const { instanceId, createGameInstance } = useGame();
 const { sendConfig, valSuccess } = useGameConfig();
 
 let name = "";
-let playerLimit = 1;
+let playerLimit = ref(1);
 const npcs = ref(false);
 const showError = ref(false);
 const props = defineProps<{
@@ -17,9 +17,9 @@ const props = defineProps<{
 }>();
 
 async function checkValidation(name: string) {
-  await sendConfig(props.mapName, name, playerLimit, npcs.value);
+  await sendConfig(props.mapName, name, playerLimit.value, npcs.value);
   if (valSuccess.validationSuccess) {
-    await createGameInstance(props.mapName, name, playerLimit, npcs.value);
+    await createGameInstance(props.mapName, name, playerLimit.value, npcs.value);
     if (instanceId.id != -1) {
       router.push("/joingame/" + instanceId.id);
     }
@@ -31,9 +31,9 @@ async function checkValidation(name: string) {
 
 <template>
   <div class="wrapper">
-    <RouterLink to="/worldSelection">
+    <button @click="$router.go(-1)">
       <img src="../buttons/editor/arrow-left.png" alt="" />
-    </RouterLink>
+    </button>
     <h1>Neues Spiel in der Welt {{ props.mapName }}</h1>
     <div class="square"></div>
     <p>Spielname</p>

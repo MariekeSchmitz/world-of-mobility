@@ -20,6 +20,7 @@ const defaultMap: I3DMap = {
 const props = withDefaults(
   defineProps<{
     instanceID: number;
+    trafficLightState: string;
   }>(),
   { instanceID: 1 }
 );
@@ -54,7 +55,6 @@ function computeVector3(orientation: string): THREE.Vector3 {
 }
 onMounted(async () => {
   loadedMap.value = await getGameMap(props.instanceID);
-  console.log(loadedMap.value);
 });
 </script>
 <template>
@@ -79,6 +79,7 @@ onMounted(async () => {
         :orientation="tile.orientation"
         v-if="tile.placedObject !== null"
         :placed-object="tile.placedObject.type"
+        :traffic-light-state="props.trafficLightState"
       >
       </Tile>
       <Tile

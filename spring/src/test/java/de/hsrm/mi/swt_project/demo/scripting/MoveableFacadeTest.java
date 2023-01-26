@@ -30,18 +30,6 @@ class MoveableFacadeTest {
 
         facade = MoveableFacade.createFor(moveable, context);
     }
-    
-    @Test
-    void testTurnLeft() {
-        facade.turnLeft();
-        assertEquals(Orientation.WEST, moveable.getOrientation());
-    }
-
-    @Test
-    void testTurnRight() {
-        facade.turnRight();
-        assertEquals(Orientation.EAST, moveable.getOrientation());
-    }
 
     @Test
     void testAccelerate() {

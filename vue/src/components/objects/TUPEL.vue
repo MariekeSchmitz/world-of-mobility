@@ -2,9 +2,9 @@
 <script setup lang="ts">
 //@ts-ignore
 import * as THREE from "three";
-import { GltfModel } from "troisjs";
-import { withDefaults, defineProps } from "vue";
+import { GltfModel, Text } from "troisjs";
 import TUPEL_URL from "@/assets/models/TUPEL.glb?url";
+import FONT_URL from "@/assets/fonts/helvetiker_regular.typeface.json?url";
 
 /**
  * Class for Car Components
@@ -12,14 +12,25 @@ import TUPEL_URL from "@/assets/models/TUPEL.glb?url";
  */
 const props = withDefaults(
   defineProps<{
-    scale: any;
+    scale?: any;
     position: THREE.Vector3;
     rotation: number;
+    name: string;
   }>(),
   { scale: new THREE.Vector3(1, 1, 1) }
 );
 </script>
 <template>
+  <Text
+    :text="props.name"
+    :font-src="FONT_URL"
+    :position="props.position.clone().add(new THREE.Vector3(0, 8, 0))"
+    align="center"
+    :size="0.3"
+    :height="0.01"
+    :rotation="new THREE.Vector3(0, props.rotation, 0)"
+  >
+  </Text>
   <GltfModel
     ref="model"
     :src="TUPEL_URL"

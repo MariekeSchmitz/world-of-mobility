@@ -20,7 +20,10 @@ import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObject;
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObjectType;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
+import de.hsrm.mi.swt_project.demo.editor.tiles.TrafficTile;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;
+import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLightSingleTon;
+import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLightState;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
 /**
@@ -36,6 +39,12 @@ public class InstanceHandler implements Updateable {
     @Autowired
     protected UpdateloopService loopservice;
 
+    private TrafficLightSingleTon trafficLightSingleTon = TrafficLightSingleTon.getInstance();
+    
+    @Autowired
+    protected UpdateloopInstanceInfo loopInstanceInfo;
+
+
     @Value("${instance.lifetime:1200}")
     protected long instanceLifetimeCycles;
 
@@ -43,7 +52,6 @@ public class InstanceHandler implements Updateable {
 
     protected List<Instance> instances = new ArrayList<>();
 
-    // TODO think of another solution because long can reach limit
     protected long idCounter = 1;
     @Value("${map.savedir:maps}")
     protected String mapSavePath;
@@ -137,7 +145,8 @@ public class InstanceHandler implements Updateable {
      * 
      * @param mapFile the JSON file to load the map from
      * @return the loaded map
-     * @author Felix Ruf, Alexandra Müller
+     * @author Alexandra Müller
+     * @author Felix Ruf
      */
     private GameMap loadMap(String mapFile) {
         JSONObject file = new JSONObject(mapFile);
@@ -163,6 +172,14 @@ public class InstanceHandler implements Updateable {
                         PlaceableObjectType placeableType = placedObject.getEnum(PlaceableObjectType.class, "type");
                         PlaceableObject placeableObject = placeableType.createPlaceableObject();
                         newTile.addPlaceable(placeableObject);
+                    }
+                    if(tileObject.has("allowedDirections")) {
+                        JSONArray allowedDirections = tileObject.getJSONArray("allowedDirections");
+                        List<Orientation> allowedDirectionsList = new ArrayList<>();
+                        for (Object orientationObject : allowedDirections) {
+                            allowedDirectionsList.add(Orientation.valueOf((String) orientationObject));
+                        }
+                        ((TrafficTile)(newTile)).setAllowedDirections(allowedDirectionsList);
                     }
                     map.setTile(newTile, xPos, yPos);
                 }
@@ -223,6 +240,7 @@ public class InstanceHandler implements Updateable {
         }
 
         for (Instance instance : toDelete) {
+            loopInstanceInfo.publishInstanceInfoState(instance, "DELETE");
             this.instances.remove(instance);
         }
 
@@ -376,5 +394,9 @@ public class InstanceHandler implements Updateable {
         }
 
         return true;
+    }
+
+    public TrafficLightState getTrafficLightState() {
+        return trafficLightSingleTon.getTrafficLightState();
     }
 }

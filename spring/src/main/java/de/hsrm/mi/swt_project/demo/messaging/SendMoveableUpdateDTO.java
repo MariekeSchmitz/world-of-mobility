@@ -6,6 +6,7 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableType;
 
 /**
  * DTO that bundles all necessary information on one moveable object
+ * 
  * @author Marieke Schmitz
  */
 
@@ -21,12 +22,12 @@ public record SendMoveableUpdateDTO (
 
     public static SendMoveableUpdateDTO from(String username, MoveableObject moveableObject) {
         return new SendMoveableUpdateDTO(
-            username, 
-            moveableObject.getXPos(), 
-            moveableObject.getYPos(),
-            moveableObject.getType(),
-            moveableObject.getCapacity(),
-            moveableObject.getCurrentVelocity(),
-            moveableObject.getOrientation());
+                username,
+                moveableObject.getXPos(),
+                moveableObject.getYPos(),
+                moveableObject.getType(),
+                moveableObject.getCapacity(),
+                moveableObject.getCurrentVelocity(),
+                moveableObject.getOrientation());
     }
-} 
+}

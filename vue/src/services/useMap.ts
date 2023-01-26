@@ -1,36 +1,34 @@
 /* eslint-disable prettier/prettier */
 
+import type { INpc } from "@/interfaces/INpc";
 import { reactive } from "vue";
+import { useUserFeedback } from "./editor/useUserFeedback";
+
+export interface IPlacedObject {
+  type: string;
+}
+
+const {setUserFeedback} = useUserFeedback()
+export interface ITile {
+  type: string;
+  orientation: string;
+  placedObject: IPlacedObject;
+}
+
+export interface IMapDTO {
+  tiles: Array<Array<ITile>>;
+  NPCS: Array<INpc>;
+  name: string
+}
 
 export function useMap(): any {
-  interface IPlacedObject {
-    type: string;
-  }
-
-  interface ITile {
-    type: string;
-    orientation: string;
-    placedObject: IPlacedObject;
-  }
-
-  interface INpc {
-    user: string;
-    xPos: number;
-    yPos: number;
-    classname: string;
-  }
-
-  interface IMapDTO {
-    tiles: Array<Array<ITile>>;
-    NPCS: Array<any>;
-  }
 
   // const mapState = reactive<IMapDTO> ({
   //     tiles: [[]],
   //     NPCS: []
   // });
 
-  async function getGameMap(instanceID: number) {
+  async function getGameMap(instanceID: number): Promise<IMapDTO | undefined> {
     try {
       const controller = new AbortController();
       const URL = `/api/game/getmap/${instanceID}`;
@@ -72,12 +70,12 @@ export function useMap(): any {
     }
   }
 
-  async function saveMap(mapName: string, mapId: number) {
+  async function saveMap(mapId: number) {
     try {
       const controller = new AbortController();
       const URL = "/api/editor/savemap";
 
-      const data = { mapName, mapId };
+      const data = { mapId };
       console.log(data);
       const id = setTimeout(() => controller.abort(), 8000);
 
@@ -93,8 +91,10 @@ export function useMap(): any {
       clearTimeout(id);
 
       if (!response.ok) {
+        setUserFeedback("Die Map konnte nicht gespeichert werden")
         return false;
       }
+      setUserFeedback("Die Map wurde erfolgreich gespeichert.")
       return true;
     } catch (reason) {
       console.log(`ERROR: Saving Map failed: ${reason}`);

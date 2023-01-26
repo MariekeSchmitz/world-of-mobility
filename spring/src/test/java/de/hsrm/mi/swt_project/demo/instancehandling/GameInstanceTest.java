@@ -17,8 +17,7 @@ import de.hsrm.mi.swt_project.demo.movables.MotorizedObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 import de.hsrm.mi.swt_project.demo.movables.Passenger;
 
-
-@SpringBootTest 
+@SpringBootTest
 class GameInstanceTest {
 
     private GameInstance gameInstance;
@@ -26,21 +25,20 @@ class GameInstanceTest {
     private MotorizedObject car;
     private int maximumPlayerCount = 6;
 
-
     /**
      * Sets up following scenario
      * 
-     *  ------------- -------------
-     * |    STREET   |   STREET    |
-     * |             |    Car v    |
-     *  ------------- -------------
-     * |   SIDEWAY   |   SIDEWAY   |
-     * | Passenger ^ |             |
-     *  ------------- -------------
+     *  --------------- ---------------
+     * |    STREET     |    STREET     |
+     * |               |     Car v     |
+     *  --------------- ---------------
+     * |    SIDEWAY    |    SIDEWAY    |
+     * |  Passenger ^  |               |
+     *  --------------- ---------------
      * 
      * IMPORTANT: To test position change of MoveableObjects,
-     *            you need to add them manually to the GameInstance
-     *            at the start of the test, e.g. via the addPlayer method.
+     * you need to add them manually to the GameInstance
+     * at the start of the test, e.g. via the addPlayer method.
      */
     @BeforeEach
     void setup() {
@@ -94,7 +92,7 @@ class GameInstanceTest {
         // in invalid moves for passenger and car
         passenger.setCurrentVelocity(1);
         car.setCurrentVelocity(1);
-        
+
         gameInstance.update();
 
         // passenger should not be moved and velocity should be reset
@@ -107,12 +105,12 @@ class GameInstanceTest {
         assertEquals(startPosYCar, car.getYPos());
         assertEquals(0, passenger.getCurrentVelocity());
 
-        passenger.turn(Direction.LEFT);
-        passenger.turn(Direction.LEFT);
+        passenger.turn(Direction.RIGHT);
+        passenger.turn(Direction.RIGHT);
         passenger.setCurrentVelocity(1);
 
-        car.turn(Direction.LEFT);
-        car.setCurrentVelocity(1);        
+        car.turn(Direction.RIGHT);
+        car.setCurrentVelocity(1);
 
         gameInstance.update();
 
@@ -120,7 +118,7 @@ class GameInstanceTest {
         assertFalse(startPosXPassenger == passenger.getXPos() && startPosYPassenger == passenger.getYPos());
         assertFalse(startPosXCar == car.getXPos() && startPosYCar == car.getYPos());
     }
-    
+
     @Test
     void testUpdate() {
 

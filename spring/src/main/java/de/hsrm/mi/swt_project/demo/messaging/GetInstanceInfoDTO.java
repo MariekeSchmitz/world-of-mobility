@@ -1,5 +1,7 @@
 package de.hsrm.mi.swt_project.demo.messaging;
 
+import java.util.List;
+
 import de.hsrm.mi.swt_project.demo.instancehandling.EditorInstance;
 import de.hsrm.mi.swt_project.demo.instancehandling.GameInstance;
 import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
@@ -10,7 +12,7 @@ import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
  * @param playeramount = amount from playing Users
  * @author Astrid Klemmer, Finn Schindel
  */
-public record GetInstanceInfoDTO(long id, String gamename, String worldname, int playeramount) {
+public record GetInstanceInfoDTO(long id, String gamename, String worldname, int playeramount, List<String> users, String command) {
 
     /**
      * create a DTO
@@ -18,20 +20,26 @@ public record GetInstanceInfoDTO(long id, String gamename, String worldname, int
      * @param instance
      * @return GetInstanceInfoDTO
      */
-    public static GetInstanceInfoDTO from(Instance instance) {
+    public static GetInstanceInfoDTO from(Instance instance, String command) {
         if (instance instanceof GameInstance gameinstance) {
+            List<String> gameUsers = GameUserListDTO.from(gameinstance.getMoveableObjects()).users();
             return new GetInstanceInfoDTO(
                 gameinstance.getId(),
                 gameinstance.getName(),
                 gameinstance.getMap().getName(),
-                GameUserListDTO.from(gameinstance.getMoveableObjects()).users().size()
+                gameUsers.size(),
+                gameUsers,
+                command
                 );
         } else {
+            List<String> editorUsers = ((EditorInstance) instance).getUsers();
             return new GetInstanceInfoDTO(
                 instance.getId(),
                 "EditorGameName " + instance.getId(),
                 instance.getMap().getName(),
-                ((EditorInstance) instance).getUsers().size()
+                ((EditorInstance) instance).getUsers().size(),
+                editorUsers,
+                command
                 );
         }
 

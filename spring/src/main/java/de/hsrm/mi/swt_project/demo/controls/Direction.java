@@ -7,5 +7,6 @@ package de.hsrm.mi.swt_project.demo.controls;
  */
 public enum Direction {
     LEFT,
-    RIGHT;
+    RIGHT,
+    STRAIGHT;
 }
