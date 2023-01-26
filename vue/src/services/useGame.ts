@@ -243,6 +243,6 @@ export function useGame(): any {
     getUserMoveable,
     createGameInstance,
     leaveGame,
-    isSpawnPointValid
+    isSpawnPointValid,
   };
 }

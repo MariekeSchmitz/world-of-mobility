@@ -49,6 +49,5 @@ function leave() {
   position: absolute;
   bottom: calc(15vw + 20px);
   right: calc(15vw + 20px);
-
 }
 </style>
