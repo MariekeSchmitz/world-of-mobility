@@ -24,9 +24,8 @@ const trashPath = editorTileURLs["TRASH"];
 
   <!--Right Turn-->
   <Circle
-    @click="$emit('turnRight')"
     :radius="props.width/4" :segments=40
-    :position="props.position.clone().add(new THREE.Vector3(0.5, 0, 0.01))"
+    :position="props.position.clone().add(new THREE.Vector3(0.45, 0, 0.01))"
   >
     <BasicMaterial/>  
   </Circle>
@@ -35,7 +34,7 @@ const trashPath = editorTileURLs["TRASH"];
     @click="$emit('turnRight')"
     :width="props.width / 4"
     :height="props.height * (2 / 3)"
-    :position="props.position.clone().add(new THREE.Vector3(0.5, 0, 0.01))"
+    :position="props.position.clone().add(new THREE.Vector3(0.45, 0, 0.01))"
   >
     <BasicMaterial :props="{ transparent: true }">
       <Texture v-bind:src="rightPath" />
@@ -44,9 +43,8 @@ const trashPath = editorTileURLs["TRASH"];
 
   <!--Left Turn-->
   <Circle
-    @click="$emit('turnLeft')"
     :radius="props.width/4" :segments=40
-    :position="props.position.clone().add(new THREE.Vector3(-0.5, 0, 0.01))"
+    :position="props.position.clone().add(new THREE.Vector3(-0.45, 0, 0.01))"
   >
     <BasicMaterial/>  
   </Circle>
@@ -54,7 +52,7 @@ const trashPath = editorTileURLs["TRASH"];
     @click="$emit('turnLeft')"
     :width="props.width / 4"
     :height="props.height * (2 / 3)"
-    :position="props.position.clone().add(new THREE.Vector3(-0.5, 0, 0.01))"
+    :position="props.position.clone().add(new THREE.Vector3(-0.45, 0, 0.01))"
   >
     <BasicMaterial :props="{ transparent: true }">
       <Texture v-bind:src="leftPath" />
@@ -63,7 +61,6 @@ const trashPath = editorTileURLs["TRASH"];
 
   <!--Remove-->
   <Circle
-    @click="$emit('removeTile')"
     :radius="props.width/4" :segments=40
     :position="props.position.clone().add(new THREE.Vector3(0, 0, 0.01))"
   >
