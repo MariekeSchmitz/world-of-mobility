@@ -154,168 +154,188 @@ public class RailingBehaviour {
 
         float xPos = moveable.getXPos();
         float yPos = moveable.getYPos();
-        Orientation orientation = moveable.getOrientation();
 
         RailingMemoryCell memoryCell = railingMemory.get(key);
 
-        if (tile.getOrientation() == Orientation.NORTH) {
-
-            if (orientation == Orientation.NORTH) {
-
-                moveable.setXPos((int) xPos + RIGHT_ALIGNMENT_OFFSET);
-
-                if (yPos + movement > ((int) yPos + UP_ALIGNMENT_OFFSET)) {
-                    moveable.setYPos((int) yPos + UP_ALIGNMENT_OFFSET);
-                    doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.LEFT);
-
-                } else {
-                    moveable.setYPos(yPos + movement);
-                }
-
-            } else if (orientation == Orientation.EAST) {
-
-                moveable.setYPos((int) yPos + DOWN_ALIGNMENT_OFFSET);
-
-                if (xPos + movement > (int) xPos + LEFT_ALIGNMENT_OFFSET) {
-
-                    moveable.setXPos((int) xPos + LEFT_ALIGNMENT_OFFSET);
-                    doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.RIGHT);
-
-                } else {
-                    moveable.setXPos(xPos + movement);
-                }
-
-            } else if (orientation == Orientation.SOUTH) {
-
-                moveable.setXPos((int) xPos + LEFT_ALIGNMENT_OFFSET);
-                moveable.setYPos(yPos - movement);
-
-            } else if (orientation == Orientation.WEST) {
-
-                moveable.setYPos((int) yPos + UP_ALIGNMENT_OFFSET);
-                moveable.setXPos(xPos - movement);
-
-            }
-
-        } else if (tile.getOrientation() == Orientation.EAST) {
-
-            if (orientation == Orientation.NORTH) {
-
-                moveable.setXPos((int) xPos + RIGHT_ALIGNMENT_OFFSET);
-                moveable.setYPos(yPos + movement);
-
-            } else if (orientation == Orientation.EAST) {
-
-                moveable.setYPos((int) yPos + DOWN_ALIGNMENT_OFFSET);
-
-                if (xPos + movement > (int) xPos + RIGHT_ALIGNMENT_OFFSET) {
-
-                    moveable.setXPos((int) xPos + RIGHT_ALIGNMENT_OFFSET);
-                    doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.LEFT);
-
-                } else {
-                    moveable.setXPos(xPos + movement);
-                }
-
-            } else if (orientation == Orientation.SOUTH) {
-
-                moveable.setXPos((int) xPos + LEFT_ALIGNMENT_OFFSET);
-
-                if (yPos - movement < (int) yPos + UP_ALIGNMENT_OFFSET) {
-
-                    moveable.setYPos((int) yPos + UP_ALIGNMENT_OFFSET);
-                    doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.RIGHT);
-
-                } else {
-                    moveable.setYPos(yPos - movement);
-                }
-
-            } else if (orientation == Orientation.WEST) {
-
-                moveable.setYPos((int) yPos + UP_ALIGNMENT_OFFSET);
-                moveable.setXPos(xPos - movement);
-
-            }
-
-        } else if (tile.getOrientation() == Orientation.SOUTH) {
-
-            if (orientation == Orientation.NORTH) {
-
-                moveable.setXPos((int) xPos + RIGHT_ALIGNMENT_OFFSET);
-                moveable.setYPos(yPos + movement);
-
-            } else if (orientation == Orientation.EAST) {
-
-                moveable.setYPos((int) yPos + DOWN_ALIGNMENT_OFFSET);
-                moveable.setXPos(xPos + movement);
-
-            } else if (orientation == Orientation.SOUTH) {
-
-                moveable.setXPos((int) xPos + LEFT_ALIGNMENT_OFFSET);
-
-                if (yPos - movement < (int) yPos + DOWN_ALIGNMENT_OFFSET) {
-
-                    moveable.setYPos((int) yPos + DOWN_ALIGNMENT_OFFSET);
-                    doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.LEFT);
-
-                } else {
-                    moveable.setYPos(yPos - movement);
-                }
-
-            } else if (orientation == Orientation.WEST) {
-
-                moveable.setYPos((int) yPos + UP_ALIGNMENT_OFFSET);
-
-                if (xPos - movement < (int) xPos + RIGHT_ALIGNMENT_OFFSET) {
-
-                    moveable.setYPos((int) yPos + UP_ALIGNMENT_OFFSET);
-                    doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.RIGHT);
-
-                } else {
-                    moveable.setXPos(xPos - movement);
-                }
-            }
-
-        } else if (tile.getOrientation() == Orientation.WEST) {
-
-            if (orientation == Orientation.NORTH) {
-
-                moveable.setXPos((int) xPos + RIGHT_ALIGNMENT_OFFSET);
-
-                if (yPos + movement > (int) yPos + DOWN_ALIGNMENT_OFFSET) {
-
-                    moveable.setYPos((int) yPos + DOWN_ALIGNMENT_OFFSET);
-                    doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.RIGHT);
-
-                } else {
-                    moveable.setYPos(yPos + movement);
-                }
-
-            } else if (orientation == Orientation.EAST) {
-
-                moveable.setYPos((int) yPos + DOWN_ALIGNMENT_OFFSET);
-                moveable.setXPos(xPos + movement);
-
-            } else if (orientation == Orientation.SOUTH) {
-
-                moveable.setXPos((int) xPos + LEFT_ALIGNMENT_OFFSET);
-                moveable.setYPos(yPos - movement);
-
-            } else if (orientation == Orientation.WEST) {
-
-                moveable.setYPos((int) yPos + UP_ALIGNMENT_OFFSET);
-
-                if (xPos - movement < (int) xPos + LEFT_ALIGNMENT_OFFSET) {
-
-                    moveable.setYPos((int) yPos + UP_ALIGNMENT_OFFSET);
-                    doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.LEFT);
-
-                } else {
-                    moveable.setXPos(xPos - movement);
-                }
-            }
+        switch (tile.getOrientation()) {
+            case NORTH:
+                curveNorthOrientation(key, moveable, tile, movement, xPos, yPos, memoryCell);
+                break;
+            case EAST:
+                curveEastOrientation(key, moveable, tile, movement, xPos, yPos, memoryCell);
+                break;
+            case SOUTH:
+                curveSouthOrientation(key, moveable, tile, movement, xPos, yPos, memoryCell);
+                break;
+            case WEST:
+                curveWestOrientation(key, moveable, tile, movement, xPos, yPos, memoryCell);  
+                break;
+            default:
+                break;
         }
     }  
+
+    private void curveNorthOrientation(String key, MoveableObject moveable, Tile tile, float movement, float xPos, float yPos, RailingMemoryCell memoryCell){
+        Orientation orientation = moveable.getOrientation();
+        if (orientation == Orientation.NORTH) {
+
+            moveable.setXPos((int) xPos + RIGHT_ALIGNMENT_OFFSET);
+
+            if (yPos + movement > ((int) yPos + UP_ALIGNMENT_OFFSET)) {
+                moveable.setYPos((int) yPos + UP_ALIGNMENT_OFFSET);
+                doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.LEFT);
+
+            } else {
+                moveable.setYPos(yPos + movement);
+            }
+
+        } else if (orientation == Orientation.EAST) {
+
+            moveable.setYPos((int) yPos + DOWN_ALIGNMENT_OFFSET);
+
+            if (xPos + movement > (int) xPos + LEFT_ALIGNMENT_OFFSET) {
+
+                moveable.setXPos((int) xPos + LEFT_ALIGNMENT_OFFSET);
+                doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.RIGHT);
+
+            } else {
+                moveable.setXPos(xPos + movement);
+            }
+
+        } else if (orientation == Orientation.SOUTH) {
+
+            moveable.setXPos((int) xPos + LEFT_ALIGNMENT_OFFSET);
+            moveable.setYPos(yPos - movement);
+
+        } else if (orientation == Orientation.WEST) {
+
+            moveable.setYPos((int) yPos + UP_ALIGNMENT_OFFSET);
+            moveable.setXPos(xPos - movement);
+
+        }
+    }
+
+    private void curveEastOrientation(String key, MoveableObject moveable, Tile tile, float movement, float xPos, float yPos, RailingMemoryCell memoryCell){
+        Orientation orientation = moveable.getOrientation();
+        if (orientation == Orientation.NORTH) {
+
+            moveable.setXPos((int) xPos + RIGHT_ALIGNMENT_OFFSET);
+            moveable.setYPos(yPos + movement);
+
+        } else if (orientation == Orientation.EAST) {
+
+            moveable.setYPos((int) yPos + DOWN_ALIGNMENT_OFFSET);
+
+            if (xPos + movement > (int) xPos + RIGHT_ALIGNMENT_OFFSET) {
+
+                moveable.setXPos((int) xPos + RIGHT_ALIGNMENT_OFFSET);
+                doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.LEFT);
+
+            } else {
+                moveable.setXPos(xPos + movement);
+            }
+
+        } else if (orientation == Orientation.SOUTH) {
+
+            moveable.setXPos((int) xPos + LEFT_ALIGNMENT_OFFSET);
+
+            if (yPos - movement < (int) yPos + UP_ALIGNMENT_OFFSET) {
+
+                moveable.setYPos((int) yPos + UP_ALIGNMENT_OFFSET);
+                doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.RIGHT);
+
+            } else {
+                moveable.setYPos(yPos - movement);
+            }
+
+        } else if (orientation == Orientation.WEST) {
+
+            moveable.setYPos((int) yPos + UP_ALIGNMENT_OFFSET);
+            moveable.setXPos(xPos - movement);
+
+        }
+    }
+
+    private void curveSouthOrientation(String key, MoveableObject moveable, Tile tile, float movement, float xPos, float yPos, RailingMemoryCell memoryCell){
+        Orientation orientation = moveable.getOrientation();
+        if (orientation == Orientation.NORTH) {
+
+            moveable.setXPos((int) xPos + RIGHT_ALIGNMENT_OFFSET);
+            moveable.setYPos(yPos + movement);
+
+        } else if (orientation == Orientation.EAST) {
+
+            moveable.setYPos((int) yPos + DOWN_ALIGNMENT_OFFSET);
+            moveable.setXPos(xPos + movement);
+
+        } else if (orientation == Orientation.SOUTH) {
+
+            moveable.setXPos((int) xPos + LEFT_ALIGNMENT_OFFSET);
+
+            if (yPos - movement < (int) yPos + DOWN_ALIGNMENT_OFFSET) {
+
+                moveable.setYPos((int) yPos + DOWN_ALIGNMENT_OFFSET);
+                doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.LEFT);
+
+            } else {
+                moveable.setYPos(yPos - movement);
+            }
+
+        } else if (orientation == Orientation.WEST) {
+
+            moveable.setYPos((int) yPos + UP_ALIGNMENT_OFFSET);
+
+            if (xPos - movement < (int) xPos + RIGHT_ALIGNMENT_OFFSET) {
+
+                moveable.setYPos((int) yPos + UP_ALIGNMENT_OFFSET);
+                doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.RIGHT);
+
+            } else {
+                moveable.setXPos(xPos - movement);
+            }
+        }
+
+    }
+
+    private void curveWestOrientation(String key, MoveableObject moveable, Tile tile, float movement, float xPos, float yPos, RailingMemoryCell memoryCell){
+        Orientation orientation = moveable.getOrientation();
+        if (orientation == Orientation.NORTH) {
+
+            moveable.setXPos((int) xPos + RIGHT_ALIGNMENT_OFFSET);
+
+            if (yPos + movement > (int) yPos + DOWN_ALIGNMENT_OFFSET) {
+
+                moveable.setYPos((int) yPos + DOWN_ALIGNMENT_OFFSET);
+                doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.RIGHT);
+
+            } else {
+                moveable.setYPos(yPos + movement);
+            }
+
+        } else if (orientation == Orientation.EAST) {
+
+            moveable.setYPos((int) yPos + DOWN_ALIGNMENT_OFFSET);
+            moveable.setXPos(xPos + movement);
+
+        } else if (orientation == Orientation.SOUTH) {
+
+            moveable.setXPos((int) xPos + LEFT_ALIGNMENT_OFFSET);
+            moveable.setYPos(yPos - movement);
+
+        } else if (orientation == Orientation.WEST) {
+
+            moveable.setYPos((int) yPos + UP_ALIGNMENT_OFFSET);
+
+            if (xPos - movement < (int) xPos + LEFT_ALIGNMENT_OFFSET) {
+
+                moveable.setYPos((int) yPos + UP_ALIGNMENT_OFFSET);
+                doCurveAproximationStep(key, memoryCell, moveable, tile, Direction.LEFT);
+
+            } else {
+                moveable.setXPos(xPos - movement);
+            }
+        }
+    }
 
     private void doCurveAproximationStep(String key, RailingMemoryCell memoryCell, MoveableObject moveable, Tile tile, Direction d){
         moveable.turn(d);
