@@ -56,9 +56,7 @@ public class CollisionValidator implements Validator {
     public boolean validate() {
         return this.otherCollidables
             .stream()
-            .noneMatch(
-                aCollidable -> this.collidesWith(aCollidable)
-            );
+            .noneMatch(this::collidesWith);
     }
 
     /**

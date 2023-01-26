@@ -9,6 +9,13 @@ package de.hsrm.mi.swt_project.demo.util;
 public class MathHelpers {
 
     /**
+     * Private constructor to avoid instanciation.
+     */
+    private MathHelpers() {
+        // do nothing
+    }
+
+    /**
      * Calculates euclidean distance between two positions in a plane.
      * 
      * @param aXPos First x-coordinate

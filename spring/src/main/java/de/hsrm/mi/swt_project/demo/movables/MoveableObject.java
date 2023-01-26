@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hsrm.mi.swt_project.demo.collision.Collidable;
+import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.Moveable;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.scripting.Scriptable;
@@ -34,6 +35,7 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable, 
     protected float xPos;
     protected float yPos;
     protected float maxVelocity;
+    protected Direction npcDirection = null;
 
     protected float capacity = 1;
     protected float currentVelocity = 0;
@@ -60,6 +62,17 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable, 
     @Override
     public float getYPos() {
         return yPos;
+    }
+
+    public Direction getNpcDirection() {
+        return npcDirection;
+    }
+
+    public void setNpcDirection(Direction npcDirection) {
+        if(npcDirection == Direction.STRAIGHT){
+            npcDirection = null;
+        }
+        this.npcDirection = npcDirection;
     }
 
     /**
@@ -100,11 +113,6 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable, 
      */
     public float getMaxVelocity() {
         return maxVelocity;
-    }
-
-    @Override
-    public float getRadius() {
-        return HITBOX_RADIUS;
     }
 
     /**

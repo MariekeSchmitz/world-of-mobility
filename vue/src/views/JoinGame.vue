@@ -9,6 +9,7 @@ import { useLogin } from "@/services/login/useLogin";
 import router from "@/router";
 import SpawnPoint from "@/components/spawnpoint/SpawnPoint.vue";
 import { useSpawnPoint } from "@/components/spawnpoint/useSpawnPoint";
+import { useUserFeedback } from "@/services/editor/useUserFeedback";
 const { spawnState, setMoveableObject, setInstanceId } = useSpawnPoint();
 const { joinGame } = useGame();
 const { userList, getUserList } = useUser();
@@ -16,6 +17,8 @@ const { loginData } = useLogin();
 
 const joinSuccessfull = ref(false);
 const showError = ref(false);
+
+const {feedbackMessage} = useUserFeedback();
 
 const props = defineProps<{
   instanceID: string;
@@ -64,6 +67,7 @@ onMounted(() => {
     <div id="personal-config-container">
       <div id="car-select">
         <h1>Fortbewegungsmittel wählen</h1>
+        <p v-if="feedbackMessage">{{ feedbackMessage }}</p>
         <CarSelection @change-moveable="updateMoveable"></CarSelection>
       </div>
       <div id="place-select">

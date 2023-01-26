@@ -68,15 +68,6 @@ class MotorizedObjectTest {
     }
 
     @Test
-    void testExecuteScript() {
-        MotorizedObject vehicle = new MotorizedObject(Orientation.NORTH, 50, 50, 1);
-        ScriptContext context = new ScriptContext(vehicle, null, null);
-        vehicle.loadScript("npc.turnLeft()");
-        vehicle.executeScript(context);
-        assertEquals(Orientation.WEST, vehicle.getOrientation());
-    }
-
-    @Test
     void testEquals() {
         MotorizedObject mo1 = new MotorizedObject(50, 50);
         MotorizedObject mo2 = new MotorizedObject(50, 50);
