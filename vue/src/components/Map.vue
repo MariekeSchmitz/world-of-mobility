@@ -8,7 +8,6 @@ import { onMounted, ref } from "vue";
 import { useMap } from "@/services/useMap";
 import Enviroment from "@/components/Enviroment.vue";
 
-const squareSize = 16;
 const { getGameMap } = useMap();
 
 const defaultMap: I3DMap = {
@@ -19,6 +18,7 @@ const defaultMap: I3DMap = {
 
 const props = withDefaults(
   defineProps<{
+    squareSize: number;
     instanceID: number;
     trafficLightState: string;
   }>(),
@@ -65,13 +65,13 @@ onMounted(async () => {
   <div v-for="(subTile, row) in loadedMap.tiles" :key="`${row}`">
     <div v-for="(tile, column) in subTile" :key="`${tile}`">
       <Tile
-        :width="squareSize"
-        :height="squareSize"
+        :width="props.squareSize"
+        :height="props.squareSize"
         :position="
           new THREE.Vector3(
-            column * squareSize + 0.5 * squareSize,
+            column * props.squareSize + 0.5 * props.squareSize,
             tile.positionY,
-            -row * squareSize - 0.5 * squareSize
+            -row * props.squareSize - 0.5 * props.squareSize
           )
         "
         :rotation="computeVector3(tile.orientation)"
@@ -84,13 +84,13 @@ onMounted(async () => {
       </Tile>
       <Tile
         v-if="tile.placedObject === null"
-        :width="squareSize"
-        :height="squareSize"
+        :width="props.squareSize"
+        :height="props.squareSize"
         :position="
           new THREE.Vector3(
-            column * squareSize + 0.5 * squareSize,
+            column * props.squareSize + 0.5 * props.squareSize,
             tile.positionY,
-            -row * squareSize - 0.5 * squareSize
+            -row * props.squareSize - 0.5 * props.squareSize
           )
         "
         :rotation="computeVector3(tile.orientation)"
