@@ -119,9 +119,21 @@ export function useInstanceList(): any {
     }
   }
 
+  function getGamename(gameId: number){
+    let gamename: string = "";
+    instanceState.instancelist.forEach((instance:IInstanceInfo) => {
+      if(instance.id == gameId){
+        gamename = instance.gamename
+        return
+      }
+    });
+    return gamename
+  }
+
   return {
     instanceState: readonly(instanceState),
     getInstanceList,
     deleteState: readonly(deleteState),
+    getGamename
   };
 }

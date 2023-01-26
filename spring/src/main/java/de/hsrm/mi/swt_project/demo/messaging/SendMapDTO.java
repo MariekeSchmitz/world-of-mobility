@@ -15,7 +15,7 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
  * 
  * @author Tom Gouthier
  */
-public record SendMapDTO(Tile[][] tiles, List<SendNpcDTO> npcs) {
+public record SendMapDTO(String name, Tile[][] tiles, List<SendNpcDTO> npcs) {
 
     public static SendMapDTO from(GameMap map) {
 
@@ -23,7 +23,7 @@ public record SendMapDTO(Tile[][] tiles, List<SendNpcDTO> npcs) {
         for (MoveableObject m : map.getNpcs()) {
             l.add(SendNpcDTO.from(m));
         }
-        return new SendMapDTO(map.getTiles(), l);
+        return new SendMapDTO(map.getName(),map.getTiles(), l);
     }
 
     @Override

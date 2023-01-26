@@ -63,8 +63,8 @@ public class ScriptContext {
             return mapContext;
         }
 
-        int tileRow = (int) this.moveable.getyPos();
-        int tileCol = (int) this.moveable.getxPos();
+        int tileRow = (int) this.moveable.getYPos();
+        int tileCol = (int) this.moveable.getXPos();
 
         int rowStart = tileRow - LOOK_AHEAD;
         int rowEnd   = tileRow + LOOK_AHEAD;
@@ -101,8 +101,8 @@ public class ScriptContext {
             return new ArrayList<>();
         }
 
-        int row = (int) this.moveable.getyPos();
-        int col = (int) this.moveable.getxPos();
+        int row = (int) this.moveable.getYPos();
+        int col = (int) this.moveable.getXPos();
 
         int rowStart = row - LOOK_AHEAD;
         int rowEnd   = row + LOOK_AHEAD;
@@ -112,8 +112,8 @@ public class ScriptContext {
 
         return this.allMoveables.stream().filter(mov -> {
             
-            int movRow = (int) mov.getyPos();
-            int movCol = (int) mov.getxPos();
+            int movRow = (int) mov.getYPos();
+            int movCol = (int) mov.getXPos();
 
             return mov != this.moveable 
                 && movRow >= rowStart 

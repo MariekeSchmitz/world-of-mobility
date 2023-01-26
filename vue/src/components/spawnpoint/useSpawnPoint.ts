@@ -1,7 +1,9 @@
 import { readonly, reactive } from "vue";
 import { useGame } from "@/services/useGame";
+import { useUserFeedback } from "@/services/editor/useUserFeedback";
 
 const { isSpawnPointValid } = useGame();
+const {setUserFeedback} = useUserFeedback();
 
 interface IState {
     boxSizing: string,
@@ -20,7 +22,7 @@ interface ISpawnPoint {
 /**
  * this changes the size of the displayed minimap
  */
-const SCALING_FACTOR = 5;
+const SCALING_FACTOR = 7;
 
 const windowState: IState = reactive({
     boxSizing: '0px',
@@ -87,7 +89,7 @@ export function useSpawnPoint() {
             spawnState.yPos = yPos * SQUARE_SIZE + SQUARE_SIZE / 2;
             spawnState.tileNumber = (xPos + 1) + (yPos * windowState.numberOfRows);
         } else {
-            console.log('Invalid Spawnpoint');
+            setUserFeedback("Hier darfst du dein Fortbewegungsmittel leider nicht platzieren.")
         }
     }
 

@@ -12,7 +12,17 @@ import { useInstanceList } from "@/services/useInstanceList";
 import { useRemoveInstanceState } from "@/services/useRemoveInstanceState";
 import router from "@/router";
 import type { IInstanceInfo } from "@/services/IInstanceInfo";
-import { remove } from "@vue/shared";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faXmark,
+  faAngleLeft,
+  faAngleDown,
+  faAngleUp,
+} from "@fortawesome/free-solid-svg-icons";
+import { useUserEditor } from "@/services/useUserEditor";
+library.add(faXmark, faAngleLeft, faAngleDown, faAngleUp);
+
+const { userList, getUserlistEditor } = useUserEditor();
 
 const props = defineProps<{
   instanceId: number;
@@ -43,23 +53,23 @@ const userlist = computed(() => {
   return users;
 });
 
-function scrollingLeft() {
+function scrollingUp() {
   const boxwrapper = document.getElementById("user-wrapper");
   if (boxwrapper != null) {
-    boxwrapper.scrollLeft -= 200;
+    boxwrapper.scrollBy(0, -50);
   }
 }
 
-function scrollingRight() {
+function scrollingDown() {
   const boxwrapper = document.getElementById("user-wrapper");
   if (boxwrapper != null) {
-    boxwrapper.scrollLeft += 200;
+    boxwrapper.scrollBy(0, 50);
   }
 }
 
 function toggle() {
   const userListMenu = document.getElementById("userListMenu");
-  const showElement = document.getElementById("showElement");
+  const showElement = document.getElementById("showElementUser");
 
   if (userListMenu != null && showElement != null) {
     if (userListMenu.style.display == "none") {
@@ -67,74 +77,62 @@ function toggle() {
       showElement.style.display = "none";
     } else {
       userListMenu.style.display = "none";
-      showElement.style.display = "block";
+      showElement.style.display = "grid";
     }
   }
 }
 </script>
 
 <template>
-  <div id="userListMenu" class="menuOff">
-    <div id="itemList">
-      <button id="scrollLeft" @mousedown="scrollingLeft">
-        <img src="@/buttons/editor/arrow-left.png" />
+  <div
+    id="userListMenu"
+    class="grid grid-rows-[10%_90%] w-[15%] h-[25%] bg-white fixed top-[18%] right-3 p-1 pb-5"
+  >
+    <button id="hideElement" @click="toggle" class="grid m-2 pb-10">
+      <font-awesome-icon
+        icon="fa-solid fa-xmark"
+        color="#2F8265"
+        class="w-5 h-5 justify-self-end hover:text-greenLight"
+      />
+    </button>
+
+    <div class="w-3/4 mx-auto grid grid-rows-[10%_80%_10%]">
+      <button id="scrollLeft" @mousedown="scrollingUp" class="h-full">
+        <font-awesome-icon
+          icon="fa-solid fa-angle-up"
+          color="#2F8265"
+          class="w-4 h-4 hover:text-greenLight"
+        />
       </button>
-      <ul id="user-wrapper">
-        <li v-for="user in userlist">
-          <button class="itemButton" v-if="user != loginData.username">
-            <User :name="user"></User>
-          </button>
+
+      <ul
+        id="user-wrapper"
+        class="h-full pt-4 whitespace-nowrap overflow-y-scroll scrollbar-hide"
+      >
+        <li v-for="user in userlist" class="list-none">
+          <User :name="user" v-if="user != loginData.username"></User>
         </li>
       </ul>
 
-      <button id="scrollRight" @click="scrollingRight">
-        <img src="@/buttons/editor/arrow-right.png" />
+      <button id="scrollRight" @click="scrollingDown">
+        <font-awesome-icon
+          icon="fa-solid fa-angle-down"
+          color="#2F8265"
+          class="w-4 h-4 hover:text-greenLight"
+        />
       </button>
     </div>
-
-    <button id="hideElement" @click="toggle">
-      <img src="@/buttons/editor/arrow-up.png" />
-    </button>
   </div>
-  <button id="showElement" @click="toggle">
-    <img src="@/buttons/editor/arrow-down.png" />
+  <button
+    id="showElementUser"
+    class="editorLabel text-greenDark grid-cols-[20%_80%] items-center hidden fixed top-[19%] right-2"
+    @click="toggle"
+  >
+    <font-awesome-icon
+      icon="fa-solid fa-angle-left"
+      color="#2F8265"
+      class="w-5 h-5 pr-2"
+    />
+    <div class="inline">Userliste</div>
   </button>
 </template>
-
-<style scoped>
-#userListMenu {
-  display: grid;
-  grid-template-columns: 90% 10%;
-  position: fixed;
-  width: 20%;
-  height: 10%;
-  background-color: rgb(221, 221, 221);
-  padding: 10px;
-  top: 0px;
-  right: 5%;
-}
-
-#showElement {
-  display: none;
-  position: fixed;
-  width: 40px;
-  height: 40px;
-  top: 2%;
-  left: 92%;
-}
-
-ul {
-  height: 100%;
-  width: 85%;
-  overflow-y: hidden;
-  overflow-x: hidden;
-  white-space: nowrap;
-}
-
-li {
-  list-style-type: none;
-  display: inline-block;
-  background-color: lightblue;
-  margin: 0 10px;
-}
-</style>

@@ -58,9 +58,13 @@ async function createWorld(name: string, path: string) {
   return newWorldState.id;
 }
 
+function resetError() {
+  newWorldState.error = "";
+}
 export function useEditor() {
   return {
     createWorld,
+    resetError,
     worldCreateData: readonly(newWorldState),
   };
 }

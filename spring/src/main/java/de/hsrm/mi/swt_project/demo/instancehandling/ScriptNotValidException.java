@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * 
  * @author Marie Bohnert, Tom Gouthier
  */
-@ResponseStatus(code = HttpStatus.FORBIDDEN, reason = "Script is not valid.")
+@ResponseStatus(code = HttpStatus.FORBIDDEN, reason = "Script ist nicht erlaubt")
 public class ScriptNotValidException extends RuntimeException {
 
 }

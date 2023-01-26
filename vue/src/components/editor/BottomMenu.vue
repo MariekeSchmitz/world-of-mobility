@@ -4,8 +4,32 @@ import { usePlaceState } from "@/services/editor/usePlaceState";
 import { NaturObjectEnum } from "@/services/NaturObjectEnum";
 import { ObjectEnum } from "@/services/ObjectEnum";
 import { ControlEnum } from "@/services/ControlEnum";
-import { NpcType } from "@/services/editor/NpcType";
-import { moveableImages } from "../carselect/MoveableImages";
+import BottomSelectionLoop from "@/components/editor/BottomSelectionLoop.vue";
+import { NpcPassengerType } from "@/services/editor/NpcPassengerType";
+import { NpcVehicleType } from "@/services/editor/NpcVehicleType";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faAngleRight,
+  faAngleLeft,
+  faAngleUp,
+  faXmark,
+  faRoad,
+  faCar,
+  faTree,
+  faTrafficLight,
+  faPersonWalking,
+} from "@fortawesome/free-solid-svg-icons";
+library.add(
+  faAngleRight,
+  faAngleLeft,
+  faAngleUp,
+  faXmark,
+  faRoad,
+  faCar,
+  faTree,
+  faTrafficLight,
+  faPersonWalking
+);
 
 const { setPlaceState } = usePlaceState();
 
@@ -32,6 +56,18 @@ function scrollingRight() {
   }
 }
 
+function resetScrolling() {
+  const boxwrapper = document.getElementById("box-wrapper");
+  const boxwrappernpc = document.getElementById("box-wrapper-npc");
+
+  if (boxwrapper != null) {
+    boxwrapper.scrollLeft = 0;
+  }
+  if (boxwrappernpc != null) {
+    boxwrappernpc.scrollLeft = 0;
+  }
+}
+
 function toggle() {
   const bottomMenu = document.getElementById("bottomMenu");
   const showElement = document.getElementById("showElement");
@@ -54,6 +90,8 @@ function switchItems(element: string) {
   const passengerItems = document.getElementById("passenger");
   const motorizedItems = document.getElementById("motorized");
 
+  resetScrolling();
+
   if (
     streetItems != null &&
     componentItems != null &&
@@ -67,14 +105,14 @@ function switchItems(element: string) {
         componentItems.style.display = "block";
         otherItems.style.display = "none";
         passengerItems.style.display = "none";
-        motorizedItems.style.display = "none";
+        motorizedItems.style.display = "block";
         break;
       case "otherItems":
         streetItems.style.display = "none";
         componentItems.style.display = "none";
         otherItems.style.display = "block";
         passengerItems.style.display = "none";
-        motorizedItems.style.display = "none";
+        motorizedItems.style.display = "block";
         break;
       case "passenger":
         motorizedItems.style.display = "none";
@@ -89,7 +127,7 @@ function switchItems(element: string) {
         componentItems.style.display = "none";
         otherItems.style.display = "none";
         passengerItems.style.display = "none";
-        motorizedItems.style.display = "none";
+        motorizedItems.style.display = "block";
         break;
     }
   }
@@ -115,421 +153,274 @@ function switchContent(element: string) {
 </script>
 
 <template>
-  <div id="bottomMenu" class="menuOff">
-    <div class="typeSelector">
-      <button @click="switchContent('landscapeMenu')">
-        Infrastruktur, Landschaft
-      </button>
-      <button @click="switchContent('npcMenu')">NPCs</button>
-    </div>
-
-    <div id="landscapeMenu">
-      <div class="itemSelector">
-        <button @click="switchItems('streetItems')">
-          <img src="@/textures/editor/STREET_STRAIGHT.jpg" />
-        </button>
-        <button @click="switchItems('componentItems')">
-          Natur/<br />Tiere
-        </button>
-        <button @click="switchItems('otherItems')">
-          Gegenstände/<br />Tankstelle
-        </button>
-      </div>
-
-      <!--
-          für beliebige menge an tiles auswahl selbst erstellen lassen - src klappt nicht, wie angeben
-        <div class="items" v-for="tileType in TileName">
-          <p>{{tileType}}</p>
-            <button @click="$emit('selectTile', tileType)"><img :props="{src: 'src/textures/editor/'+tileType+'.jpg'}"/></button>
+  <div
+    id="bottomMenu"
+    class="bg-whiteOverlay grid grid-cols-[25%_70%_5%] w-3/5 h-1/5 py-3 px-6 fixed bottom-0 left-[20%] font-poppins"
+  >
+    <fieldset class="grid grid-rows-2 editorLabel text-greenDark">
+      <label class="group grid grid-cols-[30%_70%] items-center">
+        <input
+          type="radio"
+          name="selectMenu"
+          checked
+          @click="switchContent('landscapeMenu')"
+          class="hidden peer"
+        />
+        <font-awesome-icon
+          icon="fa-solid fa-road"
+          color="#2F8265 "
+          class="w-5 h-5 bg-white rounded-full p-2 mr-1 justify-self-end peer-checked:text-orange group-hover:bg-orangeLight"
+        />
+        <div class="pl-2 text-left peer-checked:text-orange">
+          Infrastruktur,<br />
+          Landschaft
         </div>
-        -->
+      </label>
+      <label class="group grid grid-cols-[30%_70%] items-center">
+        <input
+          type="radio"
+          name="selectMenu"
+          @click="switchContent('npcMenu')"
+          class="hidden peer"
+        />
+        <font-awesome-icon
+          icon="fa-solid fa-car"
+          color="#2F8265"
+          class="w-5 h-5 bg-white rounded-full p-2 mr-1 justify-self-end peer-checked:text-orange group-hover:bg-greenLight"
+        />
+        <div class="pl-2 text-left peer-checked:text-orange">NPCs</div>
+      </label>
+    </fieldset>
 
-      <div id="itemList">
-        <button id="scrollLeft" @mousedown="scrollingLeft">
-          <img src="@/buttons/editor/arrow-left.png" />
-        </button>
+    <div class="bg-white pr-5 py-5">
+      <div id="landscapeMenu" class="grid grid-cols-[15%_85%] h-full">
+        <fieldset class="grid grid-rows-3">
+          <label class="group grid items-center">
+            <input
+              type="radio"
+              name="selectObject"
+              checked
+              class="hidden peer"
+              @click="switchItems('streetItems')"
+            />
+            <font-awesome-icon
+              icon="fa-solid fa-road"
+              color="#2F826575"
+              class="w-5 h-5 justify-self-center peer-checked:text-orange group-hover:text-orange"
+            />
+          </label>
+          <label class="group grid items-center">
+            <input
+              type="radio"
+              name="selectObject"
+              class="hidden peer"
+              @click="switchItems('componentItems')"
+            />
+            <font-awesome-icon
+              icon="fa-solid fa-tree"
+              color="#2F826575"
+              class="w-5 h-5 justify-self-center peer-checked:text-orange group-hover:text-orange"
+            />
+          </label>
+          <label class="group grid items-center">
+            <input
+              type="radio"
+              name="selectObject"
+              class="hidden peer"
+              @click="switchItems('otherItems')"
+            />
+            <font-awesome-icon
+              icon="fa-solid fa-traffic-light"
+              color="#2F826575"
+              class="w-5 h-5 justify-self-center peer-checked:text-orange group-hover:text-orange"
+            />
+          </label>
+        </fieldset>
 
-        <ul id="box-wrapper">
-          <div id="streetItems">
-            <li>
-              <button
-                class="itemButton"
-                @click="
-                  setPlaceState(TileName.STREET_STRAIGHT, true, false, false)
-                "
-              >
-                <img src="@/textures/editor/STREET_STRAIGHT.jpg" />
-              </button>
-            </li>
-            <li>
-              <button
-                class="itemButton"
-                @click="
-                  setPlaceState(TileName.STREET_CURVE, true, false, false)
-                "
-              >
-                <img src="@/textures/editor/STREET_CURVE.jpg" />
-              </button>
-            </li>
-            <li>
-              <button
-                class="itemButton"
-                @click="
-                  setPlaceState(TileName.STREET_T_CROSS, true, false, false)
-                "
-              >
-                <img src="@/textures/editor/STREET_T_CROSS.jpg" />
-              </button>
-            </li>
-            <li>
-              <button
-                class="itemButton"
-                @click="
-                  setPlaceState(TileName.STREET_CROSS, true, false, false)
-                "
-              >
-                <img src="@/textures/editor/STREET_CROSS.jpg" />
-              </button>
-            </li>
-            <li>
-              <button
-                class="itemButton"
-                @click="
-                  setPlaceState(
-                    TileName.PEDESTRIAN_CROSSING,
-                    true,
-                    false,
-                    false
-                  )
-                "
-              >
-                <img src="@/textures/editor/PEDESTRIAN_CROSSING.jpg" />
-              </button>
-            </li>
-            <li>
-              <button
-                class="itemButton"
-                @click="
-                  setPlaceState(
-                    TileName.PEDESTRIAN_CROSSING,
-                    true,
-                    false,
-                    false
-                  )
-                "
-              >
-                <img src="@/textures/editor/PEDESTRIAN_CROSSING.jpg" />
-              </button>
-            </li>
-            <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(TileName.SIDEWAY, true, false, false)"
-              >
-                <img src="@/textures/editor/SIDEWAY.png" />
-              </button>
-            </li>
-            <li>
-              <button
-                class="itemButton"
-                @click="
-                  setPlaceState(
-                    TileName.SIDEWAY_BICYCLE_CURVE,
-                    true,
-                    false,
-                    false
-                  )
-                "
-              >
-                <img src="@/textures/editor/SIDEWAY_BICYCLE_CURVE.png" />
-              </button>
-            </li>
-            <li>
-              <button
-                class="itemButton"
-                @click="
-                  setPlaceState(
-                    TileName.SIDEWAY_PASSENGER_CURVE,
-                    true,
-                    false,
-                    false
-                  )
-                "
-              >
-                <img src="@/textures/editor/SIDEWAY_PASSENGER_CURVE.png" />
-              </button>
-            </li>
-            <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(TileName.FARM, true, false, false)"
-              >
-                <img src="@/textures/editor/FARM.jpg" />
-              </button>
-            </li>
-          </div>
-          <!--
-          <div
-            id="componentItems"
-            v-for="(valueEnum, naturEnum) in NaturObjectEnum"
-            :key="`${valueEnum}`"
+        <div class="grid grid-cols-[10%_80%_10%] my-auto">
+          <button id="scrollLeft" @mousedown="scrollingLeft">
+            <font-awesome-icon
+              icon="fa-solid fa-angle-left"
+              color="#2F8265"
+              class="w-8 h-8"
+            />
+          </button>
+
+          <ul
+            id="box-wrapper"
+            class="h-full whitespace-nowrap overflow-hidden"
           >
-            <li>
-              <img
-                :src="'@/assets/objekte/natur/' + valueEnum + '.png'"
-                :alt="'@/assets/objekte/natur/' + valueEnum + '.png'"
-              />
-            </li>
-          </div>
--->
+            <div id="streetItems">
+              <BottomSelectionLoop
+                :enum="Object.keys(TileName)"
+                :boolTile="true"
+                :boolNpc="false"
+                :boolPlaceable="false"
+              ></BottomSelectionLoop>
+            </div>
 
-          <div id="componentItems">
-            <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(ControlEnum.REMOVE, false, false, true)"
-              >
-                <img src="@/assets/objects/REMOVE.png" />
-              </button>
-            </li>
-            <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(NaturObjectEnum.TREE, false, false, true)"
-              >
-                <img src="@/assets/objects/TREE.png" />
-              </button>
-            </li>
-            <li>
-              <button
-                class="itemButton"
-                @click="
-                  setPlaceState(NaturObjectEnum.SHEEP, false, false, true)
-                "
-              >
-                <img src="@/assets/objects/SHEEP.png" />
-              </button>
-            </li>
-            <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(NaturObjectEnum.PIG, false, false, true)"
-              >
-                <img src="@/assets/objects/PIG.png" />
-              </button>
-            </li>
-          </div>
+            <div id="componentItems" class="hidden">
+              <li class="bottomMenuListStyle">
+                <button
+                  class="w-16 h-16"
+                  @click="setPlaceState(ControlEnum.REMOVE, false, false, true)"
+                >
+                  <img src="@/assets/objects/REMOVE.png" />
+                  löschen
+                </button>
+              </li>
+              <BottomSelectionLoop
+                :enum="Object.keys(NaturObjectEnum)"
+                :boolTile="false"
+                :boolNpc="false"
+                :boolPlaceable="true"
+              ></BottomSelectionLoop>
+            </div>
 
-          <div id="otherItems">
-            <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(ControlEnum.REMOVE, false, false, true)"
-              >
-                <img src="@/assets/objects/REMOVE.png" />
-              </button>
-            </li>
-            <li>
-              <button
-                class="itemButton"
-                @click="
-                  setPlaceState(ObjectEnum.GAS_STATION, false, false, true)
-                "
-              >
-                <img src="@/assets/objects/GAS_STATION.png" />
-              </button>
-            </li>
-            <li>
-              <button
-                class="itemButton"
-                @click="
-                  setPlaceState(ObjectEnum.TRAFFIC_LIGHT, false, false, true)
-                "
-              >
-                <img src="@/assets/objects/TRAFFIC_LIGHT.png" />
-              </button>
-            </li>
-          </div>
-        </ul>
+            <div id="otherItems" class="hidden">
+              <li class="bottomMenuListStyle">
+                <button
+                  class="w-16 h-16"
+                  @click="setPlaceState(ControlEnum.REMOVE, false, false, true)"
+                >
+                  <img src="@/assets/objects/REMOVE.png" />
+                  löschen
+                </button>
+              </li>
+              <BottomSelectionLoop
+                :enum="Object.keys(ObjectEnum)"
+                :boolTile="false"
+                :boolNpc="false"
+                :boolPlaceable="true"
+              ></BottomSelectionLoop>
+            </div>
+          </ul>
 
-        <button id="scrollRight" @click="scrollingRight">
-          <img src="@/buttons/editor/arrow-right.png" />
-        </button>
+          <button id="scrollRight" @click="scrollingRight">
+            <font-awesome-icon
+              icon="fa-solid fa-angle-right"
+              color="#2F8265"
+              class="w-8 h-8 hover:text-greenLight"
+            />
+          </button>
+        </div>
+      </div>
+
+      <div id="npcMenu" class="h-full hidden grid-cols-[15%_85%]">
+        <fieldset class="h-full grid grid-rows-2">
+          <label class="group grid items-center">
+            <input
+              type="radio"
+              name="selectNpc"
+              checked
+              class="hidden peer"
+              @click="switchItems('motorized')"
+            />
+            <font-awesome-icon
+              icon="fa-solid fa-car"
+              color="#2F826575"
+              class="w-5 h-5 justify-self-center peer-checked:text-orange group-hover:text-orange"
+            />
+          </label>
+          <label class="group grid items-center">
+            <input
+              type="radio"
+              name="selectNpc"
+              class="hidden peer"
+              @click="switchItems('passenger')"
+            />
+            <font-awesome-icon
+              icon="fa-solid fa-person-walking"
+              color="#2F826575"
+              class="w-6 h-6 justify-self-center peer-checked:text-orange group-hover:text-orange"
+            />
+          </label>
+        </fieldset>
+
+        <div class="grid grid-cols-[10%_80%_10%] my-auto">
+          <button id="scrollLeft" @mousedown="scrollingLeft">
+            <font-awesome-icon
+              icon="fa-solid fa-angle-left"
+              color="#2F8265"
+              class="w-8 h-8 hover:text-greenLight"
+            />
+          </button>
+
+          <ul
+            id="box-wrapper-npc"
+            class="h-full whitespace-nowrap overflow-hidden"
+          >
+            <div id="passenger" class="hidden">
+              <li class="bottomMenuListStyle">
+                <button
+                  class="w-16 h-16"
+                  @click="
+                    setPlaceState(ControlEnum.REMOVE_NPC, false, false, false)
+                  "
+                >
+                  <img src="@/assets/objects/REMOVE.png" />
+                  löschen
+                </button>
+              </li>
+              <BottomSelectionLoop
+                :enum="Object.keys(NpcPassengerType)"
+                :boolTile="false"
+                :boolNpc="true"
+                :boolPlaceable="false"
+              ></BottomSelectionLoop>
+            </div>
+
+            <div id="motorized">
+              <li class="bottomMenuListStyle">
+                <button
+                  class="w-16 h-16"
+                  @click="
+                    setPlaceState(ControlEnum.REMOVE_NPC, false, false, false)
+                  "
+                >
+                  <img src="@/assets/objects/REMOVE.png" />
+                  löschen
+                </button>
+              </li>
+              <BottomSelectionLoop
+                :enum="Object.keys(NpcVehicleType)"
+                :boolTile="false"
+                :boolNpc="true"
+                :boolPlaceable="false"
+              ></BottomSelectionLoop>
+            </div>
+          </ul>
+
+          <button id="scrollRight" @click="scrollingRight" class="group">
+            <font-awesome-icon
+              icon="fa-solid fa-angle-right"
+              color="#2F8265"
+              class="w-8 h-8 group-hover:text-greenLight"
+            />
+          </button>
+        </div>
       </div>
     </div>
 
-    <div id="npcMenu">
-      <div class="itemSelector">
-        <button @click="switchItems('motorized')">Fahrzeuge</button>
-        <button @click="switchItems('passenger')">Fußgeher</button>
-      </div>
-
-      <div id="itemList">
-        <button id="scrollLeft" @mousedown="scrollingLeft">
-          <img src="@/buttons/editor/arrow-left.png" />
-        </button>
-
-        <ul id="box-wrapper-npc">
-          <div id="passenger">
-            <li>
-              <button
-                class="itemButton"
-                @click="
-                  setPlaceState(ControlEnum.REMOVE_NPC, false, false, false)
-                "
-              >
-                <img src="@/assets/objects/REMOVE.png" />
-              </button>
-            </li>
-            <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(NpcType.PIG, false, true, false)"
-              >
-                <img :src="moveableImages[NpcType.PIG]" />
-              </button>
-            </li>
-            <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(NpcType.SHEEP, false, true, false)"
-              >
-                <img :src="moveableImages[NpcType.SHEEP]" />
-              </button>
-            </li>
-            <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(NpcType.TUPEL, false, true, false)"
-              >
-                <img :src="moveableImages[NpcType.TUPEL]" />
-              </button>
-            </li>
-          </div>
-
-          <div id="motorized">
-            <li>
-              <button
-                class="itemButton"
-                @click="
-                  setPlaceState(ControlEnum.REMOVE_NPC, false, false, false)
-                "
-              >
-                <img src="@/assets/objects/REMOVE.png" />
-              </button>
-            </li>
-            <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(NpcType.CAR, false, true, false)"
-              >
-                <img :src="moveableImages[NpcType.CAR]" />
-              </button>
-            </li>
-            <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(NpcType.TRUCK, false, true, false)"
-              >
-                <img :src="moveableImages[NpcType.TRUCK]" />
-              </button>
-            </li>
-            <li>
-              <button
-                class="itemButton"
-                @click="setPlaceState(NpcType.TRACTOR, false, true, false)"
-              >
-                <img :src="moveableImages[NpcType.TRACTOR]" />
-              </button>
-            </li>
-          </div>
-        </ul>
-
-        <button id="scrollRight" @click="scrollingRight">
-          <img src="@/buttons/editor/arrow-right.png" />
-        </button>
-      </div>
-    </div>
+    <button id="hideElement" @click="toggle" class="group grid items-start">
+      <font-awesome-icon
+        icon="fa-solid fa-xmark"
+        color="#2F8265"
+        class="w-6 h-6 justify-self-end group-hover:text-greenLight"
+      />
+    </button>
   </div>
 
-  <button id="hideElement" @click="toggle">
-    <img src="@/buttons/editor/arrow-down.png" />
-  </button>
-
-  <button id="showElement" @click="toggle">
-    <img src="@/buttons/editor/arrow-up.png" />
+  <button
+    id="showElement"
+    class="editorLabel hidden fixed bottom-2 right-[20%]"
+    @click="toggle"
+  >
+    <font-awesome-icon
+      icon="fa-solid fa-angle-up"
+      color="white"
+      class="w-5 h-5"
+    /><br />
+    Welt bearbeiten
   </button>
 </template>
-
-<style scoped>
-#bottomMenu {
-  display: grid;
-  grid-template-columns: 20% 75% 5%;
-  position: fixed;
-  width: 50%;
-  height: 14%;
-  background-color: rgb(221, 221, 221);
-  padding: 10px;
-  bottom: 0px;
-  left: 10%;
-}
-
-#landscapeMenu {
-  display: grid;
-  grid-template-columns: 20% 80%;
-}
-
-#npcMenu {
-  display: none;
-  grid-template-columns: 20% 80%;
-}
-
-#showElement {
-  display: none;
-  position: fixed;
-  bottom: 2%;
-  left: 58%;
-}
-
-.typeSelector {
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-}
-
-.itemSelector {
-  display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
-}
-
-#itemList {
-  display: grid;
-  grid-template-columns: 10% 80% 10%;
-  margin: auto 0;
-}
-
-.itemButton > img {
-  width: 80px;
-  height: 80px;
-}
-
-#componentItems,
-#otherItems,
-#passenger {
-  display: none;
-}
-
-ul {
-  height: 100%;
-  width: 85%;
-  overflow-y: hidden;
-  overflow-x: hidden;
-  white-space: nowrap;
-}
-
-li {
-  list-style-type: none;
-  display: inline-block;
-  background-color: lightblue;
-  margin: 0 5px;
-}
-</style>

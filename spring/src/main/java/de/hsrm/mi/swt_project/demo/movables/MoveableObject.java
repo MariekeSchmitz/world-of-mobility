@@ -4,6 +4,8 @@ import org.python.util.PythonInterpreter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.hsrm.mi.swt_project.demo.collision.Collidable;
+import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.Moveable;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.scripting.Scriptable;
@@ -18,7 +20,7 @@ import de.hsrm.mi.swt_project.demo.scripting.ScriptContext;
  * 
  * @author Sascha Scheid
  */
-public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
+public abstract class MoveableObject implements Moveable, Scriptable, Turnable, Collidable {
 
     protected static final float MIN_VELOCITY = -0.5f;
     protected static final float MAX_VELOCITY = 1.0f;
@@ -26,13 +28,14 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
     protected static final float MIN_CAPACITY = 0.0f;
     protected static final float MAX_CAPACITY = 1.0f;
 
-    protected float hitboxRadius = 0.15f;
+    protected static final float HITBOX_RADIUS = 0.15f;
 
     protected Orientation orientation;
 
     protected float xPos;
     protected float yPos;
     protected float maxVelocity;
+    protected Direction npcDirection = null;
 
     protected float capacity = 1;
     protected float currentVelocity = 0;
@@ -51,22 +54,25 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
         return orientation;
     }
 
-    /**
-     * Gets x-position of the movable object in the map.
-     * 
-     * @return x-Position
-     */
-    public float getxPos() {
+    @Override
+    public float getXPos() {
         return xPos;
     }
 
-    /**
-     * Gets y-position of the movable object in the map.
-     * 
-     * @return x-Position
-     */
-    public float getyPos() {
+    @Override
+    public float getYPos() {
         return yPos;
+    }
+
+    public Direction getNpcDirection() {
+        return npcDirection;
+    }
+
+    public void setNpcDirection(Direction npcDirection) {
+        if(npcDirection == Direction.STRAIGHT){
+            npcDirection = null;
+        }
+        this.npcDirection = npcDirection;
     }
 
     /**
@@ -107,10 +113,6 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable {
      */
     public float getMaxVelocity() {
         return maxVelocity;
-    }
-
-    public float getHitboxRadius() {
-        return hitboxRadius;
     }
 
     /**

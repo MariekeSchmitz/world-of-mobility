@@ -1,23 +1,8 @@
-<template>
-  <div id="spanwpoint-container">
-    <div v-for="(tileRow, y) in testObj.tiles" id="tile-row">
-      <div v-for="(tile, x) in tileRow" id="tile-column">
-        <SimplifiedTile
-          :tile-type="tile.type"
-          :orientation="tile.orientation"
-          :x-index="x"
-          :y-index="y"
-        />
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, ref, type Ref } from "vue";
 import SimplifiedTile from "@/components/simplifiedTile/SimplifiedTile.vue";
 import { useSpawnPoint } from "@/components/spawnpoint/useSpawnPoint";
-import { useMap } from "@/services/useMap";
+import { useMap, type IMapDTO, type IPlacedObject } from "@/services/useMap";
 
 const {
   miniMapScalingState,
@@ -35,126 +20,30 @@ const props = withDefaults(
   }
 );
 
-const testObj = ref({
+const emit = defineEmits<{
+  (e: "setSpawnPoint"): void;
+}>();
+
+function nonNullTile(str: IPlacedObject) {
+  return str ? str.type : "";
+}
+
+const testObj: Ref<IMapDTO> = ref({
   tiles: [
     [
       {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "SOUTH",
-        placedObjects: [],
-        type: "STREET_CROSS",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "GRASSTILE",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "RAIL_CURVE",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "RAIL_STRAIGHT",
-      },
-    ],
-    [
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "SIDEWAY",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "STREET_CURVE",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "STREET_STRAIGHT",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "STREET_T_CROSS",
-      },
-    ],
-    [
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "STREET_CROSS",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "GRASSTILE",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "RAIL_CURVE",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "RAIL_STRAIGHT",
-      },
-    ],
-    [
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "SIDEWAY",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "STREET_CURVE",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "STREET_STRAIGHT",
-      },
-      {
-        allowedDirections: ["NORTH", "EAST", "SOUTH", "WEST"],
-        orientation: "NORTH",
-        placedObjects: [],
-        type: "STREET_T_CROSS",
-      },
-    ],
+        type: "",
+        orientation: "",
+        placedObject: {
+          type: ""
+        }
+      }
+    ]
   ],
-  name: "test",
-  npcs: [
-    {
-      orientation: "NORTH",
-      xPos: 0.0,
-      yPos: 0.0,
-      maxVelocity: 1.0,
-      capacity: 1.0,
-      currentVelocity: 0.0,
-      script: "",
-      type: "PASSANGER",
-    },
+  NPCS: [
+
   ],
+  name: ""
 });
 
 onMounted(async () => {
@@ -166,20 +55,19 @@ onMounted(async () => {
 onUnmounted(() => {
   removeWindowWIdthListener();
 });
+
+
 </script>
 
-<style scoped>
-#spanwpoint-container {
-  height: v-bind("miniMapScalingState.windowWidth");
-  width: v-bind("miniMapScalingState.windowWidth");
-  background-color: rgb(66, 66, 66);
-  display: flex;
-  flex-direction: column-reverse;
-}
+<template>
+  <div >
+    <div class="flex flex-col-reverse">
+      <div v-for="(tileRow, y) in testObj.tiles" :key="testObj.name" class="flex flex-row mx-auto bg-greenDark">
+        <div v-for="(tile, x) in tileRow" :key="tile.type" class="flex flex-row">
+          <SimplifiedTile :tile-type="tile.type" :orientation="tile.orientation" :x-index="x" :y-index="y" :asset="nonNullTile(tile.placedObject)" @set-spawn-point="emit('setSpawnPoint')"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 
-#tile-row {
-  display: flex;
-  flex-direction: row;
-}
-
-</style>

@@ -7,6 +7,8 @@ import de.hsrm.mi.swt_project.demo.controls.Orientation;
 
 public class MotorizedObject extends MoveableObject {
 
+    protected static final float HITBOX_RADIUS = 0.15f;
+
     public MotorizedObject() {
         this(0, 0);
     }
@@ -36,7 +38,6 @@ public class MotorizedObject extends MoveableObject {
         this.setYPos(yPos);
         this.maxVelocity = maxVelocity;
         this.orientation = adjustOrientation(orientation);
-        this.hitboxRadius = 0.15f;
     }
 
     @Override
@@ -57,31 +58,9 @@ public class MotorizedObject extends MoveableObject {
 
     @Override
     public void move() {
-
         float movement = this.currentVelocity * this.maxVelocity;
-
-        switch (this.orientation) {
-            
-            case NORTH:
-                this.yPos += movement;
-                break;
-
-            case EAST:
-                this.xPos += movement;
-                break;
-
-            case SOUTH:
-                this.yPos -= movement;
-                break;
-
-            case WEST:
-                this.xPos -= movement;
-                break;
-
-            default:
-                break;
-                       
-        }
+        this.xPos += this.orientation.xSign() * movement;
+        this.yPos += this.orientation.ySign() * movement;
     }
 
     /**
@@ -92,18 +71,21 @@ public class MotorizedObject extends MoveableObject {
     public void turn(Direction direction) {
 
         switch (direction) {
+
             case LEFT:
                 if(this.currentVelocity < 0) 
                     this.orientation = this.orientation.next().next();
                 else
                     this.orientation = this.orientation.prev().prev();  // can only turn 90 degrees
                 break;
+
             case RIGHT:
-            if (this.currentVelocity < 0)
+                if (this.currentVelocity < 0)
                     this.orientation = this.orientation.prev().prev();
                 else
                     this.orientation = this.orientation.next().next();  // can only turn 90 degrees
                 break;
+                
             default:
                 break;
             
@@ -184,4 +166,8 @@ public class MotorizedObject extends MoveableObject {
         return String.format(Locale.ENGLISH, "MotorizedObject[xPos=%.2f,yPos=%.2f,curV=%.2f,maxV=%.2f,cap=%.2f,orientation=%s]", this.xPos, this.yPos, this.currentVelocity, this.maxVelocity, this.capacity, this.orientation);
     }
 
+    @Override
+    public float getRadius() {
+        return HITBOX_RADIUS;
+    }
 }

@@ -2,9 +2,19 @@ package de.hsrm.mi.swt_project.demo.scripting;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import de.hsrm.mi.swt_project.demo.collision.Collidable;
 import de.hsrm.mi.swt_project.demo.controls.Direction;
+import de.hsrm.mi.swt_project.demo.controls.Orientation;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.TrafficLight;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
+import de.hsrm.mi.swt_project.demo.movables.MotorizedObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
+import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLightSingleTon;
+import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLightState;
+import de.hsrm.mi.swt_project.demo.util.MathHelpers;
 
 /**
  * This class is a facade for a moveable object.
@@ -18,8 +28,12 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
  */
 public class MoveableFacade {
 
+    Logger logger = LoggerFactory.getLogger(getClass());
+
     protected static final float ACCELERATION_DELTA = 0.1f;
-    
+
+    private TrafficLightSingleTon trafficLightSingleTon = TrafficLightSingleTon.getInstance();
+
     protected MoveableObject moveable;
     protected ScriptContext context;
 
@@ -56,18 +70,74 @@ public class MoveableFacade {
         return mapContext[pos + 1][pos];
     }
 
+    public boolean getFrontTrafficLight(){
+        float xOnTile = moveable.getXPos() - (int) moveable.getXPos();
+        float yOnTile = moveable.getYPos() - (int) moveable.getYPos();
+        if (getFrontTile() == null) {
+            return true;
+        }
+        if(getFrontTile().getPlacedObject() instanceof TrafficLight){
+            switch (moveable.getOrientation()) {
+                case NORTH:
+                    if(yOnTile > 0.7f){
+                        return isTrafficLightRed();
+                    }
+                    break;
+                case SOUTH:
+                    if(yOnTile < 0.3f){
+                        return isTrafficLightRed(); 
+                    }
+                    break;
+                case WEST:
+                    if(xOnTile < 0.3f){
+                        return isTrafficLightRed();
+                    }
+                    break;
+                case EAST:
+                    if(xOnTile > 0.7f){
+                        return isTrafficLightRed();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        return true;
+
+
+    }
+
+    private boolean isTrafficLightRed(){
+        TrafficLightState trafficLightState = trafficLightSingleTon.getTrafficLightState();
+        Orientation orientation = moveable.getOrientation();
+        if(trafficLightState.equals(TrafficLightState.NORTHSOUTH) && (orientation.equals(Orientation.NORTH) || orientation.equals(Orientation.SOUTH))){
+            return true;
+        } else if(trafficLightState.equals(TrafficLightState.EASTWEST) && (orientation.equals(Orientation.EAST) || orientation.equals(Orientation.WEST))){
+            return true;
+        } 
+        return false;
+    }
+
     /**
      * Turns the controlled moveable to the left.
      */
     public void turnLeft() {
-        this.moveable.turn(Direction.LEFT);
+        if(moveable instanceof MotorizedObject){
+            moveable.setNpcDirection(Direction.LEFT);
+        } else {
+            this.moveable.turn(Direction.LEFT);
+        }
     }
 
     /**
      * Turns the controlled moveable to the right.
      */
     public void turnRight() {
-        this.moveable.turn(Direction.RIGHT);
+        if(moveable instanceof MotorizedObject){
+            moveable.setNpcDirection(Direction.RIGHT);
+        } else {
+            this.moveable.turn(Direction.RIGHT);
+        }
     }
 
     /**
@@ -116,17 +186,20 @@ public class MoveableFacade {
     }
 
     /**
-     * Calculates distance to another moveable.
+     * Calculates distance to another collidable.
      * 
-     * @param other Moveable to get the distance to
-     * @return Distance to the other moveable
+     * @param other Collidable to get the distance to
+     * @return Distance to the other collidable.
      */
-    public float distanceTo(MoveableObject other) {        
+    public float distanceTo(Collidable other) {        
 
-        float xdist = this.moveable.getxPos() - other.getxPos();
-        float ydist = this.moveable.getyPos() - other.getyPos();
+        float thisXPos = this.moveable.getXPos();
+        float thisYPos = this.moveable.getYPos();
 
-        return (float) Math.sqrt(xdist * xdist + ydist * ydist);
+        float otherXPos = other.getXPos();
+        float otherYPos = other.getYPos();
+
+        return MathHelpers.euclideanDistance(thisXPos, thisYPos, otherXPos, otherYPos);
     }    
     
 }

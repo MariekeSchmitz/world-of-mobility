@@ -1,4 +1,6 @@
 import type { NpcType } from "./NpcType";
+import { useEditorError } from "./useEditorError";
+
 
 /**
  * interface that represents a npc that is supposed to be placed
@@ -17,6 +19,8 @@ interface IRemoveNPC {
   y: number;
 }
 
+const {setEditorError} = useEditorError()
+
 /**
  * places Npc on specific coordinates
  * @param x x coordinate of npc
@@ -25,6 +29,7 @@ interface IRemoveNPC {
  * @param id id of editor-instance
  */
 async function placeNpc(x: number, y: number, type: NpcType, id: number) {
+  
   const npc: IPlaceNPC = {
     x: x,
     y: y,
@@ -44,10 +49,14 @@ async function placeNpc(x: number, y: number, type: NpcType, id: number) {
     });
 
     if (!response.ok) {
-      throw new Error(response.statusText);
+      const json = await response.json()
+      console.log(json)
+      setEditorError(json.message)
+    } else{
+      setEditorError("")
     }
-  } catch (error) {
-    console.log("Error: " + error);
+  } catch (error:any) {
+    setEditorError(error.toString())
   }
 }
 
@@ -76,10 +85,13 @@ async function removeNpc(x: number, y: number, id: number) {
     });
 
     if (!response.ok) {
-      throw new Error(response.statusText);
+      const json = await response.json()
+      setEditorError(json.message)
+    } else{
+      setEditorError("")
     }
-  } catch (error) {
-    console.log("Error: " + error);
+  } catch (error:any) {
+    setEditorError(error.toString())
   }
 }
 

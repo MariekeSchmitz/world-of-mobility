@@ -50,8 +50,8 @@ class MotorizedObjectTest {
             }
         }
 
-        assertEquals(55, vehicle.getxPos());
-        assertEquals(55, vehicle.getyPos());
+        assertEquals(55, vehicle.getXPos());
+        assertEquals(55, vehicle.getYPos());
     }
 
     @Test
@@ -65,15 +65,6 @@ class MotorizedObjectTest {
         assertNotSame(vehicle, copy);
         assertEquals(vehicle, copy);
 
-    }
-
-    @Test
-    void testExecuteScript() {
-        MotorizedObject vehicle = new MotorizedObject(Orientation.NORTH, 50, 50, 1);
-        ScriptContext context = new ScriptContext(vehicle, null, null);
-        vehicle.loadScript("npc.turnLeft()");
-        vehicle.executeScript(context);
-        assertEquals(Orientation.WEST, vehicle.getOrientation());
     }
 
     @Test

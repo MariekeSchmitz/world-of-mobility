@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet"');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1 {
+    @apply text-5xl mb-12 text-greenDark font-fredoka uppercase;
+  }
+
+  h2 {
+    @apply text-xl mb-8 text-greenDark font-fredoka uppercase leading-7;
+  }
+
+  h3 {
+    @apply text-lg mb-4 font-fredoka uppercase;
+  }
+
+  p {
+    @apply font-poppins;
+  }
+
+  /* div {
+    @apply border-solid border-2 ;
+  } */
+
+  body,
+  #app {
+    @apply h-fit;
+  }
+
+  input {
+    @apply border-orange border-b-2 text-greenDark focus:outline-none placeholder:text-orange pb-0 mb-0 font-semibold bg-transparent;
+  }
+
+  button:hover {
+    @apply cursor-pointer;
+  }
+
+  .buttonStartPage {
+    @apply text-white rounded-full w-full uppercase block font-fredoka mb-4 p-3 text-xl;
+  }
+
+  .buttonOrange {
+    @apply text-white rounded-full w-full uppercase block font-fredoka mb-4 p-3 text-xl bg-orange hover:bg-orangeLight;
+  }
+
+  .buttonGreen {
+    @apply text-white rounded-full w-full uppercase block font-fredoka mb-4 p-3 text-xl bg-greenDark hover:bg-greenLight;
+  }
+
+  .buttonEditor {
+    @apply w-4 h-4;
+  }
+
+  .radioButton {
+    @apply appearance-none rounded-full mr-4 w-6 h-6 border-greenDark border-4 bg-white checked:bg-greenLight checked:border-greenDark focus:outline-none hover:bg-orange;
+  }
+
+  label {
+    @apply font-poppins hover:cursor-pointer;
+  }
+
+  .gameListItem {
+    @apply mb-8 mr-8 inline-block;
+  }
+
+  .worldName {
+    @apply font-semibold text-greenDark;
+  }
+
+  .bottomMenuListStyle {
+    @apply list-none inline-block mx-4;
+  }
+
+  .gameName {
+    @apply font-semibold text-greenDark text-2xl;
+  }
+
+  label {
+    @apply font-poppins text-base text-greenDark font-semibold;
+  }
+  .editorLabel {
+    @apply font-poppins text-white font-bold text-sm;
+  }
+}

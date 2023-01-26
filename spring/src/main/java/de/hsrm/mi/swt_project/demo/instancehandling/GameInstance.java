@@ -5,13 +5,12 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import org.python.util.PythonInterpreter;
-
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.GameControl;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
+import de.hsrm.mi.swt_project.demo.movables.MotorizedObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
-import de.hsrm.mi.swt_project.demo.scripting.JythonFactory;
+import de.hsrm.mi.swt_project.demo.railingsystem.RailingBehaviour;
 import de.hsrm.mi.swt_project.demo.scripting.ScriptContext;
 import de.hsrm.mi.swt_project.demo.scripting.ScriptContextCache;
 import de.hsrm.mi.swt_project.demo.validation.CollisionValidator;
@@ -31,6 +30,8 @@ public class GameInstance extends Instance {
     private String name;
     private int maximumPlayerCount;
     private int npcCount;
+    private RailingBehaviour rb = new RailingBehaviour();
+    
     
     /**
      * Creates a new instance of the game.
@@ -122,19 +123,31 @@ public class GameInstance extends Instance {
     public void update() {
 
         super.update();
-        
-        CollisionValidator collisionValidator = new CollisionValidator(moveableObjects);
-        PythonInterpreter interpreter = JythonFactory.getInterpreter();
-        interpreter.set("tiles", this.map.getTiles());
-        interpreter.set("moveables", this.moveableObjects);
 
-        for(MoveableObject moveableObject : moveableObjects.values()) {
-
+        for(String key : moveableObjects.keySet()) {
+            MoveableObject moveableObject = moveableObjects.get(key);
+            Validator collisionValidator = new CollisionValidator(moveableObject, moveableObjects.values());
             Validator movementValidator = new MovementValidator(this.map.getTiles(), moveableObject);
-            collisionValidator.setMoveableObject(moveableObject);
-
+            
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //TODO: VALIDATOR WIEDER ANMACHEN UND NUR FÜR NPCS ANMACHEN 
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////
+            
             if (movementValidator.validate() && collisionValidator.validate()) {
-                moveableObject.move();
+                if(key.contains("NPC") && moveableObject instanceof MotorizedObject){
+
+                    int xPos = (int) moveableObject.getXPos();
+                    int yPos = (int) moveableObject.getYPos();
+
+                    Tile[][] allTiles = this.map.getTiles();
+                    Tile t = allTiles[yPos][xPos];
+
+                    rb.railCoordinates(key, moveableObject, t, moveableObject.getNpcDirection());
+                }
+                else{
+                    moveableObject.move();
+                }
+
             } else {
                 moveableObject.setCurrentVelocity(0);
             }
@@ -190,8 +203,7 @@ public class GameInstance extends Instance {
      */
     public boolean playerSlotAvailable(){
         int playerCount = moveableObjects.size()- npcCount;
-        if(playerCount < maximumPlayerCount) return true;
-        else return false;
+        return playerCount < maximumPlayerCount;
     }
 
     public int getMaximumPlayerCount(){

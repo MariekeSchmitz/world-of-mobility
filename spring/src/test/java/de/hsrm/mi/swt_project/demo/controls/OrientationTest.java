@@ -71,4 +71,34 @@ class OrientationTest {
             assertEquals(orientations[oppositeIndex], orientations[i].opposite());
         }
     }
+
+    @Test
+    void testXSign() {
+
+        Orientation orientation = Orientation.NORTH;
+        int[] expectedSigns = { 0, 1, 1, 1, 0, -1, -1, -1 };
+
+        for (int sign : expectedSigns) {
+            assertEquals(sign, orientation.xSign());
+            orientation = orientation.next();
+        }
+
+        // assert full cycle check
+        assertEquals(Orientation.NORTH, orientation);
+    }
+
+    @Test
+    void testYSign() {
+
+        Orientation orientation = Orientation.NORTH;
+        int[] expectedSigns = { 1, 1, 0, -1, -1, -1, 0, 1 };
+
+        for (int sign : expectedSigns) {
+            assertEquals(sign, orientation.ySign());
+            orientation = orientation.next();
+        }
+
+        // assert full cycle check
+        assertEquals(Orientation.NORTH, orientation);
+    }
 }

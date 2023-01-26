@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * 
  * @author Marie Bohnert, Tom Gouthier
  */
-@ResponseStatus(code = HttpStatus.FORBIDDEN, reason = "No Npc on this tile.")
+@ResponseStatus(code = HttpStatus.FORBIDDEN, reason = "NPC existiert hier nicht")
 public class NoNpcExistsOnCoordinates extends RuntimeException {
 
 }
