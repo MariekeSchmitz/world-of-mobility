@@ -6,7 +6,7 @@
  */
 
 import User from "@/components/joinGame/User.vue";
-import { computed, onMounted, ref, watch, type ComputedRef } from "vue";
+import { computed, onMounted } from "vue";
 import { useLogin } from "@/services/login/useLogin";
 import { useInstanceList } from "@/services/useInstanceList";
 import { useRemoveInstanceState } from "@/services/useRemoveInstanceState";
@@ -19,10 +19,7 @@ import {
   faAngleDown,
   faAngleUp,
 } from "@fortawesome/free-solid-svg-icons";
-import { useUserEditor } from "@/services/useUserEditor";
 library.add(faXmark, faAngleLeft, faAngleDown, faAngleUp);
-
-const { userList, getUserlistEditor } = useUserEditor();
 
 const props = defineProps<{
   instanceId: number;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useUser } from "@/services/useUser";
-import { ref,watch } from "vue";
+import { computed, ref,watch } from "vue";
 import User from "@/components/joinGame/User.vue";
 import CarSelection from "@/components/carselect/CarSelection.vue";
 import { onMounted } from "vue";
@@ -15,6 +15,9 @@ import Avatar from "@/components/User/Avatar.vue";
 import ErrorWarning from "@/components/ErrorWarning.vue";
 import { useUserFeedback } from "@/services/editor/useUserFeedback";
 import { animateHintBox } from "@/components/HintBoxAnimation";
+import type { IInstanceInfo } from "@/services/IInstanceInfo";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { useInstanceList } from "@/services/useInstanceList";
 
 library.add(faPlus, faArrowLeft, faChevronRight, faChevronLeft);
 const { spawnState, setMoveableObject, setInstanceId } = useSpawnPoint();
@@ -32,6 +35,7 @@ const props = defineProps<{
 
 const instanceID = Number(props.instanceID);
 let moveableType = "";
+const { instanceState, getInstanceList } = useInstanceList();
 
 const spawnPointSet = ref(false)
 
@@ -70,9 +74,10 @@ function updateMoveable(type: string) {
 
 }
 
-onMounted(() => {
+onMounted(async() => {
   getUserList(instanceID);
   setInstanceId(instanceID);
+  await getInstanceList("game");
 });
 
 function toggleButton() {
@@ -99,6 +104,15 @@ watch(spawnState, (neu, alt) => {
   }
 });
 
+const userlist = computed(() => {
+  let users: string[] = [];
+    instanceState.instancelist.forEach(function (item: IInstanceInfo) {
+      if (item.id == instanceID) {
+        users = item.users;
+      }
+    });
+  return users;
+});
 
 
 </script>
@@ -165,11 +179,11 @@ watch(spawnState, (neu, alt) => {
           }" @click="join()" >Spiel starten</button>
         </div>
 
-        <div v-if="userList.users.length != 0" class=" grid bg-greenLight bg-opacity-60 p-11 h-96">
+        <div v-if="userlist.length != 0" class=" grid bg-greenLight bg-opacity-60 p-11 h-96">
           <h3 class="text-greenDark text-center h-3/12">Beigetretene <br/>Spieler</h3>
           <div class="overflow-y-scroll h-9/12">
             <div>
-              <div v-for="user in userList.users">
+              <div v-for="user in userlist">
                 <User :name="user"></User>
               </div>
             </div>
