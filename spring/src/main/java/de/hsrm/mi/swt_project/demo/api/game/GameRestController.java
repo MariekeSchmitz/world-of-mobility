@@ -1,5 +1,7 @@
 package de.hsrm.mi.swt_project.demo.api.game;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -7,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +31,7 @@ import de.hsrm.mi.swt_project.demo.messaging.GetMapOverviewDataDTO;
 import de.hsrm.mi.swt_project.demo.messaging.JoinGameDTO;
 import de.hsrm.mi.swt_project.demo.messaging.SendGameUpdateDTO;
 import de.hsrm.mi.swt_project.demo.messaging.SendMapDTO;
+import de.hsrm.mi.swt_project.demo.messaging.ServerMessageDTO;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;
 import de.hsrm.mi.swt_project.demo.messaging.ValidationDTO;
@@ -40,6 +44,9 @@ import de.hsrm.mi.swt_project.demo.messaging.ValidationDTO;
 @RestController
 @RequestMapping("/api/game")
 public class GameRestController{
+    @Autowired
+    private SimpMessagingTemplate messaging;
+    
     @Autowired
     InstanceHandler instanceHandler;
 
@@ -72,6 +79,22 @@ public class GameRestController{
         logger.info("GET Request for '/api/game/{}/game-update'", id);
 
         return SendGameUpdateDTO.from(instanceHandler.getGameInstanceById(id).getMoveableObjects(), instanceHandler.getTrafficLightState());
+    }
+
+    /**
+     * Post for Global Server Messages
+     * 
+     * @param newServerMsgDTO
+     * @author Felix Ruf, Finn Schindel
+    */
+    @PostMapping(value = "/servermessage/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void postServerMessage(@RequestBody ServerMessageDTO newServerMsgDTO, @PathVariable long id) {
+        long now = System.currentTimeMillis();
+        Timestamp currentTime = new Timestamp(now);
+        String s = new SimpleDateFormat("HH:mm").format(currentTime);
+        String output = newServerMsgDTO.txt() + " " + s;
+        String dest = "/topic/game/servermessage/"+id;
+        messaging.convertAndSend(dest, new ServerMessageDTO(newServerMsgDTO.usrId(), output));
     }
 
     /**

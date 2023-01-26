@@ -1,18 +1,13 @@
-<template>
-  <div>
-    <div id="simplifiedContainer" :class="{ selected: isSelected }" @click="setSpawnPoint(props.xIndex, props.yIndex)"></div>
-    <div :class="[{ rotateSelected: isSelected }, { marker: isSelected }]"></div>
-    <div id="objectAsset"></div>
-    <div id="simplifiedTile" :class="[orientation, { selected: isSelected }]"></div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
 import { useSpawnPoint } from "@/components/spawnpoint/useSpawnPoint";
 import { editorTileURLs } from "../editor/EditorTileURLDict";
 
 const { miniMapScalingState, setSpawnPoint, spawnState } = useSpawnPoint();
+
+const emit = defineEmits<{
+  (e: "setSpawnPoint"): void;
+}>();
 
 const props = withDefaults(
   defineProps<{
@@ -32,6 +27,11 @@ const props = withDefaults(
 const tileTexturePath =`url('${editorTileURLs[props.tileType]}')`;
 const objectAsset = `url('${props.asset ? editorTileURLs[props.asset] : ""}')`;
 
+function setSpawnPointEvent() {
+  setSpawnPoint(props.xIndex, props.yIndex)
+  emit("setSpawnPoint");
+}
+
 const isSelected = computed(() => {
   return (
     spawnState.tileNumber ==
@@ -39,6 +39,15 @@ const isSelected = computed(() => {
   );
 });
 </script>
+
+<template>
+  <div>
+    <div id="simplifiedContainer" :class="{ selected: isSelected }" @click="setSpawnPointEvent()"></div>
+    <div :class="[{ rotateSelected: isSelected }, { marker: isSelected }]"></div>
+    <div id="objectAsset"></div>
+    <div id="simplifiedTile" :class="[orientation, { selected: isSelected }]"></div>
+  </div>
+</template>
 
 <style scoped>
 #simplifiedContainer {
