@@ -6,7 +6,7 @@ import Tile from "@/components/Tile.vue";
 import type { I3DMap } from "@/services/I3DMap";
 import { onMounted, ref } from "vue";
 import { useMap } from "@/services/useMap";
-import Enviroment from "@/components/Enviroment.vue";
+import Enviroment from "@/components/enviroment/Enviroment.vue";
 
 const { getGameMap } = useMap();
 
@@ -59,9 +59,17 @@ onMounted(async () => {
 </script>
 <template>
   <!-- Loop to build the map -->
-  <Enviroment 
-    :position="new THREE.Vector3(loadedMap.tiles.length * squareSize *0.5, 0, -loadedMap.tiles[0].length * squareSize *0.5)"
-    :rotation="0"></Enviroment>
+  <Enviroment
+    :position="
+      new THREE.Vector3(
+        loadedMap.tiles.length * squareSize * 0.5,
+        0,
+        -loadedMap.tiles[0].length * squareSize * 0.5
+      )
+    "
+    :scale="loadedMap.tiles.length * squareSize"
+    :rotation="0"
+  ></Enviroment>
   <div v-for="(subTile, row) in loadedMap.tiles" :key="`${row}`">
     <div v-for="(tile, column) in subTile" :key="`${tile}`">
       <Tile
