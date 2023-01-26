@@ -10,7 +10,7 @@ import { useInstanceList } from "@/services/useInstanceList";
 import Game from "@/components/Game.vue";
 import Avatar from "@/components/User/Avatar.vue";
 import ServerChat from "@/components/ServerChat.vue";
-import router from "@/router";
+import UserListMenu from "@/components/editor/UserListMenu.vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
   import {
     faArrowLeft
@@ -63,5 +63,6 @@ onUnmounted(() => {
     <ServerChat :instanceId="instanceID" type="game" :username="loginData.username"></ServerChat>
 
     <Game :instanceID="instanceID"></Game>
+    <UserListMenu :instanceId="instanceID" type="game"></UserListMenu>
   </div>
 </template>

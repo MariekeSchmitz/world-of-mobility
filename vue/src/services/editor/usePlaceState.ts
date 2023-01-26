@@ -20,7 +20,6 @@ function setPlaceState(
   isNpc: boolean,
   isPlaceable: boolean
 ) {
-  console.log(type);
   placeState.value.type = type;
   placeState.value.isTile = isTile;
   placeState.value.isNpc = isNpc;

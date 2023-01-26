@@ -5,10 +5,12 @@
  * @author Astrid Klemmer & Marieke Schmitz
  */
 
-import { useUserEditor } from "@/services/useUserEditor";
 import User from "@/components/joinGame/User.vue";
-import { onMounted } from "vue";
+import { computed, onMounted } from "vue";
 import { useLogin } from "@/services/login/useLogin";
+import { useInstanceList } from "@/services/useInstanceList";
+import { useRemoveInstanceState } from "@/services/useRemoveInstanceState";
+import router from "@/router";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faXmark,
@@ -18,15 +20,26 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 library.add(faXmark, faAngleLeft, faAngleDown, faAngleUp);
 
-const { userList, getUserlistEditor } = useUserEditor();
-const { loginData } = useLogin();
-
 const props = defineProps<{
-  instanceID: number;
+  instanceId: number;
+  type: string;
 }>();
 
-onMounted(() => {
-  getUserlistEditor(props.instanceID);
+const { getInstanceList, deleteState, getUserlist } = useInstanceList();
+const { setRemoveState } = useRemoveInstanceState();
+const { loginData } = useLogin();
+
+onMounted(async () => {
+  await getInstanceList(props.type);
+});
+
+const userlist = computed(() => {
+  if (deleteState.id == props.instanceId) {
+    setRemoveState(props.type, props.instanceId, true);
+    router.push("/worldintro");
+  }
+
+  return getUserlist(props.instanceId);
 });
 
 function scrollingUp() {
@@ -85,7 +98,7 @@ function toggle() {
         id="user-wrapper"
         class="h-full pt-4 whitespace-nowrap overflow-y-scroll scrollbar-hide"
       >
-        <li v-for="user in userList.users" class="list-none">
+        <li v-for="user in userlist" class="list-none">
           <User :name="user" v-if="user != loginData.username"></User>
         </li>
       </ul>

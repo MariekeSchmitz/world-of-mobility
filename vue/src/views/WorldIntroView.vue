@@ -37,6 +37,13 @@ onMounted(async () => {
 });
 
 const instancelist = computed(() => {
+  sortOutMapsInUse()
+  return instanceState.instancelist;
+});
+
+const showAll = ref(true);
+
+function sortOutMapsInUse(){
   maplistState.maplist = mapsOverview.allMaps.map((map) => map.mapName);
   if (maplistState.maplist != undefined) {
     for (let i = maplistState.maplist.length - 1; i >= 0; i--) {
@@ -49,10 +56,7 @@ const instancelist = computed(() => {
       }
     }
   }
-  return instanceState.instancelist;
-});
-
-const showAll = ref(true);
+}
 
 
 function switchScene(mode: string) {
