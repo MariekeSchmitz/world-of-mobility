@@ -7,14 +7,13 @@
 import { useInstanceList } from "@/services/useInstanceList";
 import GameListItem from "@/components/selectview/GameListItem.vue";
 import { computed, onMounted } from "vue";
-import type { IInstanceInfo } from "@/services/IInstanceInfo";
 import { useLogin } from "@/services/login/useLogin";
 import Avatar from "@/components/User/Avatar.vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faPlus, faArrowLeft, faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 library.add(faPlus, faArrowLeft,  faChevronRight, faChevronLeft);
 
-const { instanceState, getInstanceList } = useInstanceList();
+const { instanceState, getInstanceList, getAvailableInstances } = useInstanceList();
 const { avatarData } = useLogin();
 
 onMounted(async () => {
@@ -29,14 +28,7 @@ const instancelist = computed(() => {
     gameSelection.style.display = "grid";
   }
 
-  let list:IInstanceInfo[] = []
-  list = instanceState.instancelist.filter((instance: IInstanceInfo) => {
-      if(instance.maxPlayerCount != instance.playeramount){
-        return instance
-      }
-    }
-  );
-  return list;
+  return getAvailableInstances();
 });
 
 function scrollingLeft() {

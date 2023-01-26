@@ -130,10 +130,34 @@ export function useInstanceList(): any {
     return gamename
   }
 
+  function getUserlist(instanceId: number){
+    let users: string[] = [];
+    instanceState.instancelist.forEach(function (item: IInstanceInfo) {
+      if (item.id == instanceId) {
+        users = item.users;
+      }
+    });
+    return users
+  }
+
+  function getAvailableInstances(){
+    let list:IInstanceInfo[] = []
+    list = instanceState.instancelist.filter((instance: IInstanceInfo) => {
+        if(instance.maxPlayerCount != instance.playeramount){
+          return instance
+        }
+      }
+    );
+
+    return list
+  }
+
   return {
     instanceState: readonly(instanceState),
     getInstanceList,
     deleteState: readonly(deleteState),
-    getGamename
+    getGamename,
+    getUserlist,
+    getAvailableInstances
   };
 }

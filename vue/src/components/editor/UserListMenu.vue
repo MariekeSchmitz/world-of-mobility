@@ -11,7 +11,6 @@ import { useLogin } from "@/services/login/useLogin";
 import { useInstanceList } from "@/services/useInstanceList";
 import { useRemoveInstanceState } from "@/services/useRemoveInstanceState";
 import router from "@/router";
-import type { IInstanceInfo } from "@/services/IInstanceInfo";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faXmark,
@@ -26,7 +25,7 @@ const props = defineProps<{
   type: string;
 }>();
 
-const { instanceState, getInstanceList, deleteState } = useInstanceList();
+const { getInstanceList, deleteState, getUserlist } = useInstanceList();
 const { setRemoveState } = useRemoveInstanceState();
 const { loginData } = useLogin();
 
@@ -35,19 +34,12 @@ onMounted(async () => {
 });
 
 const userlist = computed(() => {
-  let users: string[] = [];
   if (deleteState.id == props.instanceId) {
     setRemoveState(props.type, props.instanceId, true);
     router.push("/worldintro");
-  } else {
-    instanceState.instancelist.forEach(function (item: IInstanceInfo) {
-      if (item.id == props.instanceId) {
-        users = item.users;
-      }
-    });
   }
 
-  return users;
+  return getUserlist(props.instanceId);
 });
 
 function scrollingUp() {

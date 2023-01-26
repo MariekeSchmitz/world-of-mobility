@@ -15,7 +15,6 @@ import Avatar from "@/components/User/Avatar.vue";
 import ErrorWarning from "@/components/ErrorWarning.vue";
 import { useUserFeedback } from "@/services/editor/useUserFeedback";
 import { animateHintBox } from "@/components/HintBoxAnimation";
-import type { IInstanceInfo } from "@/services/IInstanceInfo";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useInstanceList } from "@/services/useInstanceList";
 
@@ -35,7 +34,7 @@ const props = defineProps<{
 
 const instanceID = Number(props.instanceID);
 let moveableType = "";
-const { instanceState, getInstanceList } = useInstanceList();
+const { instanceState, getInstanceList, getUserlist } = useInstanceList();
 
 const spawnPointSet = ref(false)
 
@@ -105,13 +104,7 @@ watch(spawnState, (neu, alt) => {
 });
 
 const userlist = computed(() => {
-  let users: string[] = [];
-    instanceState.instancelist.forEach(function (item: IInstanceInfo) {
-      if (item.id == instanceID) {
-        users = item.users;
-      }
-    });
-  return users;
+  return getUserlist(instanceID)
 });
 
 
