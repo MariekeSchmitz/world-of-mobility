@@ -11,10 +11,10 @@ const msgState = reactive<IMsgState>({
   msgLst: [],
 });
 
-function receiveMessages() {
+function receiveMessages(type: string, id: number) {
   const proto = location.protocol == "https:" ? "wss" : "ws";
   const wsurl = `${proto}://${window.location.host}/stompbroker`;
-  const DEST = "/topic/servermessage";
+  const DEST = `/topic/${type}/servermessage/${id}`;
 
   const stompClient = new Client({ brokerURL: wsurl });
   stompClient.onWebSocketError = (event) =>
@@ -25,9 +25,7 @@ function receiveMessages() {
   stompClient.onConnect = (frame) => {
     console.log("Connected Stombrocker to ServerMessage");
     stompClient.subscribe(DEST, (message) => {
-      console.log(`Stompbroker received message: \n ${message.body}`);
       const backendInfoMsg: IServerMessage = JSON.parse(message.body);
-      console.log(`Stompbroker received message: \n ${backendInfoMsg}`);
       msgState.msgLst.push(backendInfoMsg);
     });
   };
@@ -40,10 +38,11 @@ function receiveMessages() {
 }
 
 async function updateTestMessage(
+  type: string,
   message: string,
   instanceId: number
 ): Promise<void> {
-  const url = "/api/editor/servermessage";
+  const url = `/api/${type}/servermessage/${instanceId}`;
   try {
     const data: IServerMessage = {
       id: instanceId,

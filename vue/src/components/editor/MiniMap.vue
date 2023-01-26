@@ -1,4 +1,13 @@
 <script setup lang="ts">
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faPlus,
+  faMinus,
+  faAngleUp,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
+library.add(faPlus, faMinus, faXmark, faAngleUp);
+
 function toggle() {
   const minimap = document.getElementById("minimap");
   const showMap = document.getElementById("showMap");
@@ -16,45 +25,51 @@ function toggle() {
 </script>
 
 <template>
-  <div id="minimap">
-    <div class="minimapButtons">
-      <button><img src="@/buttons/editor/minus.png" /></button>
-      <button><img src="@/buttons/editor/plus.png" /></button>
+  <div
+    id="minimap"
+    class="bg-white fixed bottom-5 left-3 h-[27%] aspect-square grid items-center pb-4"
+  >
+    <div class="h-1/6 inline place-self-end self-start pt-2 pr-2">
+      <button>
+        <font-awesome-icon
+          icon="fa-solid fa-plus"
+          color="#2F8265"
+          class="w-2 h-2"
+        />
+      </button>
+      <button>
+        <font-awesome-icon
+          icon="fa-solid fa-minus"
+          color="#2F8265"
+          class="w-2 h-2"
+        />
+      </button>
       <button @click="toggle">
-        <img src="@/buttons/editor/arrow-down.png" />
+        <font-awesome-icon
+          icon="fa-solid fa-xmark"
+          color="#2F8265"
+          class="w-5 h-5"
+        />
       </button>
     </div>
-    <p>
+    <p
+      class="bg-orangeLight h-4/5 aspect-square justify-self-center relative bottom-5"
+    >
       Minimap, separate camera view from further away, +- Buttons control
       minimap camera
     </p>
   </div>
 
-  <button id="showMap" @click="toggle">
-    <img src="@/buttons/editor/arrow-up.png" />
+  <button
+    id="showMap"
+    class="editorLabel hidden fixed bottom-2 left-[13%]"
+    @click="toggle"
+  >
+    <font-awesome-icon
+      icon="fa-solid fa-angle-up"
+      color="white"
+      class="w-5 h-5"
+    /><br />
+    Minimap
   </button>
 </template>
-
-<style>
-#minimap {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  height: 20%;
-  aspect-ratio: 1/1;
-  background-color: wheat;
-}
-
-.minimapButtons {
-  position: fixed;
-  bottom: 22%;
-  right: 10px;
-}
-
-#showMap {
-  display: none;
-  position: fixed;
-  bottom: 2%;
-  right: 10px;
-}
-</style>
