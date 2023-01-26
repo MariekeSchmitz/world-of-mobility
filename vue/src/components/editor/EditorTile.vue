@@ -35,7 +35,7 @@ const props = withDefaults(
 
 const cmVisible = ref(false);
 let texturePath = editorTileURLs[props.type];
-const {setEditorError} = useEditorError()
+const {setEditorError, errorMessage} = useEditorError()
 
 const { readPlaceState } = usePlaceState();
 const { readCMState, setCMState } = useContextMenu();
@@ -71,7 +71,7 @@ function tileHover(event: any) {
  * Author: Timothy Doukhin & Astrid Klemmer
  */
 
-function placeItem() {
+async function placeItem() {
   let posX = props.position.x - offsetx.value - 1;
   let posY = props.position.y - offsety.value - 1;
   setCMState();
@@ -92,17 +92,22 @@ function placeItem() {
       };
 
       sendMapUpdates(toSendObj);
-    } else if(props.placedObject == "none"){
+    } else if(props.placedObject != "none"){
       setEditorError("Tile kann hier nicht gesetzt werden. Lösche zuerst das Objekt")
-    } else if(!props.placedNpc){
+    } else if(props.placedNpc){
       setEditorError("Tile kann hier nicht gesetzt werden. Lösche zuerst den NPC.")
 
     }
   } else if (readPlaceState.value.isNpc) {
     // @ts-expect-error
 
-    placeNpc(posX, posY, readPlaceState.value.type, props.editorID);
-    npcAdded(posX, posY);
+    await placeNpc(posX, posY, readPlaceState.value.type, props.editorID);
+
+    if (!errorMessage.value) {
+      console.log("Errormessage ", errorMessage)
+      npcAdded(posX, posY);
+    }
+
   } else if (readPlaceState.value.isPlaceable) {
     sendPlaceObject(posX, posY, props.placedObject);
   } else if (readPlaceState.value.type === ControlEnum.REMOVE_NPC) {
@@ -228,6 +233,7 @@ function turnRight() {
   <PlacedObject
     v-if="props.placedObject != 'none'"
     :type="props.placedObject"
+    :isNpc="false"
     :width="props.width"
     :height="props.height"
     :rotation="props.rotation"
@@ -237,6 +243,7 @@ function turnRight() {
   <PlacedObject
     v-if="props.placedNpc"
     :type="props.placedNpc.type"
+    :isNpc="true"
     :width="props.width"
     :height="props.height"
     :rotation="props.rotation"

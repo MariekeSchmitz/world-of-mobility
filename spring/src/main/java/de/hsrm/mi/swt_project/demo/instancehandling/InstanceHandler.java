@@ -22,8 +22,8 @@ import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.editor.tiles.TrafficTile;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;
+import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLightSingleTon;
 import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLightState;
-import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLogicLoopTask;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
 /**
@@ -39,8 +39,7 @@ public class InstanceHandler implements Updateable {
     @Autowired
     protected UpdateloopService loopservice;
 
-    @Autowired
-    protected TrafficLogicLoopTask trafficTask;
+    private TrafficLightSingleTon trafficLightSingleTon = TrafficLightSingleTon.getInstance();
     
     @Autowired
     protected UpdateloopInstanceInfo loopInstanceInfo;
@@ -241,6 +240,7 @@ public class InstanceHandler implements Updateable {
         }
 
         for (Instance instance : toDelete) {
+            logger.info("Instance deleted ", instance);
             loopInstanceInfo.publishInstanceInfoState(instance, "DELETE");
             this.instances.remove(instance);
         }
@@ -398,6 +398,6 @@ public class InstanceHandler implements Updateable {
     }
 
     public TrafficLightState getTrafficLightState() {
-        return trafficTask.getTrafficLightState();
+        return trafficLightSingleTon.getTrafficLightState();
     }
 }

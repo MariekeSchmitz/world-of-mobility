@@ -1,65 +1,85 @@
 <!-- prettier-ignore -->
 <script setup lang="ts">
 //@ts-ignore
-
-  import { ref, onMounted, reactive, watch, onUnmounted } from "vue";
-
-  import * as THREE from 'three'
-  import {
-    AmbientLight,
-    Camera,
-    PointLight,
-    Renderer,
-    Scene,
-  } from "troisjs";
+import * as THREE from 'three'
+import { ref, onMounted, reactive, watch, onUnmounted } from "vue";
+import {
+  AmbientLight,
+  Camera,
+  PointLight,
+  Renderer,
+  Scene
+} from "troisjs";
 
   import BottomMenu from "@/components/editor/BottomMenu.vue";
-  import LeftMenu from "@/components/editor/LeftMenu.vue";
   import EditorMap from "@/components/editor/EditorMap.vue";
   import MiniMap from "@/components/editor/MiniMap.vue";
   import UserListMenu from "@/components/editor/UserListMenu.vue";
   import {useMap} from "@/services/useMap"
-  import { number } from "mathjs";
   import { useUserEditor } from "@/services/useUserEditor";
   import { useLogin } from "@/services/login/useLogin";
   import ScriptField from "@/components/editor/ScriptField.vue";
   import ServerChat from "@/components/ServerChat.vue";
-  import { useEditorError } from "@/services/editor/useEditorError";
+  import { useRemoveInstanceState } from "@/services/useRemoveInstanceState";
+  import Avatar from "@/components/User/Avatar.vue";
+  import ErrorWarning from "@/components/ErrorWarning.vue";
+  import SaveFeedback from "@/components/SaveFeedback.vue";
   import { useUserFeedback } from "@/services/editor/useUserFeedback";
   import type { MapInterface } from "@/services/editor/MapInterface";
+  import { editorTileURLs } from "@/components/editor/EditorTileURLDict"
+  import { useEditorError } from "@/services/editor/useEditorError";
+  import { animateHintBox } from "@/components/HintBoxAnimation";
+  import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
   import router from "@/router";
+  import { library } from "@fortawesome/fontawesome-svg-core";
+  import {
+    faPlus,
+    faFileArrowDown,
+    faArrowLeft
+  } from "@fortawesome/free-solid-svg-icons";
+  library.add(faPlus, faFileArrowDown, faArrowLeft);
 
 
- 
   const props = defineProps<{
     editorID: string;
   }>();
 
-
   const editorID = Number(props.editorID);
-  const { loginData } = useLogin();
+  const backgroundPath = editorTileURLs['BACKGROUND'];
+  const { loginData, avatarData } = useLogin();
   const { leaveEditor } = useUserEditor();
-
+  const { removeInstanceState, setRemoveState } = useRemoveInstanceState();
   
-
-  onUnmounted(() => {
-      leaveEditor(editorID, loginData.username);
+  const remove = ref(false)
+  
+  onMounted(() => {
+    const orbitControls = rendererC.value.three.cameraCtrl;
+    orbitControls.maxDistance = 100;
+    orbitControls.minDistance = 12;
   });
 
-    /**
-     * in order to Execute THREE code in script tag, create a reactive item and add :ref="name" to the Vue Element
-     */
-    const rendererC = ref();
-    const camera = ref();
-    const scene = ref();
+  onUnmounted(() => {
+    if(removeInstanceState.value.id == editorID && removeInstanceState.value.type == "editor" && removeInstanceState.value.remove == true){
+    }else{
+      leaveEditor(editorID, loginData.username);
+    }
+    setEditorError("")
+  });
 
-    //Texture Loader
-    const loadManager = new THREE.LoadingManager();
-    const loader = new THREE.TextureLoader(loadManager);
-    
-    //Raycaster for Hover & Click detection
-    var raycaster = new THREE.Raycaster();
-    var mouse = new THREE.Vector2();
+  /**
+   * in order to Execute THREE code in script tag, create a reactive item and add :ref="name" to the Vue Element
+   */
+  const rendererC = ref();
+  const camera = ref();
+  const scene = ref();
+
+  //Texture Loader
+  const loadManager = new THREE.LoadingManager();
+  const loader = new THREE.TextureLoader(loadManager);
+  
+  //Raycaster for Hover & Click detection
+  var raycaster = new THREE.Raycaster();
+  var mouse = new THREE.Vector2();
 
     const {saveMap, getMapEditor} = useMap();
     const {errorMessage, setEditorError} = useEditorError()
@@ -72,11 +92,11 @@
 	
 });
 
-    let npcx= ref(0);
-    let npcy = ref(0);
+  let npcx= ref(0);
+  let npcy = ref(0);
 
-    
-    const npcNeedsScript = ref(false)
+  
+  const npcNeedsScript = ref(false)
 
 
   function setNpcValues(x:number,y:number) {
@@ -88,7 +108,22 @@
   
   function setNpcScriptView(val:boolean) {
     npcNeedsScript.value = val;
+    console.log("set NPCScriptView, Wert:", val)
   }
+
+  let widthWindow = ref(window.innerWidth);
+  let heightWindow = ref(window.innerHeight);
+
+  watch(errorMessage, (neu, alt) => {
+    const errorBox = document.getElementById("errorBox");
+    animateHintBox((errorMessage.value != ""), errorBox);
+  });
+
+  watch(feedbackMessage, (neu, alt) => {
+    const hintBox = document.getElementById("feedbackBox");
+    animateHintBox((feedbackMessage.value != ""), hintBox);
+    console.log(feedbackMessage.value)
+  });
 
   function startGame(){
   saveMap(props.editorID)
@@ -100,137 +135,96 @@
 </script>
 
 <template>
-  <div class="mapTitle">
-    <p>{{name}}</p>
-    <button @click="saveMap(editorID)">save</button>
+
+  <div class="absolute">
+    <img :src="backgroundPath" alt="background" class="w-screen h-screen "/>
   </div>
-  <div id="exitButton" >
-    <button class="roundButton" @click="setEditorError('')">
-      <RouterLink to="/worldintro">
-        <img src="@/buttons/editor/close.png" />
-      </RouterLink>
+
+  <div class="absolute">
+  
+    <div class="fixed left-1/2 -translate-y-1/2 -translate-x-1/2 top-16">
+      <h1>{{name}}</h1>
+    </div>
+    <button @click="$router.go(-1)" class="fixed top-7 left-7">
+      <font-awesome-icon
+        icon="fa-solid fa-arrow-left"
+        color="white"
+        class="bg-greenLight rounded-full p-3 w-6 h-6 inline justify-self-start white hover:bg-greenDark"
+      />
     </button>
-  </div>
+    
+    <ErrorWarning :errorMsg="errorMessage"></ErrorWarning>
+    <SaveFeedback :feedbackMsg="feedbackMessage"></SaveFeedback>
 
-  <div class="buttonMenuRight">
-    <button @click="startGame()"><img src="@/buttons/editor/plus.png" /><br />Starte Spiel</button>
-    <button><img src="@/buttons/editor/plus.png" /><br />Welt testen</button>
-    <p v-if="errorMessage">{{ errorMessage }}</p>
-    <p v-if="feedbackMessage">{{ feedbackMessage }}</p>
+    <Avatar
+      :avatarPicture="avatarData.avatar"
+      class="w-16 h-16 fixed top-7 right-7"
+    ></Avatar>
 
-  </div>
+    <div
+      class="grid grid-rows-2 fixed top-[20%] left-0 gap-4 font-poppins text-sm font-semibold text-greenDark"
+    >
+      <button @click="startGame()" class="group bg-white p-5 hover:bg-greenLight">
+        <font-awesome-icon
+          icon="fa-solid fa-plus"
+          color="#2F8265"
+          class="w-5 h-5"
+        /><br />Spiel<br />starten
+      </button>
+      <button @click="saveMap(editorID)" class="bg-white hover:bg-greenLight">
+        <font-awesome-icon
+          icon="fa-solid fa-file-arrow-down"
+          color="#2F8265"
+          class="w-5 h-5"
+        /><br />Welt<br />speichern
+      </button>
+    </div>
 
-  <LeftMenu />
+    <UserListMenu :instanceId="editorID" type="editor"></UserListMenu>
+    <ErrorWarning :errorMsg="errorMessage"></ErrorWarning>
+    <ErrorWarning :errorMsg="feedbackMessage"></ErrorWarning>
+      <!-- <p v-if="feedbackMessage">{{ feedbackMessage }}</p> -->
 
-  <UserListMenu :instanceID="editorID"></UserListMenu>
+    <ServerChat :instanceId="editorID" type="editor" :username="loginData.username"></ServerChat>
 
-  <ScriptField
-    v-if="npcNeedsScript && !errorMessage"
-    :id="editorID"
-    :x="npcx"
-    :y="npcy"
-    @script-window-closed="setNpcScriptView(false)"
-  ></ScriptField>
-  <BottomMenu v-if="!npcNeedsScript || errorMessage"></BottomMenu>
+    <ScriptField
+      v-if="npcNeedsScript && !errorMessage"
+      :id="editorID"
+      :x="npcx"
+      :y="npcy"
+      @script-window-closed="setNpcScriptView(false)"
+    ></ScriptField>
+    <BottomMenu v-if="!npcNeedsScript || errorMessage"></BottomMenu>
 
-  <!--
-  sends msg on every instance, should only be in one instance for all; first player gets all msg shown as many times as there are players
+    <!--
+    sends msg on every instance, should only be in one instance for all; first player gets all msg shown as many times as there are players
+          
+    <ServerChat :instanceId="editorID"></ServerChat>
+    -->
+    <MiniMap />
+
+    <Renderer
+      ref="rendererC"
+      antialias
+      :orbit-ctrl="{ enableDamping: true, enableRotate: false }"
+      resize="window"
+      :alpha="true"
+    >
+      <Camera
+        :position="{ x: 0, y: 0, z: 10 }"
+        :lookAt="{ x: 0, y: 0, z: 0 }"
+        ref="camera"
+      />
+
+      <Scene ref="scene">
+        <PointLight :position="{ x: 0, y: 0, z: 10 }" />
+        <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
         
-  <ServerChat :instanceId="editorID"></ServerChat>
-  -->
-  <MiniMap />
-
-  <Renderer
-    ref="rendererC"
-    antialias
-    :orbit-ctrl="{ enableDamping: true, enableRotate: false }"
-    resize="window"
-  >
-    <Camera
-      :position="{ x: 0, y: 0, z: 10 }"
-      :lookAt="{ x: 0, y: 0, z: 0 }"
-      ref="camera"
-    />
-
-    <Scene background="#97FFFF" ref="scene">
-      <PointLight :position="{ x: 0, y: 0, z: 10 }" />
-      <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
-
-      <EditorMap
+        <EditorMap
         :editorID="editorID"
         @npc-added="setNpcValues($event.x, $event.y)"
-      ></EditorMap>
-    </Scene>
-  </Renderer>
-
-  
-
+        ></EditorMap>
+      </Scene>
+    </Renderer>
+  </div>
 </template>
-
-<style>
-html {
-  overflow: hidden;
-}
-
-button {
-  background-color: rgba(161, 161, 161);
-  border: none;
-}
-
-button > img {
-  width: 15px;
-  height: 15px;
-}
-
-button:hover {
-  cursor: pointer;
-  background-color: rgba(139, 139, 139, 0.7);
-  border: none;
-}
-
-.mapTitle {
-  background-color: rgb(221, 221, 221);
-  position: fixed;
-  left: 50%;
-  top: -20px;
-  height: auto;
-  transform: translate(-50%, 0);
-  padding: 0px 20px;
-}
-
-#exitButton {
-  position: fixed;
-  left: 10px;
-  top: 20px;
-  width: 30px;
-  aspect-ratio: 1/1;
-  border: none;
-  border-radius: 100%;
-}
-
-.mapTitle > p {
-  font-size: 24pt;
-}
-.roundButton {
-  width: 60%;
-  aspect-ratio: 1/1;
-  border: none;
-  border-radius: 100%;
-}
-
-.buttonMenuRight {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(2, 1fr);
-  position: fixed;
-  bottom: 60%;
-  right: -10px;
-  width: 100px;
-  height: 20%;
-  row-gap: 10%;
-}
-.buttonMenuRight > button {
-  margin: 10px;
-  padding: 20px;
-}
-</style>
