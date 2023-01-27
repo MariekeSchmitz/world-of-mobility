@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.demo.usermanagement;
+package de.hsrm.mi.swt_project.demo.usermanagement.service;
 
 import java.util.LinkedList;
 import java.util.List;

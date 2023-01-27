@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.demo.usermanagement;
+package de.hsrm.mi.swt_project.demo.usermanagement.controller;
 
 /**
  * Data Transfer Object with userdata

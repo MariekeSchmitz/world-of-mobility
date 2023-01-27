@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.demo.usermanagement;
+package de.hsrm.mi.swt_project.demo.usermanagement.service;
 
 /**
  * interface with service methods for the userList

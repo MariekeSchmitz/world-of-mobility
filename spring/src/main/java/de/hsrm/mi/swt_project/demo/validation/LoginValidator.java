@@ -5,9 +5,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.hsrm.mi.swt_project.demo.usermanagement.UserNotUniqueException;
-import de.hsrm.mi.swt_project.demo.usermanagement.UsernameTooLongException;
-import de.hsrm.mi.swt_project.demo.usermanagement.UsernameTooShortException;
+import de.hsrm.mi.swt_project.demo.usermanagement.service.UserNotUniqueException;
+import de.hsrm.mi.swt_project.demo.usermanagement.service.UsernameTooLongException;
+import de.hsrm.mi.swt_project.demo.usermanagement.service.UsernameTooShortException;
 
 /**
  * This class validates a user.
