@@ -1,7 +1,7 @@
 package de.hsrm.mi.swt_project.demo.usermanagement;
 
 /**
- * Data Transfer Object with userdata and potential error message sent to client
+ * Data Transfer Object with userdata
  * 
  * @author Tom Gouthier, Marie Bohnert
  */

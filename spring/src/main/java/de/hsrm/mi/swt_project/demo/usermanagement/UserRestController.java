@@ -41,7 +41,7 @@ public class UserRestController {
         try {
             userService.addUser(user.name());
             return SendUserDTO.from(user.name());
-        } catch (UserNotUniqueException | UsernameTooShortException e) {
+        } catch (UserNotUniqueException | UsernameTooShortException | UsernameTooLongException e) {
             throw e;
         }
     }
