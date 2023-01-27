@@ -1,5 +1,4 @@
-import { Client } from "@stomp/stompjs";
-import { reactive, readonly } from "vue";
+import { reactive} from "vue";
 
 interface IGameConfig {
   gamename: String;

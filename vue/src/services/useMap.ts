@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 
 import type { INpc } from "@/interfaces/INpc";
-import { reactive } from "vue";
 import { useUserFeedback } from "./editor/useUserFeedback";
 
 export interface IPlacedObject {

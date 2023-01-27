@@ -7,7 +7,7 @@
 import GameListItem from "@/components/selectview/GameListItem.vue";
 import { useInstanceList } from "@/services/useInstanceList";
 import { computed, reactive, ref } from "@vue/reactivity";
-import { onMounted, watch } from "vue";
+import { onMounted} from "vue";
 import { useMapOverview } from "@/services/useMapOverview";
 import { useEditor } from "@/services/useEditor";
 import { RouterLink } from "vue-router";

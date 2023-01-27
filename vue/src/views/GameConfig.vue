@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import router from "@/router";
-import { ref, computed, watch } from "vue";
+import { ref, watch } from "vue";
 import { useGameConfig } from "@/services/useGameConfig";
 import { useGame } from "@/services/useGame";
 import { useLogin } from "@/services/login/useLogin";

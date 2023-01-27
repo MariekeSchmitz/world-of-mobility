@@ -2,7 +2,7 @@
 <script setup lang="ts">
 //@ts-ignore
 import * as THREE from 'three'
-import { ref, onMounted, reactive, watch, onUnmounted } from "vue";
+import { ref, onMounted,watch, onUnmounted } from "vue";
 import {
   AmbientLight,
   Camera,

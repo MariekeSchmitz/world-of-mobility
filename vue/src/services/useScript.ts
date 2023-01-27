@@ -1,4 +1,3 @@
-import { reactive, readonly } from "vue";
 import { useEditorError } from "./editor/useEditorError";
 
 /**

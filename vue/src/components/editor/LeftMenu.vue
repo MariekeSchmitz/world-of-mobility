@@ -19,34 +19,34 @@ function toggle() {
   <div id="leftMenu">
     <div class="upperLeftMenu">
       <button class="roundButton" @click="toggle">
-        <img src="@/buttons/editor/arrow-left.png" />
+        <img src="@/assets/images/buttons/editor/arrow-left.png" />
       </button>
       <button class="roundButton">
-        <img src="@/buttons/editor/einstellungen.png" />
+        <img src="@/assets/images/buttons/editor/settings.png" />
       </button>
       <button class="roundButton">
-        <img src="@/buttons/editor/frage.png" />
+        <img src="@/assets/images/buttons/editor/question.png" />
       </button>
     </div>
     <div class="bottomLeftMenu">
-      <button id="gridButton"><img src="@/buttons/editor/grid.png" /></button>
+      <button id="gridButton"><img src="@/assets/images/buttons/editor/grid.png" /></button>
       <div class="firstDoubleButton">
-        <button><img src="@/buttons/editor/minus.png" /></button>
-        <button><img src="@/buttons/editor/plus.png" /></button>
+        <button><img src="@/assets/images/buttons/editor/minus.png" /></button>
+        <button><img src="@/assets/images/buttons/editor/plus.png" /></button>
       </div>
       <div class="secondDoubleButton">
         <button class="singleSecondDoubleButton">
-          <img src="@/buttons/editor/arrow-left.png" />
+          <img src="@/assets/images/buttons/editor/arrow-left.png" />
         </button>
         <button class="singleSecondDoubleButton">
-          <img src="@/buttons/editor/arrow-right.png" />
+          <img src="@/assets/images/buttons/editor/arrow-right.png" />
         </button>
       </div>
     </div>
   </div>
 
   <button id="showSideBar" @click="toggle">
-    <img src="@/buttons/editor/arrow-right.png" />
+    <img src="@/assets/images/buttons/editor/arrow-right.png" />
   </button>
 </template>
 

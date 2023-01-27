@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { useUser } from "@/services/useUser";
-import { computed, ref,watch } from "vue";
+import { computed, ref,watch,onMounted } from "vue";
 import User from "@/components/joinGame/User.vue";
 import CarSelection from "@/components/carselect/CarSelection.vue";
-import { onMounted } from "vue";
 import { useGame } from "@/services/useGame";
 import { useLogin } from "@/services/login/useLogin";
 import router from "@/router";

@@ -265,7 +265,7 @@ function switchContent(element: string) {
                   class="w-16 h-16"
                   @click="setPlaceState(ControlEnum.REMOVE, false, false, true)"
                 >
-                  <img src="@/assets/objects/REMOVE.png" />
+                  <img src="@/assets/images/objects/REMOVE.png" />
                   löschen
                 </button>
               </li>
@@ -283,7 +283,7 @@ function switchContent(element: string) {
                   class="w-16 h-16"
                   @click="setPlaceState(ControlEnum.REMOVE, false, false, true)"
                 >
-                  <img src="@/assets/objects/REMOVE.png" />
+                  <img src="@/assets/images/objects/REMOVE.png" />
                   löschen
                 </button>
               </li>
@@ -358,7 +358,7 @@ function switchContent(element: string) {
                     setPlaceState(ControlEnum.REMOVE_NPC, false, false, false)
                   "
                 >
-                  <img src="@/assets/objects/REMOVE.png" />
+                  <img src="@/assets/images/objects/REMOVE.png" />
                   löschen
                 </button>
               </li>
@@ -378,7 +378,7 @@ function switchContent(element: string) {
                     setPlaceState(ControlEnum.REMOVE_NPC, false, false, false)
                   "
                 >
-                  <img src="@/assets/objects/REMOVE.png" />
+                  <img src="@/assets/images/objects/REMOVE.png" />
                   löschen
                 </button>
               </li>

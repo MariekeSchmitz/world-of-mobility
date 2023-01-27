@@ -373,14 +373,6 @@ onUnmounted(() => {
         :instanceID="props.instanceID"
         :trafficLightState="trafficLightState"
       ></Map>
-      <!-- "Car" -->
-      <!-- <Box
-        :position="{ x: 1, y: 1, z: 2 }"
-        :scale="{ x: 1, y: 1, z: 2 }"
-        ref="car"
-        ><ToonMaterial>
-          <Texture src="@/textures/Obsidian.jpg" /> </ToonMaterial
-      ></Box> -->
       <div v-for="(moveable, index) in allMoveables" :key="index">
         <CAR1
           v-if="moveable.classname == 'CAR'"

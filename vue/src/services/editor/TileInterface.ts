@@ -1,4 +1,3 @@
-import { reactive } from "vue";
 
 interface IPlacedObject {
   type: string;

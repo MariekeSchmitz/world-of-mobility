@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, computed } from "vue";
+import {computed } from "vue";
 import { useSpawnPoint } from "@/components/spawnpoint/useSpawnPoint";
 import { editorTileURLs } from "../editor/EditorTileURLDict";
 
@@ -142,40 +142,32 @@ const isSelected = computed(() => {
 }
 
 .GRASSTILE {
-  background-image: url("@/textures/tiles/GRASSTILE.jpg");
-}
-
-.RAIL_CURVE {
-  background-image: url("@/textures/tiles/RAIL_CURVE.jpg");
-}
-
-.RAIL_STRAIGHT {
-  background-image: url("@/textures/tiles/RAIL_STRAIGHT.jpg");
+  background-image: url("@/assets/images/tiles/GRASSTILE.jpg");
 }
 
 .SIDEWAY {
-  background-image: url("@/textures/tiles/SIDEWAY.png");
+  background-image: url("@/assets/images/tiles/SIDEWAY.png");
 }
 .SIDEWAY_BICYCLE_CURVE {
-  background-image: url("@/textures/tiles/SIDEWAY_BICYCLE_CURVE.png");
+  background-image: url("@/assets/images/tiles/SIDEWAY_BICYCLE_CURVE.png");
 }
 .SIDEWAY_PASSENGER_CURVE {
-  background-image: url("@/textures/tiles/SIDEWAY_PASSENGER_CURVE.png");
+  background-image: url("@/assets/images/tiles/SIDEWAY_PASSENGER_CURVE.png");
 }
 
 .STREET_CROSS {
-  background-image: url("@/textures/tiles/STREET_CROSS.jpg");
+  background-image: url("@/assets/images/tiles/STREET_CROSS.jpg");
 }
 
 .STREET_CURVE {
-  background-image: url("@/textures/tiles/STREET_CURVE.jpg");
+  background-image: url("@/assets/images/tiles/STREET_CURVE.jpg");
 }
 
 .STREET_STRAIGHT {
-  background-image: url("@/textures/tiles/STREET_STRAIGHT.jpg");
+  background-image: url("@/assets/images/tiles/STREET_STRAIGHT.jpg");
 }
 
 .STREET_T_CROSS {
-  background-image: url("@/textures/tiles/STREET_T_CROSS.jpg");
+  background-image: url("@/assets/images/tiles/STREET_T_CROSS.jpg");
 }
 </style>

@@ -1,5 +1,3 @@
-import { Client } from "@stomp/stompjs";
-import { mapTransformDependencies } from "mathjs";
 import { reactive, readonly } from "vue";
 // import json from './testMapOverview.json';
 

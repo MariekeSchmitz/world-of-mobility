@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useScript } from "@/services/useScript";
-import { number } from "mathjs";
 import { ref } from "vue";
 import ScriptInfoBox from "./ScriptInfoBox.vue";
 

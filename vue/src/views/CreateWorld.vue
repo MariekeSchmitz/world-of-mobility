@@ -5,7 +5,6 @@
  */
 import { ref, watch } from "vue";
 import { useEditor } from "@/services/useEditor";
-import { create } from "mathjs";
 import router from "@/router";
 import { useLogin } from "@/services/login/useLogin";
 import { useUserEditor } from "@/services/useUserEditor";

@@ -15,8 +15,6 @@ import RAIL_STRAIGHT from "@/components/Tiles/RAIL_STRAIGHT.vue";
 import FARM from "@/components/Tiles/FARM.vue";
 import GRASSTILE from "@/components/Tiles/GRASSTILE.vue";
 import { tileType } from "@/components/TileTypes";
-import { useGame } from "@/services/useGame";
-import { reactive } from "vue";
 
 const props = withDefaults(
   defineProps<{

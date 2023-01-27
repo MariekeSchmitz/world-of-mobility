@@ -4,7 +4,6 @@ import { orientations } from "@/services/Orientations";
 import { onMounted, ref, watch, computed } from "vue";
 import { useMapUpdate } from "@/services/useMapUpdate";
 import { useMap } from "@/services/useMap";
-import { number } from "mathjs";
 import EditorTile from "@/components/editor/EditorTile.vue";
 import * as THREE from "three";
 import type { MapInterface } from "@/services/editor/MapInterface";

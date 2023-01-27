@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { reactive, onMounted } from "vue";
 import { useJoinGame } from "@/services/useJoinGame";
-import { forEach } from "mathjs";
 import { moveableImages } from "./MoveableImages";
-import grassTileUrl from "@/textures/tiles/GRASSTILE.jpg";
+import grassTileUrl from "@/assets/images/tiles/GRASSTILE.jpg";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faPlus, faArrowLeft, faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 library.add(faPlus, faArrowLeft, faChevronRight, faChevronLeft);

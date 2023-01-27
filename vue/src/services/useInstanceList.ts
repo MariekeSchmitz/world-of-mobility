@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Client } from "@stomp/stompjs";
-import { reactive, readonly, ref } from "vue";
+import { reactive, readonly} from "vue";
 import type { IInstanceInfo } from "@/services/IInstanceInfo";
 
 export function useInstanceList(): any {

@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Client } from "@stomp/stompjs";
-import { reactive, readonly, ref } from "vue";
+import {readonly, ref } from "vue";
 import type { INpc } from "@/interfaces/INpc";
 import { useEditorError } from "./editor/useEditorError";
 
