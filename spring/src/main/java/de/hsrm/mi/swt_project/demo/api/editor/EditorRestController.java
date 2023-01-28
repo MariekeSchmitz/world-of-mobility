@@ -144,7 +144,7 @@ public class EditorRestController {
     @GetMapping(value = "/instancelist")
     public GetListInstanceDTO postEditorList() {
         List<Instance> editorlist = instanceHandler.getEditorInstances();
-        logger.info("Post-Req instancelist - all EditorInstances ", editorlist);
+        logger.info("Post-Req instancelist - all EditorInstances {}", editorlist);
         return GetListInstanceDTO.from(editorlist);
     }
 
@@ -195,7 +195,7 @@ public class EditorRestController {
     @PostMapping("/createWorldFromMap")
     public SendNewWorldDTO postWorldFromMap(@RequestBody GetNewWorldDTO newWorldDTO) {
         String name = newWorldDTO.name();
-        logger.info("Post-Req createWorldFromMap - create new Instance ", name);
+        logger.info("Post-Req createWorldFromMap - create new Instance {}", name);
         long id = instanceHandler.createEditorInstance(name);
         return SendNewWorldDTO.from(id, "");
     }
@@ -209,8 +209,9 @@ public class EditorRestController {
      */
     @PostMapping(value = "/{id}/join-editor", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void joinGame(@RequestBody JoinEditorDTO joinEditorRequest, @PathVariable long id) {
-        logger.info("Post-Req join-editor - add user ", joinEditorRequest.user());
-        instanceHandler.getEditorInstanceById(id).addUser(joinEditorRequest.user());
+        String user = joinEditorRequest.user();
+        logger.info("Post-Req join-editor - add user {}", user);
+        instanceHandler.getEditorInstanceById(id).addUser(user);
         loopInstanceInfo.publishInstanceInfoState(instanceHandler.getEditorInstanceById(id), "CREATE");
     }
 
@@ -223,8 +224,9 @@ public class EditorRestController {
      */
     @PostMapping(value = "/{id}/leave-editor", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void leaveGame(@RequestBody JoinEditorDTO leaveEditorRequest, @PathVariable long id) {
-        logger.info("Post-Req leave-editor - delete user ", leaveEditorRequest.user());
-        instanceHandler.getEditorInstanceById(id).removeUser(leaveEditorRequest.user());
+        String user = leaveEditorRequest.user();
+        logger.info("Post-Req leave-editor - delete user {}", user);
+        instanceHandler.getEditorInstanceById(id).removeUser(user);
         loopInstanceInfo.publishInstanceInfoState(instanceHandler.getEditorInstanceById(id), "CREATE");
     }
 
