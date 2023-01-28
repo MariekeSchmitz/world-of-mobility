@@ -33,14 +33,14 @@ class ScriptContextTest {
 
         ScriptContext context = new ScriptContext(moveable, gameMap, null);
 
-        Tile[][] mapContext = context.provideMapContext();
+        TileProxy[][] mapContext = context.provideMapContext();
 
         // check size of map context
         assertEquals(ScriptContext.LOOK_AHEAD * 2 + 1, mapContext.length);
         assertEquals(ScriptContext.LOOK_AHEAD * 2 + 1, mapContext[0].length);
 
         // check that center of map context is the tile where the moveable is positioned
-        assertSame(gameMap[5][5], mapContext[1][1]);
+        assertSame(gameMap[5][5], mapContext[1][1].tile);
 
         int row = (int) moveable.getYPos();
         int col = (int) moveable.getXPos();
@@ -48,10 +48,10 @@ class ScriptContextTest {
         int contextSize = mapContext.length;
 
         // check that map context belongs to right tiles on full map
-        assertSame(gameMap[row - ScriptContext.LOOK_AHEAD][col - ScriptContext.LOOK_AHEAD], mapContext[0][0]);
-        assertSame(gameMap[row - ScriptContext.LOOK_AHEAD][col + ScriptContext.LOOK_AHEAD], mapContext[0][contextSize - 1]);
-        assertSame(gameMap[row + ScriptContext.LOOK_AHEAD][col - ScriptContext.LOOK_AHEAD], mapContext[contextSize - 1][0]);
-        assertSame(gameMap[row + ScriptContext.LOOK_AHEAD][col + ScriptContext.LOOK_AHEAD], mapContext[contextSize - 1][contextSize -1]);
+        assertSame(gameMap[row - ScriptContext.LOOK_AHEAD][col - ScriptContext.LOOK_AHEAD], mapContext[0][0].tile);
+        assertSame(gameMap[row - ScriptContext.LOOK_AHEAD][col + ScriptContext.LOOK_AHEAD], mapContext[0][contextSize - 1].tile);
+        assertSame(gameMap[row + ScriptContext.LOOK_AHEAD][col - ScriptContext.LOOK_AHEAD], mapContext[contextSize - 1][0].tile);
+        assertSame(gameMap[row + ScriptContext.LOOK_AHEAD][col + ScriptContext.LOOK_AHEAD], mapContext[contextSize - 1][contextSize -1].tile);
     }
 
     @Test
@@ -68,7 +68,7 @@ class ScriptContextTest {
 
         ScriptContext context = new ScriptContext(moveable, gameMap, null);
 
-        Tile[][] mapContext = context.provideMapContext();
+        TileProxy[][] mapContext = context.provideMapContext();
 
         int row = (int) moveable.getYPos();
         int col = (int) moveable.getXPos();
@@ -76,10 +76,10 @@ class ScriptContextTest {
         int contextSize = mapContext.length;
 
         // check that map context belongs to right tiles on full map
-        assertSame(gameMap[row + ScriptContext.LOOK_AHEAD][col - ScriptContext.LOOK_AHEAD], mapContext[0][0]);
-        assertSame(gameMap[row - ScriptContext.LOOK_AHEAD][col - ScriptContext.LOOK_AHEAD], mapContext[0][contextSize - 1]);
-        assertSame(gameMap[row + ScriptContext.LOOK_AHEAD][col + ScriptContext.LOOK_AHEAD], mapContext[contextSize - 1][0]);
-        assertSame(gameMap[row - ScriptContext.LOOK_AHEAD][col + ScriptContext.LOOK_AHEAD], mapContext[contextSize - 1][contextSize -1]);
+        assertSame(gameMap[row + ScriptContext.LOOK_AHEAD][col - ScriptContext.LOOK_AHEAD], mapContext[0][0].tile);
+        assertSame(gameMap[row - ScriptContext.LOOK_AHEAD][col - ScriptContext.LOOK_AHEAD], mapContext[0][contextSize - 1].tile);
+        assertSame(gameMap[row + ScriptContext.LOOK_AHEAD][col + ScriptContext.LOOK_AHEAD], mapContext[contextSize - 1][0].tile);
+        assertSame(gameMap[row - ScriptContext.LOOK_AHEAD][col + ScriptContext.LOOK_AHEAD], mapContext[contextSize - 1][contextSize -1].tile);
     }
 
     @Test

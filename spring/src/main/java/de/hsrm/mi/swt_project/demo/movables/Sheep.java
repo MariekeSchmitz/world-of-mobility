@@ -15,7 +15,7 @@ public class Sheep extends Passenger  {
      * @param maxVelocity Maximum velocity of the object.
      */
     public Sheep(float xPos, float yPos) {
-        super(Orientation.NORTH, xPos, yPos, 1);
+        super(Orientation.NORTH, xPos, yPos,  0.5f);
     }
 
 }

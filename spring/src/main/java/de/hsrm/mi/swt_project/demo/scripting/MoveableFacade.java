@@ -7,11 +7,14 @@ import org.slf4j.LoggerFactory;
 
 import de.hsrm.mi.swt_project.demo.collision.Collidable;
 import de.hsrm.mi.swt_project.demo.controls.Direction;
+import de.hsrm.mi.swt_project.demo.controls.Moveable;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObjectType;
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.TrafficLight;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.movables.MotorizedObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
+import de.hsrm.mi.swt_project.demo.movables.Passenger;
 import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLightSingleTon;
 import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLightState;
 import de.hsrm.mi.swt_project.demo.util.MathHelpers;
@@ -28,11 +31,15 @@ import de.hsrm.mi.swt_project.demo.util.MathHelpers;
  */
 public class MoveableFacade {
 
+    protected enum ReadableTrafficLightState {
+        HORIZONTAL_GREEN,
+        VERTICAL_GREEN,
+        YELLOW
+    };
+
     Logger logger = LoggerFactory.getLogger(getClass());
 
-    protected static final float ACCELERATION_DELTA = 0.1f;
-
-    private TrafficLightSingleTon trafficLightSingleTon = TrafficLightSingleTon.getInstance();
+    protected static final float ACCELERATION_DELTA = 0.025F;
 
     protected MoveableObject moveable;
     protected ScriptContext context;
@@ -59,43 +66,130 @@ public class MoveableFacade {
         this.context = context;
     }
 
+    /**
+     * Became the CurrentVelocity of the moveable
+     * 
+     * @return the CurrentVelocity
+     */
     public float currentVelocity(){
         return moveable.getCurrentVelocity();
     }
 
-    public Tile getFrontTile(){
-        Tile[][] mapContext = context.provideMapContext();
+    /**
+     * Sets the speed of the object to 0.1 when the car is not moving.
+     */
+    public void start(){
+        if(moveable.getCurrentVelocity() == 0.0f){
+            moveable.setCurrentVelocity(0.05f);
+        }
+    }
+
+    /**
+     * Return the Fronttile of the moveable
+     * 
+     * @return the Fronttile of the moveable
+     */
+    public TileProxy getFrontTile(){
+
+        TileProxy[][] mapContext = context.provideMapContext();
         int pos = mapContext.length / 2;
 
         return mapContext[pos + 1][pos];
     }
 
-    public boolean getFrontTrafficLight(){
-        float xOnTile = moveable.getXPos() - (int) moveable.getXPos();
-        float yOnTile = moveable.getYPos() - (int) moveable.getYPos();
-        if (getFrontTile() == null) {
+    public TileProxy getCurrentTile(){
+
+        TileProxy[][] mapContext = context.provideMapContext();
+        int pos = mapContext.length / 2;
+
+        return mapContext[pos][pos]; 
+    }
+
+    /**
+     * Check if the moveable is a MotorizedObject or a Passenger
+     * 
+     * @return if moveable is a MotorizedObject
+     */
+    public boolean isMotorizedObject(){
+        if (moveable instanceof Passenger) {
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean isMotorizedObject(Moveable tmpMoveable){
+        if (tmpMoveable instanceof Passenger) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isPassenger(Moveable tmpMoveable){
+        if (tmpMoveable instanceof Passenger) {
             return true;
         }
-        if(getFrontTile().getPlacedObject() instanceof TrafficLight){
+        return false;
+    }
+
+    public Orientation getOrientation(){
+        return moveable.getOrientation();
+    }
+
+    public ReadableTrafficLightState currentTrafficLightState() {
+
+        TrafficLightState state = TrafficLightSingleTon.getInstance().getTrafficLightState();
+
+        if (state.equals(TrafficLightState.EASTWEST)) {
+            return ReadableTrafficLightState.HORIZONTAL_GREEN;
+        }
+
+        if (state.equals(TrafficLightState.NORTHSOUTH)) {
+            return ReadableTrafficLightState.VERTICAL_GREEN;
+        }
+
+        return ReadableTrafficLightState.YELLOW;
+    }
+
+    /**
+     * Return the state from the trafficlight
+     * 
+     * @return Return the state from the trafficlight
+     * 
+     */
+    public boolean isTrafficLightGreen(float distance){
+        TrafficLight trafficLight = new TrafficLight();
+        float xOnTile = moveable.getXPos() - (int) moveable.getXPos();
+        float yOnTile = moveable.getYPos() - (int) moveable.getYPos();
+        if (this.getFrontTile() == null) {
+            return true;
+        }
+        if(distance >= 0 && distance <= 1) {
+            distance = 0.2f;
+        }
+
+        TileProxy frontTile = this.getFrontTile();
+        PlaceableProxy placeable = frontTile.getPlaceable();
+
+        if (placeable.getType() != null && placeable.getType().equals(PlaceableObjectType.TRAFFIC_LIGHT)) {
             switch (moveable.getOrientation()) {
                 case NORTH:
-                    if(yOnTile > 0.7f){
-                        return isTrafficLightRed();
+                    if(yOnTile > 1 - distance){
+                        return trafficLight.isTrafficLightRed(moveable.getOrientation());
                     }
                     break;
                 case SOUTH:
-                    if(yOnTile < 0.3f){
-                        return isTrafficLightRed(); 
+                    if(yOnTile < distance){
+                        return trafficLight.isTrafficLightRed(moveable.getOrientation());
                     }
                     break;
                 case WEST:
-                    if(xOnTile < 0.3f){
-                        return isTrafficLightRed();
+                    if(xOnTile < distance){
+                        return trafficLight.isTrafficLightRed(moveable.getOrientation());
                     }
                     break;
                 case EAST:
-                    if(xOnTile > 0.7f){
-                        return isTrafficLightRed();
+                    if(xOnTile > 1 - distance){
+                        return trafficLight.isTrafficLightRed(moveable.getOrientation());
                     }
                     break;
                 default:
@@ -103,19 +197,6 @@ public class MoveableFacade {
             }
         }
         return true;
-
-
-    }
-
-    private boolean isTrafficLightRed(){
-        TrafficLightState trafficLightState = trafficLightSingleTon.getTrafficLightState();
-        Orientation orientation = moveable.getOrientation();
-        if(trafficLightState.equals(TrafficLightState.NORTHSOUTH) && (orientation.equals(Orientation.NORTH) || orientation.equals(Orientation.SOUTH))){
-            return true;
-        } else if(trafficLightState.equals(TrafficLightState.EASTWEST) && (orientation.equals(Orientation.EAST) || orientation.equals(Orientation.WEST))){
-            return true;
-        } 
-        return false;
     }
 
     /**
@@ -155,6 +236,9 @@ public class MoveableFacade {
      */
     public void brake() {
         float newVelocity = this.moveable.getCurrentVelocity() - ACCELERATION_DELTA;
+        if(newVelocity < 0){
+            newVelocity = 0.0f;
+        }
         this.moveable.setCurrentVelocity(newVelocity);
     }
 
@@ -171,7 +255,7 @@ public class MoveableFacade {
      * 
      * @return 2D array containing information of surrounding tiles.
      */
-    public Tile[][] surroundingTiles() {
+    public TileProxy[][] surroundingTiles() {
         return this.context.provideMapContext();
     }
 
@@ -185,6 +269,8 @@ public class MoveableFacade {
         return this.context.provideOtherMoveablesContext();
     }
 
+
+    
     /**
      * Calculates distance to another collidable.
      * 
@@ -200,6 +286,30 @@ public class MoveableFacade {
         float otherYPos = other.getYPos();
 
         return MathHelpers.euclideanDistance(thisXPos, thisYPos, otherXPos, otherYPos);
+    }
+
+    public float distanceTo(TileProxy tileProxy) {   
+        
+        float xTile = 0;
+        float yTile = 0;
+
+        TileProxy[][] contextMap = context.provideMapContext();
+
+        for (int row = 0; row < contextMap.length; row++) {
+            for (int col = 0; col < contextMap.length; col++) {
+                if (tileProxy.equals(contextMap[row][col])) {
+                    xTile = col + 0.5f;
+                    yTile = row + 0.5f;
+                    break;
+                }
+            }
+        }   
+
+        float thisXPos = ScriptContext.LOOK_AHEAD + (moveable.getXPos() - (int) moveable.getXPos()) * moveable.getOrientation().xSign();
+        float thisYPos = ScriptContext.LOOK_AHEAD + (moveable.getYPos() - (int) moveable.getYPos()) * moveable.getOrientation().ySign();
+
+        //logger.info("{}|{} -> {}|{} = {}",xTile,yTile,thisXPos,thisYPos, MathHelpers.euclideanDistance(thisXPos, thisYPos, xTile, yTile));
+        return MathHelpers.euclideanDistance(thisXPos, thisYPos, xTile, yTile);
     }    
     
-}
+} 
