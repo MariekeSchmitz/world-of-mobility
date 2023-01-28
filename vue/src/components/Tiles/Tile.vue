@@ -14,7 +14,7 @@ import RAIL_CURVE from "@/components/Tiles/RAIL_CURVE.vue";
 import RAIL_STRAIGHT from "@/components/Tiles/RAIL_STRAIGHT.vue";
 import FARM from "@/components/Tiles/FARM.vue";
 import GRASSTILE from "@/components/Tiles/GRASSTILE.vue";
-import { tileType } from "@/components/TileTypes";
+import { tileType } from "@/enums/TileTypes";
 
 const props = withDefaults(
   defineProps<{

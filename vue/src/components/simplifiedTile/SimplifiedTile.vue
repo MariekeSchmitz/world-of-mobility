@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {computed } from "vue";
-import { useSpawnPoint } from "@/components/spawnpoint/useSpawnPoint";
+import { useSpawnPoint } from "@/services/useSpawnPoint"
 import { editorTileURLs } from "../editor/EditorTileURLDict";
 
 const { miniMapScalingState, setSpawnPoint, spawnState } = useSpawnPoint();

@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Client } from "@stomp/stompjs";
 import { reactive } from "vue";
-import type { IServerMessage } from "./IServerMessage";
+import type { IServerMessage } from "../../interfaces/messaging/IServerMessage";
 
 interface IMsgState {
   msgLst: IServerMessage[];

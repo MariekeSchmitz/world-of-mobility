@@ -2,10 +2,10 @@
 <script setup lang="ts">
 //@ts-ignore
 import * as THREE from "three";
-import Tile from "@/components/Tile.vue";
-import type { I3DMap } from "@/services/I3DMap";
+import Tile from "@/components/Tiles/Tile.vue";
+import type { I3DMap } from "@/interfaces/game/I3DMap";
 import { onMounted, ref } from "vue";
-import { useMap } from "@/services/useMap";
+import { useMap } from "@/services/game/useMap";
 
 const squareSize = 16;
 const { getGameMap } = useMap();

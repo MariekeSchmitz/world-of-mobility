@@ -4,14 +4,14 @@
  * @author Marie Bohnert, Tom Gouthier, Victoria Thee
  */
 import { ref, watch } from "vue";
-import { useEditor } from "@/services/useEditor";
+import { useEditor } from "@/services/editor/useEditor";
 import router from "@/router";
 import { useLogin } from "@/services/login/useLogin";
 import { useUserEditor } from "@/services/useUserEditor";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Avatar from "@/components/User/Avatar.vue";
-import ErrorWarning from "@/components/ErrorWarning.vue";
+import ErrorWarning from "@/components/error/ErrorWarning.vue";
 
 library.add(faArrowLeft);
 const name = ref("");

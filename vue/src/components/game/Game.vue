@@ -9,10 +9,10 @@
 import * as THREE from "three";
 import { ref, computed, onMounted, reactive, onUnmounted, watch } from "vue";
 import { Camera, Scene, HemisphereLight, Renderer } from "troisjs";
-import Map from "@/components/Map.vue";
+import Map from "@/components/game/Map.vue";
 import CAR1 from "@/components/objects/CAR1.vue";
 import SHEEP from "@/components/objects/SHEEP.vue";
-import { useGame } from "@/services/useGame";
+import { useGame } from "@/services/game/useGame";
 import { useLogin } from "@/services/login/useLogin";
 import { orientations } from "@/services/Orientations";
 import TRUCK from "@/components/objects/TRUCK.vue";

@@ -1,5 +1,5 @@
 
-import { useEditorError } from "./editor/useEditorError";
+import { useEditorError } from "./useEditorError";
 
 
 export function usePlaceObject(): any {

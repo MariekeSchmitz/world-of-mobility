@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, onMounted } from "vue";
-import { useJoinGame } from "@/services/useJoinGame";
+import { useJoinGame } from "@/services/game/useJoinGame";
 import { moveableImages } from "./MoveableImages";
 import grassTileUrl from "@/assets/images/tiles/GRASSTILE.jpg";
 import { library } from "@fortawesome/fontawesome-svg-core";

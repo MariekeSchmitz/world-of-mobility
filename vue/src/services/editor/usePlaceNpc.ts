@@ -1,4 +1,4 @@
-import type { NpcType } from "./NpcType";
+import type { NpcType } from "../../enums/editor/NpcType";
 import { useEditorError } from "./useEditorError";
 
 

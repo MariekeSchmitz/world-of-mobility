@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { useServerMessage } from "@/services/useServerMessage";
+import { useServerMessage } from "@/services/messaging/useServerMessage";
 import { computed } from "@vue/reactivity";
 import { onMounted, ref } from "vue";
 import { library } from "@fortawesome/fontawesome-svg-core";

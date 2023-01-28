@@ -1,4 +1,4 @@
-import { useEditorError } from "./editor/useEditorError";
+import { useEditorError } from "./useEditorError";
 
 /**
  * interface that represents a script to be loaded for npc on specific coordinates

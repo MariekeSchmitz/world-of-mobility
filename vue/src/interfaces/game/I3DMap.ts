@@ -1,4 +1,4 @@
-import type { ITile } from "@/interfaces/ITile";
+import type { ITile } from "@/interfaces/game/ITile";
 
 export interface I3DMap {
   tiles: [ITile[]];

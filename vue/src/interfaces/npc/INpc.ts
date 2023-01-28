@@ -1,4 +1,4 @@
-import type { NpcType } from "@/services/editor/NpcType";
+import type { NpcType } from "@/enums/editor/NpcType";
 
 /**
  * interface that represents a NPC as sent by backend

@@ -1,5 +1,5 @@
 import { readonly, reactive } from "vue";
-import { useGame } from "@/services/useGame";
+import { useGame } from "@/services/game/useGame";
 import { useUserFeedback } from "@/services/editor/useUserFeedback";
 
 const { isSpawnPointValid } = useGame();

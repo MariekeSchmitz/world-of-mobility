@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { Client } from "@stomp/stompjs";
 import {readonly, ref } from "vue";
-import type { INpc } from "@/interfaces/INpc";
-import { useEditorError } from "./editor/useEditorError";
+import type { INpc } from "@/interfaces/npc/INpc";
+import { useEditorError } from "../editor/useEditorError";
 
 export function useMapUpdate(editorId: number): any {
 

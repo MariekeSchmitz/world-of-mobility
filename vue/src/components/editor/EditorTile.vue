@@ -8,13 +8,13 @@ import { Plane, Texture, BasicMaterial } from "troisjs";
 import { ref, computed, watch} from "vue";
 import { usePlaceState } from "@/services/editor/usePlaceState";
 import { useContextMenu } from "@/services/editor/useContextMenu";
-import { useMapUpdate } from "@/services/useMapUpdate";
-import type { ExportTile } from "@/services/editor/ExportTileInterface";
-import { usePlaceObject } from "@/services/usePlaceObject";
-import { ControlEnum } from "@/services/ControlEnum";
+import { useMapUpdate } from "@/services/game/useMapUpdate";
+import type { ExportTile } from "@/interfaces/editor/ExportTileInterface";
+import { usePlaceObject } from "@/services/editor/usePlaceObject";
+import { ControlEnum } from "@/enums/editor/ControlEnum";
 import { editorTileURLs } from "@/components/editor/EditorTileURLDict";
 import { usePlaceNpc } from "@/services/editor/usePlaceNpc";
-import type { INpc } from "@/interfaces/INpc";
+import type { INpc } from "@/interfaces/npc/INpc";
 import { useEditorError } from "@/services/editor/useEditorError";
 
 const props = withDefaults(

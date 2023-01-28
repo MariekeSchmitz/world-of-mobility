@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { TileName } from "@/services/editor/TileNameEnum";
+import { TileName } from "@/enums/editor/TileNameEnum";
 import { usePlaceState } from "@/services/editor/usePlaceState";
-import { NaturObjectEnum } from "@/services/NaturObjectEnum";
-import { ObjectEnum } from "@/services/ObjectEnum";
-import { ControlEnum } from "@/services/ControlEnum";
+import { NaturObjectEnum } from "@/enums/editor/NaturObjectEnum";
+import { ObjectEnum } from "@/enums/editor/ObjectEnum";
+import { ControlEnum } from "@/enums/editor/ControlEnum";
 import BottomSelectionLoop from "@/components/editor/BottomSelectionLoop.vue";
-import { NpcPassengerType } from "@/services/editor/NpcPassengerType";
-import { NpcVehicleType } from "@/services/editor/NpcVehicleType";
+import { NpcPassengerType } from "@/enums/editor/NpcPassengerType";
+import { NpcVehicleType } from "@/enums/editor/NpcVehicleType";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faAngleRight,

@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 
-import type { INpc } from "@/interfaces/INpc";
-import { useUserFeedback } from "./editor/useUserFeedback";
+import type { INpc } from "@/interfaces/npc/INpc";
+import { useUserFeedback } from "../editor/useUserFeedback";
 
 export interface IPlacedObject {
   type: string;

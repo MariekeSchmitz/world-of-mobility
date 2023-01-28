@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useScript } from "@/services/useScript";
+import { useScript } from "@/services/editor/useScript";
 import { ref } from "vue";
 import ScriptInfoBox from "./ScriptInfoBox.vue";
 
