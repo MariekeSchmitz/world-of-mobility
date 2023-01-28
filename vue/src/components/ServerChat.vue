@@ -69,6 +69,7 @@ const chatInput = ref("");
 
 function getInputAndChat() {
   updateTestMessage(props.type, props.username + ": " + chatInput.value, props.instanceId);
+  chatInput.value = ""
 }
 
 function toggle() {
