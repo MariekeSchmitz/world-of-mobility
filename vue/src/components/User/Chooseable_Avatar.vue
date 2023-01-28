@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useLogin } from "@/services/login/useLogin";
+import { avatarImages } from "@/components/User/AvatarURLDict";
+
 
 /**
  * similar to Avatar component - except it sets the user avatar state to itself when clicked
@@ -11,29 +13,30 @@ const props = withDefaults(
   defineProps<{
     avatarPicture: string;
   }>(),
-  { avatarPicture: "src/assets/avatar/Gockel.png" }
+  { avatarPicture: "GOCKEL" }
 );
 
-const { setAvatar } = useLogin();
+const { setAvatar, avatarData } = useLogin();
 </script>
 
 <template>
   <!-- Avatar Picture, usage wherever the avatar is needed -->
-
-  <img @click="setAvatar(avatarPicture)" :src="avatarPicture" alt="" />
+  <div v-if="avatarPicture != avatarData.avatar">
+    <img
+      @click="setAvatar(avatarImages[avatarPicture])"
+      :src="avatarImages[avatarPicture]"
+      alt=""
+      class="rounded-full w-24 m-4 hover:opacity-50"
+    />
+  </div>
+  <div v-else>
+    <div class="">
+      <img
+        @click="setAvatar(avatarImages[avatarPicture])"
+        :src="avatarImages[avatarPicture]"
+        alt=""
+        class="rounded-full border-8 border-greenDark w-24 m-4 hover:opacity-50"
+      />
+    </div>
+  </div>
 </template>
-
-<style scoped>
-img {
-  border-radius: 10em;
-  border: 0.5px solid;
-  display: block;
-  margin: 1em;
-  max-width: 100%;
-  height: auto;
-}
-
-:hover {
-  opacity: 0.5;
-}
-</style>

@@ -201,4 +201,8 @@ public class GameInstance extends Instance {
         int playerCount = moveableObjects.size()- npcCount;
         return playerCount < maximumPlayerCount;
     }
+
+    public int getMaximumPlayerCount(){
+        return maximumPlayerCount;
+    }
 }
