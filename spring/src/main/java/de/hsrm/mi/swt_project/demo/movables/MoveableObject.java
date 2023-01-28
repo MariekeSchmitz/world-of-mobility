@@ -45,6 +45,7 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable, 
 
     //Sonarcube will see transient as a codesmell but its necessary 
     //because the class is serialized with gson
+    //transient prevents the logger from beeing serialized into the json
     transient Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
