@@ -183,7 +183,6 @@ import {
     <UserListMenu :instanceId="editorID" type="editor"></UserListMenu>
     <ErrorWarning :errorMsg="errorMessage"></ErrorWarning>
     <ErrorWarning :errorMsg="feedbackMessage"></ErrorWarning>
-      <!-- <p v-if="feedbackMessage">{{ feedbackMessage }}</p> -->
 
     <ServerChat :instanceId="editorID" type="editor" :username="loginData.username"></ServerChat>
 
@@ -195,13 +194,6 @@ import {
       @script-window-closed="setNpcScriptView(false)"
     ></ScriptField>
     <BottomMenu v-if="!npcNeedsScript || errorMessage"></BottomMenu>
-
-    <!--
-    sends msg on every instance, should only be in one instance for all; first player gets all msg shown as many times as there are players
-          
-    <ServerChat :instanceId="editorID"></ServerChat>
-    -->
-    <MiniMap />
 
     <Renderer
       ref="rendererC"
