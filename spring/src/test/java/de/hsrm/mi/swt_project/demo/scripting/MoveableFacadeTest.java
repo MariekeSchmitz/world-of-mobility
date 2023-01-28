@@ -40,9 +40,19 @@ class MoveableFacadeTest {
 
     @Test
     void brake() {
+
+        float velocity = 2 * MoveableFacade.ACCELERATION_DELTA;
+        moveable.setCurrentVelocity(velocity);
+
         float expected = moveable.getCurrentVelocity() - MoveableFacade.ACCELERATION_DELTA;
         facade.brake();
+
         assertEquals(expected, moveable.getCurrentVelocity());
+
+        moveable.setCurrentVelocity(0);
+        facade.brake();
+        
+        assertEquals(0, moveable.getCurrentVelocity());
     }
 
     @Test
