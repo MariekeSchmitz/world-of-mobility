@@ -67,7 +67,7 @@ class GameTest {
         void postServerMessageGameGood() throws Exception {
 
                 JSONObject body = new JSONObject();
-                body.put("usrId", 1);
+                body.put("usrId", gameId);
                 body.put("txt", "Dies ist ein Test");
 
                 mockMvc.perform(
