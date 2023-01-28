@@ -6,18 +6,22 @@
 
 import { useInstanceList } from "@/services/useInstanceList";
 import GameListItem from "@/components/selectview/GameListItem.vue";
-import { computed, onMounted } from "vue";
+import { computed, onMounted, onUnmounted } from "vue";
 import { useLogin } from "@/services/login/useLogin";
 import Avatar from "@/components/User/Avatar.vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faPlus, faArrowLeft, faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 library.add(faPlus, faArrowLeft,  faChevronRight, faChevronLeft);
 
-const { instanceState, getInstanceList, getAvailableInstances } = useInstanceList();
+const { instanceState, getInstanceList, getAvailableInstances, endReceiveInstanceUpdates } = useInstanceList();
 const { avatarData } = useLogin();
 
 onMounted(async () => {
   await getInstanceList("game");
+});
+
+onUnmounted(async () => {
+  endReceiveInstanceUpdates();
 });
 
 const instancelist = computed(() => {

@@ -9,10 +9,12 @@ import EditorTile from "@/components/editor/EditorTile.vue";
 import * as THREE from "three";
 import type { MapInterface } from "@/services/editor/MapInterface";
 import type { INpc } from "@/interfaces/INpc";
+import type { NpcType } from "@/services/editor/NpcType";
 
 const props = withDefaults(
   defineProps<{
     editorID: number;
+    placeNpcAndShowScript: (x:number,y:number, type:NpcType)=>void;
   }>(),
   { editorID: 0 }
 );
@@ -27,6 +29,8 @@ const mapWidth = ref(8);
 const mapHeight = ref(8);
 const offsetx = computed(() => -(mapWidth.value + 1) / 2);
 const offsety = computed(() => -(mapHeight.value + 1) / 2);
+
+
 
 const mapDefault: MapInterface = {
   name: "Default",
@@ -69,7 +73,7 @@ onMounted(() => {
 
 <template>
   <template v-for="(subTile, column) in mapReactive.tiles">
-    <template v-for="(tile, row) in subTile" :key="tile">
+    <template v-for="(tile, row) in subTile" :key="tile.type">
       <div v-if="tile.placedObject !== null">
         <EditorTile
           :width="0.99"
@@ -83,7 +87,7 @@ onMounted(() => {
           :editorID="editorID"
           :cmVisible="false"
           :placedNpc="findNpc(row, column)"
-          @npc-added="$emit('npc-added', $event)"
+          :placeNpcAndShowScript="props.placeNpcAndShowScript"
         >
         </EditorTile>
       </div>
@@ -100,7 +104,7 @@ onMounted(() => {
           :editorID="editorID"
           :cmVisible="false"
           :placedNpc="findNpc(row, column)"
-          @npc-added="$emit('npc-added', $event)"
+          :placeNpcAndShowScript="props.placeNpcAndShowScript"
         >
         </EditorTile>
       </div>

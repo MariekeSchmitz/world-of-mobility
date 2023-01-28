@@ -37,6 +37,8 @@ import {
     faFileArrowDown,
     faArrowLeft
   } from "@fortawesome/free-solid-svg-icons";
+  import { usePlaceNpc } from '@/services/editor/usePlaceNpc';
+  import type { NpcType } from '@/services/editor/NpcType';
   library.add(faPlus, faFileArrowDown, faArrowLeft);
 
 
@@ -66,6 +68,8 @@ import {
     setEditorError("")
   });
 
+
+
   /**
    * in order to Execute THREE code in script tag, create a reactive item and add :ref="name" to the Vue Element
    */
@@ -84,6 +88,7 @@ import {
     const {saveMap, getMapEditor} = useMap();
     const {errorMessage, setEditorError} = useEditorError()
     const {feedbackMessage, setUserFeedback} = useUserFeedback()
+    const {placeNpc} = usePlaceNpc()
 
     const loadedMap = getMapEditor(props.editorID);
     const name = ref();
@@ -99,16 +104,24 @@ import {
   const npcNeedsScript = ref(false)
 
 
+
   function setNpcValues(x:number,y:number) {
     npcx.value = x;
     npcy.value = y;
-    setNpcScriptView(true)
   } 
 
   
-  function setNpcScriptView(val:boolean) {
+  function setScriptViewShowing(val:boolean) {
     npcNeedsScript.value = val;
-    console.log("set NPCScriptView, Wert:", val)
+  }
+
+  async function placeNpcAndShowScript(x:number,y:number,type:NpcType) {
+    await placeNpc(x,y,type,editorID)
+    
+    if (!errorMessage.value) {  
+      setNpcValues(x,y)
+      setScriptViewShowing(true)
+    }
   }
 
   let widthWindow = ref(window.innerWidth);
@@ -188,11 +201,11 @@ import {
     <ServerChat :instanceId="editorID" type="editor" :username="loginData.username"></ServerChat>
 
     <ScriptField
-      v-if="npcNeedsScript && !errorMessage"
+      v-if="npcNeedsScript"
       :id="editorID"
       :x="npcx"
       :y="npcy"
-      @script-window-closed="setNpcScriptView(false)"
+      @script-window-closed="setScriptViewShowing(false)"
     ></ScriptField>
     <BottomMenu v-if="!npcNeedsScript || errorMessage"></BottomMenu>
 
@@ -222,7 +235,7 @@ import {
         
         <EditorMap
         :editorID="editorID"
-        @npc-added="setNpcValues($event.x, $event.y)"
+        :placeNpcAndShowScript="placeNpcAndShowScript"
         ></EditorMap>
       </Scene>
     </Renderer>
