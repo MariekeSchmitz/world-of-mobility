@@ -18,6 +18,7 @@ import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
  * to give them a behaviour like driving on Rails.
  * Its main and current use is to control the driving
  * behaviour of NPCs
+ * It currently only works for StreetTiles but its extendable
  * 
  * @author Fabio Bertels
  */
