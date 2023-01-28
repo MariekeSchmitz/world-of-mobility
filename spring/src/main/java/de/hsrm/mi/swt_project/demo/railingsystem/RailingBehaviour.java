@@ -13,6 +13,14 @@ import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
+/**
+ * This class provides rules for moveables 
+ * to give them a behaviour like driving on Rails.
+ * Its main and current use is to control the driving
+ * behaviour of NPCs
+ * 
+ * @author Fabio Bertels
+ */
 public class RailingBehaviour {
 
     public static final float UP_ALIGNMENT_OFFSET = 0.7f;
@@ -26,6 +34,15 @@ public class RailingBehaviour {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
+    /**
+     * takes a moveable and the tile its on and calls the right method for the specific tile
+     * also puts the moveable to the railingMemory or refreshes its turning state if its on a new tile 
+     * 
+     * @param key name of the moveable object, needed for the railing memory
+     * @param moveable movable to be railed
+     * @param tile tile the moveable is currently driving on 
+     * @param dir direction the moveable want to drive to (only for crosses and t-crosses)
+     */
     public void railCoordinates(String key, MoveableObject moveable, Tile tile, Direction dir) {
         if(railingMemory.containsKey(key)){
             RailingMemoryCell memoryCell = railingMemory.get(key);
@@ -55,64 +72,94 @@ public class RailingBehaviour {
 
     }
 
+    /**
+     * this method declares the behaviour rules for t-crosses
+     * by checking if the direction is valid and changing it to a valid direction if not 
+     * if direction is left or right but not possible it changes the direction to straight
+     * if direction is straight it changes to random left or right (50/50 chance)
+     * then calls cross behaviour with the valid direction 
+     * 
+     * @param key name of the moveable object, needed for the railing memory
+     * @param moveable movable to be railed
+     * @param tile tile the moveable is currently driving on 
+     * @param movement calculated movement the moveable should move in a specific direction 
+     * @param dir direction the moveable wants to drive to 
+     */
     public void tCrossBehaviour(String key, MoveableObject moveable, Tile tile, float movement, Direction dir){
         Orientation orientation = moveable.getOrientation();
         Streetile sTile = (Streetile)tile;
-        if(dir != null){
-            switch (dir) {
-                case LEFT:
-                    if(!sTile.getAllowedDirections().contains(orientation.prev().prev())){
-                        dir = null;
-                    }
-                    break;
-                case RIGHT:
-                    if(!sTile.getAllowedDirections().contains(orientation.next().next())){
-                        dir = null;
-                    }
-                    break;
-                default:
-                    if(!sTile.getAllowedDirections().contains(orientation)){
-                        dir = railingMemory.get(key).getRandomDirection();
-                    } 
-                    break;
-            }
-        } 
+        switch (dir) {
+            case LEFT:
+                if(!sTile.getAllowedDirections().contains(orientation.prev().prev())){
+                    dir = Direction.STRAIGHT;
+                }
+                break;
+            case RIGHT:
+                if(!sTile.getAllowedDirections().contains(orientation.next().next())){
+                    dir = Direction.STRAIGHT;
+                }
+                break;
+            case STRAIGHT:
+                if(!sTile.getAllowedDirections().contains(orientation)){
+                    dir = railingMemory.get(key).getRandomDirection();
+                } 
+                break;
+        }
         crossBehaviour(key, moveable, tile, movement, dir);
     }
 
-
+    /**
+     * this method declares the behaviour rules for crosses
+     * by applying straight and curve behaviour at the right moment using the railing memory 
+     * for each specific Direction with a Conversion tile either straight or curved
+     * 
+     * @param key name of the moveable object, needed for the railing memory
+     * @param moveable movable to be railed
+     * @param tile tile the moveable is currently driving on 
+     * @param movement calculated movement the moveable should move in a specific direction 
+     * @param dir direction the moveable wants to drive to 
+     */
     public void crossBehaviour(String key, MoveableObject moveable, Tile tile, float movement, Direction dir){
         Tile straightConversionTile = Tiletype.STREET_STRAIGHT.createTile();
         Tile curveConversionTile = Tiletype.STREET_CURVE.createTile();
         Orientation orientation = moveable.getOrientation();
         boolean alreadyTurned = railingMemory.get(key).isAlreadyTurned();
-        if(dir != null){
-            switch (dir) {
-                case LEFT:
-                    if(alreadyTurned){
-                        straightConversionTile.setOrientation(orientation);
-                        straightBehaviour(moveable, straightConversionTile, movement);
-                    } else{
-                        curveConversionTile.setOrientation(orientation);
-                        curveBehaviour(key, moveable, curveConversionTile, movement);
-                    }
-                    break;
-                case RIGHT:
-                    if(alreadyTurned){
-                        straightConversionTile.setOrientation(orientation);
-                        straightBehaviour(moveable, straightConversionTile, movement);
-                    } else{
-                        curveConversionTile.setOrientation(orientation.prev().prev());
-                        curveBehaviour(key, moveable, curveConversionTile, movement);
-                    }
-                    break;
-            }
-        } else {
-            straightConversionTile.setOrientation(orientation);
-            straightBehaviour(moveable, straightConversionTile, movement);
+        switch (dir) {
+            case LEFT:
+                if(alreadyTurned){
+                    straightConversionTile.setOrientation(orientation);
+                    straightBehaviour(moveable, straightConversionTile, movement);
+                } else{
+                    curveConversionTile.setOrientation(orientation);
+                    curveBehaviour(key, moveable, curveConversionTile, movement);
+                }
+                break;
+            case RIGHT:
+                if(alreadyTurned){
+                    straightConversionTile.setOrientation(orientation);
+                    straightBehaviour(moveable, straightConversionTile, movement);
+                } else{
+                    curveConversionTile.setOrientation(orientation.prev().prev());
+                    curveBehaviour(key, moveable, curveConversionTile, movement);
+                }
+                break;
+            case STRAIGHT:
+                straightConversionTile.setOrientation(orientation);
+                straightBehaviour(moveable, straightConversionTile, movement);
+                break;
         }
     }
 
+    /**
+     * this method declares the behaviour rules for straight streets
+     * by locking either x or y codinate depending on the orientation of the tile 
+     * to a specific offset and only adding the movement to the other one 
+     * moveables can only move in a straight direction 
+     * 
+     * @param moveable movable to be railed
+     * @param tile tile the moveable is currently driving on 
+     * @param movement calculated movement the moveable should move in a specific direction 
+     */
     public void straightBehaviour(MoveableObject moveable, Tile tile, float movement) {
 
         float xPos = moveable.getXPos();
@@ -150,6 +197,15 @@ public class RailingBehaviour {
         }
     }  
 
+    /**
+     * this method declares the behaviour rules for curve streets
+     * by calling the right curve behaviour method for each possible direction
+     * 
+     * @param key name of the moveable object, needed for the railing memory
+     * @param moveable movable to be railed
+     * @param tile tile the moveable is currently driving on 
+     * @param movement calculated movement the moveable should move in a specific direction 
+     */
     public void curveBehaviour(String key, MoveableObject moveable, Tile tile, float movement) {
 
         float xPos = moveable.getXPos();
@@ -175,6 +231,20 @@ public class RailingBehaviour {
         }
     }  
 
+    /**
+     * this method declares the behaviour rules for curve streets with north orientation 
+     * depending on the direction of the moveable it either locks x or y codinate 
+     * unitl it reaches a specific predefined turning point
+     * if it drives over the turning point it calls the doCurveAproximationStep method 
+     * 
+     * @param key name of the moveable object, needed for the railing memory
+     * @param moveable movable to be railed
+     * @param tile tile the moveable is currently driving on 
+     * @param movement calculated movement the moveable should move in a specific direction 
+     * @param xPos current x position of the moveable
+     * @param yPos current y position of the moveable
+     * @param memoryCell memory cell for the specific moveable 
+     */
     private void curveNorthOrientation(String key, MoveableObject moveable, Tile tile, float movement, float xPos, float yPos, RailingMemoryCell memoryCell){
         Orientation orientation = moveable.getOrientation();
         if (orientation == Orientation.NORTH) {
@@ -215,6 +285,20 @@ public class RailingBehaviour {
         }
     }
 
+    /**
+     * this method declares the behaviour rules for curve streets with east orientation 
+     * depending on the direction of the moveable it either locks x or y codinate 
+     * unitl it reaches a specific predefined turning point
+     * if it drives over the turning point it calls the doCurveAproximationStep method 
+     * 
+     * @param key name of the moveable object, needed for the railing memory
+     * @param moveable movable to be railed
+     * @param tile tile the moveable is currently driving on 
+     * @param movement calculated movement the moveable should move in a specific direction 
+     * @param xPos current x position of the moveable
+     * @param yPos current y position of the moveable
+     * @param memoryCell memory cell for the specific moveable 
+     */
     private void curveEastOrientation(String key, MoveableObject moveable, Tile tile, float movement, float xPos, float yPos, RailingMemoryCell memoryCell){
         Orientation orientation = moveable.getOrientation();
         if (orientation == Orientation.NORTH) {
@@ -256,6 +340,20 @@ public class RailingBehaviour {
         }
     }
 
+    /**
+     * this method declares the behaviour rules for curve streets with south orientation 
+     * depending on the direction of the moveable it either locks x or y codinate 
+     * unitl it reaches a specific predefined turning point
+     * if it drives over the turning point it calls the doCurveAproximationStep method 
+     * 
+     * @param key name of the moveable object, needed for the railing memory
+     * @param moveable movable to be railed
+     * @param tile tile the moveable is currently driving on 
+     * @param movement calculated movement the moveable should move in a specific direction 
+     * @param xPos current x position of the moveable
+     * @param yPos current y position of the moveable
+     * @param memoryCell memory cell for the specific moveable 
+     */
     private void curveSouthOrientation(String key, MoveableObject moveable, Tile tile, float movement, float xPos, float yPos, RailingMemoryCell memoryCell){
         Orientation orientation = moveable.getOrientation();
         if (orientation == Orientation.NORTH) {
@@ -297,6 +395,20 @@ public class RailingBehaviour {
 
     }
 
+    /**
+     * this method declares the behaviour rules for curve streets with west orientation 
+     * depending on the direction of the moveable it either locks x or y codinate 
+     * unitl it reaches a specific predefined turning point
+     * if it drives over the turning point it calls the doCurveAproximationStep method 
+     * 
+     * @param key name of the moveable object, needed for the railing memory
+     * @param moveable movable to be railed
+     * @param tile tile the moveable is currently driving on 
+     * @param movement calculated movement the moveable should move in a specific direction 
+     * @param xPos current x position of the moveable
+     * @param yPos current y position of the moveable
+     * @param memoryCell memory cell for the specific moveable 
+     */
     private void curveWestOrientation(String key, MoveableObject moveable, Tile tile, float movement, float xPos, float yPos, RailingMemoryCell memoryCell){
         Orientation orientation = moveable.getOrientation();
         if (orientation == Orientation.NORTH) {
@@ -337,6 +449,18 @@ public class RailingBehaviour {
         }
     }
 
+    /**
+     * this method is used by the curve behaviour to turn the moveable 
+     * after reaching its turning point
+     * it also sets the memory cells turning flag to true in case the call 
+     * of the curve behaviour could come from the cross method 
+     * 
+     * @param key name of the moveable object, needed for the railing memory
+     * @param memoryCell memory cell for the specific moveable 
+     * @param moveable movable to be railed
+     * @param tile tile the moveable is currently driving on 
+     * @param d direction the moveable should be turned to 
+     */
     private void doCurveAproximationStep(String key, RailingMemoryCell memoryCell, MoveableObject moveable, Tile tile, Direction d){
         moveable.turn(d);
         memoryCell.setAlreadyTurned(true);
