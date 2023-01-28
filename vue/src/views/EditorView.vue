@@ -13,7 +13,6 @@ import {
 
   import BottomMenu from "@/components/editor/BottomMenu.vue";
   import EditorMap from "@/components/editor/EditorMap.vue";
-  import MiniMap from "@/components/editor/MiniMap.vue";
   import UserListMenu from "@/components/editor/UserListMenu.vue";
   import {useMap} from "@/services/useMap"
   import { useUserEditor } from "@/services/useUserEditor";
@@ -109,7 +108,6 @@ import {
     npcx.value = x;
     npcy.value = y;
   } 
-
   
   function setScriptViewShowing(val:boolean) {
     npcNeedsScript.value = val;
@@ -196,7 +194,6 @@ import {
     <UserListMenu :instanceId="editorID" type="editor"></UserListMenu>
     <ErrorWarning :errorMsg="errorMessage"></ErrorWarning>
     <ErrorWarning :errorMsg="feedbackMessage"></ErrorWarning>
-      <!-- <p v-if="feedbackMessage">{{ feedbackMessage }}</p> -->
 
     <ServerChat :instanceId="editorID" type="editor" :username="loginData.username"></ServerChat>
 
@@ -208,13 +205,6 @@ import {
       @script-window-closed="setScriptViewShowing(false)"
     ></ScriptField>
     <BottomMenu v-if="!npcNeedsScript || errorMessage"></BottomMenu>
-
-    <!--
-    sends msg on every instance, should only be in one instance for all; first player gets all msg shown as many times as there are players
-          
-    <ServerChat :instanceId="editorID"></ServerChat>
-    -->
-    <MiniMap />
 
     <Renderer
       ref="rendererC"

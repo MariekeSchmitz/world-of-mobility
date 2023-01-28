@@ -14,11 +14,11 @@ import router from "@/router";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faXmark,
-  faAngleLeft,
+  faAngleRight,
   faAngleDown,
   faAngleUp,
 } from "@fortawesome/free-solid-svg-icons";
-library.add(faXmark, faAngleLeft, faAngleDown, faAngleUp);
+library.add(faXmark, faAngleRight, faAngleDown, faAngleUp);
 
 const props = defineProps<{
   instanceId: number;
@@ -79,7 +79,7 @@ function toggle() {
 <template>
   <div
     id="userListMenu"
-    class="grid grid-rows-[10%_90%] w-[15%] h-[25%] bg-white fixed top-[18%] right-3 p-1 pb-5"
+    class="grid grid-rows-[10%_90%] w-[15%] h-[25%] bg-white fixed bottom-8 left-8 p-1 pb-5"
   >
     <button id="hideElement" @click="toggle" class="grid m-2 pb-10">
       <font-awesome-icon
@@ -118,14 +118,14 @@ function toggle() {
   </div>
   <button
     id="showElementUser"
-    class="editorLabel text-greenDark grid-cols-[20%_80%] items-center hidden fixed top-[19%] right-2"
+    class="editorLabel text-greenDark grid-cols-[80%_20%] items-center hidden fixed bottom-[24%] left-2"
     @click="toggle"
   >
-    <font-awesome-icon
-      icon="fa-solid fa-angle-left"
-      color="#2F8265"
-      class="w-5 h-5 pr-2"
-    />
-    <div class="inline">Userliste</div>
+  <div class="inline">Userliste</div>
+  <font-awesome-icon
+    icon="fa-solid fa-angle-right"
+    color="#2F8265"
+    class="w-5 h-5 pr-2"
+  />
   </button>
 </template>
