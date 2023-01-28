@@ -73,7 +73,10 @@ public class GameMap {
                 logger.error("LoadDefaultScript Error");
             }
         }
+
+        
         this.npcs.add(moveable);
+        logger.info("these are now the current npcs: {}",this.npcs);
     }
 
     /**

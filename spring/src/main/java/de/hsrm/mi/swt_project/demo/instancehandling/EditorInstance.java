@@ -180,6 +180,7 @@ public class EditorInstance extends Instance {
         MoveableObject obj = type.createMovable(x, y);
         logger.info("Trying to place npc with data: {}", obj);
         if (this.map.validateNpcPlacement(obj)) {
+            logger.info("npc placement is valid");
             this.map.addNpc(obj);
             logger.info("placed following npc: {}", obj);
         } else {
