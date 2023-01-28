@@ -69,11 +69,11 @@ class MoveableFacadeTest {
 
         facade = MoveableFacade.createFor(moveable, context);
 
-        Tile[][] surroundingTiles = facade.surroundingTiles();
+        TileProxy[][] surroundingTiles = facade.surroundingTiles();
 
         for (int i = 0; i < surroundingTiles.length; i++) {
             for (int j = 0; j < surroundingTiles[i].length; j++) {
-                assertSame(gameMap[i+4][j+4], surroundingTiles[i][j]);
+                assertSame(gameMap[i+4][j+4], surroundingTiles[i][j].tile);
             }
         }
     }
@@ -127,5 +127,24 @@ class MoveableFacadeTest {
 
         assertEquals(5, facade.distanceTo(other));
     }
-    
+
+    @Test 	
+    void testTurnLeft() {
+        Passenger passenger = new Passenger(Orientation.NORTH, 50, 50, 1); 	
+        ScriptContext context = new ScriptContext(passenger, null, null);
+        facade = MoveableFacade.createFor(passenger, context);
+
+        facade.turnLeft();
+        assertEquals(Orientation.NORTH_WEST, passenger.getOrientation()); 	
+    } 	
+	
+    @Test 	
+    void testTurnRight() { 	
+        Passenger passenger = new Passenger(Orientation.NORTH, 50, 50, 1); 	
+        ScriptContext context = new ScriptContext(passenger, null, null);
+        facade = MoveableFacade.createFor(passenger, context);
+
+        facade.turnRight();
+        assertEquals(Orientation.NORTH_EAST, passenger.getOrientation()); 
+    }
 }

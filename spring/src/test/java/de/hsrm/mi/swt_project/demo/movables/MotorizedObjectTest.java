@@ -92,4 +92,12 @@ class MotorizedObjectTest {
         assertEquals("MotorizedObject[xPos=1.00,yPos=2.00,curV=0.00,maxV=0.20,cap=1.00,orientation=NORTH]", p.toString());
     }
 
+    @Test
+    void testExecuteScript() { 	
+        Passenger passenger = new Passenger(Orientation.NORTH, 50, 50, 1); 	
+        ScriptContext context = new ScriptContext(passenger, null, null); 	
+        passenger.loadScript("npc.turnLeft()"); 	
+        passenger.executeScript(context); 	
+        assertEquals(Orientation.NORTH_WEST, passenger.getOrientation()); 	
+    } 	
 }
