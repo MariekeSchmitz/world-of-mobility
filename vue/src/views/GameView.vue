@@ -45,11 +45,7 @@ onUnmounted(() => {
 
 <template>
   <div>
-<<<<<<< HEAD
     <RouterLink to="/gameintro" class="fixed top-7 left-7">
-=======
-    <button @click="$router.go(-1)" class="fixed top-7 left-7">
->>>>>>> stage
         <font-awesome-icon
           icon="fa-solid fa-arrow-left"
           color="white"
