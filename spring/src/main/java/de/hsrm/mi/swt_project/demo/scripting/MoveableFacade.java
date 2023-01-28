@@ -11,7 +11,6 @@ import de.hsrm.mi.swt_project.demo.controls.Moveable;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObjectType;
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.TrafficLight;
-import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.movables.MotorizedObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 import de.hsrm.mi.swt_project.demo.movables.Passenger;
@@ -35,7 +34,7 @@ public class MoveableFacade {
         HORIZONTAL_GREEN,
         VERTICAL_GREEN,
         YELLOW
-    };
+    }
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
