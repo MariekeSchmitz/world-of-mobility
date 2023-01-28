@@ -13,10 +13,10 @@ import type { ExportTile } from "@/services/editor/ExportTileInterface";
 import { usePlaceObject } from "@/services/usePlaceObject";
 import { ControlEnum } from "@/services/ControlEnum";
 import { editorTileURLs } from "@/components/editor/EditorTileURLDict";
-import { NpcType } from "@/services/editor/NpcType";
 import { usePlaceNpc } from "@/services/editor/usePlaceNpc";
 import type { INpc } from "@/interfaces/INpc";
 import { useEditorError } from "@/services/editor/useEditorError";
+import type { NpcType } from "@/services/editor/NpcType";
 
 const props = withDefaults(
   defineProps<{
@@ -29,19 +29,20 @@ const props = withDefaults(
     editorID: number;
     cmVisible: boolean;
     placedNpc?: INpc;
+    placeNpcAndShowScript: (x:number,y:number, type:NpcType)=>void;
   }>(),
   { width: 0.99, height: 0.99, cmVisible: false }
 );
 
 const cmVisible = ref(false);
 let texturePath = editorTileURLs[props.type];
-const {setEditorError, errorMessage} = useEditorError()
+const {setEditorError} = useEditorError()
 
 const { readPlaceState } = usePlaceState();
 const { readCMState, setCMState } = useContextMenu();
 const { sendMapUpdates } = useMapUpdate(props.editorID);
 const { placeObject } = usePlaceObject();
-const { placeNpc, removeNpc } = usePlaceNpc();
+const { removeNpc } = usePlaceNpc();
 
 const mapWidth = ref(8);
 const mapHeight = ref(8);
@@ -52,13 +53,6 @@ watch(readCMState.value, () => {
   cmVisible.value = false;
 });
 
-const emit = defineEmits<{
-  (e: "npc-added", npc: { x: number; y: number }): void;
-}>();
-
-function npcAdded(x: number, y: number): void {
-  emit("npc-added", { x, y });
-}
 
 function tileHover(event: any) {
   event.component.mesh.material.color.set(event.over ? "#dddddd" : "#ffffff");
@@ -101,12 +95,7 @@ async function placeItem() {
   } else if (readPlaceState.value.isNpc) {
     // @ts-expect-error
 
-    await placeNpc(posX, posY, readPlaceState.value.type, props.editorID);
-
-    if (!errorMessage.value) {
-      console.log("Errormessage ", errorMessage)
-      npcAdded(posX, posY);
-    }
+    props.placeNpcAndShowScript(posX,posY,readPlaceState.value.type)
 
   } else if (readPlaceState.value.isPlaceable) {
     sendPlaceObject(posX, posY, props.placedObject);

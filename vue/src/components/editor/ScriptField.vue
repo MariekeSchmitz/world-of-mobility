@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useScript } from "@/services/useScript";
 import { number } from "mathjs";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import ScriptInfoBox from "./ScriptInfoBox.vue";
 
 const postScript = useScript();
@@ -12,6 +12,8 @@ const props = defineProps<{
   y: number;
 }>();
 
+const scriptSet = ref(false)
+
 const emit = defineEmits<{
   (e: "scriptWindowClosed"): void;
 }>();
@@ -21,11 +23,21 @@ function windowClosed(): void {
 }
 
 function submitAndClose() {
-  postScript(props.id, script.value, props.x, props.y);
-  windowClosed();
+  if(script.value){
+    postScript(props.id, script.value, props.x, props.y);
+    windowClosed();
+  }
 }
 const info = ref(false);
 const script = ref("");
+
+watch(script, () => {
+  if(script.value != ""){
+    scriptSet.value = true
+  }else{
+    scriptSet.value = false
+  }
+});
 </script>
 
 <template>
@@ -34,12 +46,14 @@ const script = ref("");
   >
     <div class="bg-white p-16 grid col-start-2 col-end-2">
       <label for="script"><h2>Eigenes Script für den NPC eingeben:</h2></label>
-      <input type="text" id="script" v-model="script" />
-
+      <textarea type="text" id="script" rows="4" cols="50" class="bg-greenLight" v-model="script">
+      </textarea>
       <button
         @click="submitAndClose()"
-        class="buttonOrange bg-orangeLight mt-12 w-1/2 justify-self-center"
-      >
+        :class="{
+          'buttonOrange bg-orangeLight mt-12 w-1/2 justify-self-center': !scriptSet,
+          'buttonOrange mt-12 w-1/2 justify-self-center': scriptSet,
+          }"      >
         Submit
       </button>
       <button

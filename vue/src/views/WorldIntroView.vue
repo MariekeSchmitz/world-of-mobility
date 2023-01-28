@@ -7,7 +7,7 @@
 import GameListItem from "@/components/selectview/GameListItem.vue";
 import { useInstanceList } from "@/services/useInstanceList";
 import { computed, reactive, ref } from "@vue/reactivity";
-import { onMounted, watch } from "vue";
+import { onMounted, onUnmounted, watch } from "vue";
 import { useMapOverview } from "@/services/useMapOverview";
 import { useEditor } from "@/services/useEditor";
 import { RouterLink } from "vue-router";
@@ -19,7 +19,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { faPlus, faArrowLeft, faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 library.add(faPlus, faArrowLeft, faChevronRight, faChevronLeft);
 
-const { instanceState, getInstanceList } = useInstanceList();
+const { instanceState, getInstanceList, endReceiveInstanceUpdates } = useInstanceList();
 const { mapsOverview, getMaps } = useMapOverview();
 const { createWorld } = useEditor();
 const { joinEditor } = useUserEditor();
@@ -34,6 +34,10 @@ const maplistState: MaplistState = reactive({ maplist: [] });
 onMounted(async () => {
   await getMaps();
   await getInstanceList("editor");
+});
+
+onUnmounted(async () => {
+  endReceiveInstanceUpdates();
 });
 
 const instancelist = computed(() => {
@@ -101,13 +105,13 @@ function scrollingRight() {
   >
     <!-- navigation -->
     <div class="grid grid-cols-3 mx-12 pt-12 h-1/6">
-      <button @click="$router.go(-1)" class="place-self-start">
+      <RouterLink to="/login" class="place-self-start">
         <font-awesome-icon
           icon="fa-solid fa-arrow-left"
           color="white"
           class="bg-greenLight rounded-full p-3 w-6 h-6 inline justify-self-start white hover:bg-greenDark"
         />
-      </button>
+      </RouterLink>
       <div class="text-center">
         <h1>Baumodus</h1>
       </div>

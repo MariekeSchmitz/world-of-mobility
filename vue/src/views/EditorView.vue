@@ -13,7 +13,6 @@ import {
 
   import BottomMenu from "@/components/editor/BottomMenu.vue";
   import EditorMap from "@/components/editor/EditorMap.vue";
-  import MiniMap from "@/components/editor/MiniMap.vue";
   import UserListMenu from "@/components/editor/UserListMenu.vue";
   import {useMap} from "@/services/useMap"
   import { useUserEditor } from "@/services/useUserEditor";
@@ -37,6 +36,8 @@ import {
     faFileArrowDown,
     faArrowLeft
   } from "@fortawesome/free-solid-svg-icons";
+  import { usePlaceNpc } from '@/services/editor/usePlaceNpc';
+  import type { NpcType } from '@/services/editor/NpcType';
   library.add(faPlus, faFileArrowDown, faArrowLeft);
 
 
@@ -66,6 +67,8 @@ import {
     setEditorError("")
   });
 
+
+
   /**
    * in order to Execute THREE code in script tag, create a reactive item and add :ref="name" to the Vue Element
    */
@@ -84,6 +87,7 @@ import {
     const {saveMap, getMapEditor} = useMap();
     const {errorMessage, setEditorError} = useEditorError()
     const {feedbackMessage, setUserFeedback} = useUserFeedback()
+    const {placeNpc} = usePlaceNpc()
 
     const loadedMap = getMapEditor(props.editorID);
     const name = ref();
@@ -99,16 +103,23 @@ import {
   const npcNeedsScript = ref(false)
 
 
+
   function setNpcValues(x:number,y:number) {
     npcx.value = x;
     npcy.value = y;
-    setNpcScriptView(true)
   } 
-
   
-  function setNpcScriptView(val:boolean) {
+  function setScriptViewShowing(val:boolean) {
     npcNeedsScript.value = val;
-    console.log("set NPCScriptView, Wert:", val)
+  }
+
+  async function placeNpcAndShowScript(x:number,y:number,type:NpcType) {
+    await placeNpc(x,y,type,editorID)
+    
+    if (!errorMessage.value) {  
+      setNpcValues(x,y)
+      setScriptViewShowing(true)
+    }
   }
 
   let widthWindow = ref(window.innerWidth);
@@ -145,13 +156,13 @@ import {
     <div class="fixed left-1/2 -translate-y-1/2 -translate-x-1/2 top-16">
       <h1>{{name}}</h1>
     </div>
-    <button @click="$router.go(-1)" class="fixed top-7 left-7">
+    <RouterLink to="/worldintro" class="fixed top-7 left-7">
       <font-awesome-icon
         icon="fa-solid fa-arrow-left"
         color="white"
         class="bg-greenLight rounded-full p-3 w-6 h-6 inline justify-self-start white hover:bg-greenDark"
       />
-    </button>
+    </RouterLink>
     
     <ErrorWarning :errorMsg="errorMessage"></ErrorWarning>
     <SaveFeedback :feedbackMsg="feedbackMessage"></SaveFeedback>
@@ -183,25 +194,17 @@ import {
     <UserListMenu :instanceId="editorID" type="editor"></UserListMenu>
     <ErrorWarning :errorMsg="errorMessage"></ErrorWarning>
     <ErrorWarning :errorMsg="feedbackMessage"></ErrorWarning>
-      <!-- <p v-if="feedbackMessage">{{ feedbackMessage }}</p> -->
 
     <ServerChat :instanceId="editorID" type="editor" :username="loginData.username"></ServerChat>
 
     <ScriptField
-      v-if="npcNeedsScript && !errorMessage"
+      v-if="npcNeedsScript"
       :id="editorID"
       :x="npcx"
       :y="npcy"
-      @script-window-closed="setNpcScriptView(false)"
+      @script-window-closed="setScriptViewShowing(false)"
     ></ScriptField>
     <BottomMenu v-if="!npcNeedsScript || errorMessage"></BottomMenu>
-
-    <!--
-    sends msg on every instance, should only be in one instance for all; first player gets all msg shown as many times as there are players
-          
-    <ServerChat :instanceId="editorID"></ServerChat>
-    -->
-    <MiniMap />
 
     <Renderer
       ref="rendererC"
@@ -222,7 +225,7 @@ import {
         
         <EditorMap
         :editorID="editorID"
-        @npc-added="setNpcValues($event.x, $event.y)"
+        :placeNpcAndShowScript="placeNpcAndShowScript"
         ></EditorMap>
       </Scene>
     </Renderer>

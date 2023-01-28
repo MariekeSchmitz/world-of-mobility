@@ -6,18 +6,22 @@
 
 import { useInstanceList } from "@/services/useInstanceList";
 import GameListItem from "@/components/selectview/GameListItem.vue";
-import { computed, onMounted } from "vue";
+import { computed, onMounted, onUnmounted } from "vue";
 import { useLogin } from "@/services/login/useLogin";
 import Avatar from "@/components/User/Avatar.vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faPlus, faArrowLeft, faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 library.add(faPlus, faArrowLeft,  faChevronRight, faChevronLeft);
 
-const { instanceState, getInstanceList, getAvailableInstances } = useInstanceList();
+const { instanceState, getInstanceList, getAvailableInstances, endReceiveInstanceUpdates } = useInstanceList();
 const { avatarData } = useLogin();
 
 onMounted(async () => {
   await getInstanceList("game");
+});
+
+onUnmounted(async () => {
+  endReceiveInstanceUpdates();
 });
 
 const instancelist = computed(() => {
@@ -52,13 +56,13 @@ function scrollingRight() {
   >
     <!-- navigation -->
     <div class="grid grid-cols-3 mx-12 pt-12 h-1/6">
-      <button @click="$router.go(-1)" class="place-self-start">
+      <RouterLink to="/login" class="place-self-start">
         <font-awesome-icon
           icon="fa-solid fa-arrow-left"
           color="white"
           class="bg-greenLight rounded-full p-3 w-6 h-6 inline justify-self-start white hover:bg-greenDark"
         />
-      </button>
+      </RouterLink>
       <div class="text-center">
         <h1>Spielmodus</h1>
       </div>

@@ -39,7 +39,6 @@ async function placeNpc(x: number, y: number, type: NpcType, id: number) {
   const url = `/api/editor/${id}/placeNpc`;
 
   try {
-    console.log("Placing npc with coordinates", x, y);
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -50,7 +49,6 @@ async function placeNpc(x: number, y: number, type: NpcType, id: number) {
 
     if (!response.ok) {
       const json = await response.json()
-      console.log(json)
       setEditorError(json.message)
     } else{
       setEditorError("")
