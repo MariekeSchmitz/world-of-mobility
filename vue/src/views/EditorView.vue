@@ -13,7 +13,6 @@ import {
 
   import BottomMenu from "@/components/editor/BottomMenu.vue";
   import EditorMap from "@/components/editor/EditorMap.vue";
-  import MiniMap from "@/components/editor/MiniMap.vue";
   import UserListMenu from "@/components/editor/UserListMenu.vue";
   import {useMap} from "@/services/useMap"
   import { useUserEditor } from "@/services/useUserEditor";
@@ -104,7 +103,6 @@ import {
     npcy.value = y;
     setNpcScriptView(true)
   } 
-
   
   function setNpcScriptView(val:boolean) {
     npcNeedsScript.value = val;
