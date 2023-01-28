@@ -21,6 +21,7 @@ import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableType;
+import de.hsrm.mi.swt_project.demo.validation.NpcPlacementValidator;
 import de.hsrm.mi.swt_project.demo.validation.ScriptValidator;
 
 /**
@@ -168,34 +169,35 @@ public class EditorInstance extends Instance {
     }
 
     /**
-     * places NPC of given type onto given x and y coordinates
+     * places NPC of given type onto given x and y coordinates if valid
+     * throws exception if not valid
      * 
      * @author Marie Bohnert, Tom Gouthier
      * @param x    x coordinate of moveable
      * @param y    y coordinate of moveable
      * @param type type of moveable
+     * @throws NpcNotPlaceableException
      */
     public void placeNPC(float x, float y, MoveableType type) throws NpcNotPlaceableException {
 
-        MoveableObject obj = type.createMovable(x, y);
-        logger.info("Trying to place npc with data: {}", obj);
-        if (this.map.validateNpcPlacement(obj)) {
-            logger.info("npc placement is valid");
-            this.map.addNpc(obj);
-            logger.info("placed following npc: {}", obj);
+        MoveableObject newNpc = type.createMovable(x, y);
+        NpcPlacementValidator npcValidator = new NpcPlacementValidator(newNpc, this.map.getNpcs(), this.map.getTiles()[(int) y][(int) x]);
+        logger.info("Trying to place npc with data: {}", newNpc);
+        if (npcValidator.validate()) {
+            this.map.addNpc(newNpc);
+            logger.info("placed following npc: {}", newNpc);
         } else {
-            logger.error("Npc can't be placed");
             throw new NpcNotPlaceableException();
         }
-
     }
 
     /**
-     * deletes npc if found in npc-list
+     * deletes npc with given coordinates if found in npc-list
      * 
      * @param x
      * @param y
      * @author Tom Gouthier, Marie Bohnert
+     * @throws NoNpcExistsOnCoordinates
      */
     public void deleteNPC(float x, float y) throws NoNpcExistsOnCoordinates {
         try {
@@ -212,6 +214,8 @@ public class EditorInstance extends Instance {
      * @param y      y coordinate of npc
      * @param script script to load
      * @author Marie Bohnert, Tom Gouthier
+     * @throws NoNpcExistsOnCoordinates
+     * @throws ScriptNotValidException
      */
     public void addScriptToNpc(float x, float y, String script)
             throws NoNpcExistsOnCoordinates, ScriptNotValidException {
