@@ -248,7 +248,6 @@ public class GameRestController{
     public String validateSpawnpoint(@RequestParam String moveableObject, @RequestParam int xPos, @RequestParam int yPos, @PathVariable long id) {
         GameInstance gameInstance = instanceHandler.getGameInstanceById(id);
         MoveableObject objectToValidate = MoveableType.valueOf(moveableObject).createMovable();
-        String stringifiedBoolean = String.valueOf(gameInstance.validateSpawnpoint(objectToValidate, xPos, yPos));
-        return stringifiedBoolean;
+        return String.valueOf(gameInstance.validateSpawnpoint(objectToValidate, xPos, yPos));
     }
 }
