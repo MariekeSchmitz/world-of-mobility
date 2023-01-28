@@ -30,6 +30,9 @@ public class PlaceableProxy {
      * @return Type of the placeable object.
      */
     public PlaceableObjectType getType() {
+        if(placeable == null){
+            return null;
+        }
         return this.placeable.getType();
     }
 

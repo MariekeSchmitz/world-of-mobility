@@ -22,7 +22,7 @@ import de.hsrm.mi.swt_project.demo.util.ArrayHelpers;
  */
 public class ScriptContext {
 
-    public static final int LOOK_AHEAD = 1;
+    public static final int LOOK_AHEAD = 2;
 
     protected MoveableObject moveable;
     

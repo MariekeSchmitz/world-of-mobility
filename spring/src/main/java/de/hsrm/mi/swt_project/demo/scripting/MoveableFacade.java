@@ -7,8 +7,11 @@ import org.slf4j.LoggerFactory;
 
 import de.hsrm.mi.swt_project.demo.collision.Collidable;
 import de.hsrm.mi.swt_project.demo.controls.Direction;
+import de.hsrm.mi.swt_project.demo.controls.Moveable;
+import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObjectType;
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.TrafficLight;
+import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.movables.MotorizedObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 import de.hsrm.mi.swt_project.demo.movables.Passenger;
@@ -77,7 +80,7 @@ public class MoveableFacade {
      */
     public void start(){
         if(moveable.getCurrentVelocity() == 0.0f){
-            moveable.setCurrentVelocity(0.1f);
+            moveable.setCurrentVelocity(0.05f);
         }
     }
 
@@ -94,6 +97,14 @@ public class MoveableFacade {
         return mapContext[pos + 1][pos];
     }
 
+    public TileProxy getCurrentTile(){
+
+        TileProxy[][] mapContext = context.provideMapContext();
+        int pos = mapContext.length / 2;
+
+        return mapContext[pos][pos]; 
+    }
+
     /**
      * Check if the moveable is a MotorizedObject or a Passenger
      * 
@@ -104,6 +115,24 @@ public class MoveableFacade {
             return false;
         }
         return true;
+    }
+    
+    public boolean isMotorizedObject(Moveable tmpMoveable){
+        if (tmpMoveable instanceof Passenger) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isPassenger(Moveable tmpMoveable){
+        if (tmpMoveable instanceof Passenger) {
+            return true;
+        }
+        return false;
+    }
+
+    public Orientation getOrientation(){
+        return moveable.getOrientation();
     }
 
     public ReadableTrafficLightState currentTrafficLightState() {
@@ -131,7 +160,7 @@ public class MoveableFacade {
         TrafficLight trafficLight = new TrafficLight();
         float xOnTile = moveable.getXPos() - (int) moveable.getXPos();
         float yOnTile = moveable.getYPos() - (int) moveable.getYPos();
-        if (getFrontTile() == null) {
+        if (this.getFrontTile() == null) {
             return true;
         }
         if(distance >= 0 && distance <= 1) {
@@ -141,7 +170,7 @@ public class MoveableFacade {
         TileProxy frontTile = this.getFrontTile();
         PlaceableProxy placeable = frontTile.getPlaceable();
 
-        if (placeable.getType().equals(PlaceableObjectType.TRAFFIC_LIGHT)) {
+        if (placeable.getType() != null && placeable.getType().equals(PlaceableObjectType.TRAFFIC_LIGHT)) {
             switch (moveable.getOrientation()) {
                 case NORTH:
                     if(yOnTile > 1 - distance){
@@ -207,6 +236,9 @@ public class MoveableFacade {
      */
     public void brake() {
         float newVelocity = this.moveable.getCurrentVelocity() - ACCELERATION_DELTA;
+        if(newVelocity < 0){
+            newVelocity = 0.0f;
+        }
         this.moveable.setCurrentVelocity(newVelocity);
     }
 
@@ -237,6 +269,8 @@ public class MoveableFacade {
         return this.context.provideOtherMoveablesContext();
     }
 
+
+    
     /**
      * Calculates distance to another collidable.
      * 
@@ -252,6 +286,30 @@ public class MoveableFacade {
         float otherYPos = other.getYPos();
 
         return MathHelpers.euclideanDistance(thisXPos, thisYPos, otherXPos, otherYPos);
+    }
+
+    public float distanceTo(TileProxy tileProxy) {   
+        
+        float xTile = 0;
+        float yTile = 0;
+
+        TileProxy[][] contextMap = context.provideMapContext();
+
+        for (int row = 0; row < contextMap.length; row++) {
+            for (int col = 0; col < contextMap.length; col++) {
+                if (tileProxy.equals(contextMap[row][col])) {
+                    xTile = col + 0.5f;
+                    yTile = row + 0.5f;
+                    break;
+                }
+            }
+        }   
+
+        float thisXPos = ScriptContext.LOOK_AHEAD + (moveable.getXPos() - (int) moveable.getXPos()) * moveable.getOrientation().xSign();
+        float thisYPos = ScriptContext.LOOK_AHEAD + (moveable.getYPos() - (int) moveable.getYPos()) * moveable.getOrientation().ySign();
+
+        //logger.info("{}|{} -> {}|{} = {}",xTile,yTile,thisXPos,thisYPos, MathHelpers.euclideanDistance(thisXPos, thisYPos, xTile, yTile));
+        return MathHelpers.euclideanDistance(thisXPos, thisYPos, xTile, yTile);
     }    
     
-}
+} 
