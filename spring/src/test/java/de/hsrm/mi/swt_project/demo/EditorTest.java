@@ -107,7 +107,7 @@ class EditorTest {
                 body.put("txt", "Dies ist ein Test");
 
                 mockMvc.perform(
-                                post("/api/editor/servermessage")
+                                post("/api/editor/servermessage/1")
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .content(body.toString()))
                                 .andExpect(status().isOk());
