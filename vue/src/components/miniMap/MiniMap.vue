@@ -12,13 +12,17 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * A Minimap, that displays the various objects placed and the current position on the Map
+ */
 import { computed, onMounted, onUnmounted, ref, type Ref } from "vue";
 import MiniMapTile from "@/components/miniMapTile/MiniMapTile.vue";
 import { useMap, type IMapDTO, type IPlacedObject } from "@/services/useMap";
 import { useGame } from "@/services/useGame";
+import type { StompSubscription } from "@stomp/stompjs";
 
 const { getGameMap } = useMap();
-const { getUserMoveable, receiveGameUpdate } = useGame();
+const { getUserMoveable, receiveGameUpdate, endReceiveGameUpdate } = useGame();
 
 const props = withDefaults(
   defineProps<{
@@ -30,10 +34,18 @@ const props = withDefaults(
   }
 );
 
+/**
+ * Checks if an IPlacedObject is null
+ * @param str An IPlacedObject
+ * @returns a string representing the object-type or an empty string
+ */
 function nonNullTile(str: IPlacedObject) {
   return str ? str.type : "";
 }
 
+/**
+ * Object used for initial loading while the real map is being fetched
+ */
 const testObj: Ref<IMapDTO> = ref({
   tiles: [
     [
@@ -52,17 +64,20 @@ const testObj: Ref<IMapDTO> = ref({
   name: ""
 });
 
+/**
+ * Number of rows / columns of the minimap
+ */
 const rowCount = computed(() => testObj.value.tiles[0].length);
 const userMoveable = computed(() => getUserMoveable(props.user));
-let miniCont = document.getElementById('minimap-container');
-// const containerSize = computed(() => {
-//   const miniCont = document.getElementById('minimap-container');
-//   if(!miniCont) {
-//     return 0;
-//   }
-//   return miniCont.offsetHeight;
-// });
 
+/**
+ * Element that contains the minimap
+ */
+let miniCont = document.getElementById('minimap-container');
+
+/**
+ * Indicates the size of the position indicator
+ */
 const posIndicatorSize = computed(() => {
   const miniConti = document.getElementById('positionIndicator');
   if(!miniConti) {
@@ -100,6 +115,10 @@ onMounted(async () => {
   testObj.value = await getGameMap(props.instanceId);
   receiveGameUpdate(props.instanceId);
 });
+
+onUnmounted(() => {
+  endReceiveGameUpdate();
+})
 </script>
 
 <style scoped>

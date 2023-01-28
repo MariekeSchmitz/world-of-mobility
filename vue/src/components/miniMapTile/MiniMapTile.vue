@@ -6,6 +6,9 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * A maptile, that is used to build a minimap
+ */
 import { onMounted, ref, computed } from "vue";
 import { editorTileURLs } from "../editor/EditorTileURLDict";
 
