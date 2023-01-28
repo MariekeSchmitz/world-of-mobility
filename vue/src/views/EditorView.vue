@@ -145,13 +145,13 @@ import {
     <div class="fixed left-1/2 -translate-y-1/2 -translate-x-1/2 top-16">
       <h1>{{name}}</h1>
     </div>
-    <button @click="$router.go(-1)" class="fixed top-7 left-7">
+    <RouterLink to="/worldintro" class="fixed top-7 left-7">
       <font-awesome-icon
         icon="fa-solid fa-arrow-left"
         color="white"
         class="bg-greenLight rounded-full p-3 w-6 h-6 inline justify-self-start white hover:bg-greenDark"
       />
-    </button>
+    </RouterLink>
     
     <ErrorWarning :errorMsg="errorMessage"></ErrorWarning>
     <SaveFeedback :feedbackMsg="feedbackMessage"></SaveFeedback>
