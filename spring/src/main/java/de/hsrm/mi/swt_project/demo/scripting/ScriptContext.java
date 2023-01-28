@@ -54,10 +54,10 @@ public class ScriptContext {
      *         tile where the moveable is positioned on with
      *         radius {@value #LOOK_AHEAD}
      */
-    public Tile[][] provideMapContext() {
+    public TileProxy[][] provideMapContext() {
 
         int contextSize = 2 * LOOK_AHEAD + 1;
-        Tile[][] mapContext = new Tile[contextSize][contextSize];
+        TileProxy[][] mapContext = new TileProxy[contextSize][contextSize];
 
         if (this.gameMap == null) {
             return mapContext;
@@ -77,7 +77,8 @@ public class ScriptContext {
             for (int col = colStart, contextCol = 0; col <= colEnd; col++, contextCol++) {
 
                 if (row >= 0 && row < this.gameMap.length && col >= 0 && col < this.gameMap.length) {
-                    mapContext[contextRow][contextCol] = this.gameMap[row][col];
+                    Tile tile = this.gameMap[row][col];
+                    mapContext[contextRow][contextCol] = new TileProxy(tile);
                 }
 
             }
@@ -152,10 +153,10 @@ public class ScriptContext {
      * @param mapContext Unoriented map context.
      * @return Oriented map context.
      */
-    protected Tile[][] orientedMapContext(Tile[][] mapContext) {
+    protected TileProxy[][] orientedMapContext(TileProxy[][] mapContext) {
 
         int contextSize = 2 * LOOK_AHEAD + 1;
-        Tile[][] orientedContext = new Tile[contextSize][contextSize];
+        TileProxy[][] orientedContext = new TileProxy[contextSize][contextSize];
 
         switch (moveable.getOrientation()) {
 

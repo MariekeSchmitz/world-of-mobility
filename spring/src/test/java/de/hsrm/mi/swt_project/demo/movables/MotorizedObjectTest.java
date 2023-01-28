@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
-import de.hsrm.mi.swt_project.demo.scripting.ScriptContext;
 @SpringBootTest
 class MotorizedObjectTest {
 

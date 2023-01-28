@@ -10,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Streetile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.movables.MotorizedObject;
@@ -69,11 +68,11 @@ class MoveableFacadeTest {
 
         facade = MoveableFacade.createFor(moveable, context);
 
-        Tile[][] surroundingTiles = facade.surroundingTiles();
+        TileProxy[][] surroundingTiles = facade.surroundingTiles();
 
         for (int i = 0; i < surroundingTiles.length; i++) {
             for (int j = 0; j < surroundingTiles[i].length; j++) {
-                assertSame(gameMap[i+4][j+4], surroundingTiles[i][j]);
+                assertSame(gameMap[i+4][j+4], surroundingTiles[i][j].tile);
             }
         }
     }

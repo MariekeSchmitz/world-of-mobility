@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 
 import de.hsrm.mi.swt_project.demo.collision.Collidable;
 import de.hsrm.mi.swt_project.demo.controls.Direction;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObjectType;
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.TrafficLight;
-import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.movables.MotorizedObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 import de.hsrm.mi.swt_project.demo.movables.Passenger;
@@ -75,8 +75,9 @@ public class MoveableFacade {
      * 
      * @return the Fronttile of the moveable
      */
-    public Tile getFrontTile(){
-        Tile[][] mapContext = context.provideMapContext();
+    public TileProxy getFrontTile(){
+
+        TileProxy[][] mapContext = context.provideMapContext();
         int pos = mapContext.length / 2;
 
         return mapContext[pos + 1][pos];
@@ -110,7 +111,11 @@ public class MoveableFacade {
         if(distance >= 0 && distance <= 1) {
             distance = 0.2f;
         }
-        if(getFrontTile().getPlacedObject() instanceof TrafficLight){
+
+        TileProxy frontTile = this.getFrontTile();
+        PlaceableProxy placeable = frontTile.getPlaceable();
+
+        if (placeable.getType().equals(PlaceableObjectType.TRAFFIC_LIGHT)) {
             switch (moveable.getOrientation()) {
                 case NORTH:
                     if(yOnTile > 1 - distance){
@@ -192,7 +197,7 @@ public class MoveableFacade {
      * 
      * @return 2D array containing information of surrounding tiles.
      */
-    public Tile[][] surroundingTiles() {
+    public TileProxy[][] surroundingTiles() {
         return this.context.provideMapContext();
     }
 
