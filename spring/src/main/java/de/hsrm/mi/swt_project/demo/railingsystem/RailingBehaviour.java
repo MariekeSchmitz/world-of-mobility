@@ -31,7 +31,7 @@ public class RailingBehaviour {
 
     public static final float APPROXIMATION_STEP = 0.002f;
 
-    private Map<String, RailingMemoryCell> railingMemory = new HashMap<>();
+    protected Map<String, RailingMemoryCell> railingMemory = new HashMap<>();
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -86,7 +86,7 @@ public class RailingBehaviour {
      * @param movement calculated movement the moveable should move in a specific direction 
      * @param dir direction the moveable wants to drive to 
      */
-    public void tCrossBehaviour(String key, MoveableObject moveable, Tile tile, float movement, Direction dir){
+    private void tCrossBehaviour(String key, MoveableObject moveable, Tile tile, float movement, Direction dir){
         Orientation orientation = moveable.getOrientation();
         Streetile sTile = (Streetile)tile;
         switch (dir) {
@@ -120,7 +120,7 @@ public class RailingBehaviour {
      * @param movement calculated movement the moveable should move in a specific direction 
      * @param dir direction the moveable wants to drive to 
      */
-    public void crossBehaviour(String key, MoveableObject moveable, Tile tile, float movement, Direction dir){
+    private void crossBehaviour(String key, MoveableObject moveable, Tile tile, float movement, Direction dir){
         Tile straightConversionTile = Tiletype.STREET_STRAIGHT.createTile();
         Tile curveConversionTile = Tiletype.STREET_CURVE.createTile();
         Orientation orientation = moveable.getOrientation();
@@ -161,7 +161,7 @@ public class RailingBehaviour {
      * @param tile tile the moveable is currently driving on 
      * @param movement calculated movement the moveable should move in a specific direction 
      */
-    public void straightBehaviour(MoveableObject moveable, Tile tile, float movement) {
+    private void straightBehaviour(MoveableObject moveable, Tile tile, float movement) {
 
         float xPos = moveable.getXPos();
         float yPos = moveable.getYPos();
@@ -207,7 +207,7 @@ public class RailingBehaviour {
      * @param tile tile the moveable is currently driving on 
      * @param movement calculated movement the moveable should move in a specific direction 
      */
-    public void curveBehaviour(String key, MoveableObject moveable, Tile tile, float movement) {
+    private void curveBehaviour(String key, MoveableObject moveable, Tile tile, float movement) {
 
         float xPos = moveable.getXPos();
         float yPos = moveable.getYPos();
