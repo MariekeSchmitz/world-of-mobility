@@ -1,9 +1,11 @@
-package de.hsrm.mi.swt_project.demo.usermanagement;
+package de.hsrm.mi.swt_project.demo.usermanagement.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import de.hsrm.mi.swt_project.demo.validation.LoginValidator;
 
 /**
  * Implementation of a UserService. Handles all actions on the List of users
@@ -21,19 +23,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String addUser(String username) throws UserNotUniqueException, UsernameTooShortException {
+    public String addUser(String username) throws UserNotUniqueException, UsernameTooShortException, UsernameTooLongException {
 
-        if (username.length() < 3) {
-            logger.error("Username {} not long enough. Has to be 3 or above letters.", username);
-            throw new UsernameTooShortException();
+        LoginValidator loginValidator = new LoginValidator(username, userList.getUserList());
 
-        } else if (userList.getUserList().contains(username)) {
-            logger.error("Username {} is not unique", username);
-            throw new UserNotUniqueException();
-        } else {
-            logger.info("User {} added to List of Users. Now logged in.", username);
+        try {
+            loginValidator.validate();
             userList.getUserList().add(username);
+            logger.info("User {} added to List of Users. Now logged in.", username);          
             return username;
+        } catch (UserNotUniqueException | UsernameTooShortException | UsernameTooLongException e) {
+            throw e;
         }
 
     }

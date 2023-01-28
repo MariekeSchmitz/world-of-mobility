@@ -1,4 +1,4 @@
-package de.hsrm.mi.swt_project.demo.usermanagement;
+package de.hsrm.mi.swt_project.demo.usermanagement.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import de.hsrm.mi.swt_project.demo.usermanagement.service.UserNotUniqueException;
+import de.hsrm.mi.swt_project.demo.usermanagement.service.UserServiceImpl;
+import de.hsrm.mi.swt_project.demo.usermanagement.service.UsernameTooLongException;
+import de.hsrm.mi.swt_project.demo.usermanagement.service.UsernameTooShortException;
 
 /**
  * REST-Controller for all user related topics.
@@ -41,7 +46,7 @@ public class UserRestController {
         try {
             userService.addUser(user.name());
             return SendUserDTO.from(user.name());
-        } catch (UserNotUniqueException | UsernameTooShortException e) {
+        } catch (UserNotUniqueException | UsernameTooShortException | UsernameTooLongException e) {
             throw e;
         }
     }

@@ -1,10 +1,10 @@
-package de.hsrm.mi.swt_project.demo.usermanagement;
+package de.hsrm.mi.swt_project.demo.usermanagement.service;
 
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- * List of all Users, up to date at all times. Used to check, if user is unique
+ * List of all Users, up to date at all times
  * 
  * @author Tom Gouthier, Marie Bohnert
  */
