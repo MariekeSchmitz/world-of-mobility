@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bouncycastle.crypto.encodings.OAEPEncoding;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -126,5 +127,24 @@ class MoveableFacadeTest {
 
         assertEquals(5, facade.distanceTo(other));
     }
-    
+
+    @Test 	
+    void testTurnLeft() {
+        Passenger passenger = new Passenger(Orientation.NORTH, 50, 50, 1); 	
+        ScriptContext context = new ScriptContext(passenger, null, null);
+        facade = MoveableFacade.createFor(passenger, context);
+
+        facade.turnLeft();
+        assertEquals(Orientation.NORTH_WEST, passenger.getOrientation()); 	
+    } 	
+	
+    @Test 	
+    void testTurnRight() { 	
+        Passenger passenger = new Passenger(Orientation.NORTH, 50, 50, 1); 	
+        ScriptContext context = new ScriptContext(passenger, null, null);
+        facade = MoveableFacade.createFor(passenger, context);
+
+        facade.turnRight();
+        assertEquals(Orientation.NORTH_EAST, passenger.getOrientation()); 
+    }
 }
