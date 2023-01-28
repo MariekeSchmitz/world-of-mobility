@@ -2,10 +2,9 @@ import random
 
 npc.start()
 
-
 if npc.isMotorizedObject:
 
-    if not npc.isTrafficLightGreen():
+    if not npc.isTrafficLightGreen(0.2):
         npc.emergencyBrake()
 
     randomint = random.randint(0,4)

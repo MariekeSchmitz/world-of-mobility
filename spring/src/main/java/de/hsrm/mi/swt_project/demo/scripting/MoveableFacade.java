@@ -100,32 +100,35 @@ public class MoveableFacade {
      * @return Return the state from the trafficlight
      * 
      */
-    public boolean isTrafficLightGreen(){
+    public boolean isTrafficLightGreen(float distance){
         TrafficLight trafficLight = new TrafficLight();
         float xOnTile = moveable.getXPos() - (int) moveable.getXPos();
         float yOnTile = moveable.getYPos() - (int) moveable.getYPos();
         if (getFrontTile() == null) {
             return true;
         }
+        if(distance >= 0 && distance <= 1) {
+            distance = 0.2f;
+        }
         if(getFrontTile().getPlacedObject() instanceof TrafficLight){
             switch (moveable.getOrientation()) {
                 case NORTH:
-                    if(yOnTile > 0.7f){
+                    if(yOnTile > 1 - distance){
                         return trafficLight.isTrafficLightRed(moveable.getOrientation());
                     }
                     break;
                 case SOUTH:
-                    if(yOnTile < 0.3f){
+                    if(yOnTile < distance){
                         return trafficLight.isTrafficLightRed(moveable.getOrientation());
                     }
                     break;
                 case WEST:
-                    if(xOnTile < 0.3f){
+                    if(xOnTile < distance){
                         return trafficLight.isTrafficLightRed(moveable.getOrientation());
                     }
                     break;
                 case EAST:
-                    if(xOnTile > 0.7f){
+                    if(xOnTile > 1 - distance){
                         return trafficLight.isTrafficLightRed(moveable.getOrientation());
                     }
                     break;
