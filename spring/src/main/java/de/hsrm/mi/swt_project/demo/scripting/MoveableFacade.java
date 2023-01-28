@@ -12,6 +12,8 @@ import de.hsrm.mi.swt_project.demo.editor.placeableobjects.TrafficLight;
 import de.hsrm.mi.swt_project.demo.movables.MotorizedObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 import de.hsrm.mi.swt_project.demo.movables.Passenger;
+import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLightSingleTon;
+import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLightState;
 import de.hsrm.mi.swt_project.demo.util.MathHelpers;
 
 /**
@@ -25,6 +27,12 @@ import de.hsrm.mi.swt_project.demo.util.MathHelpers;
  * @author Timothy Doukhin
  */
 public class MoveableFacade {
+
+    protected enum ReadableTrafficLightState {
+        HORIZONTAL_GREEN,
+        VERTICAL_GREEN,
+        YELLOW
+    };
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -96,6 +104,21 @@ public class MoveableFacade {
             return false;
         }
         return true;
+    }
+
+    public ReadableTrafficLightState currentTrafficLightState() {
+
+        TrafficLightState state = TrafficLightSingleTon.getInstance().getTrafficLightState();
+
+        if (state.equals(TrafficLightState.EASTWEST)) {
+            return ReadableTrafficLightState.HORIZONTAL_GREEN;
+        }
+
+        if (state.equals(TrafficLightState.NORTHSOUTH)) {
+            return ReadableTrafficLightState.VERTICAL_GREEN;
+        }
+
+        return ReadableTrafficLightState.YELLOW;
     }
 
     /**
