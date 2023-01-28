@@ -1,13 +1,3 @@
-<template>
-  <div id="spanwpoint-container">
-    <div v-for="(tileRow, y) in testObj.tiles" :key="testObj.name" id="tile-row">
-      <div v-for="(tile, x) in tileRow" :key="tile.type" id="tile-column">
-        <SimplifiedTile :tile-type="tile.type" :orientation="tile.orientation" :x-index="x" :y-index="y" :asset="nonNullTile(tile.placedObject)"/>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, type Ref } from "vue";
 import SimplifiedTile from "@/components/simplifiedTile/SimplifiedTile.vue";
@@ -29,6 +19,10 @@ const props = withDefaults(
     instanceId: 1,
   }
 );
+
+const emit = defineEmits<{
+  (e: "setSpawnPoint"): void;
+}>();
 
 function nonNullTile(str: IPlacedObject) {
   return str ? str.type : "";
@@ -61,20 +55,19 @@ onMounted(async () => {
 onUnmounted(() => {
   removeWindowWIdthListener();
 });
+
+
 </script>
 
-<style scoped>
-#spanwpoint-container {
-  height: v-bind("miniMapScalingState.windowWidth");
-  width: v-bind("miniMapScalingState.windowWidth");
-  background-color: rgb(66, 66, 66);
-  display: flex;
-  flex-direction: column-reverse;
-}
+<template>
+  <div >
+    <div class="flex flex-col-reverse">
+      <div v-for="(tileRow, y) in testObj.tiles" :key="testObj.name" class="flex flex-row mx-auto bg-greenDark">
+        <div v-for="(tile, x) in tileRow" :key="tile.type" class="flex flex-row">
+          <SimplifiedTile :tile-type="tile.type" :orientation="tile.orientation" :x-index="x" :y-index="y" :asset="nonNullTile(tile.placedObject)" @set-spawn-point="emit('setSpawnPoint')"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 
-#tile-row {
-  display: flex;
-  flex-direction: row;
-}
-
-</style>

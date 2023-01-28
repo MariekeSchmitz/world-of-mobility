@@ -29,6 +29,7 @@ const {setEditorError} = useEditorError()
  * @param id id of editor-instance
  */
 async function placeNpc(x: number, y: number, type: NpcType, id: number) {
+  
   const npc: IPlaceNPC = {
     x: x,
     y: y,
