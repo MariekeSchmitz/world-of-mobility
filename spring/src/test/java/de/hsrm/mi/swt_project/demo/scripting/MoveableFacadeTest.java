@@ -46,7 +46,7 @@ class MoveableFacadeTest {
     }
 
     @Test
-    public void testEmergencyBrake() {
+    void testEmergencyBrake() {
         moveable.setCurrentVelocity(50);
         facade.emergencyBrake();
         assertEquals(0.0f, moveable.getCurrentVelocity());

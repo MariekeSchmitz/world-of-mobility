@@ -13,7 +13,7 @@ import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.movables.Car;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 
-public class CurveBehaviorTest {
+class CurveBehaviorTest {
     static final float UP_ALIGNMENT_OFFSET = 0.7f;
     static final float RIGHT_ALIGNMENT_OFFSET = 0.7f;
     static final float DOWN_ALIGNMENT_OFFSET = 0.3f;

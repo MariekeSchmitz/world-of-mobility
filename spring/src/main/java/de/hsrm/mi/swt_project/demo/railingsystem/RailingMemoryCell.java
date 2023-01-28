@@ -1,5 +1,7 @@
 package de.hsrm.mi.swt_project.demo.railingsystem;
 
+import java.util.Random;
+
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 
 /**
@@ -15,6 +17,7 @@ public class RailingMemoryCell {
     private int yPos;
     private boolean alreadyTurned;
     private Direction leftRight5050;
+    Random random;
 
     /**
      * 
@@ -24,7 +27,8 @@ public class RailingMemoryCell {
     public RailingMemoryCell(int xPos, int yPos){
         this.xPos = xPos;
         this.yPos = yPos;
-        leftRight5050 = (int)(Math.random()*100) < 50 ? Direction.LEFT : Direction.RIGHT;
+        this.random = new Random();
+        leftRight5050 = random.nextInt(100) < 50 ? Direction.LEFT : Direction.RIGHT;
         this.alreadyTurned = false;
     }
 
@@ -59,7 +63,7 @@ public class RailingMemoryCell {
         if(x != xPos || y != yPos){
             xPos = x; 
             yPos = y;
-            leftRight5050 = (int)(Math.random()*100) < 50 ? Direction.LEFT : Direction.RIGHT;
+            leftRight5050 = random.nextInt(100) < 50 ? Direction.LEFT : Direction.RIGHT;
             return true;
         } else {
             return false;
