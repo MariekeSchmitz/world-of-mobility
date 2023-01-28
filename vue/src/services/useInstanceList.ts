@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Client } from "@stomp/stompjs";
+import { Client, StompSubscription } from "@stomp/stompjs";
 import { reactive, readonly, ref } from "vue";
 import type { IInstanceInfo } from "@/services/IInstanceInfo";
 
@@ -25,6 +25,8 @@ export function useInstanceList(): any {
   const deleteState: IDeleteInstance = reactive({
     id: 0,
   });
+
+  let subscription: StompSubscription
 
   function processInstanceUpdate(instanceUpdate: IInstanceInfo) {
     let found = 0;
@@ -66,7 +68,7 @@ export function useInstanceList(): any {
 
     stompClient.onConnect = (frame) => {
       console.log("Connected Stompbroker to InstanceUpdate");
-      stompClient.subscribe(DEST, (message) => {
+      subscription = stompClient.subscribe(DEST, (message) => {
         const instanceUpdate: IInstanceInfo = JSON.parse(message.body);
         processInstanceUpdate(instanceUpdate);
       });
@@ -77,6 +79,10 @@ export function useInstanceList(): any {
     };
 
     stompClient.activate();
+  }
+
+  function endReceiveInstanceUpdates(){
+    subscription.unsubscribe()
   }
 
   /**
@@ -158,6 +164,7 @@ export function useInstanceList(): any {
     deleteState: readonly(deleteState),
     getGamename,
     getUserlist,
-    getAvailableInstances
+    getAvailableInstances,
+    endReceiveInstanceUpdates
   };
 }

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Client } from "@stomp/stompjs";
+import { Client, StompSubscription } from "@stomp/stompjs";
 import { reactive, readonly, ref } from "vue";
 import type { INpc } from "@/interfaces/INpc";
 import { useEditorError } from "./editor/useEditorError";
@@ -43,6 +43,8 @@ export function useMapUpdate(editorId: number): any {
     },
   });
 
+  let subscription: StompSubscription
+
   function receiveMapUpdates() {
     const proto = location.protocol == "https:" ? "wss" : "ws";
     const wsurl = `${proto}://${window.location.host}/stompbroker`;
@@ -55,7 +57,7 @@ export function useMapUpdate(editorId: number): any {
 
     stompClient.onConnect = (frame) => {
       console.log("Connected Stompbroker to MapUpdate");
-      stompClient.subscribe(DEST, (message) => {
+      subscription = stompClient.subscribe(DEST, (message) => {
         const mapUpdate: IMapDTO = JSON.parse(message.body);
         mapState.value.map = mapUpdate;
       });
@@ -66,6 +68,10 @@ export function useMapUpdate(editorId: number): any {
     };
 
     stompClient.activate();
+  }
+
+  function endReceiveMapupdate(){
+    subscription.unsubscribe()
   }
 
   async function sendMapUpdates(mapUpdateObj: IMapUpdate) {
@@ -103,5 +109,6 @@ export function useMapUpdate(editorId: number): any {
     mapUpdates: readonly(mapState),
     sendMapUpdates,
     receiveMapUpdates,
+    endReceiveMapupdate
   };
 }

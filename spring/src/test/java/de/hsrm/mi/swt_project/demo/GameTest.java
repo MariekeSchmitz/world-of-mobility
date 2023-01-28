@@ -48,7 +48,7 @@ class GameTest {
     }
 
     @Test
-    void postLeaveEditorGood() throws Exception {
+    void postLeaveGameGood() throws Exception {
         
         JSONObject body = new JSONObject();
         body.put("name", "John");
@@ -63,5 +63,18 @@ class GameTest {
         ).andExpect(status().isOk());
     }
 
+    @Test
+        void postServerMessageGameGood() throws Exception {
+
+                JSONObject body = new JSONObject();
+                body.put("usrId", gameId);
+                body.put("txt", "Dies ist ein Test");
+
+                mockMvc.perform(
+                                post("/api/game/servermessage/" + gameId)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(body.toString()))
+                                .andExpect(status().isOk());
+        }
 
 }
