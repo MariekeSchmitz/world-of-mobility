@@ -6,14 +6,14 @@
 
 import { useInstanceList } from "@/services/useInstanceList";
 import GameListItem from "@/components/selectview/GameListItem.vue";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted } from "vue";
 import { useLogin } from "@/services/login/useLogin";
 import Avatar from "@/components/User/Avatar.vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faPlus, faArrowLeft, faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 library.add(faPlus, faArrowLeft,  faChevronRight, faChevronLeft);
 
-const { instanceState, getInstanceList } = useInstanceList();
+const { instanceState, getInstanceList, getAvailableInstances } = useInstanceList();
 const { avatarData } = useLogin();
 
 onMounted(async () => {
@@ -27,7 +27,8 @@ const instancelist = computed(() => {
   } else if (gameSelection != null) {
     gameSelection.style.display = "grid";
   }
-  return instanceState.instancelist;
+
+  return getAvailableInstances();
 });
 
 function scrollingLeft() {
@@ -108,7 +109,7 @@ function scrollingRight() {
               class="flex overflow-x-scroll scrollbar-hide col-span-5"
               id="worldWrapper"
             >
-              <div class="flex flex-nowrap">
+              <div v-if="instancelist.length > 0" class="flex flex-nowrap">
                 <div class="gameListItem" v-for="ele in instancelist">
                   <RouterLink :to="{ path: '/joingame/' + ele.id }">
                     <GameListItem

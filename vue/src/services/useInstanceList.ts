@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Client } from "@stomp/stompjs";
 import { reactive, readonly, ref } from "vue";
+import type { IInstanceInfo } from "@/services/IInstanceInfo";
 
 export function useInstanceList(): any {
   /**
@@ -9,21 +10,20 @@ export function useInstanceList(): any {
    * @author Finn Schindel, Astrid Klemmer
    */
 
-  interface IInstanceInfo {
-    id: number;
-    gamename: string;
-    worldname: string;
-    playeramount: number;
-    users: string[];
-    command: string;
-  }
-
   interface IInstanceState {
     instancelist: Array<IInstanceInfo>;
   }
 
+  interface IDeleteInstance {
+    id: number;
+  }
+
   const instanceState: IInstanceState = reactive({
     instancelist: [],
+  });
+
+  const deleteState: IDeleteInstance = reactive({
+    id: 0,
   });
 
   function processInstanceUpdate(instanceUpdate: IInstanceInfo) {
@@ -31,11 +31,12 @@ export function useInstanceList(): any {
     if (instanceUpdate.command == "CREATE") {
       instanceState.instancelist.forEach(function (item) {
         if (item.id == instanceUpdate.id) {
-          if (
-            instanceUpdate.command == "CREATE" &&
-            item.playeramount != instanceUpdate.playeramount
-          ) {
+          if (item.playeramount != instanceUpdate.playeramount) {
             item.playeramount = instanceUpdate.playeramount;
+            found = 1;
+          }
+          if (item.users != instanceUpdate.users) {
+            item.users = instanceUpdate.users;
             found = 1;
           }
         }
@@ -47,6 +48,7 @@ export function useInstanceList(): any {
         found = 0;
       }
     } else if (instanceUpdate.command == "DELETE") {
+      deleteState.id = instanceUpdate.id;
       const deleteIndex = instanceState.instancelist.indexOf(instanceUpdate);
       instanceState.instancelist.splice(deleteIndex, 1);
     }
@@ -128,9 +130,34 @@ export function useInstanceList(): any {
     return gamename
   }
 
+  function getUserlist(instanceId: number){
+    let users: string[] = [];
+    instanceState.instancelist.forEach(function (item: IInstanceInfo) {
+      if (item.id == instanceId) {
+        users = item.users;
+      }
+    });
+    return users
+  }
+
+  function getAvailableInstances(){
+    let list:IInstanceInfo[] = []
+    list = instanceState.instancelist.filter((instance: IInstanceInfo) => {
+        if(instance.maxPlayerCount != instance.playeramount){
+          return instance
+        }
+      }
+    );
+
+    return list
+  }
+
   return {
     instanceState: readonly(instanceState),
     getInstanceList,
-    getGamename
+    deleteState: readonly(deleteState),
+    getGamename,
+    getUserlist,
+    getAvailableInstances
   };
 }

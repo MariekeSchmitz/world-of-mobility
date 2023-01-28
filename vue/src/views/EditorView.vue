@@ -1,48 +1,42 @@
 <!-- prettier-ignore -->
 <script setup lang="ts">
 //@ts-ignore
-
-import { ref, onMounted, reactive, watch, onUnmounted } from "vue";
-
 import * as THREE from 'three'
+import { ref, onMounted, reactive, watch, onUnmounted } from "vue";
 import {
   AmbientLight,
   Camera,
   PointLight,
   Renderer,
-  Scene,
-  Plane,
-  BasicMaterial,
-  Texture
+  Scene
 } from "troisjs";
 
-import BottomMenu from "@/components/editor/BottomMenu.vue";
-import EditorMap from "@/components/editor/EditorMap.vue";
-import MiniMap from "@/components/editor/MiniMap.vue";
-import UserListMenu from "@/components/editor/UserListMenu.vue";
-import {useMap} from "@/services/useMap"
-import { useUserEditor } from "@/services/useUserEditor";
-import { useLogin } from "@/services/login/useLogin";
-import ScriptField from "@/components/editor/ScriptField.vue";
-import ServerChat from "@/components/ServerChat.vue";
-import Avatar from "@/components/User/Avatar.vue";
-import ErrorWarning from "@/components/ErrorWarning.vue";
-import SaveFeedback from "@/components/SaveFeedback.vue";
-
-import { useUserFeedback } from "@/services/editor/useUserFeedback";
-import type { MapInterface } from "@/services/editor/MapInterface";
-import { editorTileURLs } from "@/components/editor/EditorTileURLDict"
-import { library } from "@fortawesome/fontawesome-svg-core";
-import router from "@/router";
-import {
-  faPlus,
-  faFileArrowDown,
-  faArrowLeft
-} from "@fortawesome/free-solid-svg-icons";
-import { useEditorError } from "@/services/editor/useEditorError";
-import { animateHintBox } from "@/components/HintBoxAnimation";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { RouterLink } from "vue-router";
+  import BottomMenu from "@/components/editor/BottomMenu.vue";
+  import EditorMap from "@/components/editor/EditorMap.vue";
+  import MiniMap from "@/components/editor/MiniMap.vue";
+  import UserListMenu from "@/components/editor/UserListMenu.vue";
+  import {useMap} from "@/services/useMap"
+  import { useUserEditor } from "@/services/useUserEditor";
+  import { useLogin } from "@/services/login/useLogin";
+  import ScriptField from "@/components/editor/ScriptField.vue";
+  import ServerChat from "@/components/ServerChat.vue";
+  import { useRemoveInstanceState } from "@/services/useRemoveInstanceState";
+  import Avatar from "@/components/User/Avatar.vue";
+  import ErrorWarning from "@/components/ErrorWarning.vue";
+  import SaveFeedback from "@/components/SaveFeedback.vue";
+  import { useUserFeedback } from "@/services/editor/useUserFeedback";
+  import type { MapInterface } from "@/services/editor/MapInterface";
+  import { editorTileURLs } from "@/components/editor/EditorTileURLDict"
+  import { useEditorError } from "@/services/editor/useEditorError";
+  import { animateHintBox } from "@/components/HintBoxAnimation";
+  import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+  import router from "@/router";
+  import { library } from "@fortawesome/fontawesome-svg-core";
+  import {
+    faPlus,
+    faFileArrowDown,
+    faArrowLeft
+  } from "@fortawesome/free-solid-svg-icons";
   library.add(faPlus, faFileArrowDown, faArrowLeft);
 
 
@@ -50,12 +44,13 @@ import { RouterLink } from "vue-router";
     editorID: string;
   }>();
 
-
   const editorID = Number(props.editorID);
   const backgroundPath = editorTileURLs['BACKGROUND'];
   const { loginData, avatarData } = useLogin();
   const { leaveEditor } = useUserEditor();
-
+  const { removeInstanceState, setRemoveState } = useRemoveInstanceState();
+  
+  const remove = ref(false)
   
   onMounted(() => {
     const orbitControls = rendererC.value.three.cameraCtrl;
@@ -64,8 +59,11 @@ import { RouterLink } from "vue-router";
   });
 
   onUnmounted(() => {
+    if(removeInstanceState.value.id == editorID && removeInstanceState.value.type == "editor" && removeInstanceState.value.remove == true){
+    }else{
       leaveEditor(editorID, loginData.username);
-      setEditorError("")
+    }
+    setEditorError("")
   });
 
   /**
@@ -182,11 +180,10 @@ import { RouterLink } from "vue-router";
       </button>
     </div>
 
+    <UserListMenu :instanceId="editorID" type="editor"></UserListMenu>
     <ErrorWarning :errorMsg="errorMessage"></ErrorWarning>
     <ErrorWarning :errorMsg="feedbackMessage"></ErrorWarning>
       <!-- <p v-if="feedbackMessage">{{ feedbackMessage }}</p> -->
-
-    <UserListMenu :instanceID="editorID"></UserListMenu>
 
     <ServerChat :instanceId="editorID" type="editor" :username="loginData.username"></ServerChat>
 
@@ -222,15 +219,6 @@ import { RouterLink } from "vue-router";
       <Scene ref="scene">
         <PointLight :position="{ x: 0, y: 0, z: 10 }" />
         <AmbientLight :intensity="0.1" color="#ff6000"></AmbientLight>
-        <!-- <Plane
-            :width="widthWindow"
-            :height="heightWindow"
-            :position="{ x: 0, y: 0, z: 5 }"
-          >
-            <BasicMaterial>
-              <Texture v-bind:src="backgroundPath" />
-            </BasicMaterial >
-          </Plane> -->
         
         <EditorMap
         :editorID="editorID"
