@@ -40,7 +40,8 @@ class ScriptContextTest {
         assertEquals(ScriptContext.LOOK_AHEAD * 2 + 1, mapContext[0].length);
 
         // check that center of map context is the tile where the moveable is positioned
-        assertSame(gameMap[5][5], mapContext[1][1].tile);
+        int middle = ScriptContext.LOOK_AHEAD;
+        assertSame(gameMap[5][5], mapContext[middle][middle].tile);
 
         int row = (int) moveable.getYPos();
         int col = (int) moveable.getXPos();
@@ -97,9 +98,12 @@ class ScriptContextTest {
         mov2.setXPos(4);
         mov2.setYPos(5);
 
+        float outOfRangeX = moveable.getXPos() + ScriptContext.LOOK_AHEAD + 1;
+        float outOfRangeY = moveable.getXPos() + ScriptContext.LOOK_AHEAD + 1;
+
         MoveableObject mov3 = new Passenger();
-        mov3.setXPos(7);
-        mov3.setYPos(7);
+        mov3.setXPos(outOfRangeX);
+        mov3.setYPos(outOfRangeY);
 
         List<MoveableObject> allMoveables = new ArrayList<>();
         allMoveables.add(mov1);

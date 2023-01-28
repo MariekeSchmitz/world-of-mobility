@@ -73,7 +73,11 @@ class MoveableFacadeTest {
 
         for (int i = 0; i < surroundingTiles.length; i++) {
             for (int j = 0; j < surroundingTiles[i].length; j++) {
-                assertSame(gameMap[i+4][j+4], surroundingTiles[i][j].tile);
+
+                int mapRow = i + (int) moveable.getYPos() - ScriptContext.LOOK_AHEAD;
+                int mapCol = j + (int) moveable.getXPos() - ScriptContext.LOOK_AHEAD;
+
+                assertSame(gameMap[mapRow][mapCol], surroundingTiles[i][j].tile);
             }
         }
     }
@@ -81,8 +85,8 @@ class MoveableFacadeTest {
     @Test
     void testNearbyRoadUsers() {
 
-        moveable.setXPos(5);
-        moveable.setYPos(5);
+        moveable.setXPos(5 * ScriptContext.LOOK_AHEAD);
+        moveable.setYPos(5 * ScriptContext.LOOK_AHEAD);
 
         List<MoveableObject> allMoveables = new ArrayList<>();
 
@@ -92,8 +96,8 @@ class MoveableFacadeTest {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 MoveableObject obj = new MotorizedObject();
-                obj.setXPos(i);
-                obj.setYPos(j);
+                obj.setXPos(i * ScriptContext.LOOK_AHEAD);
+                obj.setYPos(j * ScriptContext.LOOK_AHEAD);
                 allMoveables.add(obj);
             }
         }
