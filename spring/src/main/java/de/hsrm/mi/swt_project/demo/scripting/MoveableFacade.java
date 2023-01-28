@@ -64,6 +64,9 @@ public class MoveableFacade {
         return moveable.getCurrentVelocity();
     }
 
+    /**
+     * Sets the speed of the object to 0.1 when the car is not moving.
+     */
     public void start(){
         if(moveable.getCurrentVelocity() == 0.0f){
             moveable.setCurrentVelocity(0.1f);
