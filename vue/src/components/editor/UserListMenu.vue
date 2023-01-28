@@ -6,7 +6,7 @@
  */
 
 import User from "@/components/joinGame/User.vue";
-import { computed, onMounted } from "vue";
+import { computed, onMounted, onUnmounted } from "vue";
 import { useLogin } from "@/services/login/useLogin";
 import { useInstanceList } from "@/services/useInstanceList";
 import { useRemoveInstanceState } from "@/services/useRemoveInstanceState";
@@ -25,12 +25,16 @@ const props = defineProps<{
   type: string;
 }>();
 
-const { getInstanceList, deleteState, getUserlist } = useInstanceList();
+const { getInstanceList, deleteState, getUserlist, endReceiveInstanceUpdates } = useInstanceList();
 const { setRemoveState } = useRemoveInstanceState();
 const { loginData } = useLogin();
 
 onMounted(async () => {
   await getInstanceList(props.type);
+});
+
+onUnmounted(async () => {
+  endReceiveInstanceUpdates();
 });
 
 const userlist = computed(() => {

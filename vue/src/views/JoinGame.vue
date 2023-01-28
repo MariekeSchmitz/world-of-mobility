@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useUser } from "@/services/useUser";
-import { computed, ref,watch } from "vue";
+import { computed, onUnmounted, ref,watch } from "vue";
 import User from "@/components/joinGame/User.vue";
 import CarSelection from "@/components/carselect/CarSelection.vue";
 import { onMounted } from "vue";
@@ -34,7 +34,7 @@ const props = defineProps<{
 
 const instanceID = Number(props.instanceID);
 let moveableType = "";
-const { instanceState, getInstanceList, getUserlist } = useInstanceList();
+const { getInstanceList, getUserlist, endReceiveInstanceUpdates } = useInstanceList();
 
 const spawnPointSet = ref(false)
 
@@ -79,6 +79,10 @@ onMounted(async() => {
   await getInstanceList("game");
 });
 
+onUnmounted(async () => {
+  endReceiveInstanceUpdates();
+});
+
 function toggleButton() {
   spawnPointSet.value = true
   errorMessage.value = "";
@@ -106,6 +110,7 @@ watch(spawnState, (neu, alt) => {
 const userlist = computed(() => {
   return getUserlist(instanceID)
 });
+
 
 
 </script>

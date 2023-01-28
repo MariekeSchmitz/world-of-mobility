@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { useServerMessage } from "@/services/useServerMessage";
 import { computed } from "@vue/reactivity";
-import { onMounted, ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faXmark,
@@ -51,7 +51,7 @@ const props = defineProps<{
   username: string
 }>();
 
-const { receiveMessages, updateTestMessage, msgState } = useServerMessage();
+const { receiveMessages, updateTestMessage, msgState, endReceiveMessages } = useServerMessage();
 
 const msgListe = computed(() => {
   return msgState.msgLst.map((msg) => msg.txt);
@@ -60,6 +60,10 @@ const msgListe = computed(() => {
 onMounted(() => {
   receiveMessages(props.type, props.instanceId);
 });
+
+onUnmounted(() => {
+  endReceiveMessages()
+})
 
 const chatInput = ref("");
 

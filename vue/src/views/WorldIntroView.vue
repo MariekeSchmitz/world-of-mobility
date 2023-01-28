@@ -7,7 +7,7 @@
 import GameListItem from "@/components/selectview/GameListItem.vue";
 import { useInstanceList } from "@/services/useInstanceList";
 import { computed, reactive, ref } from "@vue/reactivity";
-import { onMounted, watch } from "vue";
+import { onMounted, onUnmounted, watch } from "vue";
 import { useMapOverview } from "@/services/useMapOverview";
 import { useEditor } from "@/services/useEditor";
 import { RouterLink } from "vue-router";
@@ -19,7 +19,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { faPlus, faArrowLeft, faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 library.add(faPlus, faArrowLeft, faChevronRight, faChevronLeft);
 
-const { instanceState, getInstanceList } = useInstanceList();
+const { instanceState, getInstanceList, endReceiveInstanceUpdates } = useInstanceList();
 const { mapsOverview, getMaps } = useMapOverview();
 const { createWorld } = useEditor();
 const { joinEditor } = useUserEditor();
@@ -34,6 +34,10 @@ const maplistState: MaplistState = reactive({ maplist: [] });
 onMounted(async () => {
   await getMaps();
   await getInstanceList("editor");
+});
+
+onUnmounted(async () => {
+  endReceiveInstanceUpdates();
 });
 
 const instancelist = computed(() => {

@@ -25,7 +25,7 @@ const props = withDefaults(
 );
 
 const instanceID = Number(props.instanceID);
-const { getGamename, getInstanceList } = useInstanceList();
+const { getGamename, getInstanceList, endReceiveInstanceUpdates } = useInstanceList();
 const { leaveGame } = useGame();
 const { loginData, avatarData } = useLogin();
 
@@ -38,6 +38,7 @@ const gamename = computed(() => {
 });
 
 onUnmounted(() => {
+  endReceiveInstanceUpdates();
   leaveGame(instanceID, loginData.username, "MOTORIZED_OBJECT");
 });
 
@@ -45,7 +46,7 @@ onUnmounted(() => {
 
 <template>
   <div>
-      <button @click="$router.go(-1)" class="fixed top-7 left-7">
+    <button @click="$router.go(-1)" class="fixed top-7 left-7">
         <font-awesome-icon
           icon="fa-solid fa-arrow-left"
           color="white"

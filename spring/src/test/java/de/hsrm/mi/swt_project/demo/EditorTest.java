@@ -100,14 +100,14 @@ class EditorTest {
         }
 
         @Test
-        void postServerMessageGood() throws Exception {
+        void postServerMessageEditorGood() throws Exception {
 
                 JSONObject body = new JSONObject();
                 body.put("usrId", 1);
                 body.put("txt", "Dies ist ein Test");
 
                 mockMvc.perform(
-                                post("/api/editor/servermessage")
+                                post("/api/editor/servermessage/" + editorId)
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .content(body.toString()))
                                 .andExpect(status().isOk());
