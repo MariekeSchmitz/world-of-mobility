@@ -60,8 +60,8 @@ watch(errorExisting, (neu, alt) => {
     class="grid grid-cols-3 content-center h-screen box-border bg-[url('/src/assets/images/home.png')] bg-cover"
   >
     <div class="grid text-center col-start-2 col-end-2 justify-items-center">
-      <div class="">
-        <h1 class="">World of <br />E-Mobility</h1>
+      <div class="pb-20">
+        <h1 class="inline text-orange">Far.m</h1><h1 class="inline">i</h1>
       </div>
 
       <!-- small Avatar with change function -->
