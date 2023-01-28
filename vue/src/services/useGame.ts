@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Client } from "@stomp/stompjs";
+import { Client, StompSubscription } from "@stomp/stompjs";
 import { reactive, readonly } from "vue";
 
 export function useGame(): any {
@@ -31,6 +31,8 @@ export function useGame(): any {
     moveableUpdates: [],
     trafficLightState: "NORTHSOUTH"
   });
+
+  let stompSubscription: StompSubscription; 
 
   interface IInstanceId {
     id: number;
@@ -124,8 +126,8 @@ export function useGame(): any {
         return false;
       }
       const jsonData = await response.json();
-      return jsonData;
       clearTimeout(id);
+      return jsonData;
     } catch (reason) {
       console.log(`ERROR: Sending Command failed: ${reason}`);
       return false;
@@ -183,11 +185,10 @@ export function useGame(): any {
 
     stompClient.onConnect = (frame: any) => {
       console.log(`Connected Stompbroker to /topic/game/${instanceid}`);
-      stompClient.subscribe(DEST, (message: { body: string }) => {
+      stompSubscription = stompClient.subscribe(DEST, (message: { body: string }) => {
         const gameUpdate: IGameUpdate = JSON.parse(message.body);
         gameState.moveableUpdates = gameUpdate.moveableUpdates;
         gameState.trafficLightState = gameUpdate.trafficLightState;
-        console.log(gameState.trafficLightState);
       });
     };
 
@@ -198,8 +199,9 @@ export function useGame(): any {
     stompClient.activate();
   }
 
-
-
+  function endReceiveGameUpdate() {
+    stompSubscription.unsubscribe();
+  }
 
   function getUserMoveable(user: string) {
     for (const moveable of gameState.moveableUpdates) {
@@ -244,6 +246,7 @@ export function useGame(): any {
     getUserMoveable,
     createGameInstance,
     leaveGame,
-    isSpawnPointValid
+    isSpawnPointValid,
+    endReceiveGameUpdate
   };
 }

@@ -12,9 +12,8 @@ import Avatar from "@/components/User/Avatar.vue";
 import ServerChat from "@/components/ServerChat.vue";
 import UserListMenu from "@/components/editor/UserListMenu.vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
-  import {
-    faArrowLeft
-  } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import MiniMap from "@/components/miniMap/MiniMap.vue";
   library.add(faArrowLeft);
 
 const props = withDefaults(
@@ -55,6 +54,9 @@ onUnmounted(() => {
       <div class="fixed left-1/2 -translate-y-1/2 -translate-x-1/2 top-16">
         <h1>{{gamename}}</h1>
       </div>
+    <div id="miniMap-container">
+      <MiniMap :instanceId="instanceID" :user="loginData.username"/>
+    </div>
       <Avatar
         :avatarPicture="avatarData.avatar"
         class="w-16 h-16 fixed top-7 right-7"
@@ -66,3 +68,11 @@ onUnmounted(() => {
     <UserListMenu :instanceId="instanceID" type="game"></UserListMenu>
   </div>
 </template>
+
+<style scoped>
+#miniMap-container {
+  position: absolute;
+  bottom: calc(15vw + 20px);
+  left: 20px;
+}
+</style>
