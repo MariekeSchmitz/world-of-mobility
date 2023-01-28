@@ -68,7 +68,7 @@ export function useInstanceList(): any {
 
     stompClient.onConnect = (frame) => {
       console.log("Connected Stompbroker to InstanceUpdate");
-      stompClient.subscribe(DEST, (message) => {
+      subscription = stompClient.subscribe(DEST, (message) => {
         const instanceUpdate: IInstanceInfo = JSON.parse(message.body);
         processInstanceUpdate(instanceUpdate);
       });
