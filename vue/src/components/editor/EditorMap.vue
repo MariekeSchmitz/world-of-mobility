@@ -69,7 +69,7 @@ onMounted(() => {
 
 <template>
   <template v-for="(subTile, column) in mapReactive.tiles">
-    <template v-for="(tile, row) in subTile" :key="tile">
+    <template v-for="(tile, row) in subTile" :key="tile.type">
       <div v-if="tile.placedObject !== null">
         <EditorTile
           :width="0.99"
