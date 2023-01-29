@@ -2,7 +2,7 @@
 import { Client, StompSubscription } from "@stomp/stompjs";
 import { reactive, readonly } from "vue";
 
-export function useGame(): any {
+
   interface IMoveable {
     user: string;
     xPos: number;
@@ -236,7 +236,7 @@ export function useGame(): any {
       return false;
     }
   }
-
+export function useGame(): any {
   return {
     mapUpdates: readonly(gameState),
     instanceId: readonly(instanceIdState),

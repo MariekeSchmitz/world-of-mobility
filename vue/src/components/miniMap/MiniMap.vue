@@ -15,14 +15,13 @@
 /**
  * A Minimap, that displays the various objects placed and the current position on the Map
  */
-import { computed, onMounted, onUnmounted, ref, type Ref } from "vue";
+import { computed, onMounted, ref, type Ref } from "vue";
 import MiniMapTile from "@/components/miniMapTile/MiniMapTile.vue";
 import { useMap, type IMapDTO, type IPlacedObject } from "@/services/useMap";
 import { useGame } from "@/services/useGame";
-import type { StompSubscription } from "@stomp/stompjs";
 
 const { getGameMap } = useMap();
-const { getUserMoveable, receiveGameUpdate, endReceiveGameUpdate } = useGame();
+const { getUserMoveable } = useGame();
 
 const props = withDefaults(
   defineProps<{
@@ -113,12 +112,7 @@ const playerYPos = computed(() => {
 
 onMounted(async () => {
   testObj.value = await getGameMap(props.instanceId);
-  receiveGameUpdate(props.instanceId);
 });
-
-onUnmounted(() => {
-  endReceiveGameUpdate();
-})
 </script>
 
 <style scoped>

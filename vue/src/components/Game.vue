@@ -28,7 +28,7 @@ const props = withDefaults(
   }>(),
   { instanceID: 1 }
 );
-const { sendCommand, receiveGameUpdate, mapUpdates, getUserMoveable } =
+const { sendCommand, receiveGameUpdate, mapUpdates, getUserMoveable, endReceiveGameUpdate } =
   useGame();
 const { loginData } = useLogin();
 
@@ -354,6 +354,7 @@ onMounted(() => {
  */
 onUnmounted(() => {
   document.removeEventListener("keyup", handleKeyEvent);
+  endReceiveGameUpdate();
 });
 </script>
 
