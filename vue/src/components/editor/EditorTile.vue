@@ -16,7 +16,7 @@ import { editorTileURLs } from "@/components/editor/EditorTileURLDict";
 import { usePlaceNpc } from "@/services/editor/usePlaceNpc";
 import type { INpc } from "@/interfaces/npc/INpc";
 import { useEditorError } from "@/services/editor/useEditorError";
-import type { NpcType } from "@/services/editor/NpcType";
+import type { NpcType } from "@/enums/editor/NpcType";
 
 const props = withDefaults(
   defineProps<{

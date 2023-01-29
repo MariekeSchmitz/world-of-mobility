@@ -37,7 +37,7 @@ import {
     faArrowLeft
   } from "@fortawesome/free-solid-svg-icons";
   import { usePlaceNpc } from '@/services/editor/usePlaceNpc';
-  import type { NpcType } from '@/services/editor/NpcType';
+  import type { NpcType } from '@/enums/editor/NpcType';
   library.add(faPlus, faFileArrowDown, faArrowLeft);
 
 

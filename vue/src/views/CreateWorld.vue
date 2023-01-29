@@ -15,7 +15,7 @@ import ErrorWarning from "@/components/error/ErrorWarning.vue";
 
 library.add(faArrowLeft);
 const name = ref("");
-const { createWorld, worldCreateData, resetError } = useEditor();
+const { createWorld, worldCreateData} = useEditor();
 const { joinEditor } = useUserEditor();
 const { loginData, avatarData } = useLogin();
 
