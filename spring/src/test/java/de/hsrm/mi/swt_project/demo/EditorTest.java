@@ -137,7 +137,7 @@ class EditorTest {
                 assertTrue(!editorInstance.getMap().getNpcs().isEmpty(), "npc was added");
                 assertEquals(1.0f, editorInstance.getMap().getNpcs().get(0).getXPos(), "x post is correct");
                 assertEquals(2.0f, editorInstance.getMap().getNpcs().get(0).getYPos(), "y pos is correct");
-                assertEquals(editorInstance.getMap().getNpcs().get(0).getType(), MoveableType.PIG,
+                assertEquals(MoveableType.PIG, editorInstance.getMap().getNpcs().get(0).getType(),
                                 "type is correct");
         }
 
