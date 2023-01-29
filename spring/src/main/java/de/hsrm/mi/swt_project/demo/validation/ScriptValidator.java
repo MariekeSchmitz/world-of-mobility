@@ -33,11 +33,20 @@ public class ScriptValidator implements Validator {
 
         this.allowedImports.add("random");
 
+        this.apiMethods.add("start");
+        this.apiMethods.add("stop");
+        this.apiMethods.add("getCurrentTile");
+        this.apiMethods.add("getFrontTile");
+        this.apiMethods.add("getCurrentVelocity");
+        this.apiMethods.add("getOrientation");
+        this.apiMethods.add("isMotorizedObject");
+        this.apiMethods.add("checkMotorizedObject");
+        this.apiMethods.add("checkPassenger");
+        this.apiMethods.add("isTrafficLightGreen");
         this.apiMethods.add("turnLeft");
         this.apiMethods.add("turnRight");
         this.apiMethods.add("accelerate");
         this.apiMethods.add("brake");
-        this.apiMethods.add("emergencyBrake");
         this.apiMethods.add("surroundingTiles");
         this.apiMethods.add("nearbyRoadUsers");
         this.apiMethods.add("distanceTo");

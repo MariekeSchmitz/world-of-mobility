@@ -64,87 +64,99 @@ public class MoveableFacade {
         this.moveable = moveable;
         this.context = context;
     }
-
+    
     /**
-     * Became the CurrentVelocity of the moveable
-     * 
-     * @return the CurrentVelocity
-     */
-    public float currentVelocity(){
-        return moveable.getCurrentVelocity();
-    }
-
-    /**
-     * Sets the speed of the object to 0.1 when the car is not moving.
+     * Sets velocity of the controlled moveable to 0.05.
      */
     public void start(){
         if(moveable.getCurrentVelocity() == 0.0f){
             moveable.setCurrentVelocity(0.05f);
         }
     }
-
+    
     /**
-     * Return the Fronttile of the moveable
+     * Sets velocity of the controlled moveable to 0.
+     */
+    public void stop() {
+        this.moveable.setCurrentVelocity(0);
+    }
+    /**
+     * Returns the current TileProxy of the controlled moveable
+     * 
+     * @return the current TileProxy
+     */
+    public TileProxy getCurrentTile(){
+        
+        TileProxy[][] mapContext = context.provideMapContext();
+        int pos = mapContext.length / 2;
+        
+        return mapContext[pos][pos]; 
+    }
+    
+    /**
+     * Returns the front TileProxy of the controlled moveable
      * 
      * @return the Fronttile of the moveable
      */
     public TileProxy getFrontTile(){
-
+        
         TileProxy[][] mapContext = context.provideMapContext();
         int pos = mapContext.length / 2;
-
+        
         return mapContext[pos + 1][pos];
     }
-
-    public TileProxy getCurrentTile(){
-
-        TileProxy[][] mapContext = context.provideMapContext();
-        int pos = mapContext.length / 2;
-
-        return mapContext[pos][pos]; 
+    
+    /**
+     * Became the CurrentVelocity of the moveable
+     * 
+     * @return the CurrentVelocity
+     */
+    public float getCurrentVelocity(){
+        return moveable.getCurrentVelocity();
     }
-
+    
+    /**
+     * Became the Orientation of the moveable
+     * 
+     * @return the Orientation
+     */
+    public Orientation getOrientation(){
+        return moveable.getOrientation();
+    }
+    
     /**
      * Check if the moveable is a MotorizedObject or a Passenger
      * 
-     * @return if moveable is a MotorizedObject
+     * @return true if moveable is a MotorizedObject else false
      */
     public boolean isMotorizedObject(){
         return moveable instanceof MotorizedObject;
     }
-    
-    public boolean isMotorizedObject(Moveable tmpMoveable){
+
+    /**
+     * Checks if a passed moveable is a MotorizedObject
+     *  
+     * @param tmpMoveable -> a moveable Object
+     * @return true is moveable a MotorizedObject else false
+     */
+    public boolean checkMotorizedObject(Moveable tmpMoveable){
         return tmpMoveable instanceof MotorizedObject;
     }
 
-    public boolean isPassenger(Moveable tmpMoveable){
+    /**
+     * Checks if a passed moveable is a Passenger
+     *  
+     * @param tmpMoveable -> a moveable Object
+     * @return true is moveable a Passenger else false
+     */
+    public boolean checkPassenger(Moveable tmpMoveable){
         return tmpMoveable instanceof Passenger;
     }
 
-    public Orientation getOrientation(){
-        return moveable.getOrientation();
-    }
-
-    public ReadableTrafficLightState currentTrafficLightState() {
-
-        TrafficLightState state = TrafficLightSingleTon.getInstance().getTrafficLightState();
-
-        if (state.equals(TrafficLightState.EASTWEST)) {
-            return ReadableTrafficLightState.HORIZONTAL_GREEN;
-        }
-
-        if (state.equals(TrafficLightState.NORTHSOUTH)) {
-            return ReadableTrafficLightState.VERTICAL_GREEN;
-        }
-
-        return ReadableTrafficLightState.YELLOW;
-    }
-
     /**
-     * Return the state from the trafficlight
-     * 
+     * Return the state from the trafficlight relativ from the position of the moveable
+     *
      * @return Return the state from the trafficlight
-     * 
      */
     public boolean isTrafficLightGreen(float distance){
         TrafficLight trafficLight = new TrafficLight();
@@ -233,13 +245,6 @@ public class MoveableFacade {
     }
 
     /**
-     * Sets velocity of the controlled moveable to 0.
-     */
-    public void emergencyBrake() {
-        this.moveable.setCurrentVelocity(0);
-    }
-
-    /**
      * Provides map context which is all tiles within
      * a tile-radius of {@value #ScriptContext.LOOK_AHEAD}.
      * 
@@ -259,8 +264,6 @@ public class MoveableFacade {
         return this.context.provideOtherMoveablesContext();
     }
 
-
-    
     /**
      * Calculates distance to another collidable.
      * 
@@ -277,6 +280,8 @@ public class MoveableFacade {
 
         return MathHelpers.euclideanDistance(thisXPos, thisYPos, otherXPos, otherYPos);
     }
+
+    //TODO
 
     public float distanceTo(TileProxy tileProxy) {   
         
@@ -299,6 +304,20 @@ public class MoveableFacade {
         float thisYPos = ScriptContext.LOOK_AHEAD + (moveable.getYPos() - (int) moveable.getYPos()) * moveable.getOrientation().ySign();
 
         return MathHelpers.euclideanDistance(thisXPos, thisYPos, xTile, yTile);
-    }    
+    }   
     
+    public ReadableTrafficLightState currentTrafficLightState() {
+
+        TrafficLightState state = TrafficLightSingleTon.getInstance().getTrafficLightState();
+
+        if (state.equals(TrafficLightState.EASTWEST)) {
+            return ReadableTrafficLightState.HORIZONTAL_GREEN;
+        }
+
+        if (state.equals(TrafficLightState.NORTHSOUTH)) {
+            return ReadableTrafficLightState.VERTICAL_GREEN;
+        }
+
+        return ReadableTrafficLightState.YELLOW;
+    }
 } 
