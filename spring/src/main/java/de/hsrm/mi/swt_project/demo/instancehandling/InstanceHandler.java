@@ -240,7 +240,7 @@ public class InstanceHandler implements Updateable {
         }
 
         for (Instance instance : toDelete) {
-            logger.info("Instance deleted ", instance);
+            logger.info("Instance deleted {}", instance);
             loopInstanceInfo.publishInstanceInfoState(instance, "DELETE");
             this.instances.remove(instance);
         }

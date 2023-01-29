@@ -1,7 +1,7 @@
 package de.hsrm.mi.swt_project.demo.instancehandling;
 
-import java.io.File;
-import java.nio.file.Files;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +20,7 @@ import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.CanHoldNatureObject;
 import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.CanHoldStreetObject;
-import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.DriveableByCar;
-import de.hsrm.mi.swt_project.demo.editor.tiles.tile_properties.Walkable;
-import de.hsrm.mi.swt_project.demo.movables.MotorizedObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
-import de.hsrm.mi.swt_project.demo.movables.Passenger;
 import de.hsrm.mi.swt_project.demo.util.ArrayHelpers;
 
 /**
@@ -42,6 +38,9 @@ public class GameMap {
     private String name;
     private List<MoveableObject> npcs = new ArrayList<>();
 
+    //Sonarcube will see transient as a codesmell but its necessary 
+    //because the class is serialized with gson
+    //transient prevents the logger from beeing serialized into the json
     private transient Logger logger = LoggerFactory.getLogger(getClass());
 
     public GameMap() {
@@ -62,18 +61,27 @@ public class GameMap {
      * 
      */
     public void addNpc(MoveableObject moveable) {
-
+        
         if (moveable.getScript() == null || moveable.getScript().isEmpty()) {
             try {
                 Resource resource = new ClassPathResource("defaultNPCScript.py");
-                File scriptfile = resource.getFile();
-                String script = Files.readString(scriptfile.toPath());
-                moveable.loadScript(script);
+                logger.info("RESOURCE: "+resource);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+                String line = null;
+                StringBuilder rslt = new StringBuilder();
+                while ((line = reader.readLine()) != null) {
+                    rslt.append(line);
+                    rslt.append(System.getProperty("line.separator"));
+                }
+                moveable.loadScript(rslt.toString());
             } catch (Exception e) {
                 logger.error("LoadDefaultScript Error");
             }
         }
+
+        
         this.npcs.add(moveable);
+        logger.info("these are now the current npcs: {}",this.npcs);
     }
 
     /**
@@ -259,20 +267,13 @@ public class GameMap {
         fillMapWithDefaultTiles(newTiles, size);
         ArrayHelpers.transfer2D(this.tiles, newTiles);
 
-        this.npcs = this.npcs
-            .stream()
-            .map(npc -> {
+        this.npcs.forEach((npc)-> {
+            float xPos = npc.getXPos() + MAP_EXPANSION_PER_SITE;
+            float yPos = npc.getYPos() + MAP_EXPANSION_PER_SITE;
 
-                float xPos = npc.getXPos() + MAP_EXPANSION_PER_SITE;
-                float yPos = npc.getYPos() + MAP_EXPANSION_PER_SITE;
-
-                npc.setXPos(xPos);
-                npc.setYPos(yPos);
-
-                return npc;
-
-            }).toList();
-
+            npc.setXPos(xPos);
+            npc.setYPos(yPos);
+        });
         this.tiles = newTiles;
     }
 
@@ -290,39 +291,7 @@ public class GameMap {
         }
     }
 
-    /**
-     * validates if npc can be placed
-     * 
-     * @param moveableObject
-     * @return boolean can be placed or not
-     * @author Tom Gouthier, Marie Bohnert
-     */
-    public boolean validateNpcPlacement(MoveableObject moveableObject) {
 
-        int xPos = (int) moveableObject.getXPos();
-        int yPos = (int) moveableObject.getYPos();
-
-        if (moveableObject instanceof Passenger) {
-
-            if (!(tiles[yPos][xPos] instanceof Walkable)) {
-                return false;
-            }
-
-        } else if (moveableObject instanceof MotorizedObject) {
-
-            if (!(tiles[yPos][xPos] instanceof DriveableByCar)) {
-                return false;
-            }
-
-        }
-
-        for (MoveableObject npc : npcs) {
-
-            if (xPos == npc.getXPos() && yPos == npc.getYPos()) {
-                return false;
-            }
-        }
-        return true;
-    }
+        
 
 }

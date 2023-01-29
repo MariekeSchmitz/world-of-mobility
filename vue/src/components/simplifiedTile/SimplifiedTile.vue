@@ -2,6 +2,9 @@
 import {computed } from "vue";
 import { useSpawnPoint } from "@/services/useSpawnPoint"
 import { editorTileURLs } from "../editor/EditorTileURLDict";
+/**
+ * A maptile, that is used to build a the clickable spawnpoint map
+ */
 
 const { miniMapScalingState, setSpawnPoint, spawnState } = useSpawnPoint();
 
@@ -27,11 +30,17 @@ const props = withDefaults(
 const tileTexturePath =`url('${editorTileURLs[props.tileType]}')`;
 const objectAsset = `url('${props.asset ? editorTileURLs[props.asset] : ""}')`;
 
+/**
+ * Uses the x and y coordinates of the tile, to set them as the new spawnpoint in the  spawnState
+ */
 function setSpawnPointEvent() {
   setSpawnPoint(props.xIndex, props.yIndex)
   emit("setSpawnPoint");
 }
 
+/**
+ * Checks if this tile is the selected tile
+ */
 const isSelected = computed(() => {
   return (
     spawnState.tileNumber ==

@@ -17,7 +17,7 @@ import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ValidateSpawnPointTest {
+class ValidateSpawnPointTest {
     
     @Autowired
     private MockMvc mockMvc;

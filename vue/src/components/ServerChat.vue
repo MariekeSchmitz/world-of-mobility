@@ -1,5 +1,5 @@
 <template>
-  <div id="chatMenu" class="grid grid-rows-[7%_93%] w-[15%] h-[35%] bg-white fixed bottom-[20%] right-3 p-1">
+  <div id="chatMenu" class="grid grid-rows-[7%_93%] w-[15%] h-1/2 bg-white fixed bottom-8 right-8 p-1">
     <button id="hideElement" @click="toggle" class="grid m-2 pb-10">
       <font-awesome-icon
         icon="fa-solid fa-xmark"
@@ -22,7 +22,7 @@
   </div>
   <button
     id="showElementChat"
-    class="editorLabel text-greenDark grid-cols-[20%_80%] items-center hidden fixed bottom-[52%] right-2"
+    class="editorLabel text-greenDark grid-cols-[20%_80%] items-center hidden fixed bottom-1/2 right-2"
     @click="toggle"
   >
     <font-awesome-icon
@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { useServerMessage } from "@/services/messaging/useServerMessage";
 import { computed } from "@vue/reactivity";
-import { onMounted, ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faXmark,
@@ -51,7 +51,7 @@ const props = defineProps<{
   username: string
 }>();
 
-const { receiveMessages, updateTestMessage, msgState } = useServerMessage();
+const { receiveMessages, updateTestMessage, msgState, endReceiveMessages } = useServerMessage();
 
 const msgListe = computed(() => {
   return msgState.msgLst.map((msg) => msg.txt);
@@ -61,10 +61,15 @@ onMounted(() => {
   receiveMessages(props.type, props.instanceId);
 });
 
+onUnmounted(() => {
+  endReceiveMessages()
+})
+
 const chatInput = ref("");
 
 function getInputAndChat() {
   updateTestMessage(props.type, props.username + ": " + chatInput.value, props.instanceId);
+  chatInput.value = ""
 }
 
 function toggle() {

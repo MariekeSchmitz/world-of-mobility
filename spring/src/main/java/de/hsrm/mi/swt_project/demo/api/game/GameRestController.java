@@ -230,8 +230,9 @@ public class GameRestController{
      */
     @PostMapping(value="/{id}/leave-game", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void leaveGame(@RequestBody JoinGameDTO leaveGameRequest , @PathVariable long id) {
-        logger.info("Post-Req leave-game - delete user ", leaveGameRequest.user());
-        instanceHandler.getGameInstanceById(id).removePlayer(leaveGameRequest.user());
+        String user = leaveGameRequest.user();
+        logger.info("Post-Req leave-game - delete user {}", user);
+        instanceHandler.getGameInstanceById(id).removePlayer(user);
         loopInstanceInfo.publishInstanceInfoState(instanceHandler.getGameInstanceById(id), "CREATE");
     }
 
@@ -248,7 +249,6 @@ public class GameRestController{
     public String validateSpawnpoint(@RequestParam String moveableObject, @RequestParam int xPos, @RequestParam int yPos, @PathVariable long id) {
         GameInstance gameInstance = instanceHandler.getGameInstanceById(id);
         MoveableObject objectToValidate = MoveableType.valueOf(moveableObject).createMovable();
-        String stringifiedBoolean = String.valueOf(gameInstance.validateSpawnpoint(objectToValidate, xPos, yPos));
-        return stringifiedBoolean;
+        return String.valueOf(gameInstance.validateSpawnpoint(objectToValidate, xPos, yPos));
     }
 }

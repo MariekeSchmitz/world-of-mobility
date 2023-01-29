@@ -15,6 +15,6 @@ public class Tractor extends MotorizedObject {
      * @param maxVelocity Maximum velocity of the object.
      */
     public Tractor(float xPos, float yPos) {
-        super(Orientation.NORTH, xPos, yPos, 1);
+        super(Orientation.NORTH, xPos, yPos,  0.5f);
     }
 }

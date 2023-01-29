@@ -40,13 +40,23 @@ class MoveableFacadeTest {
 
     @Test
     void brake() {
+
+        float velocity = 2 * MoveableFacade.ACCELERATION_DELTA;
+        moveable.setCurrentVelocity(velocity);
+
         float expected = moveable.getCurrentVelocity() - MoveableFacade.ACCELERATION_DELTA;
         facade.brake();
+
         assertEquals(expected, moveable.getCurrentVelocity());
+
+        moveable.setCurrentVelocity(0);
+        facade.brake();
+        
+        assertEquals(0, moveable.getCurrentVelocity());
     }
 
     @Test
-    public void testEmergencyBrake() {
+    void testEmergencyBrake() {
         moveable.setCurrentVelocity(50);
         facade.emergencyBrake();
         assertEquals(0.0f, moveable.getCurrentVelocity());
@@ -69,11 +79,15 @@ class MoveableFacadeTest {
 
         facade = MoveableFacade.createFor(moveable, context);
 
-        Tile[][] surroundingTiles = facade.surroundingTiles();
+        TileProxy[][] surroundingTiles = facade.surroundingTiles();
 
         for (int i = 0; i < surroundingTiles.length; i++) {
             for (int j = 0; j < surroundingTiles[i].length; j++) {
-                assertSame(gameMap[i+4][j+4], surroundingTiles[i][j]);
+
+                int mapRow = i + (int) moveable.getYPos() - ScriptContext.LOOK_AHEAD;
+                int mapCol = j + (int) moveable.getXPos() - ScriptContext.LOOK_AHEAD;
+
+                assertSame(gameMap[mapRow][mapCol], surroundingTiles[i][j].tile);
             }
         }
     }
@@ -81,8 +95,8 @@ class MoveableFacadeTest {
     @Test
     void testNearbyRoadUsers() {
 
-        moveable.setXPos(5);
-        moveable.setYPos(5);
+        moveable.setXPos(5 * ScriptContext.LOOK_AHEAD);
+        moveable.setYPos(5 * ScriptContext.LOOK_AHEAD);
 
         List<MoveableObject> allMoveables = new ArrayList<>();
 
@@ -92,8 +106,8 @@ class MoveableFacadeTest {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 MoveableObject obj = new MotorizedObject();
-                obj.setXPos(i);
-                obj.setYPos(j);
+                obj.setXPos(i * ScriptContext.LOOK_AHEAD);
+                obj.setYPos(j * ScriptContext.LOOK_AHEAD);
                 allMoveables.add(obj);
             }
         }
@@ -127,5 +141,24 @@ class MoveableFacadeTest {
 
         assertEquals(5, facade.distanceTo(other));
     }
-    
+
+    @Test 	
+    void testTurnLeft() {
+        Passenger passenger = new Passenger(Orientation.NORTH, 50, 50, 1); 	
+        ScriptContext context = new ScriptContext(passenger, null, null);
+        facade = MoveableFacade.createFor(passenger, context);
+
+        facade.turnLeft();
+        assertEquals(Orientation.NORTH_WEST, passenger.getOrientation()); 	
+    } 	
+	
+    @Test 	
+    void testTurnRight() { 	
+        Passenger passenger = new Passenger(Orientation.NORTH, 50, 50, 1); 	
+        ScriptContext context = new ScriptContext(passenger, null, null);
+        facade = MoveableFacade.createFor(passenger, context);
+
+        facade.turnRight();
+        assertEquals(Orientation.NORTH_EAST, passenger.getOrientation()); 
+    }
 }

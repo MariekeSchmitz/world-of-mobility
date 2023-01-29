@@ -14,8 +14,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import de.hsrm.mi.swt_project.demo.usermanagement.UserList;
-import de.hsrm.mi.swt_project.demo.usermanagement.UserServiceImpl;
+
+import de.hsrm.mi.swt_project.demo.usermanagement.service.UserList;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -24,8 +24,6 @@ class LoginTest {
         @Autowired
         private MockMvc mockMvc;
 
-        @Autowired
-        private UserServiceImpl userservice;
 
         @Autowired
         private UserList userlist;
@@ -53,6 +51,20 @@ class LoginTest {
         void usernameTooShort() throws Exception {
                 JSONObject body = new JSONObject();
                 body.put("name", "a");
+
+                mockMvc.perform(
+                                post("/api/user/login")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(body.toString()))
+                                .andExpect(status().isForbidden());
+
+                assertTrue(userlist.getUserList().isEmpty());
+        }
+
+        @Test
+        void usernameTooLong() throws Exception {
+                JSONObject body = new JSONObject();
+                body.put("name", "ichbincool1");
 
                 mockMvc.perform(
                                 post("/api/user/login")

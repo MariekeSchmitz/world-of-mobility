@@ -48,5 +48,31 @@ public abstract class TrafficTile extends Tile {
     public void setAllowedDirections(List<Orientation> list) {
         allowedDirections = list;
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((allowedDirections == null) ? 0 : allowedDirections.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        TrafficTile other = (TrafficTile) obj;
+        if (allowedDirections == null) {
+            if (other.allowedDirections != null)
+                return false;
+        } else if (!allowedDirections.equals(other.allowedDirections))
+            return false;
+        return true;
+    }
+    
     
 }

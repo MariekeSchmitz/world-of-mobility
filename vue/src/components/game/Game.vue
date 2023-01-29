@@ -20,7 +20,7 @@ import TRACTOR from "@/components/objects/TRACTOR.vue";
 import PIG from "@/components/objects/PIG.vue";
 import TUPEL from "@/components/objects/TUPEL.vue";
 
-const SIZE = 16;
+const squareSize = 16;
 
 const props = withDefaults(
   defineProps<{
@@ -28,7 +28,7 @@ const props = withDefaults(
   }>(),
   { instanceID: 1 }
 );
-const { sendCommand, receiveGameUpdate, mapUpdates, getUserMoveable } =
+const { sendCommand, receiveGameUpdate, mapUpdates, getUserMoveable, endReceiveGameUpdate } =
   useGame();
 const { loginData } = useLogin();
 
@@ -106,9 +106,9 @@ function updatePlayerPositions() {
   }
   if (userMoveable.value != undefined) {
     playerPosition.value = new THREE.Vector3(
-      userMoveable.value.xPos * SIZE,
+      userMoveable.value.xPos * squareSize,
       0,
-      -userMoveable.value.yPos * SIZE
+      -userMoveable.value.yPos * squareSize
     );
   }
   if (oldPosition.value.equals(new THREE.Vector3(-1, -1, -1))) {
@@ -354,6 +354,7 @@ onMounted(() => {
  */
 onUnmounted(() => {
   document.removeEventListener("keyup", handleKeyEvent);
+  endReceiveGameUpdate();
 });
 </script>
 
@@ -372,13 +373,14 @@ onUnmounted(() => {
       <Map
         :instanceID="props.instanceID"
         :trafficLightState="trafficLightState"
+        :squareSize="squareSize"
       ></Map>
       <div v-for="(moveable, index) in allMoveables" :key="index">
         <CAR1
           v-if="moveable.classname == 'CAR'"
           :scale="new THREE.Vector3(1, 1, 1)"
           :position="
-            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+            new THREE.Vector3(moveable.xPos * squareSize, 0.7, -moveable.yPos * squareSize)
           "
           :rotation="-orientations[moveable.orientation]"
           :name="moveable.user"
@@ -387,7 +389,7 @@ onUnmounted(() => {
           v-if="moveable.classname == 'SHEEP'"
           :scale="new THREE.Vector3(1, 1, 1)"
           :position="
-            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+            new THREE.Vector3(moveable.xPos * squareSize, 0.7, -moveable.yPos * squareSize)
           "
           :rotation="-orientations[moveable.orientation]"
           :type="moveable.classname"
@@ -397,7 +399,7 @@ onUnmounted(() => {
           v-if="moveable.classname == 'TRUCK'"
           :scale="new THREE.Vector3(1, 1, 1)"
           :position="
-            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+            new THREE.Vector3(moveable.xPos * squareSize, 0.7, -moveable.yPos * squareSize)
           "
           :rotation="-orientations[moveable.orientation]"
           :type="moveable.classname"
@@ -407,7 +409,7 @@ onUnmounted(() => {
           v-if="moveable.classname == 'TRACTOR'"
           :scale="new THREE.Vector3(1, 1, 1)"
           :position="
-            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+            new THREE.Vector3(moveable.xPos * squareSize, 0.7, -moveable.yPos * squareSize)
           "
           :rotation="-orientations[moveable.orientation]"
           :type="moveable.classname"
@@ -417,7 +419,7 @@ onUnmounted(() => {
           v-if="moveable.classname == 'PIG'"
           :scale="new THREE.Vector3(1, 1, 1)"
           :position="
-            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+            new THREE.Vector3(moveable.xPos * squareSize, 0.7, -moveable.yPos * squareSize)
           "
           :rotation="-orientations[moveable.orientation]"
           :type="moveable.classname"
@@ -427,7 +429,7 @@ onUnmounted(() => {
           v-if="moveable.classname == 'TUPEL'"
           :scale="new THREE.Vector3(1, 1, 1)"
           :position="
-            new THREE.Vector3(moveable.xPos * SIZE, 0.7, -moveable.yPos * SIZE)
+            new THREE.Vector3(moveable.xPos * squareSize, 0.7, -moveable.yPos * squareSize)
           "
           :rotation="-orientations[moveable.orientation]"
           :type="moveable.classname"

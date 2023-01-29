@@ -1,6 +1,8 @@
 package de.hsrm.mi.swt_project.demo;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Paths;
@@ -39,11 +41,6 @@ class InstanceHandlerTest {
     }
 
     @Test
-    void woBinIch() throws Exception {
-        logger.info("Current path: {}", Paths.get("").toAbsolutePath().toString());
-    }
-
-    @Test
     void saveloadMapTest() throws Exception {
         editorInstance.saveMap("testSaveLoad");
         long id = instanceHandler.createGameInstance("testSaveLoad", "testSession", 16, false);
@@ -52,7 +49,7 @@ class InstanceHandlerTest {
 
         GameInstance gameInstance = instanceHandler.getGameInstanceById(id);
         GameMap gameMap = gameInstance.getMap();
-        assertTrue(gameMap != null, "GameMap is not null");
+        assertNotNull(gameMap, "GameMap is not null");
 
     }
 

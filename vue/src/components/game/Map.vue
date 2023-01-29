@@ -6,8 +6,8 @@ import Tile from "@/components/Tiles/Tile.vue";
 import type { I3DMap } from "@/interfaces/game/I3DMap";
 import { onMounted, ref } from "vue";
 import { useMap } from "@/services/game/useMap";
+import Enviroment from "@/components/enviroment/Enviroment.vue";
 
-const squareSize = 16;
 const { getGameMap } = useMap();
 
 const defaultMap: I3DMap = {
@@ -18,6 +18,7 @@ const defaultMap: I3DMap = {
 
 const props = withDefaults(
   defineProps<{
+    squareSize: number;
     instanceID: number;
     trafficLightState: string;
   }>(),
@@ -58,16 +59,27 @@ onMounted(async () => {
 </script>
 <template>
   <!-- Loop to build the map -->
+  <Enviroment
+    :position="
+      new THREE.Vector3(
+        loadedMap.tiles.length * squareSize * 0.5,
+        0,
+        -loadedMap.tiles[0].length * squareSize * 0.5
+      )
+    "
+    :scale="loadedMap.tiles.length * squareSize"
+    :rotation="0"
+  ></Enviroment>
   <div v-for="(subTile, row) in loadedMap.tiles" :key="`${row}`">
     <div v-for="(tile, column) in subTile" :key="`${tile}`">
       <Tile
-        :width="squareSize"
-        :height="squareSize"
+        :width="props.squareSize"
+        :height="props.squareSize"
         :position="
           new THREE.Vector3(
-            column * squareSize + 0.5 * squareSize,
+            column * props.squareSize + 0.5 * props.squareSize,
             tile.positionY,
-            -row * squareSize - 0.5 * squareSize
+            -row * props.squareSize - 0.5 * props.squareSize
           )
         "
         :rotation="computeVector3(tile.orientation)"
@@ -80,13 +92,13 @@ onMounted(async () => {
       </Tile>
       <Tile
         v-if="tile.placedObject === null"
-        :width="squareSize"
-        :height="squareSize"
+        :width="props.squareSize"
+        :height="props.squareSize"
         :position="
           new THREE.Vector3(
-            column * squareSize + 0.5 * squareSize,
+            column * props.squareSize + 0.5 * props.squareSize,
             tile.positionY,
-            -row * squareSize - 0.5 * squareSize
+            -row * props.squareSize - 0.5 * props.squareSize
           )
         "
         :rotation="computeVector3(tile.orientation)"

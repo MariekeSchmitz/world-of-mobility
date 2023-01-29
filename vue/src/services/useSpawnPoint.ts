@@ -24,6 +24,9 @@ interface ISpawnPoint {
  */
 const SCALING_FACTOR = 7;
 
+/**
+ * Used for determining the size of Simplified tiles
+ */
 const windowState: IState = reactive({
     boxSizing: '0px',
     windowWidth: `${window.innerWidth / SCALING_FACTOR}px`,
@@ -48,21 +51,38 @@ const SQUARE_SIZE = 1;
 
 export function useSpawnPoint() {
 
+    /**
+     * Adds an eventListener for the resize-event.
+     * On 'resize' of the browser window, the size of the Simplified tiles is changed accordingly
+     * through the windowState
+     * @param newNumberOfRows 
+     */
     function addWindowWidthListener(newNumberOfRows: number) {
         windowState.numberOfRows = newNumberOfRows;
         window.addEventListener('resize', changeWindowWidth);
         changeWindowWidth();
     }
 
+    /**
+     * Removes the eventlistener for the 'resize' event
+     */
     function removeWindowWIdthListener() {
         window.removeEventListener('resize', changeWindowWidth);
     }
 
+    /**
+     * Function to determine the size of a simplified tile by updating the windowState
+     */
     function changeWindowWidth() {
         windowState.windowWidth = `${window.innerWidth / SCALING_FACTOR}px`;
         windowState.boxSizing = `${window.innerWidth / (SCALING_FACTOR * windowState.numberOfRows)}px`
     }
 
+    /**
+     * Checks if a certain moveableObject can be used to spawn at the current spawnpoint
+     * Also checks if the choosen spawnpoint is valid
+     * @param newMoveableObject 
+     */
     async function setMoveableObject(newMoveableObject: string) {
         spawnState.moveableObject = newMoveableObject;
         const isValid = await isSpawnPointValid(spawnState.instanceId, spawnState.moveableObject, spawnState.xPos, spawnState.yPos);
@@ -73,12 +93,16 @@ export function useSpawnPoint() {
         }
     }
 
+    /**
+     * Sets a new instance ID in the spawnState
+     * @param newInstanceId 
+     */
     function setInstanceId(newInstanceId: number) {
         spawnState.instanceId = newInstanceId;
     }
 
     /**
-     * TODO offset still needs to be implemented
+     * Sets a new Spawnpoint, but only if the choosen spawnpoint is valid
      * @param xPos 
      * @param yPos 
      */

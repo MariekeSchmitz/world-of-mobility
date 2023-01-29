@@ -19,7 +19,7 @@ public class TrafficLogicLoopTask {
     public void switchTrafficLight() {
         trafficLightSingleTon.next();
         try {
-            Thread.sleep(1000, 0);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
             Thread.currentThread().interrupt();

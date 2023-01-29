@@ -199,7 +199,7 @@ class GameInstanceTest {
         GameMap map = new GameMap();
         map.addNpc(car);
         GameInstance instance = new GameInstance(map, "Test", 1, "maps", maximumPlayerCount, true);
-        assertTrue(instance.getMoveableObjects().size()==1);
+        assertEquals(1, instance.getMoveableObjects().size());
     }
 
     @Test 
@@ -207,6 +207,6 @@ class GameInstanceTest {
         GameMap map = new GameMap();
         map.addNpc(car);
         GameInstance instance = new GameInstance(map, "Test", 1, "maps", maximumPlayerCount, false);
-        assertTrue(instance.getMoveableObjects().size()==0);
+        assertEquals(0, instance.getMoveableObjects().size());
     }
 }
