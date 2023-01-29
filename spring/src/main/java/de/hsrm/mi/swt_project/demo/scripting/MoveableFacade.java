@@ -110,24 +110,15 @@ public class MoveableFacade {
      * @return if moveable is a MotorizedObject
      */
     public boolean isMotorizedObject(){
-        if (moveable instanceof Passenger) {
-            return false;
-        }
-        return true;
+        return moveable instanceof MotorizedObject;
     }
     
     public boolean isMotorizedObject(Moveable tmpMoveable){
-        if (tmpMoveable instanceof Passenger) {
-            return false;
-        }
-        return true;
+        return tmpMoveable instanceof MotorizedObject;
     }
 
     public boolean isPassenger(Moveable tmpMoveable){
-        if (tmpMoveable instanceof Passenger) {
-            return true;
-        }
-        return false;
+        return tmpMoveable instanceof Passenger;
     }
 
     public Orientation getOrientation(){
@@ -307,7 +298,6 @@ public class MoveableFacade {
         float thisXPos = ScriptContext.LOOK_AHEAD + (moveable.getXPos() - (int) moveable.getXPos()) * moveable.getOrientation().xSign();
         float thisYPos = ScriptContext.LOOK_AHEAD + (moveable.getYPos() - (int) moveable.getYPos()) * moveable.getOrientation().ySign();
 
-        //logger.info("{}|{} -> {}|{} = {}",xTile,yTile,thisXPos,thisYPos, MathHelpers.euclideanDistance(thisXPos, thisYPos, xTile, yTile));
         return MathHelpers.euclideanDistance(thisXPos, thisYPos, xTile, yTile);
     }    
     

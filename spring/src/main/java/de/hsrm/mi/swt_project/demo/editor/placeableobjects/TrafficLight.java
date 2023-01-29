@@ -18,9 +18,8 @@ public class TrafficLight extends PlaceableObject{
 
     public boolean isTrafficLightRed(Orientation orientation){
         TrafficLightState trafficLightState = trafficLightSingleTon.getTrafficLightState();
-        if(trafficLightState.equals(TrafficLightState.NORTHSOUTH) && (orientation.equals(Orientation.NORTH) || orientation.equals(Orientation.SOUTH))){
-            return true;
-        } else if(trafficLightState.equals(TrafficLightState.EASTWEST) && (orientation.equals(Orientation.EAST) || orientation.equals(Orientation.WEST))){
+        if((trafficLightState.equals(TrafficLightState.NORTHSOUTH) && (orientation.equals(Orientation.NORTH) || orientation.equals(Orientation.SOUTH))) 
+            || (trafficLightState.equals(TrafficLightState.EASTWEST) && (orientation.equals(Orientation.EAST) || orientation.equals(Orientation.WEST)))){
             return true;
         } 
         return false;
