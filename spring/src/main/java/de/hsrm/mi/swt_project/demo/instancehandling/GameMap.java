@@ -1,7 +1,7 @@
 package de.hsrm.mi.swt_project.demo.instancehandling;
 
-import java.io.File;
-import java.nio.file.Files;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,9 +65,15 @@ public class GameMap {
         if (moveable.getScript() == null || moveable.getScript().isEmpty()) {
             try {
                 Resource resource = new ClassPathResource("defaultNPCScript.py");
-                File scriptfile = resource.getFile();
-                String script = Files.readString(scriptfile.toPath());
-                moveable.loadScript(script);
+                logger.info("RESOURCE: "+resource);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+                String line = null;
+                StringBuilder rslt = new StringBuilder();
+                while ((line = reader.readLine()) != null) {
+                    rslt.append(line);
+                    rslt.append(System.getProperty("line.separator"));
+                }
+                moveable.loadScript(rslt.toString());
             } catch (Exception e) {
                 logger.error("LoadDefaultScript Error");
             }
