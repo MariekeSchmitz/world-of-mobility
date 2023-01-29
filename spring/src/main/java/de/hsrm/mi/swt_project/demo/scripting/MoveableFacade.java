@@ -38,6 +38,7 @@ public class MoveableFacade {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
+    protected static final float START_VELOCITY = 0.05F;
     protected static final float ACCELERATION_DELTA = 0.025F;
 
     protected MoveableObject moveable;
@@ -70,7 +71,7 @@ public class MoveableFacade {
      */
     public void start(){
         if(moveable.getCurrentVelocity() == 0.0f){
-            moveable.setCurrentVelocity(0.05f);
+            moveable.setCurrentVelocity(START_VELOCITY);
         }
     }
     
@@ -176,22 +177,22 @@ public class MoveableFacade {
             switch (moveable.getOrientation()) {
                 case NORTH:
                     if(yOnTile > 1 - distance){
-                        return trafficLight.isTrafficLightRed(moveable.getOrientation());
+                        return trafficLight.isTrafficLightGreen(moveable.getOrientation());
                     }
                     break;
                 case SOUTH:
                     if(yOnTile < distance){
-                        return trafficLight.isTrafficLightRed(moveable.getOrientation());
+                        return trafficLight.isTrafficLightGreen(moveable.getOrientation());
                     }
                     break;
                 case WEST:
                     if(xOnTile < distance){
-                        return trafficLight.isTrafficLightRed(moveable.getOrientation());
+                        return trafficLight.isTrafficLightGreen(moveable.getOrientation());
                     }
                     break;
                 case EAST:
                     if(xOnTile > 1 - distance){
-                        return trafficLight.isTrafficLightRed(moveable.getOrientation());
+                        return trafficLight.isTrafficLightGreen(moveable.getOrientation());
                     }
                     break;
                 default:
