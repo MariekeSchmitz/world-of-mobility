@@ -11,21 +11,14 @@ if npc.isMotorizedObject():
 
     randomint = random.randint(0,4)
 
-    # if placeable.getType() and placeable.getType().name() == "TRAFFIC_LIGHT":
-    #     if npc.getOrientation().name() in ["NORTH", "SOUTH"] and npc.currentTrafficLightState().name() != "VERTICAL_GREEN" and npc.distanceTo(npc.getFrontTile()) <= 1.6:
-    #         npc.stop()
+    if placeable.getType() == "TRAFFIC_LIGHT":
 
-    #     elif npc.getOrientation().name() in ["EAST", "WEST"] and npc.currentTrafficLightState().name() != "HORIZONTAL_GREEN" and npc.distanceTo(npc.getFrontTile()) <= 1.6:
-    #         npc.stop()
+        if npc.getOrientation() in ["NORTH", "SOUTH"] and placeable.getState() != "VERTICAL_GREEN" and npc.distanceTo(front_tile) <= 0.7:
+            npc.stop()
 
-    if not npc.isTrafficLightGreen(0.2):
-        npc.stop()
+        elif npc.getOrientation() in ["EAST", "WEST"] and placeable.getState() != "HORIZONTAL_GREEN" and npc.distanceTo(front_tile) <= 0.7:
+            npc.stop()
 
-    if current_tile and current_tile.getType().name() == "PEDESTRIAN_CROSSING":
-        for user in filter(lambda x: npc.distanceTo(x) < 0.5, npc.nearbyRoadUsers()):
-            if npc.checkPassenger(user):
-                npc.stop()
-                break;
 
 else:
 

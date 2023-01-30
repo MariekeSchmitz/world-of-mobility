@@ -8,14 +8,9 @@ import org.slf4j.LoggerFactory;
 import de.hsrm.mi.swt_project.demo.collision.Collidable;
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.Moveable;
-import de.hsrm.mi.swt_project.demo.controls.Orientation;
-import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObjectType;
-import de.hsrm.mi.swt_project.demo.editor.placeableobjects.TrafficLight;
 import de.hsrm.mi.swt_project.demo.movables.MotorizedObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 import de.hsrm.mi.swt_project.demo.movables.Passenger;
-import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLightSingleTon;
-import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLightState;
 import de.hsrm.mi.swt_project.demo.util.MathHelpers;
 
 /**
@@ -29,12 +24,6 @@ import de.hsrm.mi.swt_project.demo.util.MathHelpers;
  * @author Timothy Doukhin
  */
 public class MoveableFacade {
-
-    protected enum ReadableTrafficLightState {
-        HORIZONTAL_GREEN,
-        VERTICAL_GREEN,
-        YELLOW
-    }
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -121,8 +110,8 @@ public class MoveableFacade {
      * 
      * @return the Orientation
      */
-    public Orientation getOrientation(){
-        return moveable.getOrientation();
+    public String getOrientation(){
+        return moveable.getOrientation().name();
     }
     
     /**
@@ -152,54 +141,6 @@ public class MoveableFacade {
      */
     public boolean checkPassenger(Moveable tmpMoveable){
         return tmpMoveable instanceof Passenger;
-    }
-
-    /**
-     * Return the state from the trafficlight relativ from the position of the moveable
-     *
-     * @return Return the state from the trafficlight
-     */
-    public boolean isTrafficLightGreen(float distance){
-        TrafficLight trafficLight = new TrafficLight();
-        float xOnTile = moveable.getXPos() - (int) moveable.getXPos();
-        float yOnTile = moveable.getYPos() - (int) moveable.getYPos();
-        if (this.getFrontTile() == null) {
-            return true;
-        }
-        if(distance >= 0 && distance <= 1) {
-            distance = 0.2f;
-        }
-
-        TileProxy frontTile = this.getFrontTile();
-        PlaceableProxy placeable = frontTile.getPlaceable();
-
-        if (placeable.getType() != null && placeable.getType().equals(PlaceableObjectType.TRAFFIC_LIGHT)) {
-            switch (moveable.getOrientation()) {
-                case NORTH:
-                    if(yOnTile > 1 - distance){
-                        return trafficLight.isTrafficLightGreen(moveable.getOrientation());
-                    }
-                    break;
-                case SOUTH:
-                    if(yOnTile < distance){
-                        return trafficLight.isTrafficLightGreen(moveable.getOrientation());
-                    }
-                    break;
-                case WEST:
-                    if(xOnTile < distance){
-                        return trafficLight.isTrafficLightGreen(moveable.getOrientation());
-                    }
-                    break;
-                case EAST:
-                    if(xOnTile > 1 - distance){
-                        return trafficLight.isTrafficLightGreen(moveable.getOrientation());
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-        return true;
     }
 
     /**
@@ -282,43 +223,23 @@ public class MoveableFacade {
         return MathHelpers.euclideanDistance(thisXPos, thisYPos, otherXPos, otherYPos);
     }
 
-    //TODO
 
+    /**
+     * Calculates distance between the moveable
+     * and the middle of a given tile.
+     * 
+     * @param tileProxy Tile to check distance to.
+     * @return Distance to the tile. 
+     */
     public float distanceTo(TileProxy tileProxy) {   
         
-        float xTile = 0;
-        float yTile = 0;
+        float npcXPos = this.moveable.getXPos();
+        float npcYPos = this.moveable.getYPos();
 
-        TileProxy[][] contextMap = context.provideMapContext();
+        float tileMidXPos = tileProxy.getXPos() + 0.5f;
+        float tileMidYPos = tileProxy.getYPos() + 0.5f; 
 
-        for (int row = 0; row < contextMap.length; row++) {
-            for (int col = 0; col < contextMap.length; col++) {
-                if (tileProxy.equals(contextMap[row][col])) {
-                    xTile = col + 0.5f;
-                    yTile = row + 0.5f;
-                    break;
-                }
-            }
-        }   
-
-        float thisXPos = ScriptContext.LOOK_AHEAD + (moveable.getXPos() - (int) moveable.getXPos()) * moveable.getOrientation().xSign();
-        float thisYPos = ScriptContext.LOOK_AHEAD + (moveable.getYPos() - (int) moveable.getYPos()) * moveable.getOrientation().ySign();
-
-        return MathHelpers.euclideanDistance(thisXPos, thisYPos, xTile, yTile);
+        return MathHelpers.euclideanDistance(npcXPos, npcYPos, tileMidXPos, tileMidYPos);
     }   
-    
-    public ReadableTrafficLightState currentTrafficLightState() {
 
-        TrafficLightState state = TrafficLightSingleTon.getInstance().getTrafficLightState();
-
-        if (state.equals(TrafficLightState.EASTWEST)) {
-            return ReadableTrafficLightState.HORIZONTAL_GREEN;
-        }
-
-        if (state.equals(TrafficLightState.NORTHSOUTH)) {
-            return ReadableTrafficLightState.VERTICAL_GREEN;
-        }
-
-        return ReadableTrafficLightState.YELLOW;
-    }
 } 
