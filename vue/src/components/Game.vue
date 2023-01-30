@@ -48,7 +48,7 @@ const offsetMap: { [id: string]: THREE.Vector3 } = {
   CAR: new THREE.Vector3(-0.45, 2, 0.2),
   SHEEP: new THREE.Vector3(0, 1.6, -1),
   TRACTOR: new THREE.Vector3(0, 3, 0.8),
-  TUPEL: new THREE.Vector3(0, 4.8, -1.1),
+  TUPEL: new THREE.Vector3(0, 1.8, -0.35),
   PIG: new THREE.Vector3(0, 2.3, -0.6),
   TRUCK: new THREE.Vector3(-0.45, 3, -1.5),
 };
