@@ -252,13 +252,11 @@ public class EditorRestController {
     @PostMapping("/{id}/placeNpc")
     public void placeNpc(@PathVariable long id, @RequestBody PlaceNpcDTO npc) {
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(id);
-        try {
-            editorInstance.placeNPC(npc.x(), npc.y(), npc.type());
-            loopService.publishInstanceState(editorInstance);
+        
+        editorInstance.placeNPC(npc.x(), npc.y(), npc.type());
+        loopService.publishInstanceState(editorInstance);
 
-        } catch (NpcNotPlaceableException error) {
-            throw error;
-        }
+      
 
     }
 
@@ -273,12 +271,10 @@ public class EditorRestController {
     public void removeNpc(@PathVariable long id, @RequestBody RemoveNpcDTO npc) {
 
         EditorInstance editorInstance = instanceHandler.getEditorInstanceById(id);
-        try {
-            editorInstance.deleteNPC(npc.x(), npc.y());
-            loopService.publishInstanceState(editorInstance);
-        } catch (NoNpcExistsOnCoordinates e) {
-            throw e;
-        }
+       
+        editorInstance.deleteNPC(npc.x(), npc.y());
+        loopService.publishInstanceState(editorInstance);
+      
 
     }
 
@@ -293,11 +289,9 @@ public class EditorRestController {
     public void postNPCScript(@PathVariable long id, @RequestBody GetScriptDTO scriptDTO) {
 
         EditorInstance instance = instanceHandler.getEditorInstanceById(id);
-        try {
-            instance.addScriptToNpc(scriptDTO.x(), scriptDTO.y(), scriptDTO.script());
-        } catch (NoNpcExistsOnCoordinates | ScriptNotValidException e) {
-            throw e;
-        }
+      
+        instance.addScriptToNpc(scriptDTO.x(), scriptDTO.y(), scriptDTO.script());
+      
     }
 
 }

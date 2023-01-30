@@ -15,6 +15,7 @@ const props = withDefaults(
     scale?: any;
     position: THREE.Vector3;
     rotation: number;
+    type: string;
     name: string;
   }>(),
   { scale: new THREE.Vector3(1, 1, 1) }

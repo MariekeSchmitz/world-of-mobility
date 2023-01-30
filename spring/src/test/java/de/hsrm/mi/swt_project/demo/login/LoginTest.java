@@ -1,6 +1,7 @@
 package de.hsrm.mi.swt_project.demo.login;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -91,7 +92,7 @@ class LoginTest {
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .content(body.toString()))
                                 .andExpect(status().isForbidden());
-                assertTrue(userlist.getUserList().size() == 1);
+                assertEquals(userlist.getUserList().size(), 1);
         }
 
         @Test

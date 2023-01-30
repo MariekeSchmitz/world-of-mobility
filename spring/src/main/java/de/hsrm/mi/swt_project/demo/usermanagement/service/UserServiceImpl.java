@@ -23,19 +23,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String addUser(String username) throws UserNotUniqueException, UsernameTooShortException, UsernameTooLongException {
+    public String addUser(String username)
+            throws UserNotUniqueException, UsernameTooShortException, UsernameTooLongException {
 
         LoginValidator loginValidator = new LoginValidator(username, userList.getUserList());
 
-        try {
-            loginValidator.validate();
-            userList.getUserList().add(username);
-            logger.info("User {} added to List of Users. Now logged in.", username);          
-            return username;
-        } catch (UserNotUniqueException | UsernameTooShortException | UsernameTooLongException e) {
-            throw e;
-        }
-
+        loginValidator.validate();
+        userList.getUserList().add(username);
+        logger.info("User {} added to List of Users. Now logged in.", username);
+        return username;
     }
 
     @Override

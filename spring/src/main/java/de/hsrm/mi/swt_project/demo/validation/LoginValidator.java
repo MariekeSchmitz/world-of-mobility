@@ -20,8 +20,8 @@ public class LoginValidator implements Validator {
     private String username;
     private List<String> userList;
 
-    private final int MAXLENGTH = 10;
-    private final int MINLENGTH = 3;
+    public static final int MAX_LENGTH = 10;
+    public static final int MIN_LENGTH = 3;
     Logger logger = LoggerFactory.getLogger(getClass());
 
     public LoginValidator(String username, List<String> userList) {
@@ -31,12 +31,12 @@ public class LoginValidator implements Validator {
 
     @Override
     public boolean validate() throws UserNotUniqueException, UsernameTooShortException, UsernameTooLongException {
-        if (username.length() < MINLENGTH) {
-            logger.error("Username {} not long enough. Has to be {} or above letters.", username, MINLENGTH);
+        if (username.length() < MIN_LENGTH) {
+            logger.error("Username {} not long enough. Has to be {} or above letters.", username, MIN_LENGTH);
             throw new UsernameTooShortException();
 
-        } else if (username.length() > MAXLENGTH) {
-            logger.error("Username {} too long. Has to be {} or below letters.", username, MAXLENGTH);
+        } else if (username.length() > MAX_LENGTH) {
+            logger.error("Username {} too long. Has to be {} or below letters.", username, MAX_LENGTH);
             throw new UsernameTooLongException();
         } else if (userList.contains(username)) {
             logger.error("Username {} is not unique", username);

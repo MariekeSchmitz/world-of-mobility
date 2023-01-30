@@ -200,11 +200,9 @@ public class EditorInstance extends Instance {
      * @throws NoNpcExistsOnCoordinates
      */
     public void deleteNPC(float x, float y) throws NoNpcExistsOnCoordinates {
-        try {
-            map.deleteNPC(x, y);
-        } catch (NoNpcExistsOnCoordinates e) {
-            throw e;
-        }
+        
+        map.deleteNPC(x, y);
+      
     }
 
     /**

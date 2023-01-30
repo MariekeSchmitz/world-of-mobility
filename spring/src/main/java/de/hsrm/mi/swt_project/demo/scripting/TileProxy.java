@@ -6,7 +6,6 @@ import java.util.List;
 import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.Placeable;
 import de.hsrm.mi.swt_project.demo.editor.tiles.Tile;
-import de.hsrm.mi.swt_project.demo.editor.tiles.Tiletype;
 import de.hsrm.mi.swt_project.demo.editor.tiles.TrafficTile;
 
 /**
@@ -21,13 +20,18 @@ public class TileProxy {
     
     protected Tile tile;
 
+    protected int globalXPos;
+    protected int globalYPos;
+
     /**
      * Creates new TileProxy.
      * 
      * @param tile Tile to restrict access to.
      */
-    public TileProxy(Tile tile) {
+    public TileProxy(Tile tile, int globalXPos, int globalYPos) {
         this.tile = tile;
+        this.globalXPos = globalXPos;
+        this.globalYPos = globalYPos;
     }
 
     /**
@@ -35,8 +39,16 @@ public class TileProxy {
      * 
      * @return Type of the tile.
      */
-    public Tiletype getType() {
-        return this.tile.getType();
+    public String getType() {
+        return this.tile.getType().name();
+    }
+
+    public int getXPos() {
+        return this.globalXPos;
+    }
+
+    public int getYPos() {
+        return this.globalYPos;
     }
 
     /**
@@ -73,6 +85,8 @@ public class TileProxy {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((tile == null) ? 0 : tile.hashCode());
+        result = prime * result + globalXPos;
+        result = prime * result + globalYPos;
         return result;
     }
 
@@ -85,13 +99,17 @@ public class TileProxy {
         if (getClass() != obj.getClass())
             return false;
         TileProxy other = (TileProxy) obj;
+        
         if (tile == null) {
             if (other.tile != null)
                 return false;
-        } else if (!tile.equals(other.tile))
-            return false;
-        return true;
+            
+            return globalXPos == other.globalXPos
+                && globalYPos == other.globalYPos;  
+        } 
+        
+        return tile.equals(other.tile)
+            && globalXPos == other.globalXPos
+            && globalYPos == other.globalYPos;
     }
-
-    
 }

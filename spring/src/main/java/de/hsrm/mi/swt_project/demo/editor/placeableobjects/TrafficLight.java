@@ -1,6 +1,5 @@
 package de.hsrm.mi.swt_project.demo.editor.placeableobjects;
 
-import de.hsrm.mi.swt_project.demo.controls.Orientation;
 import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLightSingleTon;
 import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLightState;
 
@@ -10,14 +9,41 @@ import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLightState;
  */
 public class TrafficLight extends PlaceableObject{
 
-    private TrafficLightSingleTon trafficLightSingleTon = TrafficLightSingleTon.getInstance();
+    /**
+     * Enum that is used to map weirdly named
+     * TrafficLightState in human readable
+     * state
+     */
+    public enum ReadableTrafficLightState {
+        HORIZONTAL_GREEN,
+        VERTICAL_GREEN,
+        YELLOW
+    } 
 
     public TrafficLight() {
         this.type = PlaceableObjectType.TRAFFIC_LIGHT;
     }
 
-    public boolean isTrafficLightRed(Orientation orientation){
-        TrafficLightState trafficLightState = trafficLightSingleTon.getTrafficLightState();
-        return ((trafficLightState.equals(TrafficLightState.NORTHSOUTH) && (orientation.equals(Orientation.NORTH) || orientation.equals(Orientation.SOUTH))) || (trafficLightState.equals(TrafficLightState.EASTWEST) && (orientation.equals(Orientation.EAST) || orientation.equals(Orientation.WEST))));
-    }   
+    /**
+     * Gets state of the traffic light.
+     * 
+     * @return State of the traffic light. 
+     *         Either "HORIZONTAL_GREEN", 
+     *         "VERTICAL_GREEN" or "YELLOW"
+     */
+    public ReadableTrafficLightState getState() {
+
+        TrafficLightState state = TrafficLightSingleTon.getInstance().getTrafficLightState();
+
+        if (state.equals(TrafficLightState.EASTWEST)) {
+            return ReadableTrafficLightState.HORIZONTAL_GREEN;
+        }
+
+        if (state.equals(TrafficLightState.NORTHSOUTH)) {
+            return ReadableTrafficLightState.VERTICAL_GREEN;
+        }
+
+        return ReadableTrafficLightState.YELLOW;
+    }
+
 }
