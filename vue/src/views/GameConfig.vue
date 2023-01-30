@@ -42,10 +42,6 @@ async function checkValidation(name: string) {
 
 }
 
-watch(errorMessage, (neu, alt) => {
-  const errorBox = document.getElementById("errorBox");
-  animateHintBox(errorMessage.value != "", errorBox)
-});
 </script>
 
 <template>
@@ -118,7 +114,6 @@ watch(errorMessage, (neu, alt) => {
             Erstellen
           </button>
 
-          
           <ErrorWarning :errorMsg="errorMessage">
           </ErrorWarning>
           

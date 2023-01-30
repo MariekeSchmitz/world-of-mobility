@@ -184,8 +184,7 @@ import {
     </div>
 
     <UserListMenu :instanceId="editorID" type="editor" ></UserListMenu>
-    <ErrorWarning :errorMsg="errorMessage"></ErrorWarning>
-    <ErrorWarning :errorMsg="feedbackMessage"></ErrorWarning>
+  
 
     <ServerChat :instanceId="editorID" type="editor" :username="loginData.username"></ServerChat>
 

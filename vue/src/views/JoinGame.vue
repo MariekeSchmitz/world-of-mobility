@@ -83,21 +83,12 @@ onUnmounted(async () => {
   endReceiveInstanceUpdates();
 });
 
-// function toggleButton() {
-//   spawnPointSet.value = true
-//   errorMessage.value = "";
-// }
-
-
-watch(errorMessage, (neu, alt) => {
-  console.log("Errormessage", errorMessage)
-  // const errorBox = document.getElementById("errorBox");
-  // animateHintBox(errorMessage.value != "", errorBox);
-});
-
 watch(feedbackMessage, (neu, alt) => {
   console.log("Feedbackmessage", feedbackMessage)
-  if (errorMessage.value == alt) {
+
+  if (!neu && (errorMessage.value != alt)) {
+    // if feedbackmessage is set back by timer but a new errormessage is already in errorbox --> do nothing
+  } else {
     errorMessage.value = feedbackMessage.value
   }
 
@@ -115,8 +106,6 @@ watch(spawnState, (neu, alt) => {
 const userlist = computed(() => {
   return getUserlist(instanceID)
 });
-
-
 
 </script>
 
