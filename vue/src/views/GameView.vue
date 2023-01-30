@@ -46,27 +46,27 @@ onUnmounted(() => {
 <template>
   <div>
     <RouterLink to="/gameintro" class="fixed top-7 left-7">
-        <font-awesome-icon
-          icon="fa-solid fa-arrow-left"
-          color="white"
-          class="bg-greenLight rounded-full p-3 w-6 h-6 inline justify-self-start white hover:bg-greenDark"
-        />
-      </RouterLink>
-      <div class="fixed left-1/2 -translate-y-1/2 -translate-x-1/2 top-16">
-        <h1>{{gamename}}</h1>
-      </div>
+      <font-awesome-icon
+        icon="fa-solid fa-arrow-left"
+        color="white"
+        class="bg-greenLight rounded-full p-3 w-6 h-6 inline justify-self-start white hover:bg-greenDark"
+      />
+    </RouterLink>
+    <div class="fixed left-1/2 -translate-y-1/2 -translate-x-1/2 top-16">
+      <h1 class="text-greenLight text-4xl mt-8">{{gamename}}</h1>
+    </div>
     <div id="miniMap-container">
       <MiniMap :instanceId="instanceID" :user="loginData.username"/>
     </div>
-      <Avatar
-        :avatarPicture="avatarData.avatar"
-        class="w-16 h-16 fixed top-7 right-7"
-      ></Avatar>
+    <Avatar
+      :avatarPicture="avatarData.avatar"
+      class="w-16 h-16 fixed top-7 right-7"
+    ></Avatar>
 
-    <ServerChat :instanceId="instanceID" type="game" :username="loginData.username"></ServerChat>
+    <ServerChat :instanceId="instanceID" :type="'game'" :username="loginData.username"></ServerChat>
 
     <Game :instanceID="instanceID"></Game>
-    <UserListMenu :instanceId="instanceID" type="game"></UserListMenu>
+    <UserListMenu :instanceId="instanceID" :type="'game'" ></UserListMenu>
   </div>
 </template>
 

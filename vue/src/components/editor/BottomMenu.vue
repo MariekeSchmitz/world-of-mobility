@@ -413,12 +413,12 @@ function switchContent(element: string) {
 
   <button
     id="showElement"
-    class="editorLabel hidden fixed bottom-2 right-[20%]"
+    class="editorLabel hidden fixed bottom-8 right-[20%] text-greenDark"
     @click="toggle"
   >
     <font-awesome-icon
       icon="fa-solid fa-angle-up"
-      color="white"
+      color="#2f8265"
       class="w-5 h-5"
     /><br />
     Welt bearbeiten

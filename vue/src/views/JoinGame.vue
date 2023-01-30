@@ -82,19 +82,14 @@ onUnmounted(async () => {
   endReceiveInstanceUpdates();
 });
 
-function toggleButton() {
-  spawnPointSet.value = true
-  errorMessage.value = "";
-}
-
-
-watch(errorMessage, (neu, alt) => {
-  const errorBox = document.getElementById("errorBox");
-  animateHintBox(errorMessage.value != "", errorBox);
-});
-
 watch(feedbackMessage, (neu, alt) => {
-  errorMessage.value = feedbackMessage.value
+  console.log("Feedbackmessage", feedbackMessage)
+
+  if (!neu && (errorMessage.value != alt)) {
+    // if feedbackmessage is set back by timer but a new errormessage is already in errorbox --> do nothing
+  } else {
+    errorMessage.value = feedbackMessage.value
+  }
 
 });
 
@@ -103,14 +98,13 @@ watch(spawnState, (neu, alt) => {
     spawnPointSet.value = false
   } else {
     spawnPointSet.value = true
+    errorMessage.value=""
   }
 });
 
 const userlist = computed(() => {
   return getUserlist(instanceID)
 });
-
-
 
 </script>
 
@@ -165,7 +159,7 @@ const userlist = computed(() => {
 
             <!-- Choose Spawnpoint -->
             <div class="text-center">
-              <h2 class="">Startpunkt<br v-if="userList.users.length != 0"/>wählen</h2>
+              <h2 class="">Startpunkt <br v-if="userList.users.length != 0"/> wählen</h2>
               <SpawnPoint :instance-id="instanceID" class=""/>
             </div>
           </div>

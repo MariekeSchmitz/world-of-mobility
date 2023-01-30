@@ -125,16 +125,8 @@ import {
   let widthWindow = ref(window.innerWidth);
   let heightWindow = ref(window.innerHeight);
 
-  watch(errorMessage, (neu, alt) => {
-    const errorBox = document.getElementById("errorBox");
-    animateHintBox((errorMessage.value != ""), errorBox);
-  });
 
-  watch(feedbackMessage, (neu, alt) => {
-    const hintBox = document.getElementById("feedbackBox");
-    animateHintBox((feedbackMessage.value != ""), hintBox);
-    console.log(feedbackMessage.value)
-  });
+
 
   function startGame(){
   saveMap(props.editorID)
@@ -154,7 +146,7 @@ import {
   <div class="absolute">
   
     <div class="fixed left-1/2 -translate-y-1/2 -translate-x-1/2 top-16">
-      <h1>{{name}}</h1>
+      <h1 class="text-4xl mt-8">{{name}}</h1>
     </div>
     <RouterLink to="/worldintro" class="fixed top-7 left-7">
       <font-awesome-icon
@@ -191,11 +183,10 @@ import {
       </button>
     </div>
 
-    <UserListMenu :instanceId="editorID" type="editor"></UserListMenu>
-    <ErrorWarning :errorMsg="errorMessage"></ErrorWarning>
-    <ErrorWarning :errorMsg="feedbackMessage"></ErrorWarning>
+    <UserListMenu :instanceId="editorID" :type="'editor'" ></UserListMenu>
 
-    <ServerChat :instanceId="editorID" type="editor" :username="loginData.username"></ServerChat>
+
+    <ServerChat :instanceId="editorID" :type="'editor'" :username="loginData.username"></ServerChat>
 
     <ScriptField
       v-if="npcNeedsScript"

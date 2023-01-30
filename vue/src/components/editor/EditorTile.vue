@@ -125,6 +125,10 @@ async function sendPlaceObject(
       posX,
       posY
     );
+  } else if (readPlaceState.value.type == "REMOVE" && placedObject == "none") {
+    setEditorError("Hier befindet sich kein Objekt.")
+
+
   } else if (readPlaceState.value.type != "REMOVE") {
     isPlaced = await placeObject(
       props.editorID,

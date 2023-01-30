@@ -1,5 +1,5 @@
 <template>
-  <div id="chatMenu" class="grid grid-rows-[7%_93%] w-[15%] h-1/2 bg-white fixed bottom-8 right-8 p-1">
+  <div id="chatMenu" class="grid grid-rows-[7%_93%] w-[16%] h-1/2 bg-white fixed bottom-8 right-8 p-3">
     <button id="hideElement" @click="toggle" class="grid m-2 pb-10">
       <font-awesome-icon
         icon="fa-solid fa-xmark"
@@ -9,10 +9,10 @@
     </button>
     <div id="chat-container" class="w-full overflow-y-hidden p-2 flex flex-col-reverse ">
       <div class="w-full h-10 mt-2 flex flex-row">
-        <input type="text" maxlength="23" v-model="chatInput" 
-              class="w-5/6 bg-greenLight border-1 rounded-2xl p-1 pl-5 text-lg focus:border-none"/>
-        <button @click="getInputAndChat()" class="w-1/6 rounded-full bg-greenDark p-2 hover:bg-orangeLight">
-          <img src="@/assets/images/buttons/senden.png" alt="send" class="h-6 w-6">
+        <input type="text" maxlength="30" v-model="chatInput" 
+              class="w-5/6  border-1 p-1  text-lg "/>
+        <button @click="getInputAndChat()" class="ml-1 w-10 h-10 rounded-full bg-greenDark p-2 hover:bg-greenLight">
+          <img src="@/assets/images/buttons/senden.png" alt="send" class="pl-1 h-5 w-5">
         </button>
       </div>
       <ul class="list-none pl-0 font-poppins text-sm">
@@ -22,13 +22,19 @@
   </div>
   <button
     id="showElementChat"
-    class="editorLabel text-greenDark grid-cols-[20%_80%] items-center hidden fixed bottom-1/2 right-2"
+    :class="{
+      'editorLabel text-greenDark grid-cols-[20%_80%] items-center hidden fixed bottom-1/2 right-2':props.type == 'editor',
+      'editorLabel text-white grid-cols-[20%_80%] items-center hidden fixed bottom-1/2 right-2':props.type == 'game',
+      }"
     @click="toggle"
   >
     <font-awesome-icon
       icon="fa-solid fa-angle-left"
       color="#2F8265"
-      class="w-5 h-5 pr-2"
+      :class="{
+      'w-5 h-5 pr-2 text-greenDark':props.type == 'editor',
+      'w-5 h-5 pr-2 text-white':props.type == 'game',
+      }"
     />
     <div class="inline">Chat</div>
   </button>
