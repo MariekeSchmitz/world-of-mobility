@@ -7,11 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import de.hsrm.mi.swt_project.demo.usermanagement.service.UserNotUniqueException;
 import de.hsrm.mi.swt_project.demo.usermanagement.service.UserServiceImpl;
-import de.hsrm.mi.swt_project.demo.usermanagement.service.UsernameTooLongException;
-import de.hsrm.mi.swt_project.demo.usermanagement.service.UsernameTooShortException;
+
 
 /**
  * REST-Controller for all user related topics.
@@ -43,12 +40,10 @@ public class UserRestController {
     @PostMapping("/login")
     public SendUserDTO addNewUser(@RequestBody GetUserDTO user) {
 
-        try {
+        
             userService.addUser(user.name());
             return SendUserDTO.from(user.name());
-        } catch (UserNotUniqueException | UsernameTooShortException | UsernameTooLongException e) {
-            throw e;
-        }
+        
     }
 
     /**

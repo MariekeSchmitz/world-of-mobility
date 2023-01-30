@@ -267,7 +267,7 @@ public class GameMap {
         fillMapWithDefaultTiles(newTiles, size);
         ArrayHelpers.transfer2D(this.tiles, newTiles);
 
-        this.npcs.forEach((npc)-> {
+        this.npcs.forEach(npc -> {
             float xPos = npc.getXPos() + MAP_EXPANSION_PER_SITE;
             float yPos = npc.getYPos() + MAP_EXPANSION_PER_SITE;
 

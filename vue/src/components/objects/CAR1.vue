@@ -24,7 +24,7 @@ const props = withDefaults(
   <Text
     :text="props.name"
     :font-src="FONT_URL"
-    :position="props.position.clone().add(new THREE.Vector3(0, 2, 0))"
+    :position="props.position.clone().add(new THREE.Vector3(0, 2.5, 0))"
     align="center"
     :size="0.3"
     :height="0.01"
