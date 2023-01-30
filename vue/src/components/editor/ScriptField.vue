@@ -45,28 +45,28 @@ watch(script, () => {
     class="fixed inset-0 bg-greenOverlay bg-opacity-50 overflow-y-auto h-full w-full grid grid-cols-3 content-center"
   >
     <div class="bg-white p-16 grid col-start-2 col-end-2">
-      <label for="script"><h2>Eigenes Script für den NPC eingeben:</h2></label>
+      <label for="script"><h2>Eigenes Script für <br>den NPC eingeben</h2></label>
       <textarea type="text" id="script" rows="4" cols="50" class="bg-greenLight" v-model="script">
       </textarea>
       <button
         @click="submitAndClose()"
         :class="{
-          'buttonOrange bg-orangeLight mt-12 w-1/2 justify-self-center': !scriptSet,
-          'buttonOrange mt-12 w-1/2 justify-self-center': scriptSet,
+          'buttonOrange bg-orangeLight mt-12 w-1/2 justify-self-center text-sm': !scriptSet,
+          'buttonOrange mt-12 w-1/2 justify-self-center text-sm': scriptSet,
           }"      >
-        Submit
+        Skript verwenden
       </button>
       <button
         @click="windowClosed()"
-        class="buttonGreen w-1/2 justify-self-center"
+        class="buttonGreen w-1/2 justify-self-center text-sm"
       >
-        Use Default
+        Default-Skript
       </button>
       <button
         @click="() => (info = !info)"
-        class="buttonGreen w-1/3 justify-self-center"
+        class="buttonGreen w-1/2 justify-self-center text-sm"
       >
-        {{ info ? "close Info" : "Info" }}
+        {{ info ? "Info schließen" : "Weitere Infos" }}
       </button>
 
       <div v-if="info">

@@ -32,41 +32,7 @@ async function createWorldAndForwardToEditor(name: string) {
   }
 }
 
-watch(worldCreateData, (neu, alt) => {
 
-  const errorBox = document.getElementById("errorBox");
-  if (neu.error == "" && errorExisting.value) {
-    errorExisting.value = false;
-
-  } else if (neu.error != "" && !errorExisting.value) {
-    if (errorBox != null) {
-    errorExisting.value = true;
-  
-    }
-  }
-});
-
-
-watch(errorExisting, (neu, alt) => {
-  const errorBox = document.getElementById("errorBox");
-
-  if (neu) {
-        if (errorBox != null) {
-            errorBox.classList.toggle("opacity-0");
-            errorBox.classList.toggle("opacity-100");
-            errorBox.classList.toggle("right-0");
-            errorBox.classList.toggle("right-28");
-        }
-    } else {
-        if (errorBox != null) {
-        errorBox.classList.toggle("opacity-100");
-        errorBox.classList.toggle("opacity-0");
-        errorBox.classList.toggle("right-28");
-        errorBox.classList.toggle("right-0");
-        }
-    }
-
-});
 
 
 </script>

@@ -180,9 +180,8 @@ public class EditorRestController {
             long id = instanceHandler.createEditorInstance(name);
             return SendNewWorldDTO.from(id, "");
         } else {
-            return SendNewWorldDTO.from(-1, "Name not unique.");
+            return SendNewWorldDTO.from(-1, "Name wurde schon vergeben.");
         }
-
     }
 
     /**

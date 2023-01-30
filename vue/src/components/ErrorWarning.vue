@@ -13,7 +13,14 @@ const props = withDefaults(
 
 <template>
   
-  <div id="errorBox" class="bg-greenDark w-1/5 p-12 absolute right-0 top-16 text-left duration-200 ease-out transition-all opacity-0 z-50 shadow-md shadow-greenDark">
+  <!-- <div id="errorBox" class="bg-greenDark w-1/5 p-12 absolute right-0 top-16 text-left duration-200 ease-out transform opacity-0 z-50 shadow-md shadow-greenDark">
+    <h3 class="text-greenLight">Hinweis</h3>
+    <p class="text-white">{{ props.errorMsg }}</p>
+  </div> -->
+  <div id="errorBox" :class="{
+      'errorBoxInvisible':!errorMsg,
+      'errorBoxVisible':errorMsg,
+      }">
     <h3 class="text-greenLight">Hinweis</h3>
     <p class="text-white">{{ props.errorMsg }}</p>
   </div>
