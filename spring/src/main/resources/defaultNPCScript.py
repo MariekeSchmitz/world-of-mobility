@@ -20,12 +20,12 @@ if npc.isMotorizedObject():
             npc.stop()
 
 
-        if current_tile.getType() == "PEDESTRIAN_CROSSING":
+    if current_tile.getType() == "PEDESTRIAN_CROSSING":
 
-            for obj in filter(lambda x: npc.distanceTo(x) <= 0.5, npc.nearbyRoadUsers()):
-                if npc.checkPassenger(obj):
-                    npc.stop()
-                    break; 	
+        for obj in filter(lambda x: npc.distanceTo(x) <= 0.5, npc.nearbyRoadUsers()):
+            if npc.checkPassenger(obj):
+                npc.stop()
+                break; 	
 
 
 else:
