@@ -79,7 +79,10 @@ function toggle() {
 <template>
   <div
     id="userListMenu"
-    class="grid grid-rows-[10%_90%] w-[15%] h-[25%] bg-white fixed bottom-72 left-5 p-1 pb-5"
+    :class="{
+      'grid grid-rows-[10%_90%] w-[15%] h-[25%] bg-white fixed bottom-[5%] left-5 p-1 pb-5': props.type == 'editor',
+      'grid grid-rows-[10%_90%] w-[15%] h-[25%] bg-white fixed bottom-[40%] left-5 p-1 pb-5': props.type == 'game',
+      }"
   >
     <button id="hideElement" @click="toggle" class="grid m-2 pb-10">
       <font-awesome-icon
@@ -118,14 +121,19 @@ function toggle() {
   </div>
   <button
     id="showElementUser"
-    class="editorLabel text-greenDark grid-cols-[80%_20%] items-center hidden fixed bottom-[24%] left-2"
+    :class="{
+      'editorLabel text-greenDark grid-cols-[80%_20%] items-center hidden fixed bottom-[20%] left-4':props.type == 'editor',
+      'editorLabel text-white grid-cols-[80%_20%] items-center hidden fixed bottom-[50%] left-4':props.type == 'game',
+      }"
     @click="toggle"
   >
   <div class="inline">Userliste</div>
   <font-awesome-icon
     icon="fa-solid fa-angle-right"
-    color="#2F8265"
-    class="w-5 h-5 pr-2"
+    :class="{
+      'w-5 h-5 pr-2 text-greenDark':props.type == 'editor',
+      'w-5 h-5 pr-2 text-white':props.type == 'game',
+    }"
   />
   </button>
 </template>

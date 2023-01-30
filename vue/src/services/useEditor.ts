@@ -52,7 +52,7 @@ async function createWorld(name: string, path: string) {
       console.log("ERROR: Fetching new Instance failed: ", reason);
     }
   } else {
-    newWorldState.error = "Name too short.";
+    newWorldState.error = "Der Name ist zu kurz. Er braucht mindestens drei Zeichen.";
   }
 
   return newWorldState.id;

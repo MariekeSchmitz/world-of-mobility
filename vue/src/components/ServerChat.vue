@@ -22,13 +22,19 @@
   </div>
   <button
     id="showElementChat"
-    class="editorLabel text-greenDark grid-cols-[20%_80%] items-center hidden fixed bottom-1/2 right-2"
+    :class="{
+      'editorLabel text-greenDark grid-cols-[20%_80%] items-center hidden fixed bottom-1/2 right-2':props.type == 'editor',
+      'editorLabel text-white grid-cols-[20%_80%] items-center hidden fixed bottom-1/2 right-2':props.type == 'game',
+      }"
     @click="toggle"
   >
     <font-awesome-icon
       icon="fa-solid fa-angle-left"
       color="#2F8265"
-      class="w-5 h-5 pr-2"
+      :class="{
+      'w-5 h-5 pr-2 text-greenDark':props.type == 'editor',
+      'w-5 h-5 pr-2 text-white':props.type == 'game',
+      }"
     />
     <div class="inline">Chat</div>
   </button>

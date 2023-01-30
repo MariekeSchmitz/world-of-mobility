@@ -63,10 +63,10 @@ onUnmounted(() => {
       class="w-16 h-16 fixed top-7 right-7"
     ></Avatar>
 
-    <ServerChat :instanceId="instanceID" type="game" :username="loginData.username"></ServerChat>
+    <ServerChat :instanceId="instanceID" :type="'game'" :username="loginData.username"></ServerChat>
 
     <Game :instanceID="instanceID"></Game>
-    <UserListMenu :instanceId="instanceID" type="game" ></UserListMenu>
+    <UserListMenu :instanceId="instanceID" :type="'game'" ></UserListMenu>
   </div>
 </template>
 

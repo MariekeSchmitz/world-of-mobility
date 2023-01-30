@@ -183,10 +183,10 @@ import {
       </button>
     </div>
 
-    <UserListMenu :instanceId="editorID" type="editor" ></UserListMenu>
-  
+    <UserListMenu :instanceId="editorID" :type="'editor'" ></UserListMenu>
 
-    <ServerChat :instanceId="editorID" type="editor" :username="loginData.username"></ServerChat>
+
+    <ServerChat :instanceId="editorID" :type="'editor'" :username="loginData.username"></ServerChat>
 
     <ScriptField
       v-if="npcNeedsScript"
