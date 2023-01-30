@@ -5,8 +5,8 @@ import Avatar from "@/components/User/Avatar.vue";
 import { useLogin } from "@/services/login/useLogin";
 import { ref, watch } from "vue";
 import router from "@/router";
-import ErrorWarning from "@/components/ErrorWarning.vue";
-import { animateHintBox } from "@/components/HintBoxAnimation";
+import ErrorWarning from "@/components/error/ErrorWarning.vue";
+import { animateHintBox } from "@/components/error/HintBoxAnimation";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 library.add(faPen);
@@ -34,24 +34,7 @@ watch(avatarData, (neu, alt) => {
   toggleAvatarSelection();
 });
 
-watch(loginData, (neu, alt) => {
-
-  const errorBox = document.getElementById("errorBox");
-  if (neu.error == "" && errorExisting.value) {
-    errorExisting.value = false;
-
-  } else if (neu.error != "" && !errorExisting.value) {
-    if (errorBox != null) {
-    errorExisting.value = true;
-    }
-  }
-});
  
-
-watch(errorExisting, (neu, alt) => {
-  const errorBox = document.getElementById("errorBox");
-  animateHintBox(errorExisting.value, errorBox);
-});
 
 </script>
 
@@ -61,7 +44,8 @@ watch(errorExisting, (neu, alt) => {
   >
     <div class="grid text-center col-start-2 col-end-2 justify-items-center">
       <div class="pb-20">
-        <h1 class="inline text-orange">Far.m</h1><h1 class="inline">i</h1>
+        <h3 class="font-poppins font-semibold text-greenDark normal-case mb-2 text-xl">Welcome to</h3>
+        <h1 class="inline text-orange text-7xl">Far.m</h1><h1 class="inline text-7xl">i</h1>
       </div>
 
       <!-- small Avatar with change function -->
@@ -109,7 +93,7 @@ watch(errorExisting, (neu, alt) => {
       <Avatar_Selection v-if="choosingAvatar"></Avatar_Selection>
     </div>
     <button
-      v-if="loginData.loggedIn"
+      v-if="loginData.loggedIn && !choosingAvatar"
       class="text-white absolute -right-0 m-10 py-3 px-5 bg-orange rounded-full font-poppins font-semibold hover:bg-orangeLight"
       @click="logout()"
     >

@@ -1,8 +1,8 @@
 import { reactive, readonly } from "vue";
-import type { IAvatarState } from "./IAvatarState";
-import type { ILoginResponse } from "./ILoginResponse";
-import type { ILoginState } from "./ILoginState";
-import type { ISendLogin } from "./ISendLogin";
+import type { IAvatarState } from "../../interfaces/login/IAvatarState";
+import type { ILoginResponse } from "../../interfaces/login/ILoginResponse";
+import type { ILoginState } from "../../interfaces/login/ILoginState";
+import type { ISendLogin } from "../../interfaces/login/ISendLogin";
 import { avatarImages } from "@/components/User/AvatarURLDict";
 
 

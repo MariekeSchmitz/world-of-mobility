@@ -2,7 +2,7 @@
 <script setup lang="ts">
 //@ts-ignore
 import * as THREE from "three";
-import { ObjectEnum } from "@/services/ObjectEnum";
+import { ObjectEnum } from "@/enums/editor/ObjectEnum";
 import { GltfModel } from "troisjs";
 import TRAFFIC_LIGHT from "@/components/objects/TRAFFIC_LIGHT.vue";
 import GAS_STATION from "@/components/objects/GAS_STATION.vue";

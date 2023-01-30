@@ -4,8 +4,8 @@
  */
 import { onMounted, onUnmounted, ref, type Ref } from "vue";
 import SimplifiedTile from "@/components/simplifiedTile/SimplifiedTile.vue";
-import { useSpawnPoint } from "@/components/spawnpoint/useSpawnPoint";
-import { useMap, type IMapDTO, type IPlacedObject } from "@/services/useMap";
+import { useSpawnPoint } from "@/services/useSpawnPoint"
+import { useMap, type IMapDTO, type IPlacedObject } from "@/services/game/useMap";
 
 const {
   miniMapScalingState,

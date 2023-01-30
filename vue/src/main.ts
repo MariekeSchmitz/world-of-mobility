@@ -1,5 +1,4 @@
 import App from "@/App.vue";
-import Game from "@/components/Game.vue";
 import { createPinia } from "pinia";
 import { createApp } from "vue";
 import router from "./router";

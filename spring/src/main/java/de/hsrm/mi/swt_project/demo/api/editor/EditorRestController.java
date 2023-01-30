@@ -22,9 +22,6 @@ import de.hsrm.mi.swt_project.demo.instancehandling.EditorInstance;
 import de.hsrm.mi.swt_project.demo.instancehandling.Instance;
 import de.hsrm.mi.swt_project.demo.instancehandling.InstanceHandler;
 import de.hsrm.mi.swt_project.demo.instancehandling.UpdateloopInstanceInfo;
-import de.hsrm.mi.swt_project.demo.instancehandling.NoNpcExistsOnCoordinates;
-import de.hsrm.mi.swt_project.demo.instancehandling.NpcNotPlaceableException;
-import de.hsrm.mi.swt_project.demo.instancehandling.ScriptNotValidException;
 import de.hsrm.mi.swt_project.demo.instancehandling.UpdateloopService;
 import de.hsrm.mi.swt_project.demo.messaging.EditorUserListDTO;
 import de.hsrm.mi.swt_project.demo.messaging.GetListInstanceDTO;
@@ -180,9 +177,8 @@ public class EditorRestController {
             long id = instanceHandler.createEditorInstance(name);
             return SendNewWorldDTO.from(id, "");
         } else {
-            return SendNewWorldDTO.from(-1, "Name not unique.");
+            return SendNewWorldDTO.from(-1, "Name wurde schon vergeben.");
         }
-
     }
 
     /**

@@ -17,8 +17,8 @@
  */
 import { computed, onMounted, ref, type Ref } from "vue";
 import MiniMapTile from "@/components/miniMapTile/MiniMapTile.vue";
-import { useMap, type IMapDTO, type IPlacedObject } from "@/services/useMap";
-import { useGame } from "@/services/useGame";
+import { useMap, type IMapDTO, type IPlacedObject } from "@/services/game/useMap";
+import { useGame } from "@/services/game/useGame";
 
 const { getGameMap } = useMap();
 const { getUserMoveable } = useGame();

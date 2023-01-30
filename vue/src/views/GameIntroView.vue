@@ -94,7 +94,7 @@ function scrollingRight() {
         </div>
 
         <!-- Game Selection -->
-        <div class="" id="gameSelection">
+        <div v-if="instancelist.length > 0" class="" id="gameSelection">
           <div class="mb-10 inline-flex items-center">
             <h2 class="inline mb-0 mr-20">Spiel beitreten</h2>
           </div>
@@ -113,7 +113,7 @@ function scrollingRight() {
               class="flex overflow-x-scroll scrollbar-hide col-span-5"
               id="worldWrapper"
             >
-              <div v-if="instancelist.length > 0" class="flex flex-nowrap">
+              <div class="flex flex-nowrap">
                 <div class="gameListItem" v-for="ele in instancelist">
                   <RouterLink :to="{ path: '/joingame/' + ele.id }">
                     <GameListItem
