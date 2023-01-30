@@ -8,14 +8,9 @@ import org.slf4j.LoggerFactory;
 import de.hsrm.mi.swt_project.demo.collision.Collidable;
 import de.hsrm.mi.swt_project.demo.controls.Direction;
 import de.hsrm.mi.swt_project.demo.controls.Moveable;
-import de.hsrm.mi.swt_project.demo.controls.Orientation;
-import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObjectType;
-import de.hsrm.mi.swt_project.demo.editor.placeableobjects.TrafficLight;
 import de.hsrm.mi.swt_project.demo.movables.MotorizedObject;
 import de.hsrm.mi.swt_project.demo.movables.MoveableObject;
 import de.hsrm.mi.swt_project.demo.movables.Passenger;
-import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLightSingleTon;
-import de.hsrm.mi.swt_project.demo.objecthandling.TrafficLightState;
 import de.hsrm.mi.swt_project.demo.util.MathHelpers;
 
 /**
@@ -30,14 +25,9 @@ import de.hsrm.mi.swt_project.demo.util.MathHelpers;
  */
 public class MoveableFacade {
 
-    protected enum ReadableTrafficLightState {
-        HORIZONTAL_GREEN,
-        VERTICAL_GREEN,
-        YELLOW
-    }
-
     Logger logger = LoggerFactory.getLogger(getClass());
 
+    protected static final float START_VELOCITY = 0.05F;
     protected static final float ACCELERATION_DELTA = 0.025F;
 
     protected MoveableObject moveable;
@@ -64,129 +54,93 @@ public class MoveableFacade {
         this.moveable = moveable;
         this.context = context;
     }
-
+    
+    /**
+     * Sets velocity of the controlled moveable to 0.05.
+     */
+    public void start(){
+        if(moveable.getCurrentVelocity() == 0.0f){
+            moveable.setCurrentVelocity(START_VELOCITY);
+        }
+    }
+    
+    /**
+     * Sets velocity of the controlled moveable to 0.
+     */
+    public void stop() {
+        this.moveable.setCurrentVelocity(0);
+    }
+    /**
+     * Returns the current TileProxy of the controlled moveable
+     * 
+     * @return the current TileProxy
+     */
+    public TileProxy getCurrentTile(){
+        
+        TileProxy[][] mapContext = context.provideMapContext();
+        int pos = mapContext.length / 2;
+        
+        return mapContext[pos][pos]; 
+    }
+    
+    /**
+     * Returns the front TileProxy of the controlled moveable
+     * 
+     * @return the Fronttile of the moveable
+     */
+    public TileProxy getFrontTile(){
+        
+        TileProxy[][] mapContext = context.provideMapContext();
+        int pos = mapContext.length / 2;
+        
+        return mapContext[pos + 1][pos];
+    }
+    
     /**
      * Became the CurrentVelocity of the moveable
      * 
      * @return the CurrentVelocity
      */
-    public float currentVelocity(){
+    public float getCurrentVelocity(){
         return moveable.getCurrentVelocity();
     }
-
+    
     /**
-     * Sets the speed of the object to 0.1 when the car is not moving.
-     */
-    public void start(){
-        if(moveable.getCurrentVelocity() == 0.0f){
-            moveable.setCurrentVelocity(0.05f);
-        }
-    }
-
-    /**
-     * Return the Fronttile of the moveable
+     * Became the Orientation of the moveable
      * 
-     * @return the Fronttile of the moveable
+     * @return the Orientation
      */
-    public TileProxy getFrontTile(){
-
-        TileProxy[][] mapContext = context.provideMapContext();
-        int pos = mapContext.length / 2;
-
-        return mapContext[pos + 1][pos];
+    public String getOrientation(){
+        return moveable.getOrientation().name();
     }
-
-    public TileProxy getCurrentTile(){
-
-        TileProxy[][] mapContext = context.provideMapContext();
-        int pos = mapContext.length / 2;
-
-        return mapContext[pos][pos]; 
-    }
-
+    
     /**
      * Check if the moveable is a MotorizedObject or a Passenger
      * 
-     * @return if moveable is a MotorizedObject
+     * @return true if moveable is a MotorizedObject else false
      */
     public boolean isMotorizedObject(){
         return moveable instanceof MotorizedObject;
     }
-    
-    public boolean isMotorizedObject(Moveable tmpMoveable){
+
+    /**
+     * Checks if a passed moveable is a MotorizedObject
+     *  
+     * @param tmpMoveable -> a moveable Object
+     * @return true is moveable a MotorizedObject else false
+     */
+    public boolean checkMotorizedObject(Moveable tmpMoveable){
         return tmpMoveable instanceof MotorizedObject;
     }
 
-    public boolean isPassenger(Moveable tmpMoveable){
-        return tmpMoveable instanceof Passenger;
-    }
-
-    public Orientation getOrientation(){
-        return moveable.getOrientation();
-    }
-
-    public ReadableTrafficLightState currentTrafficLightState() {
-
-        TrafficLightState state = TrafficLightSingleTon.getInstance().getTrafficLightState();
-
-        if (state.equals(TrafficLightState.EASTWEST)) {
-            return ReadableTrafficLightState.HORIZONTAL_GREEN;
-        }
-
-        if (state.equals(TrafficLightState.NORTHSOUTH)) {
-            return ReadableTrafficLightState.VERTICAL_GREEN;
-        }
-
-        return ReadableTrafficLightState.YELLOW;
-    }
-
     /**
-     * Return the state from the trafficlight
-     * 
-     * @return Return the state from the trafficlight
-     * 
+     * Checks if a passed moveable is a Passenger
+     *  
+     * @param tmpMoveable -> a moveable Object
+     * @return true is moveable a Passenger else false
      */
-    public boolean isTrafficLightGreen(float distance){
-        TrafficLight trafficLight = new TrafficLight();
-        float xOnTile = moveable.getXPos() - (int) moveable.getXPos();
-        float yOnTile = moveable.getYPos() - (int) moveable.getYPos();
-        if (this.getFrontTile() == null) {
-            return true;
-        }
-        if(distance >= 0 && distance <= 1) {
-            distance = 0.2f;
-        }
-
-        TileProxy frontTile = this.getFrontTile();
-        PlaceableProxy placeable = frontTile.getPlaceable();
-
-        if (placeable.getType() != null && placeable.getType().equals(PlaceableObjectType.TRAFFIC_LIGHT)) {
-            switch (moveable.getOrientation()) {
-                case NORTH:
-                    if(yOnTile > 1 - distance){
-                        return trafficLight.isTrafficLightRed(moveable.getOrientation());
-                    }
-                    break;
-                case SOUTH:
-                    if(yOnTile < distance){
-                        return trafficLight.isTrafficLightRed(moveable.getOrientation());
-                    }
-                    break;
-                case WEST:
-                    if(xOnTile < distance){
-                        return trafficLight.isTrafficLightRed(moveable.getOrientation());
-                    }
-                    break;
-                case EAST:
-                    if(xOnTile > 1 - distance){
-                        return trafficLight.isTrafficLightRed(moveable.getOrientation());
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-        return true;
+    public boolean checkPassenger(Moveable tmpMoveable){
+        return tmpMoveable instanceof Passenger;
     }
 
     /**
@@ -233,13 +187,6 @@ public class MoveableFacade {
     }
 
     /**
-     * Sets velocity of the controlled moveable to 0.
-     */
-    public void emergencyBrake() {
-        this.moveable.setCurrentVelocity(0);
-    }
-
-    /**
      * Provides map context which is all tiles within
      * a tile-radius of {@value #ScriptContext.LOOK_AHEAD}.
      * 
@@ -259,8 +206,6 @@ public class MoveableFacade {
         return this.context.provideOtherMoveablesContext();
     }
 
-
-    
     /**
      * Calculates distance to another collidable.
      * 
@@ -278,27 +223,23 @@ public class MoveableFacade {
         return MathHelpers.euclideanDistance(thisXPos, thisYPos, otherXPos, otherYPos);
     }
 
+
+    /**
+     * Calculates distance between the moveable
+     * and the middle of a given tile.
+     * 
+     * @param tileProxy Tile to check distance to.
+     * @return Distance to the tile. 
+     */
     public float distanceTo(TileProxy tileProxy) {   
         
-        float xTile = 0;
-        float yTile = 0;
+        float npcXPos = this.moveable.getXPos();
+        float npcYPos = this.moveable.getYPos();
 
-        TileProxy[][] contextMap = context.provideMapContext();
+        float tileMidXPos = tileProxy.getXPos() + 0.5f;
+        float tileMidYPos = tileProxy.getYPos() + 0.5f; 
 
-        for (int row = 0; row < contextMap.length; row++) {
-            for (int col = 0; col < contextMap.length; col++) {
-                if (tileProxy.equals(contextMap[row][col])) {
-                    xTile = col + 0.5f;
-                    yTile = row + 0.5f;
-                    break;
-                }
-            }
-        }   
+        return MathHelpers.euclideanDistance(npcXPos, npcYPos, tileMidXPos, tileMidYPos);
+    }   
 
-        float thisXPos = ScriptContext.LOOK_AHEAD + (moveable.getXPos() - (int) moveable.getXPos()) * moveable.getOrientation().xSign();
-        float thisYPos = ScriptContext.LOOK_AHEAD + (moveable.getYPos() - (int) moveable.getYPos()) * moveable.getOrientation().ySign();
-
-        return MathHelpers.euclideanDistance(thisXPos, thisYPos, xTile, yTile);
-    }    
-    
 } 

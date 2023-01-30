@@ -78,7 +78,7 @@ public class ScriptContext {
 
                 if (row >= 0 && row < this.gameMap.length && col >= 0 && col < this.gameMap.length) {
                     Tile tile = this.gameMap[row][col];
-                    mapContext[contextRow][contextCol] = new TileProxy(tile);
+                    mapContext[contextRow][contextCol] = new TileProxy(tile, col, row);
                 }
 
             }

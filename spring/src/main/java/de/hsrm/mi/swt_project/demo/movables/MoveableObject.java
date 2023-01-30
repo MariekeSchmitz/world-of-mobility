@@ -1,5 +1,6 @@
 package de.hsrm.mi.swt_project.demo.movables;
 
+import org.python.core.PyException;
 import org.python.util.PythonInterpreter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -178,12 +179,16 @@ public abstract class MoveableObject implements Moveable, Scriptable, Turnable, 
 
     @Override
     public void executeScript(ScriptContext context) {
-
         if (this.script != null && !this.script.isEmpty() && context != null) {
             PythonInterpreter interpreter = JythonFactory.getInterpreter();
             MoveableFacade facade = MoveableFacade.createFor(this, context);
             interpreter.set("npc", facade);
-            interpreter.exec(this.script);
+            try {
+                interpreter.exec(this.script);
+            } catch (PyException e) {
+                interpreter.cleanup();
+            }
+            interpreter.close();
         }
     }
 
