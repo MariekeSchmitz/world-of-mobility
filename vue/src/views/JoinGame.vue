@@ -1,20 +1,19 @@
 <script setup lang="ts">
 import { useUser } from "@/services/useUser";
-import { computed, onUnmounted, ref,watch } from "vue";
+import { computed, ref,watch,onMounted,onUnmounted } from "vue";
 import User from "@/components/joinGame/User.vue";
 import CarSelection from "@/components/carselect/CarSelection.vue";
-import { onMounted } from "vue";
-import { useGame } from "@/services/useGame";
+import { useGame } from "@/services/game/useGame";
 import { useLogin } from "@/services/login/useLogin";
 import router from "@/router";
 import SpawnPoint from "@/components/spawnpoint/SpawnPoint.vue";
-import { useSpawnPoint } from "@/components/spawnpoint/useSpawnPoint";
+import { useSpawnPoint } from "@/services/useSpawnPoint";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faPlus, faArrowLeft, faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import Avatar from "@/components/User/Avatar.vue";
-import ErrorWarning from "@/components/ErrorWarning.vue";
+import ErrorWarning from "@/components/error/ErrorWarning.vue";
 import { useUserFeedback } from "@/services/editor/useUserFeedback";
-import { animateHintBox } from "@/components/HintBoxAnimation";
+import { animateHintBox } from "@/components/error/HintBoxAnimation";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useInstanceList } from "@/services/useInstanceList";
 

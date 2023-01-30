@@ -12,7 +12,7 @@
         <input type="text" maxlength="23" v-model="chatInput" 
               class="w-5/6 bg-greenLight border-1 rounded-2xl p-1 pl-5 text-lg focus:border-none"/>
         <button @click="getInputAndChat()" class="w-1/6 rounded-full bg-greenDark p-2 hover:bg-orangeLight">
-          <img src="@/assets/buttons/senden.png" alt="send" class="h-6 w-6">
+          <img src="@/assets/images/buttons/senden.png" alt="send" class="h-6 w-6">
         </button>
       </div>
       <ul class="list-none pl-0 font-poppins text-sm">
@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { useServerMessage } from "@/services/useServerMessage";
+import { useServerMessage } from "@/services/messaging/useServerMessage";
 import { computed } from "@vue/reactivity";
 import { onMounted, onUnmounted, ref } from "vue";
 import { library } from "@fortawesome/fontawesome-svg-core";

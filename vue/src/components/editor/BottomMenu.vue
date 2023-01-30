@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { TileName } from "@/services/editor/TileNameEnum";
+import { TileName } from "@/enums/editor/TileNameEnum";
 import { usePlaceState } from "@/services/editor/usePlaceState";
-import { NaturObjectEnum } from "@/services/NaturObjectEnum";
-import { ObjectEnum } from "@/services/ObjectEnum";
-import { ControlEnum } from "@/services/ControlEnum";
+import { NaturObjectEnum } from "@/enums/editor/NaturObjectEnum";
+import { ObjectEnum } from "@/enums/editor/ObjectEnum";
+import { ControlEnum } from "@/enums/editor/ControlEnum";
 import BottomSelectionLoop from "@/components/editor/BottomSelectionLoop.vue";
-import { NpcPassengerType } from "@/services/editor/NpcPassengerType";
-import { NpcVehicleType } from "@/services/editor/NpcVehicleType";
+import { NpcPassengerType } from "@/enums/editor/NpcPassengerType";
+import { NpcVehicleType } from "@/enums/editor/NpcVehicleType";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faAngleRight,
@@ -265,7 +265,7 @@ function switchContent(element: string) {
                   class="w-16 h-16"
                   @click="setPlaceState(ControlEnum.REMOVE, false, false, true)"
                 >
-                  <img src="@/assets/objects/REMOVE.png" />
+                  <img src="@/assets/images/objects/REMOVE.png" />
                   löschen
                 </button>
               </li>
@@ -283,7 +283,7 @@ function switchContent(element: string) {
                   class="w-16 h-16"
                   @click="setPlaceState(ControlEnum.REMOVE, false, false, true)"
                 >
-                  <img src="@/assets/objects/REMOVE.png" />
+                  <img src="@/assets/images/objects/REMOVE.png" />
                   löschen
                 </button>
               </li>
@@ -358,7 +358,7 @@ function switchContent(element: string) {
                     setPlaceState(ControlEnum.REMOVE_NPC, false, false, false)
                   "
                 >
-                  <img src="@/assets/objects/REMOVE.png" />
+                  <img src="@/assets/images/objects/REMOVE.png" />
                   löschen
                 </button>
               </li>
@@ -378,7 +378,7 @@ function switchContent(element: string) {
                     setPlaceState(ControlEnum.REMOVE_NPC, false, false, false)
                   "
                 >
-                  <img src="@/assets/objects/REMOVE.png" />
+                  <img src="@/assets/images/objects/REMOVE.png" />
                   löschen
                 </button>
               </li>

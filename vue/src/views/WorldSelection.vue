@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted} from "vue";
 import GameListItem from "@/components/selectview/GameListItem.vue";
-
-import { useMapOverview } from "@/services/useMapOverview";
-import type { RouterLink } from "vue-router";
+import { useMapOverview } from "@/services/game/useMapOverview";
 import router from "@/router";
 import { useLogin } from "@/services/login/useLogin";
 import Avatar from "@/components/User/Avatar.vue";

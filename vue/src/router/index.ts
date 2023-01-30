@@ -1,4 +1,4 @@
-import Game from "@/components/Game.vue";
+import Game from "@/components/game/Game.vue";
 import CreateWorld from "@/views/CreateWorld.vue";
 import GameIntroView from "@/views/GameIntroView.vue";
 import JoinGame from "@/views/JoinGame.vue";

@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import router from "@/router";
-import { ref, computed, watch } from "vue";
-import { useGameConfig } from "@/services/useGameConfig";
-import { useGame } from "@/services/useGame";
+import { ref, watch } from "vue";
+import { useGameConfig } from "@/services/game/useGameConfig";
+import { useGame } from "@/services/game/useGame";
 import { useLogin } from "@/services/login/useLogin";
 import Avatar from "@/components/User/Avatar.vue";
-import ErrorWarning from "@/components/ErrorWarning.vue";
+import ErrorWarning from "@/components/error/ErrorWarning.vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { animateHintBox } from "@/components/HintBoxAnimation";
+import { animateHintBox } from "@/components/error/HintBoxAnimation";
 library.add(faArrowLeft);
 
 const { instanceId, createGameInstance } = useGame();
