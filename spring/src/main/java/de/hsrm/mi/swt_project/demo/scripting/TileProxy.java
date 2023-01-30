@@ -99,9 +99,13 @@ public class TileProxy {
         if (getClass() != obj.getClass())
             return false;
         TileProxy other = (TileProxy) obj;
+        
         if (tile == null) {
             if (other.tile != null)
                 return false;
+            
+            return globalXPos == other.globalXPos
+                && globalYPos == other.globalYPos;  
         } 
         
         return tile.equals(other.tile)
