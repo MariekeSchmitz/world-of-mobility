@@ -65,7 +65,6 @@ public class GameMap {
         if (moveable.getScript() == null || moveable.getScript().isEmpty()) {
             try {
                 Resource resource = new ClassPathResource("defaultNPCScript.py");
-                logger.info("RESOURCE: "+resource);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
                 String line = null;
                 StringBuilder rslt = new StringBuilder();
