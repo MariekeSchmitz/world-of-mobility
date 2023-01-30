@@ -42,7 +42,6 @@ public class ScriptValidator implements Validator {
         this.apiMethods.add("isMotorizedObject");
         this.apiMethods.add("checkMotorizedObject");
         this.apiMethods.add("checkPassenger");
-        this.apiMethods.add("isTrafficLightGreen");
         this.apiMethods.add("turnLeft");
         this.apiMethods.add("turnRight");
         this.apiMethods.add("accelerate");

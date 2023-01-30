@@ -49,7 +49,6 @@ function scrollingDown() {
           <li>npc.checkMotorizedObject(moveable): gibt wenn, 
             das ob das übergebendes Objekt ein MotorizedObject ist, true zurück</li>
           <li>npc.checkPassenger(moveable): gibt wenn, das ob das übergebendes Objekt ein Passenger ist, true zurück</li>
-          <li>npc.isTrafficLightGreen(distance): checkt im der distance den Ampelstatus und gibt den AmpelStatus zurück</li>
           <li>npc.turnLeft(): Dreht das Objekt gegen den Uhrzeigersinn</li>
           <li>npc.turnRight(): Dreht das Objekt im Uhrzeigersinn</li>
           <li>npc.accelerate(): Erhöht die Geschwindigkeit des Objekts</li>
