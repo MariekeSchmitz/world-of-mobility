@@ -2,12 +2,11 @@
 <script setup lang="ts">
 //@ts-ignore
 import * as THREE from "three";
-import { NaturObjectEnum } from "@/services/NaturObjectEnum";
+import { NaturObjectEnum } from "@/enums/editor/NaturObjectEnum";
 import Tree from "@/components/objects/Tree.vue";
 import { GltfModel } from "troisjs";
 import SHEEP from "@/components/objects/SHEEP.vue";
 import PIG from "@/components/objects/PIG.vue";
-import { Texture, ToonMaterial } from "troisjs";
 import GRASSTILE_URL from "@/assets/models/GRASSTILE.glb?url";
 
 /**

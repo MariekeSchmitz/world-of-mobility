@@ -2,7 +2,7 @@
 <script setup lang="ts">
 //@ts-ignore
 import * as THREE from 'three'
-import { ref, onMounted, reactive, watch, onUnmounted } from "vue";
+import { ref, onMounted,watch, onUnmounted } from "vue";
 import {
   AmbientLight,
   Camera,
@@ -14,20 +14,20 @@ import {
   import BottomMenu from "@/components/editor/BottomMenu.vue";
   import EditorMap from "@/components/editor/EditorMap.vue";
   import UserListMenu from "@/components/editor/UserListMenu.vue";
-  import {useMap} from "@/services/useMap"
+  import {useMap} from "@/services/game/useMap"
   import { useUserEditor } from "@/services/useUserEditor";
   import { useLogin } from "@/services/login/useLogin";
   import ScriptField from "@/components/editor/ScriptField.vue";
   import ServerChat from "@/components/ServerChat.vue";
   import { useRemoveInstanceState } from "@/services/useRemoveInstanceState";
   import Avatar from "@/components/User/Avatar.vue";
-  import ErrorWarning from "@/components/ErrorWarning.vue";
+  import ErrorWarning from "@/components/error/ErrorWarning.vue";
   import SaveFeedback from "@/components/SaveFeedback.vue";
   import { useUserFeedback } from "@/services/editor/useUserFeedback";
-  import type { MapInterface } from "@/services/editor/MapInterface";
+  import type { MapInterface } from "@/interfaces/editor/MapInterface";
   import { editorTileURLs } from "@/components/editor/EditorTileURLDict"
   import { useEditorError } from "@/services/editor/useEditorError";
-  import { animateHintBox } from "@/components/HintBoxAnimation";
+  import { animateHintBox } from "@/components/error/HintBoxAnimation";
   import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
   import router from "@/router";
   import { library } from "@fortawesome/fontawesome-svg-core";
@@ -37,7 +37,7 @@ import {
     faArrowLeft
   } from "@fortawesome/free-solid-svg-icons";
   import { usePlaceNpc } from '@/services/editor/usePlaceNpc';
-  import type { NpcType } from '@/services/editor/NpcType';
+  import type { NpcType } from '@/enums/editor/NpcType';
   library.add(faPlus, faFileArrowDown, faArrowLeft);
 
 

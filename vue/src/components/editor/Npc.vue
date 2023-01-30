@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { INpc } from "@/services/INpc";
+import type { INpc } from "@/interfaces/npc/INpc2";
 
 
 

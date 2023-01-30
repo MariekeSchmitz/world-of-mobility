@@ -1,9 +1,9 @@
-import CAR_URL from "@/textures/objects/CAR.png";
-import TRUCK_URL from "@/textures/objects/TRUCK.png";
-import TRACTOR_URL from "@/textures/objects/TRACTOR.png";
-import SHEEP_URL from "@/textures/objects/SHEEP.png";
-import PIG_URL from "@/textures/objects/PIG.png";
-import TUPEL_URL from "@/textures/objects/TUPEL.png";
+import CAR_URL from "@/assets/images/objects/CAR_NPC.png";
+import TRUCK_URL from "@/assets/images/objects/TRUCK_NPC.png";
+import TRACTOR_URL from "@/assets/images/objects/TRACTOR_NPC.png";
+import SHEEP_URL from "@/assets/images/objects/SHEEP_NPC.png";
+import PIG_URL from "@/assets/images/objects/PIG_NPC.png";
+import TUPEL_URL from "@/assets/images/objects/TUPEL.png";
 
 export const moveableImages: { [id: string]: string } = {
   CAR: CAR_URL,

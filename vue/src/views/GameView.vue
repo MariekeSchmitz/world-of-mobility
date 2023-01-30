@@ -4,10 +4,10 @@
  * @author Astrid Klemmer
  */
 import { computed, onMounted, onUnmounted } from "vue";
-import { useGame } from "@/services/useGame";
+import { useGame } from "@/services/game/useGame";
 import { useLogin } from "@/services/login/useLogin";
 import { useInstanceList } from "@/services/useInstanceList";
-import Game from "@/components/Game.vue";
+import Game from "@/components/game/Game.vue";
 import Avatar from "@/components/User/Avatar.vue";
 import ServerChat from "@/components/ServerChat.vue";
 import UserListMenu from "@/components/editor/UserListMenu.vue";
