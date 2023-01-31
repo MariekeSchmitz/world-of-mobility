@@ -76,5 +76,23 @@ class GameTest {
                                                 .content(body.toString()))
                                 .andExpect(status().isOk());
         }
+    
+    @Test
+    void postGameConfig() throws Exception {
+
+            JSONObject body = new JSONObject();
+            body.put("mapName", "testNameMap");
+            body.put("sessionName", "testNameSession");
+            body.put("maximumPlayerCount", 2);
+            body.put("npcsActivated", true);
+
+            mockMvc.perform(
+                            post("/api/game/game-config")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(body.toString()))
+                                .andExpect(jsonPath("validationSuccess").exists())
+                                .andExpect(status().isOk());
+
+        }
 
 }

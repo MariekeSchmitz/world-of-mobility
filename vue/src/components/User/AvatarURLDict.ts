@@ -1,7 +1,7 @@
-import PIG_URL from "@/assets/avatar/Schwein.png"
-import GOCKEL_URL from "@/assets/avatar/Gockel.png"
-import CHICKEN_URL from "@/assets/avatar/Huhn.png"
-import COW_URL from "@/assets/avatar/Kuh.png"
+import PIG_URL from "@/assets/images/avatar/Pig.png"
+import GOCKEL_URL from "@/assets/images/avatar/Gockel.png"
+import CHICKEN_URL from "@/assets/images/avatar/Chicken.png"
+import COW_URL from "@/assets/images/avatar/Cow.png"
 
 export const avatarImages: {[id:string]:string} = {
     PIG: PIG_URL,

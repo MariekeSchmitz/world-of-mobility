@@ -2,7 +2,6 @@ package de.hsrm.mi.swt_project.demo.scripting;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +21,7 @@ class MoveableFacadeTest {
 
     MoveableObject moveable;
     MoveableFacade facade;
+
 
     @BeforeEach
     void setup() {
@@ -56,11 +56,21 @@ class MoveableFacadeTest {
     }
 
     @Test
-    void testEmergencyBrake() {
+    void testStart() {
+        moveable.setCurrentVelocity(0);
+        facade.start();
+        assertEquals(MoveableFacade.START_VELOCITY, moveable.getCurrentVelocity());
+        facade.start();
+        assertEquals(MoveableFacade.START_VELOCITY, moveable.getCurrentVelocity());
+    }
+
+    @Test
+    void testStop() {
         moveable.setCurrentVelocity(50);
-        facade.emergencyBrake();
+        facade.stop();
         assertEquals(0.0f, moveable.getCurrentVelocity());
     }
+
 
     @Test
     void testSurroundingTiles() {

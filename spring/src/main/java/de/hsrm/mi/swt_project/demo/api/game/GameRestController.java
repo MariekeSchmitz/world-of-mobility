@@ -188,9 +188,9 @@ public class GameRestController{
     }
 
     /**
-     * Validates sessionName
+     * Validates sessionName and maximumPlayerCount
      * 
-     * @param gameConfig a DTO that contains mapName and sessionName
+     * @param gameConfig a DTO that contains mapName, sessionName, maximumPlayerCount, if npc are wished to be placed
      * @return if validation was successful
      */
     @PostMapping(value="/game-config", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

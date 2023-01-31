@@ -78,7 +78,7 @@ public class ScriptContext {
 
                 if (row >= 0 && row < this.gameMap.length && col >= 0 && col < this.gameMap.length) {
                     Tile tile = this.gameMap[row][col];
-                    mapContext[contextRow][contextCol] = new TileProxy(tile);
+                    mapContext[contextRow][contextCol] = new TileProxy(tile, col, row);
                 }
 
             }
@@ -130,6 +130,11 @@ public class ScriptContext {
      * that index (0, 0) is always behind the
      * moveable object to the left side.
      * 
+     * In case of orientation NE, SE, SW, NW
+     * the orientation will be aligned to the
+     * previous direction in the 
+     * N -> E -> S -> W -> N cycle.
+     * 
      * Examples:
      * 
      * 
@@ -160,19 +165,19 @@ public class ScriptContext {
 
         switch (moveable.getOrientation()) {
 
-            case NORTH:
+            case NORTH, NORTH_EAST:
                 return mapContext;
 
-            case EAST:
+            case EAST, SOUTH_EAST:
                 ArrayHelpers.rotate90CW(mapContext, orientedContext);
                 return orientedContext; 
 
-            case SOUTH:
+            case SOUTH, SOUTH_WEST:
                 ArrayHelpers.rotate90CW(mapContext, orientedContext);
                 ArrayHelpers.rotate90CW(orientedContext, mapContext);
                 return mapContext;
 
-            case WEST:
+            case WEST, NORTH_WEST:
                 ArrayHelpers.rotate90CCW(mapContext, orientedContext);
                 return orientedContext;     
 

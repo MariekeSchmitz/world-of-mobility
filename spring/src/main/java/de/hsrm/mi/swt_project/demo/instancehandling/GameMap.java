@@ -65,7 +65,6 @@ public class GameMap {
         if (moveable.getScript() == null || moveable.getScript().isEmpty()) {
             try {
                 Resource resource = new ClassPathResource("defaultNPCScript.py");
-                logger.info("RESOURCE: "+resource);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
                 String line = null;
                 StringBuilder rslt = new StringBuilder();
@@ -267,7 +266,7 @@ public class GameMap {
         fillMapWithDefaultTiles(newTiles, size);
         ArrayHelpers.transfer2D(this.tiles, newTiles);
 
-        this.npcs.forEach((npc)-> {
+        this.npcs.forEach(npc -> {
             float xPos = npc.getXPos() + MAP_EXPANSION_PER_SITE;
             float yPos = npc.getYPos() + MAP_EXPANSION_PER_SITE;
 

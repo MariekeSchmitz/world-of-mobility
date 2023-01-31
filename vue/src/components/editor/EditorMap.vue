@@ -2,14 +2,13 @@
 //@ts-ignore
 import { orientations } from "@/services/Orientations";
 import { onMounted, ref, watch, computed } from "vue";
-import { useMapUpdate } from "@/services/useMapUpdate";
-import { useMap } from "@/services/useMap";
-import { number } from "mathjs";
+import { useMapUpdate } from "@/services/game/useMapUpdate";
+import { useMap } from "@/services/game/useMap";
 import EditorTile from "@/components/editor/EditorTile.vue";
 import * as THREE from "three";
-import type { MapInterface } from "@/services/editor/MapInterface";
-import type { INpc } from "@/interfaces/INpc";
-import type { NpcType } from "@/services/editor/NpcType";
+import type { MapInterface } from "@/interfaces/editor/MapInterface";
+import type { INpc } from "@/interfaces/npc/INpc";
+import type { NpcType } from "@/enums/editor/NpcType";
 
 const props = withDefaults(
   defineProps<{

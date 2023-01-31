@@ -1,7 +1,7 @@
 package de.hsrm.mi.swt_project.demo.scripting;
 
 import de.hsrm.mi.swt_project.demo.editor.placeableobjects.Placeable;
-import de.hsrm.mi.swt_project.demo.editor.placeableobjects.PlaceableObjectType;
+import de.hsrm.mi.swt_project.demo.editor.placeableobjects.TrafficLight;
 
 /**
  * This class restricts access to the Tile class,
@@ -29,11 +29,23 @@ public class PlaceableProxy {
      * 
      * @return Type of the placeable object.
      */
-    public PlaceableObjectType getType() {
+    public String getType() {
         if(placeable == null){
-            return null;
+            return "";
         }
-        return this.placeable.getType();
+        return this.placeable.getType().name();
+    }
+
+    /**
+     * Gets state of the placeable object.
+     * 
+     * @return State of the placeable object.
+     */
+    public String getState() {
+        if (placeable instanceof TrafficLight trafficLight) {
+            return trafficLight.getState().name();
+        }
+        return "";
     }
 
 }

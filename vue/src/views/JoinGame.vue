@@ -1,20 +1,19 @@
 <script setup lang="ts">
 import { useUser } from "@/services/useUser";
-import { computed, onUnmounted, ref,watch } from "vue";
+import { computed, ref,watch,onMounted,onUnmounted } from "vue";
 import User from "@/components/joinGame/User.vue";
 import CarSelection from "@/components/carselect/CarSelection.vue";
-import { onMounted } from "vue";
-import { useGame } from "@/services/useGame";
+import { useGame } from "@/services/game/useGame";
 import { useLogin } from "@/services/login/useLogin";
 import router from "@/router";
 import SpawnPoint from "@/components/spawnpoint/SpawnPoint.vue";
-import { useSpawnPoint } from "@/components/spawnpoint/useSpawnPoint";
+import { useSpawnPoint } from "@/services/useSpawnPoint";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faPlus, faArrowLeft, faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import Avatar from "@/components/User/Avatar.vue";
-import ErrorWarning from "@/components/ErrorWarning.vue";
+import ErrorWarning from "@/components/error/ErrorWarning.vue";
 import { useUserFeedback } from "@/services/editor/useUserFeedback";
-import { animateHintBox } from "@/components/HintBoxAnimation";
+import { animateHintBox } from "@/components/error/HintBoxAnimation";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useInstanceList } from "@/services/useInstanceList";
 
@@ -83,19 +82,14 @@ onUnmounted(async () => {
   endReceiveInstanceUpdates();
 });
 
-function toggleButton() {
-  spawnPointSet.value = true
-  errorMessage.value = "";
-}
-
-
-watch(errorMessage, (neu, alt) => {
-  const errorBox = document.getElementById("errorBox");
-  animateHintBox(errorMessage.value != "", errorBox);
-});
-
 watch(feedbackMessage, (neu, alt) => {
-  errorMessage.value = feedbackMessage.value
+  console.log("Feedbackmessage", feedbackMessage)
+
+  if (!neu && (errorMessage.value != alt)) {
+    // if feedbackmessage is set back by timer but a new errormessage is already in errorbox --> do nothing
+  } else {
+    errorMessage.value = feedbackMessage.value
+  }
 
 });
 
@@ -104,14 +98,13 @@ watch(spawnState, (neu, alt) => {
     spawnPointSet.value = false
   } else {
     spawnPointSet.value = true
+    errorMessage.value=""
   }
 });
 
 const userlist = computed(() => {
   return getUserlist(instanceID)
 });
-
-
 
 </script>
 
@@ -166,7 +159,7 @@ const userlist = computed(() => {
 
             <!-- Choose Spawnpoint -->
             <div class="text-center">
-              <h2 class="">Startpunkt<br v-if="userList.users.length != 0"/>wählen</h2>
+              <h2 class="">Startpunkt <br v-if="userList.users.length != 0"/> wählen</h2>
               <SpawnPoint :instance-id="instanceID" class=""/>
             </div>
           </div>
