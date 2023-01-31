@@ -41,10 +41,14 @@ class EditorTest {
 
         long editorId;
 
+
+        
+
         @BeforeEach
         void setUp() {
                 editorId = instanceHandler.createEditorInstance("test");
                 editorInstance = instanceHandler.getEditorInstanceById(editorId);
+                
         }
 
         @AfterEach
@@ -65,6 +69,23 @@ class EditorTest {
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .content(body.toString()))
                                 .andExpect(status().isOk());
+        }
+
+        @Test
+        void postPlaceableObjectUpdate() throws Exception {
+                JSONObject body = new JSONObject();
+                body.put("type", "TREE");
+                body.put("control", "ADD");
+                body.put("posX", 0);
+                body.put("posY", 0);
+
+                mockMvc.perform(
+                                post("/api/editor/placeableObjectUpdate/" + editorId)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(body.toString()))
+                                .andExpect(status().isOk())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(jsonPath("validationSuccess").exists());
         }
 
         @Test
