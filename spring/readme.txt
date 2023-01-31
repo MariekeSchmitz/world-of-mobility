@@ -1,1 +1,3 @@
-Hier kommt das Spring Projekt rein.
+zum Starten: 
+cd spring
+./gradlew bootRun 

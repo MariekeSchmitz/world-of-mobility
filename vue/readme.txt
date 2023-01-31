@@ -1,1 +1,3 @@
-Hier kommt das Vue/Trois Projekt rein.
+Zum starten: 
+npm i (nur beim ersten mal)
+npm run dev
