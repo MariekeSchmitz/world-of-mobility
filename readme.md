@@ -4,29 +4,23 @@ Multiplayer web application to build mobility-worlds (construction mode) that us
 
 *student project in semester 5, group work in scrum team* 
 
-**Features:**
-- Connect to Spotify account
-- Select song and control spotify player
-- Interact with visualization: choose type and color and manipulate shapes (scaling and moving elements)
-
 ## Main Technologies
 - Spring Boot
 - Vue.js
 - Tailwind.css
+## Impressions
+![alt](./Docs/E-Mobility-Impressions.jpg)
 
-How to run:
+## How to run
 
-Server
+**Server**
 ```bash
 cd spring
 ./gradlew bootRun
 ``` 
-Client
+**Client**
 ```bash
 cd vue
 npm i (nur beim ersten mal)
 npm run dev
 ``` 
-
-## Impressions
-![alt](./Docs/E-Mobility-Impressions.jpg)
