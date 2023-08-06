@@ -10,7 +10,7 @@ Multiplayer web application to build mobility-worlds (construction mode) that us
 - Tailwind.css
 ## Impressions
 Teaser video: https://youtu.be/4bn3lqmIVXE
-![alt](./Docs/E-Mobility-Impressions.jpg)
+![alt](./docs/E-Mobility-Impressions.jpg)
 
 ## How to run
 
